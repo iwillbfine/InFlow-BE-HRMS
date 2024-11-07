@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Ignore YAML and properties files
+*.yml
+*.properties
+
+# PasswordGenerator.java 파일을 Git에서 무시
+**/PasswordGenerator.java
