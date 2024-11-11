@@ -11,4 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class VacationTypeDTO {
+    private Long vacationTypeId;
+    private String vacationTypeName;
 }
