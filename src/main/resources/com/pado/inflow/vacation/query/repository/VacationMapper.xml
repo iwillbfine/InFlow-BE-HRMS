@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.vacation.query.repository.VacationMapper">
+    <resultMap id="vacationResultMap" type="com.pado.inflow.vacation.query.dto.VacationDTO">
+        <id property="vacationId" column="VACATION_ID"/>
+        <result property="vacationName" column="VACATION_NAME"/>
+        <result property="vacationLeft" column="VACATION_LEFT"/>
+        <result property="vacationUsed" column="VACATION_USED"/>
+        <result property="createdAt" column="CREATED_AT"/>
+        <result property="expiredAt" column="EXPIRED_AT"/>
+        <result property="expirationStatus" column="EXPIRATION_STATUS"/>
+        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <result property="vacationTypeName" column="VACATION_TYPE_NAME"/>
+    </resultMap>
+
+    <select id="findLeftVacationsByEmployeeId" resultMap="vacationResultMap" parameterType="map">
+        SELECT
+               A.VACATION_ID
+             , A.VACATION_NAME
+             , A.VACATION_LEFT
+             , A.VACATION_USED
+             , A.CREATED_AT
+             , A.EXPIRED_AT
+             , A.EXPIRATION_STATUS
+             , A.EMPLOYEE_ID
+             , B.VACATION_TYPE_NAME
+          FROM VACATION A
+          JOIN VACATION_TYPE B
+            ON A.VACATION_TYPE_ID = B.VACATION_TYPE_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.VACATION_LEFT > 0 AND A.EXPIRATION_STATUS = 'N'
+         ORDER BY A.VACATION_ID DESC
+         LIMIT #{ elementsPerPage } OFFSET #{ offset }
+    </select>
+
+    <select id="getTotalLeftVacationsByEmployeeId" resultType="Integer" parameterType="Long">
+        SELECT
+               COUNT(*) AS TOTAL
+          FROM VACATION A
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.VACATION_LEFT > 0 AND A.EXPIRATION_STATUS = 'N'
+    </select>
+
+</mapper>
