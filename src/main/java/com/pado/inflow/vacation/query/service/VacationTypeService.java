@@ -3,5 +3,5 @@ package com.pado.inflow.vacation.query.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VacationPolicyService {
+public class VacationTypeService {
 }

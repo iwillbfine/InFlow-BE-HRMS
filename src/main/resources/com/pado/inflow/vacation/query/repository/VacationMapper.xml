@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.vacation.query.repository.VacationMapper">
+<!--    <resultMap id="vacationResultMap" type="com.pado.inflow.vacation.query.dto.vacationDTO">-->
+<!--        <id property="groupId" column="GROUP_ID"/>-->
+<!--        <result property="groupName" column="GROUP_NAME"/>-->
+<!--        <result property="activeStatus" column="ACTIVE_STATUS"/>-->
+<!--        <result property="groupMembers" column="GROUP_MEMBERS"/>-->
+<!--        <result property="userId" column="USER_ID"/>-->
+<!--        <result property="studyGroupCategoryId" column="STUDY_GROUP_CATEGORY_ID"/>-->
+<!--    </resultMap>-->
+
+<!--    <select id="findAllStudyGroups" resultMap="studyGroupResultMap">-->
+<!--        SELECT-->
+<!--        A.GROUP_ID-->
+<!--        , A.GROUP_NAME-->
+<!--        , A.ACTIVE_STATUS-->
+<!--        , A.GROUP_MEMBERS-->
+<!--        , A.USER_ID-->
+<!--        , A.STUDY_GROUP_CATEGORY_ID-->
+<!--        FROM STUDY_GROUP A-->
+<!--        WHERE A.ACTIVE_STATUS = 'ACTIVE'-->
+<!--        ORDER BY A.GROUP_ID-->
+<!--    </select>-->
+</mapper>
