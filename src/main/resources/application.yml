@@ -1,0 +1,54 @@
+server:
+  port: 8080 # 추후 aws에 배포 이후에는 변경 예정
+
+spring:
+  devtools:
+    restart:
+      enabled: false # DevTools 자동 재시작 비활성화
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/padodb
+    username: pado
+    password: pado
+
+  jpa:
+    generate-ddl: false # 스키마 자동 생성 비활성화
+    show-sql: true # 실행되는 SQL을 출력
+    database: mysql # 데이터베이스 종류
+    properties:
+      hibernate:
+        '[format_sql]': true # SQL 출력 시 포맷팅 활성화
+
+  # 디버깅 레벨 설정
+  logging:
+    level:
+      com:
+        pado:
+          inflow: info # debug or info
+
+# JWT 설정
+token:
+  access-expiration-time: 28800000 # 액세스 토큰 만료시간 설정 (8시간 = 8 * 60 * 60 * 1000 ms)
+  refresh-expiration-time: 86400000 # 리프레시 토큰 만료시간 설정 (1일 = 24 * 60 * 60 * 1000 ms)
+  secret: KksWkOy539IOOrQCShB0fI0KuhODzPnXRYmpY7rjEpF4TjzQ/Mo9r1+LMnYja+QFISDBF5ps6A312VqK4tfnZQ== # JWT 시크릿 키
+
+# s3 설정 정보 추가
+cloud:
+  aws:
+    credentials:
+      access-key:        # AWS Access Key를 입력
+      secret-key:        # AWS Secret Key를 입력
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    s3:
+      bucket:  # 버킷 이름 입력
+
+
+
+# 평문 비밀번호 저장 (최초 관리자 비번)
+admin:
+  password: pado6
+  
