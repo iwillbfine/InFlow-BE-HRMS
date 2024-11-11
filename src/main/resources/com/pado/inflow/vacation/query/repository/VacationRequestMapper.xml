@@ -17,6 +17,11 @@
         <result property="employeeId" column="EMPLOYEE_ID"/>
         <result property="name" column="NAME"/>
         <result property="vacationId" column="VACATION_ID"/>
+        <collection property="attachments" ofType="com.pado.inflow.vacation.query.dto.VacationRequestFileDTO">
+            <result property="vacationRequestFileId" column="VACATION_REQUEST_FILE_ID"/>
+            <result property="fileName" column="FILE_NAME"/>
+            <result property="fileUrl" column="FILE_URL"/>
+        </collection>
     </resultMap>
 
     <select id="findVacationRequestPreviewsByEmployeeId" resultMap="vacationRequestResultMap" parameterType="Long">
@@ -34,9 +39,14 @@
              , A.EMPLOYEE_ID
              , B.NAME
              , A.VACATION_ID
+             , C.VACATION_REQUEST_FILE_ID
+             , C.FILE_NAME
+             , C.FILE_URL
           FROM VACATION_REQUEST A
           JOIN EMPLOYEE B
             ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          LEFT JOIN VACATION_REQUEST_FILE C
+            ON A.VACATION_REQUEST_ID = C.VACATION_REQUEST_ID
          WHERE A.EMPLOYEE_ID = #{ employeeId }
          ORDER BY A.VACATION_REQUEST_ID DESC
          LIMIT 5
@@ -57,9 +67,14 @@
              , A.EMPLOYEE_ID
              , B.NAME
              , A.VACATION_ID
+             , C.VACATION_REQUEST_FILE_ID
+             , C.FILE_NAME
+             , C.FILE_URL
           FROM VACATION_REQUEST A
           JOIN EMPLOYEE B
             ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          LEFT JOIN VACATION_REQUEST_FILE C
+            ON A.VACATION_REQUEST_ID = C.VACATION_REQUEST_ID
          WHERE A.EMPLOYEE_ID = #{ employeeId }
          ORDER BY A.VACATION_REQUEST_ID DESC
          LIMIT #{ elementsPerPage } OFFSET #{ offset }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @NoArgsConstructor
@@ -26,4 +27,5 @@ public class VacationRequestDTO {
     private Long employeeId;
     private String name;
     private Long vacationId;
+    private List<VacationRequestFileDTO> attachments;
 }
