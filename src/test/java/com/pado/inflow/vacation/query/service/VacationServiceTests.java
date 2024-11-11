@@ -32,4 +32,18 @@ class VacationServiceTests {
         Assertions.assertNotNull(vacations.getElements());
     }
 
+    @DisplayName("사원별 사용 휴가 조회 테스트")
+    @Test
+    void testFindUsedVacationsByEmployeeId() {
+        // Given
+        Long employeeId = 4L;
+
+        // When
+        PageDTO<VacationDTO> vacations = vacationService.findUsedVacationsByEmployeeId(employeeId, 1);
+        log.info(vacations.toString());
+
+        // Then
+        Assertions.assertNotNull(vacations.getElements());
+    }
+
 }

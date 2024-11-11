@@ -20,9 +20,18 @@ public class VacationController {
         this.vacationService = vacationService;
     }
 
-    @GetMapping
+    // 사원별 잔여 휴가 조회
+    @GetMapping("/left")
     public PageDTO<VacationDTO> getLeftVacationsByEmployeeId(@RequestParam("eid") Long employeeId,
                                                              @RequestParam("page") Integer pageNo) {
         return vacationService.findLeftVacationsByEmployeeId(employeeId, pageNo);
     }
+
+    // 사원별 사용 휴가 조회
+    @GetMapping("/used")
+    public PageDTO<VacationDTO> getUsedVacationsByEmployeeId(@RequestParam("eid") Long employeeId,
+                                                             @RequestParam("page") Integer pageNo) {
+        return vacationService.findUsedVacationsByEmployeeId(employeeId, pageNo);
+    }
+
 }

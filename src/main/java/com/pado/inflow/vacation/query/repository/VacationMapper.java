@@ -15,9 +15,14 @@ public interface VacationMapper {
                                                    @Param("offset") Integer offset);
 
     // 사원별 사용 휴가 조회
+    List<VacationDTO> findUsedVacationsByEmployeeId(@Param("employeeId") Long employeeId,
+                                                    @Param("elementsPerPage") Integer elementsPerPage,
+                                                    @Param("offset") Integer offset);
 
-
-    // 사원별 잔여 휴가 개수 조회
+    // 사원별 잔여 휴가 내역 개수 조회
     Integer getTotalLeftVacationsByEmployeeId(Long employeeId);
+
+    // 사원별 사용 휴가 내역 개수 조회
+    Integer getTotalUsedVacationsByEmployeeId(Long employeeId);
 
 }

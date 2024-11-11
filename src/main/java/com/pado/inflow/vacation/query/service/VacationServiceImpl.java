@@ -51,10 +51,18 @@ public class VacationServiceImpl implements VacationService {
 //            throw new CommonException(ErrorCode.INVALID_PARAMETER_FORMAT);
 //        }
 
+        Integer totalElements = vacationMapper.getTotalUsedVacationsByEmployeeId(employeeId);
+//        if(totalElements == null || totalElements < 1) {
+//            throw new
+//        }
+
         Integer offset = (pageNo - 1) * ELEMENTS_PER_PAGE;
+        List<VacationDTO> vacations = vacationMapper.findUsedVacationsByEmployeeId(employeeId, ELEMENTS_PER_PAGE, offset);
+//        if (vacations == null || vacations.isEmpty()) {
+//            throw new
+//        }
 
-
-        return null;
+        return new PageDTO<>(vacations, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
     }
 
 }
