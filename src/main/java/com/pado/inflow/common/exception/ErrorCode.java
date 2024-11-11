@@ -49,7 +49,6 @@ public enum ErrorCode {
     ACCESS_DENIED(40310, HttpStatus.FORBIDDEN, "접근이 거부되었습니다."),
 
     //404
-    //404
     NOT_FOUND_EMPLOYEE(40401, HttpStatus.NOT_FOUND, "직원이 존재하지 않습니다."),
     NOT_FOUND_FAMILY_MEMBER(40402, HttpStatus.NOT_FOUND, "가족 구성원이 존재하지 않습니다."),
     NOT_FOUND_FAMILY_RELATIONSHIP(40403, HttpStatus.NOT_FOUND, "가족 관계가 존재하지 않습니다."),
@@ -91,7 +90,12 @@ public enum ErrorCode {
     NOT_FOUND_SEMIANNUAL_DEPARTMENT_PERFORMANCE_RATIO_STATISTICS(40439, HttpStatus.NOT_FOUND, "반기 부서 업무 달성 통계가 존재하지 않습니다."),
     NOT_FOUND_MONTHLY_DEPARTMENT_OVERTIME_ALLOWANCE_STATISTICS(40440, HttpStatus.NOT_FOUND, "월간 부서 초과 근무 수당 통계가 존재하지 않습니다."),
     NOT_FOUND_MONTHLY_EMPLOYEE_NUM_STATISTICS(40441, HttpStatus.NOT_FOUND, "월간 사원 수 통계가 존재하지 않습니다."),
-
+    NOT_FOUND_POSITION(40442, HttpStatus.NOT_FOUND, "직급 정보가 존재하지 않습니다."),
+    NOT_FOUND_ROLE(40443, HttpStatus.NOT_FOUND, "역할 정보가 존재하지 않습니다."),
+    NOT_FOUND_DUTY(40444, HttpStatus.NOT_FOUND, "직무 정보가 존재하지 않습니다."),
+    NOT_FOUND_ATTENDANCE_STATUS_TYPE(40445, HttpStatus.NOT_FOUND, "출석 상태 유형이 존재하지 않습니다."),
+    NOT_FOUND_DEPARTMENT(40446, HttpStatus.NOT_FOUND, "부서 정보가 존재하지 않습니다."),
+    NOT_FOUND_COMPANY(40447, HttpStatus.NOT_FOUND, "회사 정보가 존재하지 않습니다."),
 
     //500
     INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다");
