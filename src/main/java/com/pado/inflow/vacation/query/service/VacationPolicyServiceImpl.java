@@ -1,7 +1,28 @@
 package com.pado.inflow.vacation.query.service;
 
+import com.pado.inflow.vacation.query.dto.VacationPolicyDTO;
+import com.pado.inflow.vacation.query.repository.VacationPolicyMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class VacationPolicyServiceImpl {
+public class VacationPolicyServiceImpl implements VacationPolicyService {
+
+    private final VacationPolicyMapper vacationPolicyMapper;
+
+    public VacationPolicyServiceImpl(VacationPolicyMapper vacationPolicyMapper) {
+        this.vacationPolicyMapper = vacationPolicyMapper;
+    }
+
+    // 연도별 휴가 정책 조회
+    @Override
+    public List<VacationPolicyDTO> findVacationPoliciesByYear(Integer year) {
+        List<VacationPolicyDTO> vacationPolicies = vacationPolicyMapper.findVacationPoliciesByYear(year);
+//        if (vacationPolicies == null || vacationPolicies.isEmpty()) {
+//            throw new
+//        }
+        return vacationPolicies;
+    }
+
 }
