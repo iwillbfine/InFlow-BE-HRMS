@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.vacation.query.repository.VacationTypeMapper">
+    <resultMap id="vacationTypeResultMap" type="com.pado.inflow.vacation.query.dto.VacationTypeDTO">
+        <id property="vacationTypeId" column="VACATION_TYPE_ID"/>
+        <result property="vacationTypeName" column="VACATION_TYPE_NAME"/>
+    </resultMap>
+
+    <select id="findVacationTypes" resultMap="vacationTypeResultMap">
+        SELECT
+               VACATION_TYPE_ID
+             , VACATION_TYPE_NAME
+          FROM VACATION_TYPE
+    </select>
+</mapper>

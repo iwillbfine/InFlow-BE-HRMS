@@ -11,4 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class VacationRequestFileDTO {
+    private Long vacationRequestFileId;
+    private String fileUrl;
+    private Long vacationRequestId;
 }
