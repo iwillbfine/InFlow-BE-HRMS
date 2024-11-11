@@ -1,0 +1,35 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.employee.attach.query.repository.FamilyMemberMapper">
+    <resultMap id="ResultMap" type="com.pado.inflow.employee.attach.query.dto.FamilyMemberDTO">
+        <id property="familyMemberId" column="FAMILY_MEMBER_ID"/>
+        <result property="name" column="NAME"/>
+        <result property="birthDate" column="BIRTH_DATE"/>
+        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <result property="familyRelationshipName" column="FAMILY_RELATIONSHIP_NAME"/>
+    </resultMap>
+
+    <select id="getAllFamilyMemberList" resultMap="ResultMap">
+        SELECT
+               A.FAMILY_MEMBER_ID
+             , A.NAME
+             , A.BIRTH_DATE
+             , A.EMPLOYEE_ID
+             , B.FAMILY_RELATIONSHIP_NAME
+          FROM FAMILY_MEMBER A INNER JOIN FAMILY_RELATIONSHIP B
+            ON A.FAMILY_RELATIONSHIP_CODE = B.FAMILY_RELATIONSHIP_CODE
+    </select>
+
+    <select id="getOneFamilyMemberList" resultMap="ResultMap" parameterType="_long">
+        SELECT
+               A.FAMILY_MEMBER_ID
+             , A.NAME
+             , A.BIRTH_DATE
+             , A.EMPLOYEE_ID
+             , B.FAMILY_RELATIONSHIP_NAME
+          FROM FAMILY_MEMBER A INNER JOIN FAMILY_RELATIONSHIP B
+            ON A.FAMILY_RELATIONSHIP_CODE = B.FAMILY_RELATIONSHIP_CODE
+         WHERE A.EMPLOYEE_ID = #{employeeId}
+    </select>
+</mapper>
