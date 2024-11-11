@@ -18,6 +18,7 @@ public class VacationTypeController {
         this.vacationTypeService = vacationTypeService;
     }
 
+    // 휴가 종류 전체 조회
     @GetMapping()
     public List<VacationTypeDTO> getVacationTypes() {
         return vacationTypeService.findVacationTypes();

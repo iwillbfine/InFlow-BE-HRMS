@@ -1,0 +1,32 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.vacation.query.repository.VacationPolicyMapper">
+    <resultMap id="vacationPolicyResultMap" type="com.pado.inflow.vacation.query.dto.VacationPolicyDTO">
+        <id property="vacationPolicyId" column="VACATION_POLICY_ID"/>
+        <result property="vacationPolicyName" column="VACATION_POLICY_NAME"/>
+        <result property="allocationDays" column="ALLOCATION_DAYS"/>
+        <result property="paidStatus" column="PAID_STATUS"/>
+        <result property="year" column="YEAR"/>
+        <result property="createdAt" column="CREATED_AT"/>
+        <result property="autoAllocationCycle" column="AUTO_ALLOCATION_CYCLE"/>
+        <result property="vacationTypeName" column="VACATION_TYPE_NAME"/>
+    </resultMap>
+
+    <select id="findVacationPoliciesByYear" resultMap="vacationPolicyResultMap" parameterType="Integer">
+        SELECT
+               A.VACATION_POLICY_ID
+             , A.VACATION_POLICY_NAME
+             , A.ALLOCATION_DAYS
+             , A.PAID_STATUS
+             , A.YEAR
+             , A.CREATED_AT
+             , A.AUTO_ALLOCATION_CYCLE
+             , B.VACATION_TYPE_NAME
+          FROM VACATION_POLICY A
+          JOIN VACATION_TYPE B
+            ON A.VACATION_TYPE_ID = B.VACATION_TYPE_ID
+         WHERE A.YEAR = #{ year }
+         ORDER BY A.VACATION_POLICY_ID
+    </select>
+</mapper>
