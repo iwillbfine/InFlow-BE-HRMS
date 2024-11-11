@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.vacation.query.repository.VacationRequestMapper">
+    <resultMap id="vacationRequestResultMap" type="com.pado.inflow.vacation.query.dto.VacationRequestDTO">
+        <id property="vacationRequestId" column="VACATION_REQUEST_ID"/>
+        <result property="startDate" column="START_DATE"/>
+        <result property="endDate" column="END_DATE"/>
+        <result property="createdAt" column="CREATED_AT"/>
+        <result property="requestReason" column="REQUEST_REASON"/>
+        <result property="requestStatus" column="REQUEST_STATUS"/>
+        <result property="rejectionReason" column="REJECTION_REASON"/>
+        <result property="canceledAt" column="CANCELED_AT"/>
+        <result property="cancelReason" column="CANCEL_REASON"/>
+        <result property="cancelStatus" column="CANCEL_STATUS"/>
+        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <result property="name" column="NAME"/>
+        <result property="vacationId" column="VACATION_ID"/>
+    </resultMap>
+
+    <select id="findVacationRequestPreviewsByEmployeeId" resultMap="vacationRequestResultMap" parameterType="Long">
+        SELECT
+               A.VACATION_REQUEST_ID
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REQUEST_REASON
+             , A.REQUEST_STATUS
+             , A.REJECTION_REASON
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.VACATION_ID
+          FROM VACATION_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId }
+         ORDER BY A.VACATION_REQUEST_ID DESC
+         LIMIT 5
+    </select>
+
+    <select id="findVacationRequestsByEmployeeId" resultMap="vacationRequestResultMap" parameterType="map">
+        SELECT
+               A.VACATION_REQUEST_ID
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REQUEST_REASON
+             , A.REQUEST_STATUS
+             , A.REJECTION_REASON
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.VACATION_ID
+          FROM VACATION_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId }
+         ORDER BY A.VACATION_REQUEST_ID DESC
+         LIMIT #{ elementsPerPage } OFFSET #{ offset }
+    </select>
+
+    <select id="getTotalVacationRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+        SELECT
+               COUNT(*) AS TOTAL
+          FROM VACATION_REQUEST A
+         WHERE A.EMPLOYEE_ID = #{ employeeId }
+    </select>
+
+</mapper>

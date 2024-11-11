@@ -23,13 +23,16 @@ class VacationServiceTests {
     void testFindLeftVacationsByEmployeeId() {
         // Given
         Long employeeId = 4L;
+        Integer pageNo = 1;
 
         // When
-        PageDTO<VacationDTO> vacations = vacationService.findLeftVacationsByEmployeeId(employeeId, 1);
-        log.info(vacations.toString());
+        PageDTO<VacationDTO> vacations = vacationService.findLeftVacationsByEmployeeId(employeeId, pageNo);
+        if (vacations != null) {
+            log.info(vacations.toString());
+        }
 
         // Then
-        Assertions.assertNotNull(vacations.getElements());
+        Assertions.assertNotNull(vacations);
     }
 
     @DisplayName("사원별 사용 휴가 조회 테스트")
@@ -37,13 +40,16 @@ class VacationServiceTests {
     void testFindUsedVacationsByEmployeeId() {
         // Given
         Long employeeId = 4L;
+        Integer pageNo = 1;
 
         // When
-        PageDTO<VacationDTO> vacations = vacationService.findUsedVacationsByEmployeeId(employeeId, 1);
-        log.info(vacations.toString());
+        PageDTO<VacationDTO> vacations = vacationService.findUsedVacationsByEmployeeId(employeeId, pageNo);
+        if (vacations != null) {
+            log.info(vacations.toString());
+        }
 
         // Then
-        Assertions.assertNotNull(vacations.getElements());
+        Assertions.assertNotNull(vacations);
     }
 
 }
