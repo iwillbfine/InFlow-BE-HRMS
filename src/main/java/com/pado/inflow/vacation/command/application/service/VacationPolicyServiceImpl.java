@@ -12,6 +12,7 @@ import com.pado.inflow.vacation.command.domain.repository.VacationTypeRepository
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +33,8 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
     }
 
     // 휴가 정책 등록
+    @Transactional
+    @Override
     public ResponseVacationPolicyDTO registVacationPolicy(RequestVacationPolicyDTO reqVacationPolicyDTO) {
         // 유효성 검사
         checkValidVacationPolicyDTO(reqVacationPolicyDTO);
@@ -55,6 +58,7 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
     }
 
     // 휴가 정책 수정
+    @Transactional
     @Override
     public ResponseVacationPolicyDTO modifyVacationPolicy(Long vacationPolicyId, RequestVacationPolicyDTO reqVacationPolicyDTO) {
         // 유효성 검사
