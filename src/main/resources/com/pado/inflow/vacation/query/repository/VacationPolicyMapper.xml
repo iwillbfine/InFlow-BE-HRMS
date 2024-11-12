@@ -5,6 +5,7 @@
     <resultMap id="vacationPolicyResultMap" type="com.pado.inflow.vacation.query.dto.VacationPolicyDTO">
         <id property="vacationPolicyId" column="VACATION_POLICY_ID"/>
         <result property="vacationPolicyName" column="VACATION_POLICY_NAME"/>
+        <result property="vacationPolicyDescription" column="VACATION_POLICY_DESCRIPTION"/>
         <result property="allocationDays" column="ALLOCATION_DAYS"/>
         <result property="paidStatus" column="PAID_STATUS"/>
         <result property="year" column="YEAR"/>
@@ -17,6 +18,7 @@
         SELECT
                A.VACATION_POLICY_ID
              , A.VACATION_POLICY_NAME
+             , A.VACATION_POLICY_DESCRIPTION
              , A.ALLOCATION_DAYS
              , A.PAID_STATUS
              , A.YEAR
