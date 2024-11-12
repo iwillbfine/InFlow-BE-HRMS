@@ -14,15 +14,15 @@ public class FamilyMemberDTO {
     private String name;
     private LocalDate birthDate;
     private Long employeeId;
-    private String familyRelationshipName;
+    private Long familyRelationshipCode;
 
     public FamilyMemberDTO(String name,
                            LocalDate birthDate,
                            Long employeeId,
-                           String familyRelationshipName) {
+                           Long familyRelationshipCode) {
         this.name = name;
         this.birthDate = birthDate;
         this.employeeId = employeeId;
-        this.familyRelationshipName = familyRelationshipName;
+        this.familyRelationshipCode = familyRelationshipCode;
     }
 }
