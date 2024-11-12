@@ -12,4 +12,7 @@ public interface FamilyMemberService {
 
     // 가구원 수정
     List<FamilyMember> modifyFamilyMembers(List<FamilyMemberDTO> familyMember);
+
+    // 가구원 삭제
+    Boolean deleteFamilyMember(List<Long> familyMember);
 }

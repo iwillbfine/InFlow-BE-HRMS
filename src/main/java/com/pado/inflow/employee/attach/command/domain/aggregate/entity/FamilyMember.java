@@ -1,9 +1,11 @@
 package com.pado.inflow.employee.attach.command.domain.aggregate.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
+@Data
 @Entity
 @Table(name = "family_member")
 public class FamilyMember {
@@ -17,11 +19,11 @@ public class FamilyMember {
     private String name;
 
     @Column(name = "birth_date")
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "employee_id")
     private Long employeeId;
 
     @Column(name = "family_relationship_code")
-    private Long familyRelationshipCode;
+    private String familyRelationshipCode;
 }

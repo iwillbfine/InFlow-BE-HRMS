@@ -26,7 +26,7 @@ public class FamilyMemberController {
 
     // 가구원 등록
     @PostMapping("add")
-    public ResponseEntity add(@RequestBody List<FamilyMemberDTO> familyMember) {
+    public ResponseEntity addFamilyMembers(@RequestBody List<FamilyMemberDTO> familyMember) {
         List<FamilyMember> result = familyMemberService.insertFamilyMembers(familyMember);
         return result != null ? ResponseEntity.ok(result) :
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장 실패");
@@ -34,9 +34,17 @@ public class FamilyMemberController {
 
     // 가구원 수정
     @PostMapping("modify")
-    public ResponseEntity modify(@RequestBody List<FamilyMemberDTO> familyMember) {
+    public ResponseEntity modifyFamilyMembers(@RequestBody List<FamilyMemberDTO> familyMember) {
         List<FamilyMember> result = familyMemberService.modifyFamilyMembers(familyMember);
         return result != null ? ResponseEntity.ok(result) :
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정 실패");
+    }
+
+    // 가구원 삭제
+    @PostMapping("delete")
+    public ResponseEntity deleteFamilyMember(@RequestBody List<Long> familyMember) {
+        Boolean result = familyMemberService.deleteFamilyMember(familyMember);
+        return result ? ResponseEntity.ok("삭제 완료") :
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 실패");
     }
 }
