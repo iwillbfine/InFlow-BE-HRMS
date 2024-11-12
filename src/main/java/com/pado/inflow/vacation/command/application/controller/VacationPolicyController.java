@@ -3,10 +3,7 @@ package com.pado.inflow.vacation.command.application.controller;
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.vacation.command.application.dto.RequestVacationPolicyDTO;
 import com.pado.inflow.vacation.command.application.service.VacationPolicyService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController("commandVacationPolicyController")
 @RequestMapping("/api/vacation/policies")
@@ -22,6 +19,13 @@ public class VacationPolicyController {
     @PostMapping
     public ResponseDTO<?> createVacationPolicy(@RequestBody RequestVacationPolicyDTO reqVacationPolicyDTO) {
         return ResponseDTO.ok(vacationPolicyService.registVacationPolicy(reqVacationPolicyDTO));
+    }
+
+    // 휴가 정책 수정
+    @PutMapping("/{vacationPolicyId}")
+    public ResponseDTO<?> updateVacationPolicy(@PathVariable("vacationPolicyId") Long vacationPolicyId,
+                                               @RequestBody RequestVacationPolicyDTO reqVacationPolicyDTO) {
+        return ResponseDTO.ok(vacationPolicyService.modifyVacationPolicy(vacationPolicyId, reqVacationPolicyDTO));
     }
 
 }
