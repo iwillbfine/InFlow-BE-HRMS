@@ -3,10 +3,16 @@ package com.pado.inflow.vacation.command.domain.aggregate.entity;
 import com.pado.inflow.vacation.command.domain.aggregate.type.CancelStatus;
 import com.pado.inflow.vacation.command.domain.aggregate.type.RequestStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity(name = "vacation_request")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class VacationRequest {
 
     @Id

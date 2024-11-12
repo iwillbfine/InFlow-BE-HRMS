@@ -2,11 +2,13 @@ package com.pado.inflow.vacation.command.domain.aggregate.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity(name = "vacation_type")
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class VacationType {
 
     @Id
