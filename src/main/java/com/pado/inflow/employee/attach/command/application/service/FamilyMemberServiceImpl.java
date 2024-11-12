@@ -24,14 +24,25 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
 
     }
 
-    public Boolean insertFamilyMembers(List<FamilyMemberDTO> familyMember) {
+    public List<FamilyMember> insertFamilyMembers(List<FamilyMemberDTO> familyMember) {
         try {
             List<FamilyMember> list = familyMemberRepository.saveAll(familyMember.stream()
                     .map(mem -> modelMapper.map(mem, FamilyMember.class))
                     .collect(Collectors.toList()));
-            return true;
+            return list;
         } catch (Exception e) {
-            return false;
+            return null;
+        }
+    }
+
+    public List<FamilyMember> modifyFamilyMembers(List<FamilyMemberDTO> familyMember) {
+        try {
+            List<FamilyMember> list = familyMemberRepository.saveAllAndFlush(familyMember.stream()
+                    .map(mem -> modelMapper.map(mem, FamilyMember.class))
+                    .collect(Collectors.toList()));
+            return list;
+        } catch (Exception e) {
+            return null;
         }
     }
 }
