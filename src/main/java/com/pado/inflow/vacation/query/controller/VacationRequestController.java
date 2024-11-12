@@ -1,5 +1,6 @@
 package com.pado.inflow.vacation.query.controller;
 
+import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.vacation.query.dto.PageDTO;
 import com.pado.inflow.vacation.query.dto.VacationRequestDTO;
 import com.pado.inflow.vacation.query.service.VacationRequestService;
@@ -22,15 +23,19 @@ public class VacationRequestController {
         this.vacationRequestService = vacationRequestService;
     }
 
+    // 사원별 휴가 신청 미리보기 조회
     @GetMapping("/preview")
-    public List<VacationRequestDTO> getVacationRequestPreviewsByEmployeeId(@RequestParam("eid") Long employeeId) {
-        return vacationRequestService.findVacationRequestPreviewsByEmployeeId(employeeId);
+    public ResponseDTO<?> getVacationRequestPreviewsByEmployeeId(@RequestParam("eid") Long employeeId) {
+        List<VacationRequestDTO> vacationRequestPreviews = vacationRequestService.findVacationRequestPreviewsByEmployeeId(employeeId);
+        return ResponseDTO.ok(vacationRequestPreviews);
     }
 
+    // 사원별 휴가 신청 조회
     @GetMapping
-    public PageDTO<VacationRequestDTO> getVacationRequestsByEmployeeId(@RequestParam("eid") Long employeeId,
-                                                                       @RequestParam("page") Integer pageNo) {
-        return vacationRequestService.findVacationRequestsByEmployeeId(employeeId, pageNo);
+    public ResponseDTO<?> getVacationRequestsByEmployeeId(@RequestParam("eid") Long employeeId,
+                                                          @RequestParam("page") Integer pageNo) {
+        PageDTO<VacationRequestDTO> vacationRequest = vacationRequestService.findVacationRequestsByEmployeeId(employeeId, pageNo);
+        return ResponseDTO.ok(vacationRequest);
     }
 
 }

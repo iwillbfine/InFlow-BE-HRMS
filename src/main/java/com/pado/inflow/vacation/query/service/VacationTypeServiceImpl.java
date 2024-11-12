@@ -1,5 +1,7 @@
 package com.pado.inflow.vacation.query.service;
 
+import com.pado.inflow.common.exception.CommonException;
+import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.vacation.query.dto.VacationTypeDTO;
 import com.pado.inflow.vacation.query.repository.VacationTypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,9 @@ public class VacationTypeServiceImpl implements VacationTypeService {
     @Override
     public List<VacationTypeDTO> findVacationTypes() {
         List<VacationTypeDTO> vacationTypes = vacationTypeMapper.findVacationTypes();
-//        if (vacationTypes == null || vacationTypes.isEmpty()) {
-//            throw new
-//        }
+        if (vacationTypes == null || vacationTypes.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_VACATION_TYPE);
+        }
         return vacationTypes;
     }
 

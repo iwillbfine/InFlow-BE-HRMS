@@ -1,5 +1,7 @@
 package com.pado.inflow.vacation.query.service;
 
+import com.pado.inflow.common.exception.CommonException;
+import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.vacation.query.dto.PageDTO;
 import com.pado.inflow.vacation.query.dto.VacationRequestDTO;
 import com.pado.inflow.vacation.query.repository.VacationRequestMapper;
@@ -27,9 +29,9 @@ public class VacationRequestServiceImpl implements VacationRequestService {
         List<VacationRequestDTO> vacationRequestPreviews =
                 vacationRequestMapper.findVacationRequestPreviewsByEmployeeId(employeeId);
 
-//        if (vacationRequestPreviews == null || vacationRequestPreviews.isEmpty()) {
-//            throw new
-//        }
+        if (vacationRequestPreviews == null || vacationRequestPreviews.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_VACATION_REQUEST);
+        }
 
         return vacationRequestPreviews;
     }
@@ -38,21 +40,21 @@ public class VacationRequestServiceImpl implements VacationRequestService {
     @Override
     public PageDTO<VacationRequestDTO> findVacationRequestsByEmployeeId(Long employeeId, Integer pageNo) {
         // 페이지 번호 유효성 검사
-//        if(pageNo == null || pageNo < 1) {
-//            throw new CommonException(ErrorCode.INVALID_PARAMETER_FORMAT);
-//        }
+        if(pageNo == null || pageNo < 1) {
+            throw new CommonException(ErrorCode.INVALID_PARAMETER_FORMAT);
+        }
 
         Integer totalElements = vacationRequestMapper.getTotalVacationRequestsByEmployeeId(employeeId);
-//        if(totalElements == null || totalElements < 1) {
-//            throw new
-//        }
+        if(totalElements == null || totalElements < 1) {
+            throw new CommonException(ErrorCode.NOT_FOUND_VACATION_REQUEST);
+        }
 
         Integer offset = (pageNo - 1) * ELEMENTS_PER_PAGE;
         List<VacationRequestDTO> vacationRequests =
                 vacationRequestMapper.findVacationRequestsByEmployeeId(employeeId, ELEMENTS_PER_PAGE, offset);
-//        if (vacations == null || vacations.isEmpty()) {
-//            throw new
-//        }
+        if (vacationRequests == null || vacationRequests.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_VACATION_REQUEST);
+        }
 
         return new PageDTO<>(vacationRequests, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
     }

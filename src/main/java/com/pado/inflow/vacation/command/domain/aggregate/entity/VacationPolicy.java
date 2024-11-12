@@ -3,6 +3,7 @@ package com.pado.inflow.vacation.command.domain.aggregate.entity;
 import com.pado.inflow.vacation.command.domain.aggregate.type.PaidStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity(name = "vacation_policy")
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class VacationPolicy {
 
     @Id
