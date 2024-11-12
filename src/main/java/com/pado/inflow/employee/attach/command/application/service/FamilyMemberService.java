@@ -1,22 +1,11 @@
 package com.pado.inflow.employee.attach.command.application.service;
 
 import com.pado.inflow.employee.attach.command.domain.aggregate.dto.FamilyMemberDTO;
-import com.pado.inflow.employee.attach.command.domain.repository.FamilyMemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service("FMCommandService")
-public class FamilyMemberService {
+import java.util.List;
 
-    private final FamilyMemberRepository familyMemberRepository;
+public interface FamilyMemberService {
 
-    @Autowired
-    public FamilyMemberService(FamilyMemberRepository familyMemberRepository) {
-        this.familyMemberRepository = familyMemberRepository;
-
-    }
-
-    public Boolean insertFamilyMembers(FamilyMemberDTO familyMember) {
-        return true;
-    }
+    // 가족원 등록
+    Boolean insertFamilyMembers(List<FamilyMemberDTO> familyMember);
 }
