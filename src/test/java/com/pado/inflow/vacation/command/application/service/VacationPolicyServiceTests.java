@@ -25,6 +25,7 @@ class VacationPolicyServiceTests {
         RequestVacationPolicyDTO reqVacationPolicyDTO = RequestVacationPolicyDTO
                 .builder()
                 .vacationPolicyName("테스트용 정책")
+                .vacationPolicyDescription("테스트용 설명")
                 .allocationDays(3L)
                 .paidStatus("Y")
                 .year(2024)
@@ -51,6 +52,7 @@ class VacationPolicyServiceTests {
         RequestVacationPolicyDTO reqVacationPolicyDTO = RequestVacationPolicyDTO
                 .builder()
                 .vacationPolicyName("수정된 테스트용 정책")
+                .vacationPolicyDescription("수정된 테스트용 설명")
                 .allocationDays(5L)
                 .paidStatus("N")
                 .year(2024)
