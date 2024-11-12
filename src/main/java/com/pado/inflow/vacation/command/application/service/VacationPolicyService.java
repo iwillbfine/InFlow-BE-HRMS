@@ -8,4 +8,7 @@ public interface VacationPolicyService {
     // 휴가 정책 등록
     ResponseVacationPolicyDTO registVacationPolicy(RequestVacationPolicyDTO reqVacationPolicyDTO);
 
+    // 휴가 정책 수정
+    ResponseVacationPolicyDTO modifyVacationPolicy(Long vacationPolicyId, RequestVacationPolicyDTO reqVacationPolicyDTO);
+
 }

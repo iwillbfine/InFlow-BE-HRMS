@@ -43,4 +43,31 @@ class VacationPolicyServiceTests {
         Assertions.assertNotNull(reqVacationPolicyDTO);
     }
 
+    @DisplayName("휴가 정책 수정 테스트")
+    @Test
+    void testModifyVacationPolicy() {
+        // Given
+        Long vacationPolicyId = 1L;
+        RequestVacationPolicyDTO reqVacationPolicyDTO = RequestVacationPolicyDTO
+                .builder()
+                .vacationPolicyName("수정된 테스트용 정책")
+                .allocationDays(5L)
+                .paidStatus("N")
+                .year(2024)
+                .autoAllocationCycle("0 0 1 1 *")
+                .vacationTypeId(4L)
+                .policyRegisterId(1L)
+                .build();
+
+        // When
+        ResponseVacationPolicyDTO resVacationPolicyDTO =
+                vacationPolicyService.modifyVacationPolicy(vacationPolicyId, reqVacationPolicyDTO);
+        if (resVacationPolicyDTO != null) {
+            log.info(resVacationPolicyDTO.toString());
+        }
+
+        // Then
+        Assertions.assertNotNull(reqVacationPolicyDTO);
+    }
+
 }
