@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class ResponseVacationPolicyDTO {
     private Long vacationPolicyId;
     private String vacationPolicyName;
+    private String vacationPolicyDescription;
     private Long allocationDays;
     private String paidStatus;
     private Integer year;

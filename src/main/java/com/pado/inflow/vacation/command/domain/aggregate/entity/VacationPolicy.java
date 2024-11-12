@@ -22,6 +22,9 @@ public class VacationPolicy {
     @Column(name = "vacation_policy_name")
     private String vacationPolicyName;
 
+    @Column(name = "vacation_policy_description")
+    private String vacationPolicyDescription;
+
     @Column(name = "allocation_days")
     private Long allocationDays;
 

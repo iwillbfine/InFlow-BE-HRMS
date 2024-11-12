@@ -39,6 +39,7 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
         ResponseVacationPolicyDTO resVacationPolicyDTO = ResponseVacationPolicyDTO
                 .builder()
                 .vacationPolicyName(reqVacationPolicyDTO.getVacationPolicyName())
+                .vacationPolicyDescription(reqVacationPolicyDTO.getVacationPolicyDescription())
                 .allocationDays(reqVacationPolicyDTO.getAllocationDays())
                 .paidStatus(reqVacationPolicyDTO.getPaidStatus())
                 .year(reqVacationPolicyDTO.getYear())
@@ -63,6 +64,7 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_VACATION_POLICY));
         
         vacationPolicy.setVacationPolicyName(reqVacationPolicyDTO.getVacationPolicyName());
+        vacationPolicy.setVacationPolicyDescription(reqVacationPolicyDTO.getVacationPolicyDescription());
         vacationPolicy.setAllocationDays(reqVacationPolicyDTO.getAllocationDays());
         vacationPolicy.setPaidStatus(PaidStatus.valueOf(reqVacationPolicyDTO.getPaidStatus()));
         vacationPolicy.setYear(reqVacationPolicyDTO.getYear());
@@ -75,6 +77,11 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
     private void checkValidVacationPolicyDTO(RequestVacationPolicyDTO reqVacationPolicyDTO) {
         // 휴가 정책 이름이 NULL 이거나 공백일 경우
         if (reqVacationPolicyDTO.getVacationPolicyName() == null || reqVacationPolicyDTO.getVacationPolicyName().isEmpty()) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 휴가 정책 설명이 NULL 이거나 공백일 경우
+        if (reqVacationPolicyDTO.getVacationPolicyDescription() == null || reqVacationPolicyDTO.getVacationPolicyDescription().isEmpty()) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
 
