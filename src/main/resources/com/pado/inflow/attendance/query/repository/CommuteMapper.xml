@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.attendance.query.repository.CommuteMapper">
+    <resultMap id="commuteResultMap" type="com.pado.inflow.attendance.query.dto.CommuteDTO">
+        <id property="commuteId" column="COMMUTE_ID"/>
+        <result property="startTime" column="START_TIME"/>
+        <result property="endTime" column="END_TIME"/>
+        <result property="remoteStatus" column="REMOTE_STATUS"/>
+        <result property="overtimeStatus" column="OVERTIME_STATUS"/>
+        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <result property="attendanceRequestId" column="ATTENDANCE_REQUEST_ID"/>
+    </resultMap>
+
+    <select id="findCommutesByEmployeeId" resultMap="commuteResultMap" parameterType="map">
+        SELECT
+               A.COMMUTE_ID
+             , A.START_TIME
+             , A.END_TIME
+             , A.REMOTE_STATUS
+             , A.OVERTIME_STATUS
+             , A.EMPLOYEE_ID
+             , A.ATTENDANCE_REQUEST_ID
+          FROM COMMUTE A
+         WHERE A.EMPLOYEE_ID = #{ employeeId }
+         ORDER BY A.COMMUTE_ID DESC
+         LIMIT #{ elementsPerPage } OFFSET #{ offset }
+    </select>
+
+    <select id="getTotalCommutesByEmployeeId" resultType="Integer" parameterType="Long">
+        SELECT
+               COUNT(*) AS TOTAL
+          FROM COMMUTE A
+         WHERE A.EMPLOYEE_ID = #{ employeeId }
+    </select>
+
+</mapper>
