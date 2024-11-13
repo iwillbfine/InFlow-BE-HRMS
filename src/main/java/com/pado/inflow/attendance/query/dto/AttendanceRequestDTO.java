@@ -1,4 +1,4 @@
 package com.pado.inflow.attendance.query.dto;
 
-public class AttendanceDTO {
+public class AttendanceRequestDTO {
 }
