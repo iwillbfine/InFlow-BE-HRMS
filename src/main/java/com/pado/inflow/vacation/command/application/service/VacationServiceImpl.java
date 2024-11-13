@@ -71,7 +71,7 @@ public class VacationServiceImpl implements VacationService {
                 .vacationUsed(0L)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .expiredAt(expiredAt)
-                .expirationStatus(ExpirationStatus.N.toString())
+                .expirationStatus(ExpirationStatus.N.name())
                 .employeeId(reqVacationDTO.getEmployeeId())
                 .vacationPolicyId(reqVacationDTO.getVacationPolicyId())
                 .vacationTypeId(vacationPolicy.getVacationTypeId())
