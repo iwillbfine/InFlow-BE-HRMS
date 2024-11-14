@@ -36,4 +36,16 @@ public class EducationServiceImpl implements EducationService {
             return null;
         }
     }
+
+    // 사원의 학력정보 수정
+    @Override
+    public List<Education> modifyEdus(List<EducationDTO> educations) {
+        try {
+            return educationRepository.saveAllAndFlush(educations.stream()
+                    .map(mem -> modelMapper.map(mem, Education.class))
+                    .collect(Collectors.toList()));
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

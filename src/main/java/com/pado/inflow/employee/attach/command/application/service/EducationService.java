@@ -9,4 +9,7 @@ public interface EducationService {
 
     // 사원의 학력정보 등록
     List<Education> addEdus(List<EducationDTO> educations);
+
+    // 사원의 학력정보 수정
+    List<Education> modifyEdus(List<EducationDTO> educations);
 }

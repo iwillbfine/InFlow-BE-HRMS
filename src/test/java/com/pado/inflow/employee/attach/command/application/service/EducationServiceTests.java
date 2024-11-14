@@ -32,4 +32,26 @@ class EducationServiceTests {
                 "초등학교", null, 1L));
         assertTrue(educationService.addEdus(list) != null);
     }
+
+    @DisplayName("사원의 학력정보 수정")
+    @Test
+    public void modifyEducation() {
+        List<EducationDTO> list = new ArrayList<>();
+        list.add(new EducationDTO(1L,
+                "서울대학교",
+                LocalDate.of(2005, 3, 1),
+                LocalDate.of(2009, 2, 28),
+                "석사",
+                "컴퓨터공학",
+                1L));
+        list.add(new EducationDTO(2L,
+                "연세대학교",
+                LocalDate.of(2006, 3, 1),
+                LocalDate.of(2010, 2, 28),
+                "석사",
+                "컴퓨터공학",
+                2L));
+        assertTrue(educationService.addEdus(list) != null);
+    }
+
 }

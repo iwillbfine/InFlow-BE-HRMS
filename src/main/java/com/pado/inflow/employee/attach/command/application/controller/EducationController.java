@@ -26,6 +26,14 @@ public class EducationController {
     public ResponseEntity addEdu(@RequestBody List<EducationDTO> educations) {
         List<Education> result = educationService.addEdus(educations);
         return result.size()>0 ? ResponseEntity.ok(result) :
-                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("학력 저장 실패");
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("학력정보 저장 실패");
+    }
+
+    // 사원의 학력정보 수정
+    @PostMapping("/modify")
+    public ResponseEntity modifyEdu(@RequestBody List<EducationDTO> educations) {
+        List<Education> result = educationService.modifyEdus(educations);
+        return result.size()>0 ? ResponseEntity.ok(result) :
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("학력정보 수정 실패");
     }
 }
