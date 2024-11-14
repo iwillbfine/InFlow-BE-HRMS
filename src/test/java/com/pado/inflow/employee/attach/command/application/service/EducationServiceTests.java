@@ -51,7 +51,13 @@ class EducationServiceTests {
                 "석사",
                 "컴퓨터공학",
                 2L));
-        assertTrue(educationService.addEdus(list) != null);
+        assertTrue(educationService.modifyEdus(list) != null);
     }
 
+    @DisplayName("사원의 학력정보 삭제")
+    @Test
+    public void deleteEducation() {
+        List<Long> list = new ArrayList<>(List.of(1L, 2L));
+        assertTrue(educationService.deleteEdus(list));
+    }
 }

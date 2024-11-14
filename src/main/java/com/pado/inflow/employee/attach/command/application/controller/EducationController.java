@@ -36,4 +36,12 @@ public class EducationController {
         return result.size()>0 ? ResponseEntity.ok(result) :
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("학력정보 수정 실패");
     }
+
+    // 사원의 학력정보 삭제
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteEdu(@RequestBody List<Long> educations) {
+        Boolean result = educationService.deleteEdus(educations);
+        return result ? ResponseEntity.ok("삭제 완료") :
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("학력정보 삭제 실패");
+    }
 }

@@ -48,4 +48,16 @@ public class EducationServiceImpl implements EducationService {
             return null;
         }
     }
+
+    // 사원의 학력정보 삭제
+
+    @Override
+    public Boolean deleteEdus(List<Long> educations) {
+        try {
+            educationRepository.deleteAllById(educations);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

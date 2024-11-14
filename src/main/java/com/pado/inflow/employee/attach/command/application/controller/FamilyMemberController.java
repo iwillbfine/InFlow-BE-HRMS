@@ -38,7 +38,7 @@ public class FamilyMemberController {
     }
 
     // 가구원 삭제
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity deleteFamilyMember(@RequestBody List<Long> familyMember) {
         Boolean result = familyMemberService.deleteFamilyMember(familyMember);
         return result ? ResponseEntity.ok("삭제 완료") :
