@@ -25,7 +25,7 @@ public class FamilyMemberController {
         FamilyMemberController.familyMemberService = familyMemberService;
     }
 
-    @GetMapping("health")
+    @GetMapping("/health")
     public String healthCheck() {
         return "I am healthy";
     }
