@@ -22,7 +22,7 @@ class CareerServiceTests {
         this.careerService = careerService;
     }
 
-    @DisplayName("사원의 학력정보 등록")
+    @DisplayName("사원의 경력정보 등록")
     @Test
     public void addEducation() {
         List<CareerDTO> list = new ArrayList<>();
@@ -34,7 +34,7 @@ class CareerServiceTests {
         assertTrue(careerService.addCareers(list) != null);
     }
 
-    @DisplayName("사원의 학력정보 수정")
+    @DisplayName("사원의 경력정보 수정")
     @Test
     public void modifyEducation() {
         List<CareerDTO> list = new ArrayList<>();
@@ -53,7 +53,7 @@ class CareerServiceTests {
         assertTrue(careerService.modifyCareers(list) != null);
     }
 
-    @DisplayName("사원의 학력정보 삭제")
+    @DisplayName("사원의 경력정보 삭제")
     @Test
     public void deleteEducation() {
         List<Long> list = new ArrayList<>(List.of(1L, 2L));
