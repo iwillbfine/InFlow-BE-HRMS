@@ -39,7 +39,7 @@ public class LeaveReturnServiceImpl implements LeaveReturnService {
         List<LeaveReturnDTO> leaveReturns =
                 leaveReturnMapper.findLeaveReturnsByEmployeeId(employeeId, ELEMENTS_PER_PAGE, offset);
         if (leaveReturns == null || leaveReturns.isEmpty()) {
-            throw new CommonException(ErrorCode.NOT_FOUND_COMMUTE);
+            throw new CommonException(ErrorCode.NOT_FOUND_LEAVE_RETURN);
         }
 
         return new PageDTO<>(leaveReturns, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
