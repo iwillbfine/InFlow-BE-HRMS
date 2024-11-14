@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.attendance.query.repository.AttendanceRequestMapper">
+    <resultMap id="attendanceRequestResultMap" type="com.pado.inflow.attendance.query.dto.AttendanceRequestDTO">
+        <id property="attendanceRequestId" column="ATTENDANCE_REQUEST_ID"/>
+        <result property="requestReason" column="REQUEST_REASON"/>
+        <result property="startDate" column="START_DATE"/>
+        <result property="endDate" column="END_DATE"/>
+        <result property="createdAt" column="CREATED_AT"/>
+        <result property="rejectionReason" column="REJECTION_REASON"/>
+        <result property="requestStatus" column="REQUEST_STATUS"/>
+        <result property="canceledAt" column="CANCELED_AT"/>
+        <result property="cancelReason" column="CANCEL_REASON"/>
+        <result property="cancelStatus" column="CANCEL_STATUS"/>
+        <result property="destination" column="DESTINATION"/>
+        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <result property="name" column="NAME"/>
+        <result property="attendanceRequestTypeId" column="ATTENDANCE_REQUEST_TYPE_ID"/>
+        <result property="attendanceRequestTypeName" column="ATTENDANCE_REQUEST_TYPE_NAME"/>
+        <collection property="attachments" ofType="com.pado.inflow.attendance.query.dto.AttendanceRequestFileDTO">
+            <result property="attendanceRequestFileId" column="ATTENDANCE_REQUEST_FILE_ID"/>
+            <result property="fileName" column="FILE_NAME"/>
+            <result property="fileUrl" column="FILE_URL"/>
+        </collection>
+    </resultMap>
+
+    <select id="findOvertimeRequestPreviewsByEmployeeId" resultMap="attendanceRequestResultMap" parameterType="Long">
+        SELECT
+               A.ATTENDANCE_REQUEST_ID
+             , A.REQUEST_REASON
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REJECTION_REASON
+             , A.REQUEST_STATUS
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.ATTENDANCE_REQUEST_TYPE_ID
+             , C.ATTENDANCE_REQUEST_TYPE_NAME
+             , D.ATTENDANCE_REQUEST_FILE_ID
+             , D.FILE_NAME
+             , D.FILE_URL
+          FROM ATTENDANCE_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          JOIN ATTENDANCE_REQUEST_TYPE C
+            ON A.ATTENDANCE_REQUEST_TYPE_ID = C.ATTENDANCE_REQUEST_TYPE_ID
+          LEFT JOIN ATTENDANCE_REQUEST_FILE D
+            ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 2
+         ORDER BY A.ATTENDANCE_REQUEST_ID DESC
+         LIMIT 5
+    </select>
+
+    <select id="findRemoteRequestPreviewsByEmployeeId" resultMap="attendanceRequestResultMap" parameterType="Long">
+        SELECT
+               A.ATTENDANCE_REQUEST_ID
+             , A.REQUEST_REASON
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REJECTION_REASON
+             , A.REQUEST_STATUS
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.ATTENDANCE_REQUEST_TYPE_ID
+             , C.ATTENDANCE_REQUEST_TYPE_NAME
+             , D.ATTENDANCE_REQUEST_FILE_ID
+             , D.FILE_NAME
+             , D.FILE_URL
+          FROM ATTENDANCE_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          JOIN ATTENDANCE_REQUEST_TYPE C
+            ON A.ATTENDANCE_REQUEST_TYPE_ID = C.ATTENDANCE_REQUEST_TYPE_ID
+          LEFT JOIN ATTENDANCE_REQUEST_FILE D
+            ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 1
+         ORDER BY A.ATTENDANCE_REQUEST_ID DESC
+         LIMIT 5
+    </select>
+
+    <select id="findBusinessTripRequestPreviewsByEmployeeId" resultMap="attendanceRequestResultMap" parameterType="Long">
+        SELECT
+               A.ATTENDANCE_REQUEST_ID
+             , A.REQUEST_REASON
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REJECTION_REASON
+             , A.REQUEST_STATUS
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.ATTENDANCE_REQUEST_TYPE_ID
+             , C.ATTENDANCE_REQUEST_TYPE_NAME
+             , D.ATTENDANCE_REQUEST_FILE_ID
+             , D.FILE_NAME
+             , D.FILE_URL
+          FROM ATTENDANCE_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          JOIN ATTENDANCE_REQUEST_TYPE C
+            ON A.ATTENDANCE_REQUEST_TYPE_ID = C.ATTENDANCE_REQUEST_TYPE_ID
+          LEFT JOIN ATTENDANCE_REQUEST_FILE D
+            ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 3
+         ORDER BY A.ATTENDANCE_REQUEST_ID DESC
+         LIMIT 5
+    </select>
+
+    <select id="findDispatchRequestPreviewsByEmployeeId" resultMap="attendanceRequestResultMap" parameterType="Long">
+        SELECT
+               A.ATTENDANCE_REQUEST_ID
+             , A.REQUEST_REASON
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REJECTION_REASON
+             , A.REQUEST_STATUS
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.ATTENDANCE_REQUEST_TYPE_ID
+             , C.ATTENDANCE_REQUEST_TYPE_NAME
+             , D.ATTENDANCE_REQUEST_FILE_ID
+             , D.FILE_NAME
+             , D.FILE_URL
+          FROM ATTENDANCE_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          JOIN ATTENDANCE_REQUEST_TYPE C
+            ON A.ATTENDANCE_REQUEST_TYPE_ID = C.ATTENDANCE_REQUEST_TYPE_ID
+          LEFT JOIN ATTENDANCE_REQUEST_FILE D
+            ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 4
+         ORDER BY A.ATTENDANCE_REQUEST_ID DESC
+         LIMIT 5
+    </select>
+
+    <select id="findLeaveRequestPreviewsByEmployeeId" resultMap="attendanceRequestResultMap" parameterType="Long">
+        SELECT
+               A.ATTENDANCE_REQUEST_ID
+             , A.REQUEST_REASON
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REJECTION_REASON
+             , A.REQUEST_STATUS
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.ATTENDANCE_REQUEST_TYPE_ID
+             , C.ATTENDANCE_REQUEST_TYPE_NAME
+             , D.ATTENDANCE_REQUEST_FILE_ID
+             , D.FILE_NAME
+             , D.FILE_URL
+          FROM ATTENDANCE_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          JOIN ATTENDANCE_REQUEST_TYPE C
+            ON A.ATTENDANCE_REQUEST_TYPE_ID = C.ATTENDANCE_REQUEST_TYPE_ID
+          LEFT JOIN ATTENDANCE_REQUEST_FILE D
+            ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 5
+         ORDER BY A.ATTENDANCE_REQUEST_ID DESC
+         LIMIT 5
+    </select>
+
+    <select id="findOvertimeRequestsByEmployeeId" resultMap="attendanceRequestResultMap" parameterType="map">
+        SELECT
+               A.ATTENDANCE_REQUEST_ID
+             , A.REQUEST_REASON
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REJECTION_REASON
+             , A.REQUEST_STATUS
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.ATTENDANCE_REQUEST_TYPE_ID
+             , C.ATTENDANCE_REQUEST_TYPE_NAME
+             , D.ATTENDANCE_REQUEST_FILE_ID
+             , D.FILE_NAME
+             , D.FILE_URL
+          FROM ATTENDANCE_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          JOIN ATTENDANCE_REQUEST_TYPE C
+            ON A.ATTENDANCE_REQUEST_TYPE_ID = C.ATTENDANCE_REQUEST_TYPE_ID
+          LEFT JOIN ATTENDANCE_REQUEST_FILE D
+            ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 2
+         ORDER BY A.ATTENDANCE_REQUEST_ID DESC
+        LIMIT #{ elementsPerPage } OFFSET #{ offset }
+    </select>
+
+    <select id="findRemoteRequestsByEmployeeId" resultMap="attendanceRequestResultMap" parameterType="map">
+        SELECT
+               A.ATTENDANCE_REQUEST_ID
+             , A.REQUEST_REASON
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REJECTION_REASON
+             , A.REQUEST_STATUS
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.ATTENDANCE_REQUEST_TYPE_ID
+             , C.ATTENDANCE_REQUEST_TYPE_NAME
+             , D.ATTENDANCE_REQUEST_FILE_ID
+             , D.FILE_NAME
+             , D.FILE_URL
+          FROM ATTENDANCE_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          JOIN ATTENDANCE_REQUEST_TYPE C
+            ON A.ATTENDANCE_REQUEST_TYPE_ID = C.ATTENDANCE_REQUEST_TYPE_ID
+          LEFT JOIN ATTENDANCE_REQUEST_FILE D
+            ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 1
+         ORDER BY A.ATTENDANCE_REQUEST_ID DESC
+         LIMIT #{ elementsPerPage } OFFSET #{ offset }
+    </select>
+
+    <select id="findBusinessTripRequestsByEmployeeId" resultMap="attendanceRequestResultMap" parameterType="map">
+        SELECT
+               A.ATTENDANCE_REQUEST_ID
+             , A.REQUEST_REASON
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REJECTION_REASON
+             , A.REQUEST_STATUS
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.ATTENDANCE_REQUEST_TYPE_ID
+             , C.ATTENDANCE_REQUEST_TYPE_NAME
+             , D.ATTENDANCE_REQUEST_FILE_ID
+             , D.FILE_NAME
+             , D.FILE_URL
+          FROM ATTENDANCE_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          JOIN ATTENDANCE_REQUEST_TYPE C
+            ON A.ATTENDANCE_REQUEST_TYPE_ID = C.ATTENDANCE_REQUEST_TYPE_ID
+          LEFT JOIN ATTENDANCE_REQUEST_FILE D
+            ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 3
+         ORDER BY A.ATTENDANCE_REQUEST_ID DESC
+         LIMIT #{ elementsPerPage } OFFSET #{ offset }
+    </select>
+
+    <select id="findDispatchRequestsByEmployeeId" resultMap="attendanceRequestResultMap" parameterType="map">
+        SELECT
+               A.ATTENDANCE_REQUEST_ID
+             , A.REQUEST_REASON
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REJECTION_REASON
+             , A.REQUEST_STATUS
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.ATTENDANCE_REQUEST_TYPE_ID
+             , C.ATTENDANCE_REQUEST_TYPE_NAME
+             , D.ATTENDANCE_REQUEST_FILE_ID
+             , D.FILE_NAME
+             , D.FILE_URL
+          FROM ATTENDANCE_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          JOIN ATTENDANCE_REQUEST_TYPE C
+            ON A.ATTENDANCE_REQUEST_TYPE_ID = C.ATTENDANCE_REQUEST_TYPE_ID
+          LEFT JOIN ATTENDANCE_REQUEST_FILE D
+            ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 4
+         ORDER BY A.ATTENDANCE_REQUEST_ID DESC
+         LIMIT #{ elementsPerPage } OFFSET #{ offset }
+    </select>
+
+    <select id="findLeaveRequestsByEmployeeId" resultMap="attendanceRequestResultMap" parameterType="map">
+        SELECT
+               A.ATTENDANCE_REQUEST_ID
+             , A.REQUEST_REASON
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REJECTION_REASON
+             , A.REQUEST_STATUS
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , B.NAME
+             , A.ATTENDANCE_REQUEST_TYPE_ID
+             , C.ATTENDANCE_REQUEST_TYPE_NAME
+             , D.ATTENDANCE_REQUEST_FILE_ID
+             , D.FILE_NAME
+             , D.FILE_URL
+          FROM ATTENDANCE_REQUEST A
+          JOIN EMPLOYEE B
+            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
+          JOIN ATTENDANCE_REQUEST_TYPE C
+            ON A.ATTENDANCE_REQUEST_TYPE_ID = C.ATTENDANCE_REQUEST_TYPE_ID
+          LEFT JOIN ATTENDANCE_REQUEST_FILE D
+           ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 5
+         ORDER BY A.ATTENDANCE_REQUEST_ID DESC
+         LIMIT #{ elementsPerPage } OFFSET #{ offset }
+    </select>
+
+    <select id="getTotalOvertimeRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+        SELECT
+               COUNT(*) AS TOTAL
+          FROM ATTENDANCE_REQUEST A
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 2
+    </select>
+
+    <select id="getTotalRemoteRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+        SELECT
+               COUNT(*) AS TOTAL
+          FROM ATTENDANCE_REQUEST A
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 1
+    </select>
+
+    <select id="getTotalBusinessTripRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+        SELECT
+               COUNT(*) AS TOTAL
+          FROM ATTENDANCE_REQUEST A
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 3
+    </select>
+
+    <select id="getTotalDispatchRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+        SELECT
+               COUNT(*) AS TOTAL
+          FROM ATTENDANCE_REQUEST A
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 4
+    </select>
+
+    <select id="getTotalLeaveRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+        SELECT
+               COUNT(*) AS TOTAL
+          FROM ATTENDANCE_REQUEST A
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 5
+    </select>
+
+</mapper>
