@@ -28,4 +28,20 @@ public class CareerController {
         return result.size()>0 ? ResponseEntity.ok(result) :
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("경력정보 저장 실패");
     }
+
+    // 사원의 경력정보 수정
+    @PostMapping("/modify")
+    public ResponseEntity modifyCareer(@RequestBody List<CareerDTO> careers) {
+        List<Career> result = careerService.modifyCareers(careers);
+        return result.size()>0 ? ResponseEntity.ok(result) :
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("경력정보 수정 실패");
+    }
+
+    // 사원의 경력정보 삭제
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteCareer(@RequestBody List<Long> careers) {
+        Boolean result = careerService.deleteCareers(careers);
+        return result ? ResponseEntity.ok("경력정보 삭제 완료") :
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("경력정보 삭제 실패");
+    }
 }

@@ -37,4 +37,26 @@ public class CareerServiceImpl implements CareerService {
         }
     }
 
+    // 사원의 경력정보 수정
+    @Override
+    public List<Career> modifyCareers(List<CareerDTO> careers) {
+        try {
+            return careerRepository.saveAllAndFlush(careers.stream()
+                    .map(mem -> modelMapper.map(mem, Career.class))
+                    .collect(Collectors.toList()));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // 사원의 경력정보 삭제
+    @Override
+    public Boolean deleteCareers(List<Long> careers) {
+        try {
+            careerRepository.deleteAllById(careers);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
