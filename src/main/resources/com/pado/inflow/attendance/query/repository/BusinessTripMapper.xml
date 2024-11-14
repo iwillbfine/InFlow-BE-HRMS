@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.attendance.query.repository.BusinessTripMapper">
+    <resultMap id="businessTripResultMap" type="com.pado.inflow.attendance.query.dto.BusinessTripDTO">
+        <id property="businessTripId" column="BUSINESS_TRIP_ID"/>
+        <result property="startDate" column="START_DATE"/>
+        <result property="endDate" column="END_DATE"/>
+        <result property="tripType" column="TRIP_TYPE"/>
+        <result property="destination" column="DESTINATION"/>
+        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <result property="attendanceRequestId" column="ATTENDANCE_REQUEST_ID"/>
+    </resultMap>
+
+    <select id="findBusinessTripsByEmployeeId" resultMap="businessTripResultMap" parameterType="map">
+        SELECT
+               A.BUSINESS_TRIP_ID
+             , A.START_DATE
+             , A.END_DATE
+             , A.TRIP_TYPE
+             , A.DESTINATION
+             , A.EMPLOYEE_ID
+             , A.ATTENDANCE_REQUEST_ID
+          FROM BUSINESS_TRIP A
+         WHERE A.EMPLOYEE_ID = #{ employeeId }
+         ORDER BY A.BUSINESS_TRIP_ID DESC
+         LIMIT #{ elementsPerPage } OFFSET #{ offset }
+    </select>
+
+    <select id="getTotalBusinessTripsByEmployeeId" resultType="Integer" parameterType="Long">
+        SELECT
+               COUNT(*) AS TOTAL
+          FROM BUSINESS_TRIP A
+         WHERE A.EMPLOYEE_ID = #{ employeeId }
+    </select>
+
+</mapper>

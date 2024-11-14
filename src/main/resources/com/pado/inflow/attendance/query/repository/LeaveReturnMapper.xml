@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.attendance.query.repository.LeaveReturnMapper">
+    <resultMap id="leaveReturnResultMap" type="com.pado.inflow.attendance.query.dto.LeaveReturnDTO">
+        <id property="leaveReturnId" column="LEAVE_RETURN_ID"/>
+        <result property="startDate" column="START_DATE"/>
+        <result property="endDate" column="END_DATE"/>
+        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <result property="attendanceRequestId" column="ATTENDANCE_REQUEST_ID"/>
+    </resultMap>
+
+    <select id="findLeaveReturnsByEmployeeId" resultMap="leaveReturnResultMap" parameterType="map">
+        SELECT
+               A.LEAVE_RETURN_ID
+             , A.START_DATE
+             , A.END_DATE
+             , A.EMPLOYEE_ID
+             , A.ATTENDANCE_REQUEST_ID
+          FROM LEAVE_RETURN A
+         WHERE A.EMPLOYEE_ID = #{ employeeId }
+         ORDER BY A.LEAVE_RETURN_ID DESC
+         LIMIT #{ elementsPerPage } OFFSET #{ offset }
+    </select>
+
+    <select id="getTotalLeaveReturnsByEmployeeId" resultType="Integer" parameterType="Long">
+        SELECT
+               COUNT(*) AS TOTAL
+          FROM LEAVE_RETURN A
+         WHERE A.EMPLOYEE_ID = #{ employeeId }
+    </select>
+
+</mapper>
