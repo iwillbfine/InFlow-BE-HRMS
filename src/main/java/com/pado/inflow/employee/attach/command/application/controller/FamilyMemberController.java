@@ -6,10 +6,7 @@ import com.pado.inflow.employee.attach.command.domain.aggregate.entity.FamilyMem
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +22,7 @@ public class FamilyMemberController {
     }
 
     // 가구원 등록
-    @PostMapping("add")
+    @PostMapping("/add")
     public ResponseEntity addFamilyMembers(@RequestBody List<FamilyMemberDTO> familyMember) {
         List<FamilyMember> result = familyMemberService.insertFamilyMembers(familyMember);
         return result != null ? ResponseEntity.ok(result) :
@@ -33,7 +30,7 @@ public class FamilyMemberController {
     }
 
     // 가구원 수정
-    @PostMapping("modify")
+    @PostMapping("/modify")
     public ResponseEntity modifyFamilyMembers(@RequestBody List<FamilyMemberDTO> familyMember) {
         List<FamilyMember> result = familyMemberService.modifyFamilyMembers(familyMember);
         return result != null ? ResponseEntity.ok(result) :
@@ -41,7 +38,7 @@ public class FamilyMemberController {
     }
 
     // 가구원 삭제
-    @PostMapping("delete")
+    @DeleteMapping("/delete")
     public ResponseEntity deleteFamilyMember(@RequestBody List<Long> familyMember) {
         Boolean result = familyMemberService.deleteFamilyMember(familyMember);
         return result ? ResponseEntity.ok("삭제 완료") :
