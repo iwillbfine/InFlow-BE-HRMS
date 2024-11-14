@@ -23,7 +23,7 @@ public class EducationController {
         this.educationService = educationService;
     }
 
-    @GetMapping("health")
+    @GetMapping("/health")
     public String healthCheck() {
         return "I'm OK!!";
     }
@@ -51,6 +51,4 @@ public class EducationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("학력 조회 실패");
         }
     }
-
-
 }
