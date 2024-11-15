@@ -1,5 +1,6 @@
 package com.pado.inflow.employee.attach.query.controller;
 
+import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.employee.attach.query.dto.FamilyMemberDTO;
 import com.pado.inflow.employee.attach.query.service.FamilyMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,25 +33,15 @@ public class FamilyMemberController {
 
     // 전 사원의 가구원 조회
     @GetMapping("/")
-    public ResponseEntity getAllFamilyMemberList() {
-        try {
-            List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberAll();
-            return result.size()>0 ? ResponseEntity.ok(result) :
-                    ResponseEntity.status(HttpStatus.NOT_FOUND).body("조회 결과 없음");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("가구원 조회 실패");
-        }
+    public ResponseDTO getAllFamilyMemberList() {
+        List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberAll();
+        return ResponseDTO.ok(result);
     }
 
     // 사원 한 명의 가구원 조회(/사원ID)
     @GetMapping("/{employeeId}")
     public ResponseEntity getOneFamilyMemberList(@PathVariable("employeeId") String employeeId) {
-        try {
-            List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberOne(parseLong(employeeId));
-            return result.size()>0 ? ResponseEntity.ok(result) :
-                    ResponseEntity.status(HttpStatus.NOT_FOUND).body("조회 결과 없음");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("가구원 조회 실패");
-        }
+        List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberOne(parseLong(employeeId));
+        return ResponseEntity.ok(result);
     }
 }
