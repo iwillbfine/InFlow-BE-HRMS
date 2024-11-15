@@ -1,7 +1,7 @@
 package com.pado.inflow.employee.attach.query.controller;
 
-import com.pado.inflow.employee.attach.query.dto.EducationDTO;
-import com.pado.inflow.employee.attach.query.service.EducationService;
+import com.pado.inflow.employee.attach.query.dto.CareerDTO;
+import com.pado.inflow.employee.attach.query.service.CareerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("EQueryController")
-@RequestMapping("/api/employee/educations")
-public class EducationController {
+@RestController("CQueryController")
+@RequestMapping("/api/employee/career")
+public class CareerController {
 
-    private final EducationService educationService;
+    private final CareerService careerService;
 
     @Autowired
-    public EducationController(EducationService educationService) {
-        this.educationService = educationService;
+    public CareerController(CareerService careerService) {
+        this.careerService = careerService;
     }
 
     @GetMapping("/health")
@@ -28,27 +28,27 @@ public class EducationController {
         return "I'm OK!!";
     }
 
-    // 전 사원의 학력 조회
+    // 전 사원의 경력 조회
     @GetMapping("/")
-    public ResponseEntity getEducationAll() {
+    public ResponseEntity getCareerAll() {
         try {
-            List<EducationDTO> result = educationService.getEduAll();
+            List<CareerDTO> result = careerService.getCareerAll();
             return result.size()>0 ? ResponseEntity.ok(result) :
                     ResponseEntity.status(HttpStatus.NOT_FOUND).body("조회 결과 없음");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("학력 조회 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("경력 조회 실패");
         }
     }
 
-    // 사원 한 명의 학력 조회
+    // 사원 한 명의 경력 조회
     @GetMapping("/{employeeId}")
-    public ResponseEntity getEducationOne(@PathVariable("employeeId") Long employeeId) {
+    public ResponseEntity getCareerOne(@PathVariable("employeeId") Long employeeId) {
         try {
-            List<EducationDTO> result = educationService.getEduOne(employeeId);
+            List<CareerDTO> result = careerService.getCareerOne(employeeId);
             return result.size()>0 ? ResponseEntity.ok(result) :
                     ResponseEntity.status(HttpStatus.NOT_FOUND).body("조회 결과 없음");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("학력 조회 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("경력 조회 실패");
         }
     }
 }
