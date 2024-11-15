@@ -22,7 +22,10 @@ public interface AttendanceRequestService {
     // 복직 신청
     ResponseLeaveReturnRequestDTO registReturnRequest(RequestReturnRequestDTO reqReturnRequestDTO);
 
+    // 근태신청 취소
+    ResponseAttendanceRequestDTO cancelAttendanceRequest(Long attendanceRequestId, RequestCancelAttendanceRequestDTO reqCancelAttendanceRequestDTO);
+
     // 초과근무 연장
-    ResponseCommuteRequestDTO extendOvertime(Long attendanceRequestId);
+    ResponseCommuteRequestDTO extendOvertime(Long attendanceRequestId, RequestOvertimeExtensionDTO reqOvertimeExtensionDTO);
 
 }

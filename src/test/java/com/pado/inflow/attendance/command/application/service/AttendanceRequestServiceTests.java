@@ -216,4 +216,62 @@ class AttendanceRequestServiceTests {
         Assertions.assertNotNull(resReturnRequestDTO);
     }
 
+    @DisplayName("근태 신청 취소 테스트")
+    @Test
+    void testCancelAttendanceRequest() {
+        // Given
+        Long attendanceRequestId = 1L;
+        RequestCancelAttendanceRequestDTO reqCancelAttendanceRequestDTO = RequestCancelAttendanceRequestDTO
+                .builder()
+                .cancelReason("잘못 신청했습니다.")
+                .build();
+
+        // When
+        ResponseAttendanceRequestDTO resAttendanceRequestDTO =
+                attendanceRequestService.cancelAttendanceRequest(attendanceRequestId, reqCancelAttendanceRequestDTO);
+        if (resAttendanceRequestDTO != null) {
+            log.info(resAttendanceRequestDTO.toString());
+        }
+
+        // Then
+        Assertions.assertNotNull(resAttendanceRequestDTO);
+    }
+
+    @DisplayName("초과근무 연장 테스트")
+    @Test
+    void testExtendOvertimeRequest() {
+        // Given
+        Long attendanceRequestId = 3L;
+
+        LocalDateTime now = LocalDateTime.now();
+        int minute = now.getMinute();
+        int roundedMinute = (minute < 30) ? 30 : 0;
+
+        LocalDateTime endTime;
+
+        // 만약 0분이 되면 시간을 1시간 뒤로 설정
+        if (roundedMinute == 0) {
+            endTime = now.plusHours(1).withMinute(0).withSecond(0).withNano(0);
+        } else {
+            endTime = now.withMinute(roundedMinute).withSecond(0).withNano(0);
+        }
+
+        String formattedEndTime = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+
+        RequestOvertimeExtensionDTO reqOvertimeExtensionDTO = RequestOvertimeExtensionDTO
+                .builder()
+                .endTime(formattedEndTime)
+                .build();
+
+        // When
+        ResponseCommuteRequestDTO resCommuteRequestDTO =
+                attendanceRequestService.extendOvertime(attendanceRequestId, reqOvertimeExtensionDTO);
+        if (resCommuteRequestDTO != null) {
+            log.info(resCommuteRequestDTO.toString());
+        }
+
+        // Then
+        Assertions.assertNotNull(resCommuteRequestDTO);
+    }
+
 }
