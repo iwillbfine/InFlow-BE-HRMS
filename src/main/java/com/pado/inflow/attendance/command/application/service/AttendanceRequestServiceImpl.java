@@ -6,8 +6,6 @@ import com.pado.inflow.attendance.command.domain.aggregate.type.*;
 import com.pado.inflow.attendance.command.domain.repository.*;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
-import com.pado.inflow.vacation.command.application.dto.ResponseVacationRequestFileDTO;
-import com.pado.inflow.vacation.command.domain.aggregate.entity.VacationRequestFile;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
