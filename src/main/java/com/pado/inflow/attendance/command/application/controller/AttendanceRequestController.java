@@ -66,13 +66,22 @@ public class AttendanceRequestController {
         return ResponseDTO.ok(resLeaveReturnRequestDTO);
     }
 
+    // 근태신청 취소
+    @PatchMapping("/{attendanceRequestId}")
+    public ResponseDTO<?> cancelAttendanceRequest(@PathVariable("attendanceRequestId") Long attendanceRequestId,
+                                                  @RequestBody RequestCancelAttendanceRequestDTO reqCancelAttendanceRequestDTO) {
+        ResponseAttendanceRequestDTO resAttendanceRequestDTO =
+                attendanceRequestService.cancelAttendanceRequest(attendanceRequestId, reqCancelAttendanceRequestDTO);
+        return ResponseDTO.ok(resAttendanceRequestDTO);
+    }
+
     // 초과근무 연장
     @PatchMapping("/commute/overtime/{attendanceRequestId}")
     public ResponseDTO<?> extendOvertime(@PathVariable("attendanceRequestId") Long attendanceRequestId,
                                          @RequestBody RequestOvertimeExtensionDTO reqOvertimeExtensionDTO) {
-        ResponseCommuteRequestDTO resLeaveReturnRequestDTO =
-                attendanceRequestService.extendOvertime(attendanceRequestId);
-        return ResponseDTO.ok(resLeaveReturnRequestDTO);
+        ResponseCommuteRequestDTO resCommuteRequestDTO =
+                attendanceRequestService.extendOvertime(attendanceRequestId, reqOvertimeExtensionDTO);
+        return ResponseDTO.ok(resCommuteRequestDTO);
     }
 
 }
