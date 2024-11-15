@@ -28,7 +28,7 @@ class QualificationServiceTests {
     public void addQualification() {
         List<QualificationDTO> list = new ArrayList<>();
         list.add(new QualificationDTO("네트워크 관리사1급",
-                12345678,
+                "12345678",
                 LocalDate.of(2020,1,1),
                 "네트워크협회",
                 "1급",
@@ -42,14 +42,14 @@ class QualificationServiceTests {
         List<QualificationDTO> list = new ArrayList<>();
         list.add(new QualificationDTO(1L,
                 "정보처리산업기사",
-                123456789,
+                "123456789",
                 LocalDate.of(2023,12,1),
                 "한국산업인력공단",
                 "PASS",
                 1L));
         list.add(new QualificationDTO(2L,
                 "컴퓨터활용능력2",
-                987654321,
+                "987654321",
                 LocalDate.of(2024,1,15),
                 "한국산업인력공단",
                 "PASS",

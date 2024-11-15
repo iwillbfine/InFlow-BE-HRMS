@@ -14,5 +14,6 @@ public interface QualificationService {
     // 사원의 자격증 정보 수정
     List<Qualification> modifyQualifications(List<QualificationDTO> qualifications);
 
+    // 사원의 자격증 정보 삭제
     Boolean deleteQualifications(List<Long> qualifications);
 }

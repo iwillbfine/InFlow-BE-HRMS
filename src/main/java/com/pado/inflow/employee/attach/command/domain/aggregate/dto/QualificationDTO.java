@@ -15,13 +15,13 @@ import java.time.LocalDate;
 public class QualificationDTO {
     private Long qualificationId;
     private String qualificationName;
-    private int qualificationNumber;
+    private String qualificationNumber;
     private LocalDate qualifiedAt;
     private String issuer;
     private String gradeScore;
     private Long employeeId;
 
-    public QualificationDTO(String qualificationName, int qualificationNumber, LocalDate qualifiedAt, String issuer, String gradeScore, Long employeeId) {
+    public QualificationDTO(String qualificationName, String qualificationNumber, LocalDate qualifiedAt, String issuer, String gradeScore, Long employeeId) {
         this.qualificationName = qualificationName;
         this.qualificationNumber = qualificationNumber;
         this.qualifiedAt = qualifiedAt;

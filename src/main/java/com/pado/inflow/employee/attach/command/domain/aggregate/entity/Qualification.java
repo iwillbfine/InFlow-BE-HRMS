@@ -19,7 +19,7 @@ public class Qualification {
     private String qualificationName;
 
     @Column(name = "qualification_number")
-    private int qualificationNumber;
+    private String qualificationNumber;
 
     @Column(name = "qualified_at")
     private LocalDate qualifiedAt;

@@ -34,7 +34,7 @@ public class QualificationController {
         return ResponseDTO.ok(result);
     }
 
-    // 사원의 자격증 정보 수정
+    // 사원의 자격증 정보 삭제
     @DeleteMapping("/delete")
     public ResponseDTO deleteQualification(@RequestBody List<Long> qualifications) {
         Boolean result = qualificationService.deleteQualifications(qualifications);

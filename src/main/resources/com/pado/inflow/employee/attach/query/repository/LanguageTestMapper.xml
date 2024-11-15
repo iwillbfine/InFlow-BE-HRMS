@@ -1,0 +1,44 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.employee.attach.query.repository.LanguageTestMapper">
+    <resultMap id="ResultMap" type="com.pado.inflow.employee.attach.query.dto.LanguageTestDTO">
+        <id property="languageTestId" column="LANGUAGE_TEST_ID"/>
+        <result property="languageTestName" column="LANGUAGE_TEST_NAME"/>
+        <result property="qualificationNumber" column="QUALIFICATION_NUMBER"/>
+        <result property="issuer" column="ISSUER"/>
+        <result property="qualifiedAt" column="QUALIFIED_AT"/>
+        <result property="gradeScore" column="GRADE_SCORE"/>
+        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <result property="languageName" column="LANGUAGE_NAME"/>
+    </resultMap>
+
+    <select id="getAllLanguageTests" resultMap="ResultMap">
+        SELECT
+               A.LANGUAGE_TEST_ID
+             , A.LANGUAGE_TEST_NAME
+             , A.QUALIFICATION_NUMBER
+             , A.ISSUER
+             , DATE(A.QUALIFIED_AT) AS QUALIFIED_AT
+             , A.GRADE_SCORE
+             , A.EMPLOYEE_ID
+             , B.LANGUAGE_NAME
+         FROM LANGUAGE_TEST A INNER JOIN LANGUAGE B
+           ON A.LANGUAGE_CODE = B.LANGUAGE_CODE
+    </select>
+
+    <select id="getOneLanguageTest" resultMap="ResultMap" parameterType="_long">
+        SELECT
+               A.LANGUAGE_TEST_ID
+             , A.LANGUAGE_TEST_NAME
+             , A.QUALIFICATION_NUMBER
+             , A.ISSUER
+             , DATE(A.QUALIFIED_AT) AS QUALIFIED_AT
+             , A.GRADE_SCORE
+             , A.EMPLOYEE_ID
+             , B.LANGUAGE_NAME
+          FROM LANGUAGE_TEST A INNER JOIN LANGUAGE B
+            ON A.LANGUAGE_CODE = B.LANGUAGE_CODE
+         WHERE A.EMPLOYEE_ID = #{employeeId}
+    </select>
+</mapper>
