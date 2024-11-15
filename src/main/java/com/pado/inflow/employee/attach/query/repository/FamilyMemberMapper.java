@@ -8,9 +8,9 @@ import java.util.List;
 @Mapper
 public interface FamilyMemberMapper {
 
-    // 전 사원의 가족구성원 조회
+    // 전 사원의 가구원 조회
     List<FamilyMemberDTO> getAllFamilyMemberList();
 
-    // 사원 한 명의 가족구성원 조회
+    // 사원 한 명의 가구원 조회
     List<FamilyMemberDTO> getOneFamilyMemberList(Long employeeId);
 }

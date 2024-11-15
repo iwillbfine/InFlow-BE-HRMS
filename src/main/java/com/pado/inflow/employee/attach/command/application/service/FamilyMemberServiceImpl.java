@@ -1,5 +1,7 @@
 package com.pado.inflow.employee.attach.command.application.service;
 
+import com.pado.inflow.common.exception.CommonException;
+import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.employee.attach.command.domain.aggregate.dto.FamilyMemberDTO;
 import com.pado.inflow.employee.attach.command.domain.aggregate.entity.FamilyMember;
 import com.pado.inflow.employee.attach.command.domain.repository.FamilyMemberRepository;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service("FMCommandService")
@@ -28,33 +31,29 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
 
     // 가구원 등록
     public List<FamilyMember> insertFamilyMembers(List<FamilyMemberDTO> familyMember) {
-        try {
-            return(familyMemberRepository.saveAll(familyMember.stream()
-                    .map(mem -> modelMapper.map(mem, FamilyMember.class))
-                    .collect(Collectors.toList())));
-        } catch (Exception e) {
-            return null;
-        }
+        return Optional.ofNullable(familyMemberRepository.saveAll(familyMember.stream()
+                .map(mem -> modelMapper.map(mem, FamilyMember.class))
+                .collect(Collectors.toList())))
+                .filter(fam -> !fam.isEmpty())
+                .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     // 가구원 수정
     public List<FamilyMember> modifyFamilyMembers(List<FamilyMemberDTO> familyMember) {
-        try {
-            return(familyMemberRepository.saveAllAndFlush(familyMember.stream()
-                    .map(mem -> modelMapper.map(mem, FamilyMember.class))
-                    .collect(Collectors.toList())));
-        } catch (Exception e) {
-            return null;
-        }
+        return Optional.ofNullable(familyMemberRepository.saveAllAndFlush(familyMember.stream()
+                .map(mem -> modelMapper.map(mem, FamilyMember.class))
+                .collect(Collectors.toList())))
+                .filter(fam -> !fam.isEmpty())
+                .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     // 가구원 삭제
     public Boolean deleteFamilyMember(List<Long> familyMember) {
-        try {
-            familyMemberRepository.deleteAllById(familyMember);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return Optional.ofNullable(familyMember)
+                .map(fam -> {
+                    familyMemberRepository.deleteAllById(familyMember);
+                    return true;
+                })
+                .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 }
