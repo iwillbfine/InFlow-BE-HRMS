@@ -11,7 +11,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-//필기. 응답 DTO통일
 @Data
 public class ResponseDTO<T> {
 
@@ -22,7 +21,7 @@ public class ResponseDTO<T> {
     private boolean success;
 
     @Nullable
-    private T data;
+    private T content;  // 'data'를 'content'로 변경
 
     @Nullable
     private ExceptionDTO error;
@@ -32,25 +31,23 @@ public class ResponseDTO<T> {
     }
 
     // 모든 필드를 받는 생성자
-    public ResponseDTO(HttpStatus httpStatus, boolean success, @Nullable T data, @Nullable ExceptionDTO error) {
+    public ResponseDTO(HttpStatus httpStatus, boolean success, @Nullable T content, @Nullable ExceptionDTO error) {
         this.httpStatus = httpStatus;
         this.success = success;
-        this.data = data;
+        this.content = content;
         this.error = error;
     }
 
-
     // static 팩토리 메소드
-    public static <T> ResponseDTO<T> ok(T data) {
+    public static <T> ResponseDTO<T> ok(T content) {
         return new ResponseDTO<>(
                 HttpStatus.OK,
                 true,
-                data,
+                content,
                 null
         );
     }
 
-    //필기. 에러 발생시의 메세지(Ad)
     public static ResponseDTO<Object> fail(@NotNull CommonException e) {
         return new ResponseDTO<>(
                 e.getErrorCode().getHttpStatus(),
@@ -60,7 +57,6 @@ public class ResponseDTO<T> {
         );
     }
 
-    //필기. 400번 에러 처리(프론트엔드)
     public static ResponseDTO<Object> fail(final MissingServletRequestParameterException e) {
         return new ResponseDTO<>(
                 HttpStatus.BAD_REQUEST,

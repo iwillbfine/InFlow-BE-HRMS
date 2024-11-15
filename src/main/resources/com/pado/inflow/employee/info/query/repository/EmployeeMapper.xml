@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pado.inflow.employee.info.query.repository.EmployeeMapper">
+
+    <!-- 전체 사원 조회 -->
+    <select id="findAllEmployees" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
+        SELECT
+            employee_id AS employeeId,
+            employee_number AS employeeNumber,
+            employee_role AS employeeRole,
+            password,
+            gender,
+            name,
+            birth_date AS birthDate,
+            resident_registration_number AS residentRegistrationNumber,
+            email,
+            phone_number AS phoneNumber,
+            profile_img_url AS profileImgUrl,
+            join_date AS joinDate,
+            join_type AS joinType,
+            resignation_date AS resignationDate,
+            resignation_status AS resignationStatus,
+            salary,
+            monthly_salary AS monthlySalary,
+            street_address AS streetAddress,
+            detailed_address AS detailedAddress,
+            postcode,
+            department_code AS departmentCode,
+            attendance_status_type_code AS attendanceStatusTypeCode,
+            position_code AS positionCode,
+            role_code AS roleCode,
+            duty_code AS dutyCode
+        FROM employee
+    </select>
+
+    <!-- 이름으로 사원 조회 -->
+    <select id="findEmployeesByName" parameterType="String" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
+        SELECT
+            employee_id AS employeeId,
+            employee_number AS employeeNumber,
+            employee_role AS employeeRole,
+            password,
+            gender,
+            name,
+            birth_date AS birthDate,
+            resident_registration_number AS residentRegistrationNumber,
+            email,
+            phone_number AS phoneNumber,
+            profile_img_url AS profileImgUrl,
+            join_date AS joinDate,
+            join_type AS joinType,
+            resignation_date AS resignationDate,
+            resignation_status AS resignationStatus,
+            salary,
+            monthly_salary AS monthlySalary,
+            street_address AS streetAddress,
+            detailed_address AS detailedAddress,
+            postcode,
+            department_code AS departmentCode,
+            attendance_status_type_code AS attendanceStatusTypeCode,
+            position_code AS positionCode,
+            role_code AS roleCode,
+            duty_code AS dutyCode
+        FROM employee
+        WHERE name = #{name}
+    </select>
+
+    <!-- 사번으로 사원 조회 -->
+    <select id="findEmployeeByNumber" parameterType="String" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
+        SELECT
+            employee_id AS employeeId,
+            employee_number AS employeeNumber,
+            employee_role AS employeeRole,
+            password,
+            gender,
+            name,
+            birth_date AS birthDate,
+            resident_registration_number AS residentRegistrationNumber,
+            email,
+            phone_number AS phoneNumber,
+            profile_img_url AS profileImgUrl,
+            join_date AS joinDate,
+            join_type AS joinType,
+            resignation_date AS resignationDate,
+            resignation_status AS resignationStatus,
+            salary,
+            monthly_salary AS monthlySalary,
+            street_address AS streetAddress,
+            detailed_address AS detailedAddress,
+            postcode,
+            department_code AS departmentCode,
+            attendance_status_type_code AS attendanceStatusTypeCode,
+            position_code AS positionCode,
+            role_code AS roleCode,
+            duty_code AS dutyCode
+        FROM employee
+        WHERE employee_number = #{employeeNumber}
+    </select>
+
+    <!-- ID로 사원 조회 -->
+    <select id="findEmployeeById" parameterType="Long" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
+        SELECT
+            employee_id AS employeeId,
+            employee_number AS employeeNumber,
+            employee_role AS employeeRole,
+            password,
+            gender,
+            name,
+            birth_date AS birthDate,
+            resident_registration_number AS residentRegistrationNumber,
+            email,
+            phone_number AS phoneNumber,
+            profile_img_url AS profileImgUrl,
+            join_date AS joinDate,
+            join_type AS joinType,
+            resignation_date AS resignationDate,
+            resignation_status AS resignationStatus,
+            salary,
+            monthly_salary AS monthlySalary,
+            street_address AS streetAddress,
+            detailed_address AS detailedAddress,
+            postcode,
+            department_code AS departmentCode,
+            attendance_status_type_code AS attendanceStatusTypeCode,
+            position_code AS positionCode,
+            role_code AS roleCode,
+            duty_code AS dutyCode
+        FROM employee
+        WHERE employee_id = #{employeeId}
+    </select>
+
+</mapper>
