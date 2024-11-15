@@ -47,4 +47,15 @@ public class QualificationServiceImpl implements QualificationService {
                 .filter(ql -> !ql.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
+
+    // 사원의 자격증 정보 삭제
+    @Override
+    public Boolean deleteQualifications(List<Long> quals) {
+        return Optional.ofNullable(quals)
+                .map(qul -> {
+                    qualificationRepository.deleteAllById(qul);
+                    return true;
+                })
+                .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
+    }
 }

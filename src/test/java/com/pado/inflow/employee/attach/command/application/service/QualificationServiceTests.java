@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,5 +57,9 @@ class QualificationServiceTests {
         assertTrue(qualificationService.modifyQualifications(list).size() > 0);
     }
 
-
+    @DisplayName("사원의 자격증 정보 삭제")
+    @Test
+    public void deleteQualification() {
+        assertTrue(qualificationService.deleteQualifications(new ArrayList<>(Arrays.asList(1L, 2L, 3L))));
+    }
 }
