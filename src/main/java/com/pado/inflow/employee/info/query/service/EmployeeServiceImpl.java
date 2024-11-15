@@ -21,15 +21,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     // 1.1. 설명: 사원 리스트 전체 조회
     @Override
     public List<EmployeeDTO> getAllEmployees() {
-        return employeeMapper.findAllEmployees()
-                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        List<EmployeeDTO> employees = employeeMapper.findAllEmployees();
+        if (employees.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE);
+        }
+        return employees;
     }
 
     // 1.2. 설명: 사원 리스트 이름으로 조회
     @Override
     public List<EmployeeDTO> getEmployeesByName(String name) {
-        return employeeMapper.findEmployeesByName(name)
-                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        List<EmployeeDTO> employees = employeeMapper.findEmployeesByName(name);
+        if (employees.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE);
+        }
+        return employees;
     }
 
     // 1.3. 설명: 사원 정보 사번으로 조회
