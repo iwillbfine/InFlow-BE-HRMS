@@ -1,13 +1,8 @@
 package com.pado.inflow.attendance.command.application.service;
 
 import com.pado.inflow.attendance.command.application.dto.*;
-import com.pado.inflow.attendance.command.domain.aggregate.entity.AttendanceRequest;
-import com.pado.inflow.attendance.command.domain.aggregate.entity.AttendanceRequestType;
-import com.pado.inflow.attendance.command.domain.aggregate.entity.Commute;
-import com.pado.inflow.attendance.command.domain.aggregate.type.CancelStatus;
-import com.pado.inflow.attendance.command.domain.aggregate.type.OvertimeStatus;
-import com.pado.inflow.attendance.command.domain.aggregate.type.RemoteStatus;
-import com.pado.inflow.attendance.command.domain.aggregate.type.RequestStatus;
+import com.pado.inflow.attendance.command.domain.aggregate.entity.*;
+import com.pado.inflow.attendance.command.domain.aggregate.type.*;
 import com.pado.inflow.attendance.command.domain.repository.*;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
@@ -21,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Map;
 
 @Service("appAttendanceService")
 public class AttendanceRequestServiceImpl implements AttendanceRequestService {
@@ -92,7 +88,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         }
 
         // 재택근무 시작일이 신청일보다 이전일 경우
-        if (startDate.isBefore(LocalDateTime.now().withNano(0))) {
+        if (startDate.toLocalDate().isBefore(LocalDate.now())) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
 
@@ -122,7 +118,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                 .endTime(endTime)
                 .remoteStatus(RemoteStatus.Y)
                 .overtimeStatus(OvertimeStatus.N)
-                .employeeId(reqCommuteRequestDTO.getEmployeeId())
+                .employeeId(attendanceRequest.getEmployeeId())
                 .attendanceRequestId(attendanceRequest.getAttendanceRequestId())
                 .build();
 
@@ -218,7 +214,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                 .endTime(endTime)
                 .remoteStatus(RemoteStatus.N)
                 .overtimeStatus(OvertimeStatus.Y)
-                .employeeId(reqCommuteRequestDTO.getEmployeeId())
+                .employeeId(attendanceRequest.getEmployeeId())
                 .attendanceRequestId(attendanceRequest.getAttendanceRequestId())
                 .build();
 
@@ -231,27 +227,289 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
     @Transactional
     @Override
     public ResponseBusinessTripRequestDTO registBusinessTripRequest(RequestBusinessTripRequestDTO reqBusinessTripRequestDTO) {
-        return null;
+        // 사원 유효성 검사
+//        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
+//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+
+        // 근태신청유형 유효성 검사
+        AttendanceRequestType attendanceRequestType =
+                attendanceRequestTypeRepository.findById(reqBusinessTripRequestDTO.getAttendanceRequestTypeId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST_TYPE));
+
+        if (!attendanceRequestType.getAttendanceRequestTypeName().equals("출장")) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 신청사유 유효성 검사
+        if (reqBusinessTripRequestDTO.getRequestReason() == null || reqBusinessTripRequestDTO.getRequestReason().isEmpty()) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 목적지 유효성 검사
+        if (reqBusinessTripRequestDTO.getDestination() == null || reqBusinessTripRequestDTO.getDestination().isEmpty()) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 날짜 String -> LocalDateTime 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date;
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+        try {
+            date = LocalDate.parse(reqBusinessTripRequestDTO.getStartDate(), formatter);
+            startDate = date.atStartOfDay();
+            date = LocalDate.parse(reqBusinessTripRequestDTO.getEndDate(), formatter);
+            endDate = date.atStartOfDay();
+        } catch (DateTimeParseException e) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 출장 시작일이 신청일보다 이전일 경우
+        if (startDate.toLocalDate().isBefore(LocalDate.now())) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 출장 종료일이 시작일보다 이전일 경우
+        if (endDate.isBefore(startDate)) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        ResponseBusinessTripRequestDTO resBusinessTripRequestDTO = ResponseBusinessTripRequestDTO
+                .builder()
+                .requestReason(reqBusinessTripRequestDTO.getRequestReason())
+                .startDate(startDate)
+                .endDate(endDate)
+                .createdAt(LocalDateTime.now().withNano(0))
+                .rejectionReason(null)
+                .requestStatus(RequestStatus.ACCEPT.name())
+                .canceledAt(null)
+                .cancelReason(null)
+                .cancelStatus(CancelStatus.N.name())
+                .destination(reqBusinessTripRequestDTO.getDestination())
+                .employeeId(reqBusinessTripRequestDTO.getEmployeeId())
+                .attendanceRequestTypeId(reqBusinessTripRequestDTO.getAttendanceRequestTypeId())
+                .build();
+
+        // 출장 신청 내역 등록
+        AttendanceRequest attendanceRequest =
+                attendanceRequestRepository.save(modelMapper.map(resBusinessTripRequestDTO, AttendanceRequest.class));
+
+        // 출장 내역 등록
+        BusinessTripDTO businessTripDTO = BusinessTripDTO
+                .builder()
+                .startDate(startDate)
+                .endDate(endDate)
+                .tripType(TripType.BUSINESS)
+                .destination(attendanceRequest.getDestination())
+                .employeeId(attendanceRequest.getEmployeeId())
+                .attendanceRequestId(attendanceRequest.getAttendanceRequestId())
+                .build();
+
+        businessTripRepository.save(modelMapper.map(businessTripDTO, BusinessTrip.class));
+
+        return modelMapper.map(attendanceRequest, ResponseBusinessTripRequestDTO.class);
     }
 
     // 파견 신청
     @Transactional
     @Override
     public ResponseBusinessTripRequestDTO registDispatchRequest(RequestBusinessTripRequestDTO reqBusinessTripRequestDTO) {
-        return null;
+        // 사원 유효성 검사
+//        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
+//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+
+        // 근태신청유형 유효성 검사
+        AttendanceRequestType attendanceRequestType =
+                attendanceRequestTypeRepository.findById(reqBusinessTripRequestDTO.getAttendanceRequestTypeId())
+                        .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST_TYPE));
+
+        if (!attendanceRequestType.getAttendanceRequestTypeName().equals("파견")) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 신청사유 유효성 검사
+        if (reqBusinessTripRequestDTO.getRequestReason() == null || reqBusinessTripRequestDTO.getRequestReason().isEmpty()) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 목적지 유효성 검사
+        if (reqBusinessTripRequestDTO.getDestination() == null || reqBusinessTripRequestDTO.getDestination().isEmpty()) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 날짜 String -> LocalDateTime 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date;
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+        try {
+            date = LocalDate.parse(reqBusinessTripRequestDTO.getStartDate(), formatter);
+            startDate = date.atStartOfDay();
+            date = LocalDate.parse(reqBusinessTripRequestDTO.getEndDate(), formatter);
+            endDate = date.atStartOfDay();
+        } catch (DateTimeParseException e) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 파견 시작일이 신청일보다 이전일 경우
+        if (startDate.toLocalDate().isBefore(LocalDate.now())) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 파견 종료일이 시작일보다 이전일 경우
+        if (endDate.isBefore(startDate)) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        ResponseBusinessTripRequestDTO resBusinessTripRequestDTO = ResponseBusinessTripRequestDTO
+                .builder()
+                .requestReason(reqBusinessTripRequestDTO.getRequestReason())
+                .startDate(startDate)
+                .endDate(endDate)
+                .createdAt(LocalDateTime.now().withNano(0))
+                .rejectionReason(null)
+                .requestStatus(RequestStatus.ACCEPT.name())
+                .canceledAt(null)
+                .cancelReason(null)
+                .cancelStatus(CancelStatus.N.name())
+                .destination(reqBusinessTripRequestDTO.getDestination())
+                .employeeId(reqBusinessTripRequestDTO.getEmployeeId())
+                .attendanceRequestTypeId(reqBusinessTripRequestDTO.getAttendanceRequestTypeId())
+                .build();
+
+        // 파견 신청 내역 등록
+        AttendanceRequest attendanceRequest =
+                attendanceRequestRepository.save(modelMapper.map(resBusinessTripRequestDTO, AttendanceRequest.class));
+
+        // 파견 내역 등록
+        BusinessTripDTO businessTripDTO = BusinessTripDTO
+                .builder()
+                .startDate(startDate)
+                .endDate(endDate)
+                .tripType(TripType.DISPATCH)
+                .destination(attendanceRequest.getDestination())
+                .employeeId(attendanceRequest.getEmployeeId())
+                .attendanceRequestId(attendanceRequest.getAttendanceRequestId())
+                .build();
+
+        businessTripRepository.save(modelMapper.map(businessTripDTO, BusinessTrip.class));
+
+        return modelMapper.map(attendanceRequest, ResponseBusinessTripRequestDTO.class);
     }
 
     // 휴직 신청
     @Transactional
     @Override
-    public ResponseLeaveReturnRequestDTO registLeaveReturnRequest(RequestLeaveReturnRequestDTO reqLeaveReturnRequestDTO) {
-        return null;
+    public ResponseLeaveReturnRequestDTO registLeaveRequest(RequestLeaveRequestDTO reqLeaveRequestDTO) {
+        // 사원 유효성 검사
+//        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
+//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+
+        // 근태신청유형 유효성 검사
+        AttendanceRequestType attendanceRequestType =
+                attendanceRequestTypeRepository.findById(reqLeaveRequestDTO.getAttendanceRequestTypeId())
+                        .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST_TYPE));
+
+        if (!attendanceRequestType.getAttendanceRequestTypeName().equals("휴직")) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 신청사유 유효성 검사
+        if (reqLeaveRequestDTO.getRequestReason() == null || reqLeaveRequestDTO.getRequestReason().isEmpty()) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 날짜 String -> LocalDateTime 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date;
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+        try {
+            date = LocalDate.parse(reqLeaveRequestDTO.getStartDate(), formatter);
+            startDate = date.atStartOfDay();
+            date = LocalDate.parse(reqLeaveRequestDTO.getEndDate(), formatter);
+            endDate = date.atStartOfDay();
+        } catch (DateTimeParseException e) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 휴직 시작일이 오늘보다 이전일 경우
+        if (startDate.isBefore(LocalDateTime.now().withNano(0))) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 휴직 종료일이 시작일보다 이전일 경우
+        if (endDate.isBefore(startDate)) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        ResponseLeaveReturnRequestDTO resLeaveReturnRequestDTO = ResponseLeaveReturnRequestDTO
+                .builder()
+                .requestReason(reqLeaveRequestDTO.getRequestReason())
+                .startDate(startDate)
+                .endDate(endDate)
+                .createdAt(LocalDateTime.now().withNano(0))
+                .rejectionReason(null)
+                .requestStatus(RequestStatus.ACCEPT.name())
+                .canceledAt(null)
+                .cancelReason(null)
+                .cancelStatus(CancelStatus.N.name())
+                .employeeId(reqLeaveRequestDTO.getEmployeeId())
+                .attendanceRequestTypeId(reqLeaveRequestDTO.getAttendanceRequestTypeId())
+                .build();
+
+
+        // 휴직 신청 내역 등록
+        AttendanceRequest attendanceRequest =
+                attendanceRequestRepository.save(modelMapper.map(resLeaveReturnRequestDTO, AttendanceRequest.class));
+
+        // 첨부 파일 DB 저장
+        for (Map<String, String> file : reqLeaveRequestDTO.getAttachments()) {
+            ResponseAttendanceRequestFileDTO resAttendanceRequestFileDTO = ResponseAttendanceRequestFileDTO
+                    .builder()
+                    .fileName(file.get("file_name"))
+                    .fileUrl(file.get("file_url"))
+                    .attendanceRequestId(attendanceRequest.getAttendanceRequestId())
+                    .build();
+
+            attendanceRequestFileRepository.save(modelMapper.map(resAttendanceRequestFileDTO, AttendanceRequestFile.class));
+        }
+
+        // 휴직 내역 등록
+        LeaveReturnDTO leaveReturnDTO = LeaveReturnDTO
+                .builder()
+                .startDate(startDate)
+                .endDate(endDate)
+                .employeeId(attendanceRequest.getEmployeeId())
+                .attendanceRequestId(attendanceRequest.getAttendanceRequestId())
+                .build();
+
+        leaveReturnRepository.save(modelMapper.map(leaveReturnDTO, LeaveReturn.class));
+
+        return modelMapper.map(attendanceRequest, ResponseLeaveReturnRequestDTO.class);
     }
 
-    // 복직 처리
-    @Transactional
+    // 복직 신청
     @Override
-    public ResponseLeaveReturnRequestDTO reinstate(Long attendanceRequestId) {
+    public ResponseLeaveReturnRequestDTO registReturnRequest(RequestReturnRequestDTO reqReturnRequestDTO) {
+        // 사원 유효성 검사
+//        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
+//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+
+        // 근태신청유형 유효성 검사
+        AttendanceRequestType attendanceRequestType =
+                attendanceRequestTypeRepository.findById(reqReturnRequestDTO.getAttendanceRequestTypeId())
+                        .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST_TYPE));
+
+        if (!attendanceRequestType.getAttendanceRequestTypeName().equals("복직")) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 신청사유 유효성 검사
+        if (reqReturnRequestDTO.getRequestReason() == null || reqReturnRequestDTO.getRequestReason().isEmpty()) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
         return null;
     }
 
