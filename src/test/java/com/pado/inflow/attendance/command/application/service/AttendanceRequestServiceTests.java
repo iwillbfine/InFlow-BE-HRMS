@@ -1,9 +1,6 @@
 package com.pado.inflow.attendance.command.application.service;
 
-import com.pado.inflow.attendance.command.application.dto.RequestBusinessTripRequestDTO;
-import com.pado.inflow.attendance.command.application.dto.RequestCommuteRequestDTO;
-import com.pado.inflow.attendance.command.application.dto.ResponseBusinessTripRequestDTO;
-import com.pado.inflow.attendance.command.application.dto.ResponseCommuteRequestDTO;
+import com.pado.inflow.attendance.command.application.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @SpringBootTest
@@ -137,6 +138,82 @@ class AttendanceRequestServiceTests {
 
         // Then
         Assertions.assertNotNull(resBusinessTripRequestDTO);
+    }
+
+    @DisplayName("휴직 신청 테스트")
+    @Test
+    void testRegistLeaveRequest() {
+        // Given
+        List<Map<String, String>> attachments = new ArrayList<>();
+
+        Map<String, String> file = new HashMap<>();
+        file.put("file_name", "테스트용 첨부파일");
+        file.put("file_url", "https://aws.com/inflow/file.pdf");
+
+        Map<String, String> file2 = new HashMap<>();
+        file2.put("file_name", "테스트용 첨부파일2");
+        file2.put("file_url", "https://aws.com/inflow/file2.pdf");
+
+        attachments.add(file);
+        attachments.add(file2);
+
+        RequestLeaveRequestDTO reqLeaveRequestDTO = RequestLeaveRequestDTO
+                .builder()
+                .requestReason("육아휴직")
+                .startDate(LocalDate.now().toString())
+                .endDate(LocalDate.now().plusDays(60).toString())
+                .employeeId(1L)
+                .attendanceRequestTypeId(5L)
+                .attachments(attachments)
+                .build();
+
+        // When
+        ResponseLeaveReturnRequestDTO resLeaveRequestDTO =
+                attendanceRequestService.registLeaveRequest(reqLeaveRequestDTO);
+        if (resLeaveRequestDTO != null) {
+            log.info(resLeaveRequestDTO.toString());
+        }
+
+        // Then
+        Assertions.assertNotNull(resLeaveRequestDTO);
+    }
+
+    @DisplayName("복직 신청 테스트")
+    @Test
+    void testRegistReturnRequest() {
+        // Given
+        List<Map<String, String>> attachments = new ArrayList<>();
+
+        Map<String, String> file = new HashMap<>();
+        file.put("file_name", "테스트용 첨부파일");
+        file.put("file_url", "https://aws.com/inflow/file.pdf");
+
+        Map<String, String> file2 = new HashMap<>();
+        file2.put("file_name", "테스트용 첨부파일2");
+        file2.put("file_url", "https://aws.com/inflow/file2.pdf");
+
+        attachments.add(file);
+        attachments.add(file2);
+
+        RequestReturnRequestDTO reqRequestRequestDTO = RequestReturnRequestDTO
+                .builder()
+                .attendanceRequestId(5L)
+                .requestReason("휴직 사유 소멸")
+                .endDate(LocalDate.now().plusDays(7).toString())
+                .employeeId(1L)
+                .attendanceRequestTypeId(6L)
+                .attachments(attachments)
+                .build();
+
+        // When
+        ResponseLeaveReturnRequestDTO resReturnRequestDTO =
+                attendanceRequestService.registReturnRequest(reqRequestRequestDTO);
+        if (resReturnRequestDTO != null) {
+            log.info(resReturnRequestDTO.toString());
+        }
+
+        // Then
+        Assertions.assertNotNull(resReturnRequestDTO);
     }
 
 }

@@ -433,8 +433,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
 
-        // 휴직 시작일이 오늘보다 이전일 경우
-        if (startDate.isBefore(LocalDateTime.now().withNano(0))) {
+        // 휴직 시작일이 신청일보다 이전일 경우
+        if (startDate.toLocalDate().isBefore(LocalDate.now())) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
 
@@ -492,6 +492,11 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
     // 복직 신청
     @Override
     public ResponseLeaveReturnRequestDTO registReturnRequest(RequestReturnRequestDTO reqReturnRequestDTO) {
+        // 근태신청 유효성 검사
+        AttendanceRequest leaveRequest =
+                attendanceRequestRepository.findById(reqReturnRequestDTO.getAttendanceRequestId())
+                        .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST));
+
         // 사원 유효성 검사
 //        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
 //                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
@@ -510,7 +515,71 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
 
-        return null;
+        // 날짜 String -> LocalDateTime 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date;
+        LocalDateTime endDate;
+        try {
+            date = LocalDate.parse(reqReturnRequestDTO.getEndDate(), formatter);
+            endDate = date.atStartOfDay();
+        } catch (DateTimeParseException e) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 휴직 종료일이 신청일보다 이전일 경우
+        if (endDate.toLocalDate().isBefore(LocalDate.now())) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 휴직 종료일이 시작일보다 이전일 경우
+        if (endDate.toLocalDate().isBefore(leaveRequest.getStartDate().toLocalDate())) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        ResponseLeaveReturnRequestDTO resLeaveReturnDTO = ResponseLeaveReturnRequestDTO
+                .builder()
+                .requestReason(reqReturnRequestDTO.getRequestReason())
+                .startDate(LocalDateTime.now().withNano(0))
+                .endDate(endDate)
+                .createdAt(LocalDateTime.now().withNano(0))
+                .rejectionReason(null)
+                .requestStatus(RequestStatus.ACCEPT.name())
+                .canceledAt(null)
+                .cancelReason(null)
+                .cancelStatus(CancelStatus.N.name())
+                .employeeId(reqReturnRequestDTO.getEmployeeId())
+                .attendanceRequestTypeId(reqReturnRequestDTO.getAttendanceRequestTypeId())
+                .build();
+
+        // 복직 신청 등록
+        AttendanceRequest returnRequest =
+                attendanceRequestRepository.save(modelMapper.map(resLeaveReturnDTO, AttendanceRequest.class));
+
+        // 첨부 파일 DB 저장
+        for (Map<String, String> file : reqReturnRequestDTO.getAttachments()) {
+            ResponseAttendanceRequestFileDTO resAttendanceRequestFileDTO = ResponseAttendanceRequestFileDTO
+                    .builder()
+                    .fileName(file.get("file_name"))
+                    .fileUrl(file.get("file_url"))
+                    .attendanceRequestId(returnRequest.getAttendanceRequestId())
+                    .build();
+
+            attendanceRequestFileRepository.save(modelMapper.map(resAttendanceRequestFileDTO, AttendanceRequestFile.class));
+        }
+
+        // 휴직 종료일 변경
+        leaveRequest.setEndDate(endDate);
+
+        LeaveReturn leaveReturn =
+                leaveReturnRepository.findByAttendanceRequestId(leaveRequest.getAttendanceRequestId())
+                                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_LEAVE_RETURN));
+
+        leaveReturn.setEndDate(endDate);
+
+        attendanceRequestRepository.save(leaveRequest);
+        leaveReturnRepository.save(leaveReturn);
+
+        return modelMapper.map(returnRequest, ResponseLeaveReturnRequestDTO.class);
     }
 
     // 초과근무 연장
