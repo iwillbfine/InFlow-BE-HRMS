@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface QualificationService {
 
-    // 사원의 경력정보 등록
+    // 사원의 자격증 정보 등록
     List<Qualification> addQualifications(List<QualificationDTO> quals);
+
+    // 사원의 자격증 정보 수정
+    List<Qualification> modifyQualifications(List<QualificationDTO> qualifications);
 }

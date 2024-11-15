@@ -28,10 +28,20 @@ public class QualificationServiceImpl implements QualificationService {
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
-    // 사원의 경력정보 등록
+    // 사원의 자격증 정보 등록
     @Override
     public List<Qualification> addQualifications(List<QualificationDTO> quals) {
         return Optional.ofNullable(qualificationRepository.saveAll(quals.stream()
+                .map(mem -> modelMapper.map(mem, Qualification.class))
+                .collect(Collectors.toList())))
+                .filter(ql -> !ql.isEmpty())
+                .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
+    }
+
+    // 사원의 자격증 정보 수정
+    @Override
+    public List<Qualification> modifyQualifications(List<QualificationDTO> quals) {
+        return Optional.ofNullable(qualificationRepository.saveAllAndFlush(quals.stream()
                 .map(mem -> modelMapper.map(mem, Qualification.class))
                 .collect(Collectors.toList())))
                 .filter(ql -> !ql.isEmpty())

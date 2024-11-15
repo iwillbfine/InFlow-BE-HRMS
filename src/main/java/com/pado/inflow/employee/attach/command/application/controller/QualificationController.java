@@ -22,8 +22,15 @@ public class QualificationController {
 
     // 사원의 자격증 정보 등록
     @PostMapping("/add")
-    public ResponseDTO addCareer(@RequestBody List<QualificationDTO> qualifications) {
+    public ResponseDTO addQualification(@RequestBody List<QualificationDTO> qualifications) {
         List<Qualification> result = qualificationService.addQualifications(qualifications);
+        return ResponseDTO.ok(result);
+    }
+
+    // 사원의 자격증 정보 수정
+    @PostMapping("/modify")
+    public ResponseDTO modifyQualification(@RequestBody List<QualificationDTO> qualifications) {
+        List<Qualification> result = qualificationService.modifyQualifications(qualifications);
         return ResponseDTO.ok(result);
     }
 }
