@@ -582,11 +582,80 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         return modelMapper.map(returnRequest, ResponseLeaveReturnRequestDTO.class);
     }
 
+    // 근태신청 취소
+    @Transactional
+    @Override
+    public ResponseAttendanceRequestDTO cancelAttendanceRequest(Long attendanceRequestId, RequestCancelAttendanceRequestDTO reqCancelAttendanceRequestDTO) {
+        // 기존 엔티티 조회
+        AttendanceRequest attendanceRequest = attendanceRequestRepository.findById(attendanceRequestId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST));
+
+        // 승인 대기중이 아닌 경우
+        if (!(attendanceRequest.getRequestStatus() == RequestStatus.WAIT)) {
+            throw new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST);
+        }
+
+        // 취소 사유 유효성 검사
+        if (reqCancelAttendanceRequestDTO.getCancelReason() == null || reqCancelAttendanceRequestDTO.getCancelReason().isEmpty()) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        attendanceRequest.setRequestStatus(RequestStatus.ACCEPT);
+        attendanceRequest.setCanceledAt(LocalDateTime.now().withNano(0));
+        attendanceRequest.setCancelReason(reqCancelAttendanceRequestDTO.getCancelReason());
+        attendanceRequest.setCancelStatus(CancelStatus.Y);
+
+        return modelMapper.map(attendanceRequestRepository.save(attendanceRequest), ResponseAttendanceRequestDTO.class);
+    }
+
     // 초과근무 연장
     @Transactional
     @Override
-    public ResponseCommuteRequestDTO extendOvertime(Long attendanceRequestId) {
-        return null;
+    public ResponseCommuteRequestDTO extendOvertime(Long attendanceRequestId, RequestOvertimeExtensionDTO reqOvertimeExtensionDTO) {
+        // 기존 엔티티 조회
+        AttendanceRequest attendanceRequest = attendanceRequestRepository.findById(attendanceRequestId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST));
+
+        // 승인된 요청이 아닌 경우
+        if (!(attendanceRequest.getRequestStatus() == RequestStatus.ACCEPT)) {
+            throw new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST);
+        }
+
+        Commute commute = commuteRepository.findByAttendanceRequestId(attendanceRequestId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_COMMUTE));
+
+        // 시간 String -> LocalDateTime 변환
+        DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime endTime;
+        LocalDateTime endDate;
+
+        try {
+            endTime = LocalDateTime.parse(reqOvertimeExtensionDTO.getEndTime(), dateTimeformatter);
+            endDate = endTime.toLocalDate().atStartOfDay();
+        } catch (DateTimeParseException e) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 연장할 초과근무 종료 시간이 현재보다 이전일 경우
+        if (endTime.isBefore(LocalDateTime.now().withNano(0))) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 연장할 초과근무 종료시간이 이전 종료 시간보다 30분 이상 뒤에 있어야 하고, 30분 단위여야 한다
+        if (Duration.between(commute.getEndTime(), endTime).toMinutes() < 30) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        if (endTime.getMinute() != 0 && endTime.getMinute() != 30) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        // 초과근무 종료시간 연장
+        attendanceRequest.setEndDate(endDate);
+        commute.setEndTime(endTime);
+        commuteRepository.save(commute);
+
+        return modelMapper.map(attendanceRequestRepository.save(attendanceRequest), ResponseCommuteRequestDTO.class);
     }
 
 }
