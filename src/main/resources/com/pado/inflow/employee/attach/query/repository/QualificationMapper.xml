@@ -1,0 +1,39 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.employee.attach.query.repository.QualificationMapper">
+    <resultMap id="ResultMap" type="com.pado.inflow.employee.attach.query.dto.QualificationDTO">
+        <id property="qualificationId" column="QUALIFICATION_ID"/>
+        <result property="qualificationName" column="QUALIFICATION_NAME"/>
+        <result property="qualificationNumber" column="QUALIFICATION_NUMBER"/>
+        <result property="qualifiedAt" column="QUALIFIED_AT"/>
+        <result property="issuer" column="ISSUER"/>
+        <result property="gradeScore" column="GRADE_SCORE"/>
+        <result property="employeeId" column="EMPLOYEE_ID"/>
+    </resultMap>
+
+    <select id="getAllQualifications" resultMap="ResultMap">
+        SELECT
+               QUALIFICATION_ID
+             , QUALIFICATION_NAME
+             , QUALIFICATION_NUMBER
+             , DATE(QUALIFIED_AT) AS QUALIFIED_AT
+             , ISSUER
+             , GRADE_SCORE
+             , EMPLOYEE_ID
+          FROM QUALIFICATION
+    </select>
+
+    <select id="getOneQualification" resultMap="ResultMap" parameterType="_long">
+        SELECT
+               QUALIFICATION_ID
+             , QUALIFICATION_NAME
+             , QUALIFICATION_NUMBER
+             , DATE(QUALIFIED_AT) AS QUALIFIED_AT
+             , ISSUER
+             , GRADE_SCORE
+             , EMPLOYEE_ID
+          FROM QUALIFICATION
+         WHERE EMPLOYEE_ID = #{employeeId}
+    </select>
+</mapper>
