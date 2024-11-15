@@ -69,7 +69,7 @@
     </select>
 
     <!-- 사번으로 사원 조회 -->
-    <select id="findEmployeeByNumber" parameterType="String" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
+    <select id="findEmployeeByNumber" parameterType="String" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO" resultSetType="FORWARD_ONLY">
         SELECT
             employee_id AS employeeId,
             employee_number AS employeeNumber,
@@ -101,7 +101,7 @@
     </select>
 
     <!-- ID로 사원 조회 -->
-    <select id="findEmployeeById" parameterType="Long" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
+    <select id="findEmployeeById" parameterType="Long" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO" resultSetType="FORWARD_ONLY">
         SELECT
             employee_id AS employeeId,
             employee_number AS employeeNumber,

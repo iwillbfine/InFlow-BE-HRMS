@@ -11,10 +11,10 @@ import java.util.Optional;
 public interface EmployeeMapper {
 
     // 설명.1. 전체 사원 조회
-    Optional<List<EmployeeDTO>> findAllEmployees();
+   List<EmployeeDTO> findAllEmployees();
 
     // 설명.2. 이름으로 사원 조회
-    Optional<List<EmployeeDTO>> findEmployeesByName(@Param("name") String name);
+   List<EmployeeDTO> findEmployeesByName(@Param("name") String name);
 
     // 설명.3. 사번으로 사원 조회
     Optional<EmployeeDTO> findEmployeeByNumber(@Param("employeeNumber") String employeeNumber);
