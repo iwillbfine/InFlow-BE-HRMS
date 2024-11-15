@@ -51,25 +51,25 @@ public class AttendanceRequestController {
     }
 
     // 휴직 신청
-    @PostMapping("/leave-return")
-    public ResponseDTO<?> createLeaveReturnRequest(@RequestBody RequestLeaveReturnRequestDTO reqLeaveReturnRequestDTO) {
+    @PostMapping("/leave")
+    public ResponseDTO<?> createLeavenRequest(@RequestBody RequestLeaveRequestDTO reqLeaveRequestDTO) {
         ResponseLeaveReturnRequestDTO resLeaveReturnRequestDTO =
-                attendanceRequestService.registLeaveReturnRequest(reqLeaveReturnRequestDTO);
+                attendanceRequestService.registLeaveRequest(reqLeaveRequestDTO);
         return ResponseDTO.ok(resLeaveReturnRequestDTO);
     }
 
-    // 복직 처리
-    @PatchMapping("/leave-return/{attendanceRequestId}")
-    public ResponseDTO<?> reinstate(@PathVariable("attendanceRequestId") Long attendanceRequestId) {
+    // 복직 신청
+    @PostMapping("/return")
+    public ResponseDTO<?> createReturnRequest(@RequestBody RequestReturnRequestDTO reqReturnRequestDTO) {
         ResponseLeaveReturnRequestDTO resLeaveReturnRequestDTO =
-                attendanceRequestService.reinstate(attendanceRequestId);
+                attendanceRequestService.registReturnRequest(reqReturnRequestDTO);
         return ResponseDTO.ok(resLeaveReturnRequestDTO);
     }
 
     // 초과근무 연장
     @PatchMapping("/commute/overtime/{attendanceRequestId}")
     public ResponseDTO<?> extendOvertime(@PathVariable("attendanceRequestId") Long attendanceRequestId,
-                                                @RequestBody RequestOvertimeExtensionDTO reqOvertimeExtensionDTO) {
+                                         @RequestBody RequestOvertimeExtensionDTO reqOvertimeExtensionDTO) {
         ResponseCommuteRequestDTO resLeaveReturnRequestDTO =
                 attendanceRequestService.extendOvertime(attendanceRequestId);
         return ResponseDTO.ok(resLeaveReturnRequestDTO);

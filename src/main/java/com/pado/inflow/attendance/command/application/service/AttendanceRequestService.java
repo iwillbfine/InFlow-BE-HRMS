@@ -17,10 +17,10 @@ public interface AttendanceRequestService {
     ResponseBusinessTripRequestDTO registDispatchRequest(RequestBusinessTripRequestDTO reqBusinessTripRequestDTO);
 
     // 휴직 신청
-    ResponseLeaveReturnRequestDTO registLeaveReturnRequest(RequestLeaveReturnRequestDTO reqLeaveReturnRequestDTO);
+    ResponseLeaveReturnRequestDTO registLeaveRequest(RequestLeaveRequestDTO reqLeaveRequestDTO);
 
-    // 복직 처리
-    ResponseLeaveReturnRequestDTO reinstate(Long attendanceRequestId);
+    // 복직 신청
+    ResponseLeaveReturnRequestDTO registReturnRequest(RequestReturnRequestDTO reqReturnRequestDTO);
 
     // 초과근무 연장
     ResponseCommuteRequestDTO extendOvertime(Long attendanceRequestId);
