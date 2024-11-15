@@ -50,18 +50,19 @@ class AttendanceRequestServiceTests {
     @Test
     void testRegistOvertimeRequest() {
         // Given
-        LocalDateTime now = LocalDateTime.now().withNano(0);
+        LocalDate now = LocalDate.now();
+        LocalDateTime after = now.atTime(18,0);
 
-        int minute = now.getMinute();
+        int minute = after.getMinute();
         int roundedMinute = (minute < 30) ? 30 : 0;
 
         LocalDateTime startTime;
 
         // 만약 0분이 되면 시간을 1시간 뒤로 설정
         if (roundedMinute == 0) {
-            startTime = now.plusHours(1).withMinute(0).withSecond(0).withNano(0);
+            startTime = after.plusHours(1).withMinute(0).withSecond(0).withNano(0);
         } else {
-            startTime = now.withMinute(roundedMinute).withSecond(0).withNano(0);
+            startTime = after.withMinute(roundedMinute).withSecond(0).withNano(0);
         }
 
         LocalDateTime endTime = startTime.plusMinutes(30);
