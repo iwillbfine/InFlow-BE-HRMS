@@ -3,8 +3,8 @@ package com.pado.inflow.employee.info.command.application.controller;
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.employee.info.command.application.service.EmployeeService;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestEmployeeDTO;
+import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestUpdateEmployeeDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseEmployeeDTO;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
@@ -44,10 +44,26 @@ public class EmployeeController {
 
     }
 
-    /* 설명. 2. 사원 기본 정보 수정
-        사원 등록시 여러 사원이 등록 가능함. 따라서 요청 바디를 리스트 형식으로 요청
-    */
+    // 설명. 2. 사원 기본 정보 수정
+    /* 설명. 2.1 사원 정보 수정 (ID 기준) */
+    @PutMapping("/employee-id/{employeeId}")
+    public ResponseDTO<ResponseEmployeeDTO> updateEmployeeById(
+            @PathVariable Long employeeId,
+            @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
 
+        ResponseEmployeeDTO updatedEmployee = employeeService.updateEmployeeById(employeeId, updateEmployeeDTO);
+        return ResponseDTO.ok(updatedEmployee);
+    }
+
+    /* 설명. 2.2 사원 정보 수정 (사번 기준) */
+    @PutMapping("/employee-number/{employeeNumber}")
+    public ResponseDTO<ResponseEmployeeDTO> updateEmployeeByEmployeeNumber(
+            @PathVariable String employeeNumber,
+            @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
+
+        ResponseEmployeeDTO updatedEmployee = employeeService.updateEmployeeByEmployeeNumber(employeeNumber, updateEmployeeDTO);
+        return ResponseDTO.ok(updatedEmployee);
+    }
 
 
 }
