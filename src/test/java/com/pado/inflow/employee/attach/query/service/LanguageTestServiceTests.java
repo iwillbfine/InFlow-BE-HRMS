@@ -2,6 +2,7 @@ package com.pado.inflow.employee.attach.query.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,7 @@ class LanguageTestServiceTests {
     }
 
     @DisplayName("사원 한 명의 어학시험 정보 조회")
+    @ParameterizedTest
     @ValueSource(longs = {1L, 2L})
     public void getLanguageTest(Long employeeId) {
         assertTrue(languageTestService.getLanguageTestsOne(employeeId).size() > 0);
