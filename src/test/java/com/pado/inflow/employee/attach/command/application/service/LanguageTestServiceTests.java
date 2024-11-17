@@ -35,4 +35,29 @@ class LanguageTestServiceTests {
                 "EN"));
         assertTrue(languageTestService.addLangTests(list).size() > 0);
     }
+
+    @DisplayName("사원의 어학 정보 수정")
+    @Test
+    public void modifyLangTests() {
+        List<LanguageTestDTO> list = new ArrayList<>();
+        list.add(new LanguageTestDTO(1L,
+                "TOEIC",
+                "123456789",
+                "ETS",
+                LocalDate.of(2023, 11, 1),
+                "880",
+                1L,
+                "EN"));
+        list.add(new LanguageTestDTO(2L,
+                "JLPT N3",
+                "987654321",
+                "ETS",
+                LocalDate.of(2024, 2, 10),
+                "PASS",
+                2L,
+                "JP"));
+
+        assertTrue(languageTestService.modifyLangTests(list).size() > 0);
+    }
 }
+

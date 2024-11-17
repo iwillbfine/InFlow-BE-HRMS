@@ -40,4 +40,14 @@ public class LanguageTestServiceImpl implements LanguageTestService {
                 .filter(langs -> !langs.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
+
+    // 사원의 어학 정보 수정
+    @Override
+    public List<LanguageTest> modifyLangTests(List<LanguageTestDTO> langTests) {
+        return Optional.ofNullable(languageTestRepository.saveAllAndFlush(langTests.stream()
+                        .map(lang -> modelMapper.map(lang, LanguageTest.class))
+                        .collect(Collectors.toList())))
+                .filter(langs -> !langs.isEmpty())
+                .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
+    }
 }

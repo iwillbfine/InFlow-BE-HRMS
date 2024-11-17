@@ -26,4 +26,11 @@ public class LanguageTestController {
         List<LanguageTest> result = languageTestService.addLangTests(langTests);
         return ResponseDTO.ok(result);
     }
+
+    // 사원의 어학 정보 수정
+    @PutMapping
+    public ResponseDTO modifyLanguageTest(@RequestBody List<LanguageTestDTO> langTests) {
+        List<LanguageTest> result = languageTestService.modifyLangTests(langTests);
+        return ResponseDTO.ok(result);
+    }
 }
