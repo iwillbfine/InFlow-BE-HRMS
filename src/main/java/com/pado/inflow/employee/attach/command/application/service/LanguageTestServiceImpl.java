@@ -50,4 +50,15 @@ public class LanguageTestServiceImpl implements LanguageTestService {
                 .filter(langs -> !langs.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
+
+    // 사원의 어학 정보 삭제
+    @Override
+    public Boolean deleteLangTests(List<Long> langTests) {
+        return Optional.ofNullable(langTests)
+                .map(lang -> {
+                    languageTestRepository.deleteAllById(lang);
+                    return true;
+                })
+                .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
+    }
 }

@@ -12,4 +12,7 @@ public interface LanguageTestService {
 
     // 사원의 어학 정보 수정
     List<LanguageTest> modifyLangTests(List<LanguageTestDTO> langTests);
+
+    // 사원의 어학 정보 삭제
+    Boolean deleteLangTests(List<Long> langTests);
 }

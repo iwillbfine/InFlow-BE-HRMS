@@ -3,6 +3,8 @@ package com.pado.inflow.employee.attach.command.application.service;
 import com.pado.inflow.employee.attach.command.domain.aggregate.dto.LanguageTestDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -58,6 +60,13 @@ class LanguageTestServiceTests {
                 "JP"));
 
         assertTrue(languageTestService.modifyLangTests(list).size() > 0);
+    }
+
+    @DisplayName("사원의 어학 정보 삭제")
+    @Test
+    public void deleteLangTests() {
+        List<Long> list = new ArrayList<>(List.of(1L, 2L));
+        assertTrue(languageTestService.deleteLangTests(list));
     }
 }
 

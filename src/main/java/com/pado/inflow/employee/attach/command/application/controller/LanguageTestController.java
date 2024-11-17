@@ -33,4 +33,11 @@ public class LanguageTestController {
         List<LanguageTest> result = languageTestService.modifyLangTests(langTests);
         return ResponseDTO.ok(result);
     }
+
+    // 사원의 어학 정보 삭제
+    @DeleteMapping
+    public ResponseDTO deleteLanguageTest(@RequestBody List<Long> langTests) {
+        languageTestService.deleteLangTests(langTests);
+        return ResponseDTO.ok("어학 정보 삭제 완료");
+    }
 }
