@@ -1,0 +1,40 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.evaluation.query.repository.EvaluationPolicyMapper">
+    <resultMap id="evaluationPolicyResultMap" type="com.pado.inflow.evaluation.query.dto.EvaluationPolicyDTO">
+        <id property="evaluationPolicyId" column="evaluation_policy_id"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="year" column="year"/>
+        <result property="half" column="half"/>
+        <result property="taskRatio" column="task_ratio"/>
+        <result property="minRelEvalCount" column="min_rel_eval_count"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="modifiableDate" column="modifiable_date"/>
+        <result property="policyDescription" column="policy_description"/>
+        <result property="policyRegisterId" column="policy_register_id"/>
+        <result property="taskTypeId" column="task_type_id"/>
+    </resultMap>
+
+    <select id="findPolicyByYearAndHalf" resultMap="evaluationPolicyResultMap">
+        SELECT
+        evaluation_policy_id,
+        start_date,
+        end_date,
+        year,
+        half,
+        task_ratio,
+        min_rel_eval_count,
+        created_at,
+        modifiable_date,
+        policy_description,
+        policy_register_id,
+        task_type_id
+        FROM
+        evaluation_policy
+        WHERE
+        year = #{year}
+        AND half = #{half}
+    </select>
+</mapper>
