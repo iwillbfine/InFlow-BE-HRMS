@@ -1,0 +1,17 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.evaluation.query.repository.TaskTypeMapper">
+    <resultMap id="taskTypeResultMap" type="com.pado.inflow.evaluation.query.dto.TaskTypeDTO">
+        <id property="taskTypeId" column="TASK_TYPE_ID"/>
+        <result property="taskTypeName" column="TASK_TYPE_NAME"/>
+    </resultMap>
+
+    <select id="findAllTaskTypes" resultMap="taskTypeResultMap">
+        SELECT
+                TASK_TYPE_ID
+              , TASK_TYPE_NAME
+          FROM
+                TASK_TYPE
+    </select>
+</mapper>
