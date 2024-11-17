@@ -32,6 +32,7 @@ class EvaluationPolicyServiceImplTest {
         List<EvaluationPolicyDTO> policyList = evaluationPolicyMapper.findPolicyByYearAndHalf(2023, "1st");
 
         // then
+        assertNotNull(policyList);
         assertEquals(testData.getYear(), policyList.get(0).getYear());
         assertEquals(testData.getHalf(), policyList.get(0).getHalf());
     }

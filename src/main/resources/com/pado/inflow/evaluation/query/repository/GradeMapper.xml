@@ -1,0 +1,29 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.evaluation.query.repository.GradeMapper">
+    <resultMap id="gradeResultMap" type="com.pado.inflow.evaluation.query.dto.GradeDTO">
+        <id property="gradeId" column="grade_id"/>
+        <result property="gradeName" column="grade_name"/>
+        <result property="startRatio" column="start_ratio"/>
+        <result property="endRatio" column="end_ratio"/>
+        <result property="absoluteGradeRatio" column="absolute_grade_ratio"/>
+        <result property="evaluationPolicyId" column="evaluation_policy_id"/>
+    </resultMap>
+
+    <select id="findGradeByYearAndHalf" resultMap="gradeResultMap">
+        SELECT
+        g.grade_id,
+        g.grade_name,
+        g.start_ratio,
+        g.end_ratio,
+        g.absolute_grade_ratio,
+        g.evaluation_policy_id
+        FROM grade g
+        INNER JOIN evaluation_policy ep
+        ON g.evaluation_policy_id = ep.evaluation_policy_id
+        WHERE ep.year = #{year}
+        AND ep.half = #{half}
+        ORDER BY g.start_ratio DESC
+    </select>
+</mapper>
