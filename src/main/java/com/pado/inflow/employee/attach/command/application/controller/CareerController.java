@@ -22,21 +22,21 @@ public class CareerController {
 
     // 사원의 경력정보 등록
     @PostMapping
-    public ResponseDTO addCareer(@RequestBody List<CareerDTO> careers) {
+    public ResponseDTO<List<Career>> addCareer(@RequestBody List<CareerDTO> careers) {
         List<Career> result = careerService.addCareers(careers);
         return ResponseDTO.ok(result);
     }
 
     // 사원의 경력정보 수정
     @PutMapping
-    public ResponseDTO modifyCareer(@RequestBody List<CareerDTO> careers) {
+    public ResponseDTO<List<Career>> modifyCareer(@RequestBody List<CareerDTO> careers) {
         List<Career> result = careerService.modifyCareers(careers);
         return ResponseDTO.ok(result);
     }
 
     // 사원의 경력정보 삭제
     @DeleteMapping
-    public ResponseDTO deleteCareer(@RequestBody List<Long> careers) {
+    public ResponseDTO<String> deleteCareer(@RequestBody List<Long> careers) {
         careerService.deleteCareers(careers);
         return ResponseDTO.ok("경력정보 삭제 완료");
     }

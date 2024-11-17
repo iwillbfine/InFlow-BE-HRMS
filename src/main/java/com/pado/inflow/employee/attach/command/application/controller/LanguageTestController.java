@@ -22,21 +22,21 @@ public class LanguageTestController {
 
     // 사원의 어학 정보 등록
     @PostMapping
-    public ResponseDTO addLanguageTest(@RequestBody List<LanguageTestDTO> langTests) {
+    public ResponseDTO<List<LanguageTest>> addLanguageTest(@RequestBody List<LanguageTestDTO> langTests) {
         List<LanguageTest> result = languageTestService.addLangTests(langTests);
         return ResponseDTO.ok(result);
     }
 
     // 사원의 어학 정보 수정
     @PutMapping
-    public ResponseDTO modifyLanguageTest(@RequestBody List<LanguageTestDTO> langTests) {
+    public ResponseDTO<List<LanguageTest>> modifyLanguageTest(@RequestBody List<LanguageTestDTO> langTests) {
         List<LanguageTest> result = languageTestService.modifyLangTests(langTests);
         return ResponseDTO.ok(result);
     }
 
     // 사원의 어학 정보 삭제
     @DeleteMapping
-    public ResponseDTO deleteLanguageTest(@RequestBody List<Long> langTests) {
+    public ResponseDTO<String> deleteLanguageTest(@RequestBody List<Long> langTests) {
         languageTestService.deleteLangTests(langTests);
         return ResponseDTO.ok("어학 정보 삭제 완료");
     }

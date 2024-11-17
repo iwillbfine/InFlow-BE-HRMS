@@ -29,14 +29,14 @@ public class EducationController {
 
     // 전 사원의 학력 조회
     @GetMapping("/")
-    public ResponseDTO getEducationAll() {
+    public ResponseDTO<List<EducationDTO>> getEducationAll() {
         List<EducationDTO> result = educationService.getEduAll();
         return ResponseDTO.ok(result);
     }
 
     // 사원 한 명의 학력 조회
     @GetMapping("/{employeeId}")
-    public ResponseDTO getEducationOne(@PathVariable("employeeId") Long employeeId) {
+    public ResponseDTO<List<EducationDTO>> getEducationOne(@PathVariable("employeeId") Long employeeId) {
         List<EducationDTO> result = educationService.getEduOne(employeeId);
         return ResponseDTO.ok(result);
     }
