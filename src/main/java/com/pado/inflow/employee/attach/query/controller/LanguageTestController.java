@@ -29,14 +29,14 @@ public class LanguageTestController {
 
     // 전 사원의 어학 정보 조회
     @GetMapping("/")
-    public ResponseDTO getLanguageTestAll() {
+    public ResponseDTO<List<LanguageTestDTO>> getLanguageTestAll() {
         List<LanguageTestDTO> result = languageTestService.getLanguageTestsAll();
         return ResponseDTO.ok(result);
     }
 
     // 사원 한 명의 어학 정보 조회
     @GetMapping("/{employeeId}")
-    public ResponseDTO getLanguageTestOne(@PathVariable("employeeId") Long employeeId) {
+    public ResponseDTO<List<LanguageTestDTO>> getLanguageTestOne(@PathVariable("employeeId") Long employeeId) {
         List<LanguageTestDTO> result = languageTestService.getLanguageTestsOne(employeeId);
         return ResponseDTO.ok(result);
     }

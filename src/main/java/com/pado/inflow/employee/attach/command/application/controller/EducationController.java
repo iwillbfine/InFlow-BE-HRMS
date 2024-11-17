@@ -22,21 +22,21 @@ public class EducationController {
 
     // 사원의 학력정보 등록
     @PostMapping
-    public ResponseDTO addEdu(@RequestBody List<EducationDTO> educations) {
+    public ResponseDTO<List<Education>> addEdu(@RequestBody List<EducationDTO> educations) {
         List<Education> result = educationService.addEdus(educations);
         return ResponseDTO.ok(result);
     }
 
     // 사원의 학력정보 수정
     @PutMapping
-    public ResponseDTO modifyEdu(@RequestBody List<EducationDTO> educations) {
+    public ResponseDTO<List<Education>> modifyEdu(@RequestBody List<EducationDTO> educations) {
         List<Education> result = educationService.modifyEdus(educations);
         return ResponseDTO.ok(result);
     }
 
     // 사원의 학력정보 삭제
     @DeleteMapping
-    public ResponseDTO deleteEdu(@RequestBody List<Long> educations) {
+    public ResponseDTO<String> deleteEdu(@RequestBody List<Long> educations) {
         Boolean result = educationService.deleteEdus(educations);
         return ResponseDTO.ok("삭제 완료");
     }

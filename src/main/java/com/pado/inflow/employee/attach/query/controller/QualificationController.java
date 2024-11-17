@@ -29,14 +29,14 @@ public class QualificationController {
 
     // 전 사원의 자격증 조회
     @GetMapping("/")
-    public ResponseDTO getQualificationAll() {
+    public ResponseDTO<List<QualificationDTO>> getQualificationAll() {
         List<QualificationDTO> result = qualificationService.getQualificationAll();
         return ResponseDTO.ok(result);
     }
 
     // 사원 한 명의 자격증 조회
     @GetMapping("/{employeeId}")
-    public ResponseDTO getQualificationOne(@PathVariable("employeeId") Long employeeId) {
+    public ResponseDTO<List<QualificationDTO>> getQualificationOne(@PathVariable("employeeId") Long employeeId) {
         List<QualificationDTO> result = qualificationService.getQualificationOne(employeeId);
         return ResponseDTO.ok(result);
     }

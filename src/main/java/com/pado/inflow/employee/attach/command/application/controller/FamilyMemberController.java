@@ -22,21 +22,21 @@ public class FamilyMemberController {
 
     // 가구원 등록
     @PostMapping
-    public ResponseDTO addFamilyMembers(@RequestBody List<FamilyMemberDTO> familyMember) {
+    public ResponseDTO<List<FamilyMember>> addFamilyMembers(@RequestBody List<FamilyMemberDTO> familyMember) {
         List<FamilyMember> result = familyMemberService.insertFamilyMembers(familyMember);
         return ResponseDTO.ok(result);
     }
 
     // 가구원 수정
     @PutMapping
-    public ResponseDTO modifyFamilyMembers(@RequestBody List<FamilyMemberDTO> familyMember) {
+    public ResponseDTO<List<FamilyMember>> modifyFamilyMembers(@RequestBody List<FamilyMemberDTO> familyMember) {
         List<FamilyMember> result = familyMemberService.modifyFamilyMembers(familyMember);
         return ResponseDTO.ok(result);
     }
 
     // 가구원 삭제
     @DeleteMapping
-    public ResponseDTO deleteFamilyMember(@RequestBody List<Long> familyMember) {
+    public ResponseDTO<String> deleteFamilyMember(@RequestBody List<Long> familyMember) {
         Boolean result = familyMemberService.deleteFamilyMember(familyMember);
         return ResponseDTO.ok("삭제 완료");
     }
