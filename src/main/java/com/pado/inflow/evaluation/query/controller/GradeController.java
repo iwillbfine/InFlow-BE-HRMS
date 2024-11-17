@@ -26,7 +26,8 @@ public class GradeController {
             @RequestParam( value = "year") Integer year
            ,@RequestParam( value = "half") String half
     ) {
-        List<GradeDTO> gradeList = gradeService.findGradeByYearAndHalf(year, half);
+        List<GradeDTO> gradeList =
+                gradeService.findGradeByYearAndHalf(year, half);
 
         return ResponseDTO.ok(gradeList);
 
