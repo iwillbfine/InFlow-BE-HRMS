@@ -8,9 +8,9 @@ import java.util.List;
 @Mapper
 public interface LanguageTestMapper {
 
-    // 전 사원의 자격증 정보 조회
+    // 전 사원의 어학 정보 조회
     List<LanguageTestDTO> getAllLanguageTests();
 
-    // 사원 한 명의 자격증 정보 조회
+    // 사원 한 명의 어학 정보 조회
     List<LanguageTestDTO> getOneLanguageTest(Long employeeId);
 }
