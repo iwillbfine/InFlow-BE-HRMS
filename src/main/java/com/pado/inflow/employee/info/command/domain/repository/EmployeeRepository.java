@@ -4,7 +4,12 @@ import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 //@Repository("employeeCommandRepository")
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    // 추가적으로 필요한 커스텀 쿼리 메서드를 정의할 수 있음
+    /**
+     * 사번으로 사원 검색
+     */
+    Optional<Employee> findByEmployeeNumber(String employeeNumber);
 }
