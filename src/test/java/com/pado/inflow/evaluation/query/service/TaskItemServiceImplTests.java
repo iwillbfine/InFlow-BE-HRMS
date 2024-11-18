@@ -51,6 +51,20 @@ class TaskItemServiceImplTests {
     }
 
     @Test
+    @DisplayName("과제 단건 조회 테스트")
+    void getTaskItemByTaskItemIdTest() {
+        //given
+        TaskItemDTO testData = new TaskItemDTO();
+        testData.setTaskItemId(1L);
+
+        //when
+        TaskItemDTO selectedData = taskItemService.findIndividualTaskItemByTaskItemId(1L);
+
+        //then
+        assertEquals(testData.getTaskItemId(), selectedData.getTaskItemId());
+    }
+
+    @Test
     @DisplayName("공통 과제 조회 테스트")
     void getCommonTasksTest() {
         //given

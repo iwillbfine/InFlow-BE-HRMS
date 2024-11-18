@@ -56,6 +56,16 @@ public class TaskItemServiceImpl implements TaskItemService{
         return selectedTaskItem;
     }
 
+    @Override
+    public TaskItemDTO findIndividualTaskItemByTaskItemId(Long taskItemId) {
+        TaskItemDTO selectedTaskItem = taskItemMapper.findTaskItemByTaskItemId(taskItemId);
+
+        if (selectedTaskItem == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK);
+        }
+        return selectedTaskItem;
+    }
+
 
 }
 

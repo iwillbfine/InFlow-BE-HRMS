@@ -59,6 +59,22 @@
         AND ti.employee_id = #{empId}
     </select>
 
+    <!-- TaskItem 단건 조회 -->
+    <select id="findTaskItemByTaskItemId" resultMap="taskItemResultMap">
+        SELECT
+        ti.task_item_id,
+        ti.task_name,
+        ti.task_content,
+        ti.assigned_employee_count,
+        ti.task_type_id,
+        ti.employee_id,
+        ti.department_code,
+        ti.evaluation_policy_id,
+        ti.is_manager_written
+        FROM task_item ti
+        WHERE ti.task_item_id = #{taskItemId}
+    </select>
+
     <!-- 공통 과제 조회 -->
     <select id="findCommonTaskItemByYearAndHalf" resultMap="taskItemResultMap">
         SELECT DISTINCT

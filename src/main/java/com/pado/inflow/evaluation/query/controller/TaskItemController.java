@@ -5,10 +5,7 @@ import com.pado.inflow.evaluation.query.dto.TaskItemDTO;
 import com.pado.inflow.evaluation.query.service.TaskItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.config.Task;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,8 +32,8 @@ public class TaskItemController {
         return ResponseDTO.ok(TaskItemList);
     }
 
-    // 개인 과제 항목 조회
-    @GetMapping("/individualTask")
+    // 개인 과제 항목 리스트 조회
+    @GetMapping("/individualTasks")
     public ResponseDTO<?> findindividualTaskItemByEmpId(
             @RequestParam( value = "year")  Integer year
            ,@RequestParam( value = "half")  String half
@@ -45,6 +42,15 @@ public class TaskItemController {
         List<TaskItemDTO> TaskItemList =
                 taskItemService.findindividualTaskItemByEmpId(year, half, empId);
         return ResponseDTO.ok(TaskItemList);
+    }
+
+    // 개인 과제 단건 조회
+    @GetMapping("/individualTask/{taskItemId}")
+    public ResponseDTO<?> findIndividualTeskByTaskItemId(
+            @PathVariable Long taskItemId
+    ) {
+        TaskItemDTO taskItem = taskItemService.findIndividualTaskItemByTaskItemId(taskItemId);
+        return ResponseDTO.ok(taskItem);
     }
 
     // 공통 과제 조회
