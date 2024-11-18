@@ -50,4 +50,19 @@ class TaskItemServiceImplTests {
         assertEquals(testData.getEmployeeId(), selectedTasks.get(0).getEmployeeId());
     }
 
+    @Test
+    @DisplayName("공통 과제 조회 테스트")
+    void getCommonTasksTest() {
+        //given
+        TaskItemDTO testData = new TaskItemDTO();
+        testData.setDepartmentCode("DP002");
+
+        //when
+        List<TaskItemDTO> selectedDatas = taskItemService.getCommonTaskItem(2023,"1st",6L);
+
+        //then
+        assertNotNull(selectedDatas);
+        assertEquals(testData.getDepartmentCode(), selectedDatas.get(0).getDepartmentCode());
+    }
+
 }

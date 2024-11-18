@@ -11,4 +11,6 @@ public interface TaskItemMapper {
     List<TaskItemDTO> findDepartmentTaskItemByEmpIdAndYearAndHalf(Integer year, String half, Long empId);
 
     List<TaskItemDTO> findIndividualItemByEmpId(Integer year, String half, Long empId);
+
+    List<TaskItemDTO> findCommonTaskItemByYearAndHalf(Integer year, String half, Long empId);
 }

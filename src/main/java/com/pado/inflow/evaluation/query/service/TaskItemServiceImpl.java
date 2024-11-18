@@ -21,7 +21,7 @@ public class TaskItemServiceImpl implements TaskItemService{
         this.taskItemMapper = taskItemMapper;
     }
 
-    // 과제 항목 조회
+    // 부서별 과제 항목 조회
     @Override
     public List<TaskItemDTO> findTaskItemByEmpIdAndYearAndHalf(Integer year, String half, Long empId) {
 
@@ -35,10 +35,21 @@ public class TaskItemServiceImpl implements TaskItemService{
         return selectedTaskItemList;
     }
 
+    // 개인 과제 항목 조회
     @Override
     public List<TaskItemDTO> findindividualTaskItemByEmpId(Integer year, String half, Long empId) {
         List<TaskItemDTO> selectedTaskItem = taskItemMapper.findIndividualItemByEmpId(year, half, empId);
 
+        if (selectedTaskItem == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK);
+        }
+        return selectedTaskItem;
+    }
+
+    // 공통 과제 항목 조회
+    @Override
+    public List<TaskItemDTO> getCommonTaskItem(Integer year, String half, Long empId) {
+        List<TaskItemDTO> selectedTaskItem = taskItemMapper.findCommonTaskItemByYearAndHalf(year, half, empId);
         if (selectedTaskItem == null) {
             throw new CommonException(ErrorCode.NOT_FOUND_TASK);
         }
