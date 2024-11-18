@@ -2,10 +2,12 @@ package com.pado.inflow.vacation.command.application.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.employee.info.command.domain.repository.EmployeeRepository;
 import com.pado.inflow.vacation.command.application.dto.RequestVacationPolicyDTO;
 import com.pado.inflow.vacation.command.application.dto.ResponseVacationPolicyDTO;
 import com.pado.inflow.vacation.command.domain.aggregate.entity.VacationPolicy;
 import com.pado.inflow.vacation.command.domain.aggregate.type.PaidStatus;
+import com.pado.inflow.vacation.command.domain.aggregate.type.VacationPolicyStatus;
 import com.pado.inflow.vacation.command.domain.repository.VacationPolicyRepository;
 
 import com.pado.inflow.vacation.command.domain.repository.VacationTypeRepository;
@@ -22,14 +24,17 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
     private final ModelMapper modelMapper;
     private final VacationPolicyRepository vacationPolicyRepository;
     private final VacationTypeRepository vacationTypeRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
     public VacationPolicyServiceImpl(ModelMapper modelMapper,
                                      VacationPolicyRepository vacationPolicyRepository,
-                                     VacationTypeRepository vacationTypeRepository) {
+                                     VacationTypeRepository vacationTypeRepository,
+                                     EmployeeRepository employeeRepository) {
         this.modelMapper = modelMapper;
         this.vacationPolicyRepository = vacationPolicyRepository;
         this.vacationTypeRepository = vacationTypeRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     // 휴가 정책 등록
@@ -43,6 +48,7 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
                 .builder()
                 .vacationPolicyName(reqVacationPolicyDTO.getVacationPolicyName())
                 .vacationPolicyDescription(reqVacationPolicyDTO.getVacationPolicyDescription())
+                .vacationPolicyStatus(reqVacationPolicyDTO.getVacationPolicyStatus())
                 .allocationDays(reqVacationPolicyDTO.getAllocationDays())
                 .paidStatus(reqVacationPolicyDTO.getPaidStatus())
                 .year(reqVacationPolicyDTO.getYear())
@@ -69,6 +75,7 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
         
         vacationPolicy.setVacationPolicyName(reqVacationPolicyDTO.getVacationPolicyName());
         vacationPolicy.setVacationPolicyDescription(reqVacationPolicyDTO.getVacationPolicyDescription());
+        vacationPolicy.setVacationPolicyStatus(VacationPolicyStatus.valueOf(reqVacationPolicyDTO.getVacationPolicyStatus()));
         vacationPolicy.setAllocationDays(reqVacationPolicyDTO.getAllocationDays());
         vacationPolicy.setPaidStatus(PaidStatus.valueOf(reqVacationPolicyDTO.getPaidStatus()));
         vacationPolicy.setYear(reqVacationPolicyDTO.getYear());
@@ -89,6 +96,11 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
 
+        // 휴가 정책 유형이 NULL 이거나 공백일 경우
+        if (reqVacationPolicyDTO.getVacationPolicyStatus() == null || reqVacationPolicyDTO.getVacationPolicyStatus().isEmpty()) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
         // 휴가 지급 일수가 NULL 이거나 0이하 일 경우
         if (reqVacationPolicyDTO.getAllocationDays() == null || reqVacationPolicyDTO.getAllocationDays() <= 0) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
@@ -106,7 +118,7 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
         }
 
         // 휴가 자동지급주기가 NULL 이 아닌데 크론 표기법이 아닐 경우
-        String cronRegex = "^([0-5]?\\d|\\*)\\s([01]?\\d|2[0-3]|\\*)\\s([1-9]|[12]\\d|3[01]|\\*)\\s([1-9]|1[0-2]|\\*)\\s([0-6]|SUN|MON|TUE|WED|THU|FRI|SAT|\\*)$";
+        String cronRegex = "^([0-5]?\\d|\\*)\\s([0-5]?\\d|\\*)\\s([01]?\\d|2[0-3]|\\*)\\s([1-9]|[12]\\d|3[01]|\\*)\\s([1-9]|1[0-2]|\\*)\\s([0-6]|SUN|MON|TUE|WED|THU|FRI|SAT|\\*)$";
 
         if (reqVacationPolicyDTO.getAutoAllocationCycle() != null && !reqVacationPolicyDTO.getAutoAllocationCycle().matches(cronRegex)) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
@@ -117,8 +129,8 @@ public class VacationPolicyServiceImpl implements VacationPolicyService{
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_VACATION_TYPE));
 
         // 존재하지 않는 사원일 경우
-//        employeeRepository.findById(reqVacationPolicyDTO.getPolicyRegisterId())
-//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        employeeRepository.findById(reqVacationPolicyDTO.getPolicyRegisterId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
     }
 
 }

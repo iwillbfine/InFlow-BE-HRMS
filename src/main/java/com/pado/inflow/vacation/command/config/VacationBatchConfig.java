@@ -1,5 +1,6 @@
 package com.pado.inflow.vacation.command.config;
 
+import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
 import com.pado.inflow.vacation.command.domain.aggregate.component.*;
 import com.pado.inflow.vacation.command.domain.aggregate.entity.Vacation;
 import org.springframework.batch.core.Job;
@@ -11,6 +12,8 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import java.util.List;
 
 @Configuration
 @EnableBatchProcessing
@@ -56,6 +59,28 @@ public class VacationBatchConfig {
                 .<Vacation, Vacation>chunk(100, transactionManager)
                 .reader(deleteVacationPageReader)
                 .writer(deleteVacationItemWriter) // 삭제 로직을 처리할 Writer
+                .build();
+    }
+
+    // 휴가 지급
+    @Bean
+    public Job vacationInsertJob(JobRepository jobRepository, Step vacationInsertStep) {
+        return new JobBuilder("vacationInsertJob", jobRepository)
+                .start(vacationInsertStep)
+                .build();
+    }
+
+    @Bean
+    public Step vacationInsertStep(JobRepository jobRepository,
+                                   PlatformTransactionManager transactionManager,
+                                   EmployeePageReader employeePageReader,
+                                   InsertVacationItemProcessor insertVacationItemProcessor,
+                                   InsertVacationItemWriter insertVacationItemWriter) {
+        return new StepBuilder("vacationInsertStep", jobRepository)
+                .<Employee, List<Vacation>>chunk(100, transactionManager)
+                .reader(employeePageReader) // 사원 정보 읽기
+                .processor(insertVacationItemProcessor) // 휴가 지급 처리
+                .writer(insertVacationItemWriter) // 휴가 삽입
                 .build();
     }
 
