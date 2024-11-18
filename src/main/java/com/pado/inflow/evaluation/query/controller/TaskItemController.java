@@ -23,7 +23,7 @@ public class TaskItemController {
         this.taskItemService = taskItemService;
     }
 
-    // 부서별 과제 항목 조회
+    // 부서 과제 항목 조회
     @GetMapping("/departmentTask")
     public ResponseDTO<?> findDepartmentTaskItemByEmpId(
             @RequestParam( value = "year")  Integer year
@@ -35,7 +35,7 @@ public class TaskItemController {
         return ResponseDTO.ok(TaskItemList);
     }
 
-    // 부서별 과제 항목 조회
+    // 개인 과제 항목 조회
     @GetMapping("/individualTask")
     public ResponseDTO<?> findindividualTaskItemByEmpId(
             @RequestParam( value = "year")  Integer year
@@ -47,12 +47,18 @@ public class TaskItemController {
         return ResponseDTO.ok(TaskItemList);
     }
 
+    // 공통 과제 조회
+    @GetMapping("/commonTask")
+    public ResponseDTO<?> findCommonTaskItemByEmpId(
+            @RequestParam( value = "year") Integer year
+           ,@RequestParam( value = "half") String half
+            ,@RequestParam( value = "empId") Long empId
+    ) {
+        List<TaskItemDTO> CommonTaskList = taskItemService.getCommonTaskItem(year, half, empId);
+
+        return ResponseDTO.ok(CommonTaskList);
+
+    }
 
 }
 
-/*
-부서장 작성 여부가 Y인 경우 2023 및 1st에 해당하면서 부서장의 id를 통해 얻은 부서코드와 해당 과제의 부서코드가 일치하는지 여부를 따진다면 부서별 과제만 선택적으로 select하는게 가능하다고 생각해 맞아 ?
-
-또한 api를 하나 더 만들어서
-개인 사원별 Id값이 있으니 id값과 더불어 해당 과제의 정책을 조인하여 2023 1st등 입력된 파라미터 값에 해당하는 과제만 조회할 수 있잖아 맞지 ?
-* */
