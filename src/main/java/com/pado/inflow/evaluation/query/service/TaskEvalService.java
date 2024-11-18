@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface TaskEvalService {
     List<TaskEvalDTO> findTaskEval(Long empId, Integer year, String half);
+
+
+    TaskEvalDTO getTaskEvalItem(Long taskEvalId);
 }

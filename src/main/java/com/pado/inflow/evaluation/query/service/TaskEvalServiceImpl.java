@@ -27,4 +27,10 @@ public class TaskEvalServiceImpl implements TaskEvalService{
         }
         return selectedTaskEvalList;
     }
+
+    @Override
+    public TaskEvalDTO getTaskEvalItem(Long taskEvalId) {
+        TaskEvalDTO selectedTaskEval = taskEvalMapper.findTaskEvalByTaskEvalId(taskEvalId);
+        return selectedTaskEval;
+    }
 }

@@ -20,6 +20,7 @@
         <result property="taskItemId" column="task_item_id"/>
     </resultMap>
 
+    <!-- TaskEval 리스트 조회 -->
     <select id="findTaskEvalList" resultMap="TaskEvalResultMap">
         SELECT
             te.task_eval_id,
@@ -41,5 +42,25 @@
          WHERE e.employee_id = #{empId}
            AND e.year = #{year}
            AND e.half = #{half}
+    </select>
+
+    <!-- TaskEval 단건 조회 -->
+    <select id="findTaskEvalByTaskEvalId" resultMap="TaskEvalResultMap">
+        SELECT
+        te.task_eval_id,
+        te.task_eval_name,
+        te.task_eval_content,
+        te.score,
+        te.set_ratio,
+        te.task_grade,
+        te.performance_input,
+        te.created_at,
+        te.rel_eval_status,
+        te.evaluation_id,
+        te.modifiable_date,
+        te.task_type_id,
+        te.task_item_id
+        FROM task_eval te
+        WHERE te.task_eval_id = #{taskEvalId}
     </select>
 </mapper>
