@@ -36,4 +36,19 @@ class GradeServiceImplTest {
         assertEquals(testData.getGradeName(), gradeList.get(0).getGradeName());
     }
 
+    @Test
+    @DisplayName("평가 등급 단건 조회 테스트")
+    void gradeFindByGradeIdTest() {
+        //given
+        GradeDTO testData = new GradeDTO();
+        testData.setGradeId(1L);
+
+        //when
+        GradeDTO selectedData = gradeMapper.getGradeByGradeId(1L);
+
+        //then
+        assertEquals(testData.getGradeId(), selectedData.getGradeId());
+        
+    }
+
 }

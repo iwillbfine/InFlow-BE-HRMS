@@ -3,10 +3,7 @@ package com.pado.inflow.evaluation.query.controller;
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.evaluation.query.dto.GradeDTO;
 import com.pado.inflow.evaluation.query.service.GradeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,7 +17,7 @@ public class GradeController {
         this.gradeService = gradeService;
     }
 
-    // 등급 조회
+    // 평가등급 리스트 조회  - Unique 다시 건다면 테스트 코드도 수정해야함을 알고있자 !
     @GetMapping("/find")
     public ResponseDTO<?> findGradeByYearAndHalf(
             @RequestParam( value = "year") Integer year
@@ -31,5 +28,14 @@ public class GradeController {
 
         return ResponseDTO.ok(gradeList);
 
+    }
+
+    // 평가등급 단건 조회
+    @GetMapping("/{gradeId}")
+    public ResponseDTO<?> findGradeByGradeId(
+            @PathVariable( value = "gradeId") Long gradeId
+    ) {
+        GradeDTO grade = gradeService.findGradeByGradeId(gradeId);
+        return ResponseDTO.ok(grade);
     }
 }
