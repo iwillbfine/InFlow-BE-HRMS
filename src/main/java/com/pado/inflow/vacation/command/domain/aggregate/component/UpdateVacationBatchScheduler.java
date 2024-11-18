@@ -3,20 +3,18 @@ package com.pado.inflow.vacation.command.domain.aggregate.component;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-@EnableScheduling
-public class VacationBatchScheduler {
+public class UpdateVacationBatchScheduler {
 
     private final JobLauncher jobLauncher;
     private final Job vacationUpdateJob;
 
     @Autowired
-    public VacationBatchScheduler(JobLauncher jobLauncher,
-                                  Job vacationUpdateJob) {
+    public UpdateVacationBatchScheduler(JobLauncher jobLauncher,
+                                        Job vacationUpdateJob) {
         this.jobLauncher = jobLauncher;
         this.vacationUpdateJob = vacationUpdateJob;
     }
@@ -31,4 +29,5 @@ public class VacationBatchScheduler {
         // 배치 작업 실행
         jobLauncher.run(vacationUpdateJob, jobParameters);
     }
+
 }

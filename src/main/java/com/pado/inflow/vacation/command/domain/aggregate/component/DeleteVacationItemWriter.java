@@ -10,20 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
-public class VacationItemWriter implements ItemWriter<Vacation> {
+public class DeleteVacationItemWriter implements ItemWriter<Vacation> {
 
     private final VacationRepository vacationRepository;
 
     @Autowired
-    public VacationItemWriter(VacationRepository vacationRepository) {
+    public DeleteVacationItemWriter(VacationRepository vacationRepository) {
         this.vacationRepository = vacationRepository;
     }
 
     @Override
     public void write(Chunk<? extends Vacation> chunk) {
-        // 상태가 업데이트된 vacation 객체를 저장
-        vacationRepository.saveAll(chunk.getItems());
-        vacationRepository.flush();
+        vacationRepository.deleteAll(chunk.getItems());
     }
 
 }

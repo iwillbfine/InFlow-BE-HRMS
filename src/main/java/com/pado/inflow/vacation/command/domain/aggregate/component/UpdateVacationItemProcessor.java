@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-public class VacationItemProcessor implements ItemProcessor<Vacation, Vacation> {
+public class UpdateVacationItemProcessor implements ItemProcessor<Vacation, Vacation> {
 
     @Override
     public Vacation process(Vacation vacation) {

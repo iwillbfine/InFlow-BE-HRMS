@@ -1,6 +1,7 @@
 package com.pado.inflow.vacation.command.domain.aggregate.component;
 
 import com.pado.inflow.vacation.command.domain.aggregate.entity.Vacation;
+import com.pado.inflow.vacation.command.domain.aggregate.type.ExpirationStatus;
 import com.pado.inflow.vacation.command.domain.repository.VacationRepository;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +9,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class VacationPageReader implements ItemReader<Vacation> {
+public class DeleteVacationPageReader implements ItemReader<Vacation> {
 
     private final VacationRepository vacationRepository;
-    private int currentPage = 0;
-    private Page<Vacation> currentVacationPage;
     private List<Vacation> currentVacations;
 
     @Autowired
-    public VacationPageReader(VacationRepository vacationRepository) {
+    public DeleteVacationPageReader(VacationRepository vacationRepository) {
         this.vacationRepository = vacationRepository;
     }
 
@@ -29,9 +27,11 @@ public class VacationPageReader implements ItemReader<Vacation> {
     public Vacation read() {
         // 현재 페이지의 데이터가 비어있다면 새 페이지를 로드
         if (currentVacations == null || currentVacations.isEmpty()) {
-            currentVacationPage = vacationRepository.findByExpiredAtBefore(
-                    LocalDateTime.now(), // 현재 시간
-                    PageRequest.of(currentPage++, 100) // 페이지 크기 100
+            // 현재 시간
+            // 페이지 크기 100
+            Page<Vacation> currentVacationPage = vacationRepository.findByExpirationStatus(
+                    ExpirationStatus.Y, // 현재 시간
+                    PageRequest.of(0, 10) // 페이지 크기 100
             );
 
             // 더 이상 데이터가 없다면 null 반환
@@ -51,4 +51,5 @@ public class VacationPageReader implements ItemReader<Vacation> {
         // 첫 번째 데이터를 반환
         return currentVacations.remove(0);
     }
+
 }
