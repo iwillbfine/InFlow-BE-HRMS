@@ -59,8 +59,8 @@ public class VacationServiceImpl implements VacationService {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
 
-        // 만료일이 현재 시간보다 이전일 경우 처리
-        if (expiredAt.isBefore(LocalDateTime.now().withNano(0))) {
+        // 만료일이 지급날짜 + 지급일 수보다 이전일 경우 처리
+        if (expiredAt.isBefore(LocalDateTime.now().plusDays(vacationPolicy.getAllocationDays()).withNano(0))) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
 
