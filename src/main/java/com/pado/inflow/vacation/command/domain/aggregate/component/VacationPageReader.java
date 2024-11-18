@@ -31,7 +31,7 @@ public class VacationPageReader implements ItemReader<Vacation> {
         if (currentVacations == null || currentVacations.isEmpty()) {
             currentVacationPage = vacationRepository.findByExpiredAtBefore(
                     LocalDateTime.now(), // 현재 시간
-                    PageRequest.of(currentPage++, 100) // 페이지 크기 10
+                    PageRequest.of(currentPage++, 100) // 페이지 크기 100
             );
 
             // 더 이상 데이터가 없다면 null 반환

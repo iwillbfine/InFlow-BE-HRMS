@@ -13,7 +13,7 @@ public class VacationItemProcessor implements ItemProcessor<Vacation, Vacation> 
     @Override
     public Vacation process(Vacation vacation) {
         // 상태를 업데이트하는 로직
-        if (vacation.getExpiredAt().isBefore(LocalDateTime.now().plusDays(5)) &&
+        if (vacation.getExpiredAt().isBefore(LocalDateTime.now()) &&
                 vacation.getExpirationStatus() == ExpirationStatus.N) {
             vacation.setExpirationStatus(ExpirationStatus.Y);
         }
