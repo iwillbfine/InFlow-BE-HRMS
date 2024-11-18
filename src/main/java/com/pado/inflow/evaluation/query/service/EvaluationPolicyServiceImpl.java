@@ -30,4 +30,14 @@ public class EvaluationPolicyServiceImpl implements EvaluationPolicyService {
         }
         return selectedPolicy;
     }
+
+    @Override
+    public EvaluationPolicyDTO findPolicyByevaluationPolicyId(Long evaluationPolicyId) {
+        EvaluationPolicyDTO selectedPolicy = evaluationPolicyMapper.getEvaluationPolicyByEvaluationPolicyId(evaluationPolicyId);
+
+        if (selectedPolicy == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION_POLICY);
+        }
+        return selectedPolicy;
+    }
 }

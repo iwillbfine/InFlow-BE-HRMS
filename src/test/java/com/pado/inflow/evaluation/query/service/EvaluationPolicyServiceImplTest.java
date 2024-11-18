@@ -20,8 +20,8 @@ class EvaluationPolicyServiceImplTest {
     private EvaluationPolicyMapper evaluationPolicyMapper;
 
     @Test
-    @DisplayName("평가 정책 조회 테스트")
-    void evaluationPolicyFindTest() {
+    @DisplayName("평가 정책 리스트 조회 테스트")
+    void evaluationPoliciesFindTest() {
 
         // given
         EvaluationPolicyDTO testData = new EvaluationPolicyDTO();
@@ -37,4 +37,18 @@ class EvaluationPolicyServiceImplTest {
         assertEquals(testData.getHalf(), policyList.get(0).getHalf());
     }
 
+    @Test
+    @DisplayName("평가 정책 단건 조회 테스트")
+    void evaluationPolicyFindTest() {
+        //given
+        EvaluationPolicyDTO testData = new EvaluationPolicyDTO();
+        testData.setEvaluationPolicyId(1L);
+
+        //when
+        EvaluationPolicyDTO selectedData = evaluationPolicyMapper.getEvaluationPolicyByEvaluationPolicyId(1L);
+
+        //then
+        assertEquals(testData.getEvaluationPolicyId(), selectedData.getEvaluationPolicyId());
+
+    }
 }

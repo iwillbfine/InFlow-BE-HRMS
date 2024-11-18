@@ -9,4 +9,6 @@ import java.util.List;
 public interface EvaluationPolicyMapper {
 
     List<EvaluationPolicyDTO> findPolicyByYearAndHalf(Integer year, String half);
+
+    EvaluationPolicyDTO getEvaluationPolicyByEvaluationPolicyId(Long evaluationPolicyId);
 }
