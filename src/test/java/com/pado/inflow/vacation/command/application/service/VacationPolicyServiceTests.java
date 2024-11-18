@@ -26,6 +26,7 @@ class VacationPolicyServiceTests {
                 .builder()
                 .vacationPolicyName("테스트용 정책")
                 .vacationPolicyDescription("테스트용 설명")
+                .vacationPolicyStatus("NORMAL")
                 .allocationDays(3L)
                 .paidStatus("Y")
                 .year(2024)

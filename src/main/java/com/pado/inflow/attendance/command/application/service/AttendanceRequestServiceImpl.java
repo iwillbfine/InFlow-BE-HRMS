@@ -6,6 +6,7 @@ import com.pado.inflow.attendance.command.domain.aggregate.type.*;
 import com.pado.inflow.attendance.command.domain.repository.*;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.employee.info.command.domain.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
     private final BusinessTripRepository businessTripRepository;
     private final CommuteRepository commuteRepository;
     private final LeaveReturnRepository leaveReturnRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
     public AttendanceRequestServiceImpl(ModelMapper modelMapper,
@@ -36,7 +38,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                                         AttendanceRequestFileRepository attendanceRequestFileRepository,
                                         BusinessTripRepository businessTripRepository,
                                         CommuteRepository commuteRepository,
-                                        LeaveReturnRepository leaveReturnRepository) {
+                                        LeaveReturnRepository leaveReturnRepository,
+                                        EmployeeRepository employeeRepository) {
         this.modelMapper = modelMapper;
         this.attendanceRequestRepository = attendanceRequestRepository;
         this.attendanceRequestTypeRepository = attendanceRequestTypeRepository;
@@ -44,6 +47,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         this.businessTripRepository = businessTripRepository;
         this.commuteRepository = commuteRepository;
         this.leaveReturnRepository = leaveReturnRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     // 재택근무 신청
@@ -51,8 +55,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
     @Override
     public ResponseCommuteRequestDTO registRemoteRequest(RequestCommuteRequestDTO reqCommuteRequestDTO) {
         // 사원 유효성 검사
-//        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
-//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
         // 근태신청유형 유효성 검사
         AttendanceRequestType attendanceRequestType = attendanceRequestTypeRepository.findById(reqCommuteRequestDTO.getAttendanceRequestTypeId())
@@ -132,8 +136,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
     @Override
     public ResponseCommuteRequestDTO registOvertimeRequest(RequestCommuteRequestDTO reqCommuteRequestDTO) {
         // 사원 유효성 검사
-//        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
-//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
         // 근태신청유형 유효성 검사
         AttendanceRequestType attendanceRequestType = attendanceRequestTypeRepository.findById(reqCommuteRequestDTO.getAttendanceRequestTypeId())
@@ -228,8 +232,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
     @Override
     public ResponseBusinessTripRequestDTO registBusinessTripRequest(RequestBusinessTripRequestDTO reqBusinessTripRequestDTO) {
         // 사원 유효성 검사
-//        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
-//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        employeeRepository.findById(reqBusinessTripRequestDTO.getEmployeeId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
         // 근태신청유형 유효성 검사
         AttendanceRequestType attendanceRequestType =
@@ -315,8 +319,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
     @Override
     public ResponseBusinessTripRequestDTO registDispatchRequest(RequestBusinessTripRequestDTO reqBusinessTripRequestDTO) {
         // 사원 유효성 검사
-//        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
-//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        employeeRepository.findById(reqBusinessTripRequestDTO.getEmployeeId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
         // 근태신청유형 유효성 검사
         AttendanceRequestType attendanceRequestType =
@@ -402,8 +406,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
     @Override
     public ResponseLeaveReturnRequestDTO registLeaveRequest(RequestLeaveRequestDTO reqLeaveRequestDTO) {
         // 사원 유효성 검사
-//        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
-//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        employeeRepository.findById(reqLeaveRequestDTO.getEmployeeId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
         // 근태신청유형 유효성 검사
         AttendanceRequestType attendanceRequestType =
@@ -498,8 +502,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                         .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST));
 
         // 사원 유효성 검사
-//        employeeRepository.findById(reqCommuteRequestDTO.getEmployeeId())
-//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        employeeRepository.findById(reqReturnRequestDTO.getEmployeeId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
         // 근태신청유형 유효성 검사
         AttendanceRequestType attendanceRequestType =

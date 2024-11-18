@@ -2,6 +2,7 @@ package com.pado.inflow.vacation.command.application.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.employee.info.command.domain.repository.EmployeeRepository;
 import com.pado.inflow.vacation.command.application.dto.RequestVacationDTO;
 import com.pado.inflow.vacation.command.application.dto.ResponseVacationDTO;
 import com.pado.inflow.vacation.command.domain.aggregate.entity.Vacation;
@@ -25,14 +26,17 @@ public class VacationServiceImpl implements VacationService {
     private final ModelMapper modelMapper;
     private final VacationRepository vacationRepository;
     private final VacationPolicyRepository vacationPolicyRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
     public VacationServiceImpl(ModelMapper modelMapper,
                                VacationRepository vacationRepository,
-                               VacationPolicyRepository vacationPolicyRepository) {
+                               VacationPolicyRepository vacationPolicyRepository,
+                               EmployeeRepository employeeRepository) {
         this.modelMapper = modelMapper;
         this.vacationRepository = vacationRepository;
         this.vacationPolicyRepository = vacationPolicyRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     // 휴가 지급
@@ -40,8 +44,8 @@ public class VacationServiceImpl implements VacationService {
     @Override
     public ResponseVacationDTO registVacation(RequestVacationDTO reqVacationDTO) {
         // 사원 검사
-//        employeeRepository.findById(reqVacationDTO.getEmployeeId())
-//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        employeeRepository.findById(reqVacationDTO.getEmployeeId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
         // 휴가 정책 검사
         VacationPolicy vacationPolicy = vacationPolicyRepository.findById(reqVacationDTO.getVacationPolicyId())

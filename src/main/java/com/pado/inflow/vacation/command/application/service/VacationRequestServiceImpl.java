@@ -2,6 +2,7 @@ package com.pado.inflow.vacation.command.application.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.employee.info.command.domain.repository.EmployeeRepository;
 import com.pado.inflow.vacation.command.application.dto.RequestCancelVacationRequestDTO;
 import com.pado.inflow.vacation.command.application.dto.RequestVacationRequestDTO;
 import com.pado.inflow.vacation.command.application.dto.ResponseVacationRequestDTO;
@@ -34,16 +35,19 @@ public class VacationRequestServiceImpl implements VacationRequestService {
     private final VacationRequestRepository vacationRequestRepository;
     private final VacationRequestFileRepository vacationRequestFileRepository;
     private final VacationRepository vacationRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
     public VacationRequestServiceImpl(ModelMapper modelMapper,
                                       VacationRequestRepository vacationRequestRepository,
                                       VacationRequestFileRepository vacationRequestFileRepository,
-                                      VacationRepository vacationRepository) {
+                                      VacationRepository vacationRepository,
+                                      EmployeeRepository employeeRepository) {
         this.modelMapper = modelMapper;
         this.vacationRequestRepository = vacationRequestRepository;
         this.vacationRequestFileRepository = vacationRequestFileRepository;
         this.vacationRepository = vacationRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     // 휴가 신청 등록
@@ -51,8 +55,8 @@ public class VacationRequestServiceImpl implements VacationRequestService {
     @Override
     public ResponseVacationRequestDTO registVacationRequest(RequestVacationRequestDTO reqVacationRequestDTO) {
         // 사원 유효성 검사
-//        employeeRepository.findById(reqVacationRequestDTO.getEmployeeId())
-//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        employeeRepository.findById(reqVacationRequestDTO.getEmployeeId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
         // 날짜 String -> LocalDateTime 변환
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
