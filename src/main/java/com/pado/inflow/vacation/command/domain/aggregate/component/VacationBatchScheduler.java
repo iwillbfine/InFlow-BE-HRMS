@@ -13,15 +13,12 @@ import org.springframework.stereotype.Component;
 public class VacationBatchScheduler {
 
     private final JobLauncher jobLauncher;
-    private final JobRepository jobRepository;
     private final Job vacationUpdateJob;
 
     @Autowired
     public VacationBatchScheduler(JobLauncher jobLauncher,
-                                  JobRepository jobRepository,
                                   Job vacationUpdateJob) {
         this.jobLauncher = jobLauncher;
-        this.jobRepository = jobRepository;
         this.vacationUpdateJob = vacationUpdateJob;
     }
 

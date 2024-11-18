@@ -26,7 +26,7 @@ public class VacationPageReader implements ItemReader<Vacation> {
     }
 
     @Override
-    public Vacation read() throws Exception {
+    public Vacation read() {
         // 현재 페이지의 데이터가 비어있다면 새 페이지를 로드
         if (currentVacations == null || currentVacations.isEmpty()) {
             currentVacationPage = vacationRepository.findByExpiredAtBefore(
