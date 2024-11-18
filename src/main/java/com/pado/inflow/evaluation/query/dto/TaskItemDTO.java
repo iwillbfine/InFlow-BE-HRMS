@@ -17,4 +17,5 @@ public class TaskItemDTO {
     private Long employeeId;
     private String departmentCode;
     private Long evaluationPolicyId;
+    private Boolean isManagerWritten;       // 부서장 작성 여부
 }
