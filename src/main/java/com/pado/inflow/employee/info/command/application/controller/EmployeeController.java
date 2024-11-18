@@ -46,7 +46,7 @@ public class EmployeeController {
 
     // 설명. 2. 사원 기본 정보 수정
     /* 설명. 2.1 사원 정보 수정 (ID 기준) */
-    @PutMapping("/employee-id/{employeeId}")
+    @PatchMapping("/employee-id/{employeeId}")
     public ResponseDTO<ResponseEmployeeDTO> updateEmployeeById(
             @PathVariable Long employeeId,
             @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
@@ -56,7 +56,7 @@ public class EmployeeController {
     }
 
     /* 설명. 2.2 사원 정보 수정 (사번 기준) */
-    @PutMapping("/employee-number/{employeeNumber}")
+    @PatchMapping("/employee-number/{employeeNumber}")
     public ResponseDTO<ResponseEmployeeDTO> updateEmployeeByEmployeeNumber(
             @PathVariable String employeeNumber,
             @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
@@ -64,6 +64,9 @@ public class EmployeeController {
         ResponseEmployeeDTO updatedEmployee = employeeService.updateEmployeeByEmployeeNumber(employeeNumber, updateEmployeeDTO);
         return ResponseDTO.ok(updatedEmployee);
     }
+    
+    
+    //3. 비밀번호 재설정 (아직 시큐리 적용전이라 만들기 전임)
 
 
 }

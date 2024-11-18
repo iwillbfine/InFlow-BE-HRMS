@@ -20,11 +20,17 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
+    // 추후 비밀번호 설정할 예정
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper) {
+    public EmployeeService(EmployeeRepository employeeRepository
+            , ModelMapper modelMapper
+//            , BCryptPasswordEncoder bCryptPasswordEncoder
+    ) {
         this.employeeRepository = employeeRepository;
         this.modelMapper = modelMapper;
+//        this.bCryptPasswordEncoder =bCryptPasswordEncoder;
     }
 
     /**
@@ -45,6 +51,28 @@ public class EmployeeService {
                 .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
                 .collect(Collectors.toList());
     }
+    //설명. 스프링 시큐리티 활성화 전 API 개발
+//    @Transactional
+//    public List<ResponseEmployeeDTO> registerEmployees(List<RequestEmployeeDTO> employeeDTOs) {
+//        // DTO -> Entity 변환 및 비밀번호 암호화
+//        List<Employee> employees = employeeDTOs.stream()
+//                .map(dto -> {
+//                    Employee employee = modelMapper.map(dto, Employee.class);
+//                    // 비밀번호 암호화 처리
+//                    employee.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+//                    return employee;
+//                })
+//                .collect(Collectors.toList());
+//
+//        // Jpa의 saveAll을 통한 리스트 순차 저장
+//        List<Employee> savedEmployees = employeeRepository.saveAll(employees);
+//
+//        // Entity -> Response DTO 변환
+//        return savedEmployees.stream()
+//                .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
+//                .collect(Collectors.toList());
+//    }
+
 
     /**
      * 설명. 2.1 사원 정보 수정 (ID 기준)
