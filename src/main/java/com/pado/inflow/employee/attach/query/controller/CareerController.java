@@ -29,14 +29,14 @@ public class CareerController {
 
     // 전 사원의 경력 조회
     @GetMapping("/")
-    public ResponseDTO getCareerAll() {
+    public ResponseDTO<List<CareerDTO>> getCareerAll() {
         List<CareerDTO> result = careerService.getCareerAll();
         return ResponseDTO.ok(result);
     }
 
     // 사원 한 명의 경력 조회
     @GetMapping("/{employeeId}")
-    public ResponseDTO getCareerOne(@PathVariable("employeeId") Long employeeId) {
+    public ResponseDTO<List<CareerDTO>> getCareerOne(@PathVariable("employeeId") Long employeeId) {
         List<CareerDTO> result = careerService.getCareerOne(employeeId);
         return ResponseDTO.ok(result);
     }

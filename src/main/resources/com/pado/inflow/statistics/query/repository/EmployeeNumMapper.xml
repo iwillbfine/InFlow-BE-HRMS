@@ -1,0 +1,46 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.statistics.query.repository.EmployeeNumMapper">
+    <resultMap id="getAllGroupByYear" type="com.pado.inflow.statistics.query.dto.EmployeeNumMapperDTO">
+        <result property="year" column="YEAR"/>
+        <result property="monthlyData" column="MONTHLY_DATA"/>
+    </resultMap>
+    
+    <select id="getAllYears" resultMap="getAllGroupByYear">
+        SELECT YEAR,
+               JSON_ARRAYAGG(
+                 JSON_OBJECT(
+                             'year', YEAR,
+                             'month', MONTH,
+                             'half', HALF,
+                             'total_employee_num', TOTAL_EMPLOYEE_NUM,
+                             'joined_employee_num', JOINED_EMPLOYEE_NUM,
+                             'lefted_employee_num', LEFTED_EMPLOYEE_NUM
+                 )
+               ) AS MONTHLY_DATA
+          FROM MONTHLY_EMPLOYEE_NUM_STATISTICS
+         GROUP BY YEAR
+         ORDER BY YEAR DESC
+    </select>
+
+    <select id="getOneYear" resultMap="getAllGroupByYear" parameterType="_int">
+        SELECT YEAR,
+               JSON_ARRAYAGG(
+                 JSON_OBJECT(
+                             'statistics_id', STATISTICS_ID,
+                             'year', YEAR,
+                             'month', MONTH,
+                             'half', HALF,
+                             'total_employee_num', TOTAL_EMPLOYEE_NUM,
+                             'joined_employee_num', JOINED_EMPLOYEE_NUM,
+                             'lefted_employee_num', LEFTED_EMPLOYEE_NUM,
+                             'created_at', DATE(CREATED_AT)
+                 )
+               ) AS MONTHLY_DATA
+          FROM MONTHLY_EMPLOYEE_NUM_STATISTICS
+         WHERE YEAR = #{yearNum}
+         GROUP BY YEAR
+         ORDER BY YEAR DESC
+    </select>
+</mapper>

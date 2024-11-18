@@ -1,0 +1,24 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.evaluation.query.repository.FeedbackMapper">
+    <resultMap id="feedbackResultMap" type="com.pado.inflow.evaluation.query.dto.FeedbackDTO">
+        <id property="feedbackId" column="feedback_id"/>
+        <result property="content" column="content"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="evaluationId" column="evaluation_id"/>
+    </resultMap>
+
+    <select id="findEmpFeedback" resultMap="feedbackResultMap">
+        SELECT
+        f.feedback_id,
+        f.content,
+        f.created_at,
+        f.evaluation_id
+        FROM evaluation e
+        INNER JOIN feedback f ON e.evaluation_id = f.evaluation_id
+        WHERE e.year = #{year}
+        AND e.half = #{half}
+        AND e.employee_id = #{empId}
+    </select>
+</mapper>

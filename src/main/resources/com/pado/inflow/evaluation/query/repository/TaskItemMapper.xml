@@ -1,0 +1,62 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.evaluation.query.repository.TaskItemMapper">
+
+    <resultMap id="taskItemResultMap" type="com.pado.inflow.evaluation.query.dto.TaskItemDTO">
+        <id property="taskItemId" column="task_item_id"/>
+        <result property="taskName" column="task_name"/>
+        <result property="taskContent" column="task_content"/>
+        <result property="assignedEmployeeCount" column="assigned_employee_count"/>
+        <result property="taskTypeId" column="task_type_id"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="departmentCode" column="department_code"/>
+        <result property="evaluationPolicyId" column="evaluation_policy_id"/>
+        <result property="isManagerWritten" column="is_manager_written"/>
+    </resultMap>
+
+    <!-- 부서장인 경우, 부서별 과제를 조회하는 쿼리 -->
+    <select id="findDepartmentTaskItemByEmpIdAndYearAndHalf" resultMap="taskItemResultMap">
+        SELECT DISTINCT
+        ti.task_item_id,
+        ti.task_name,
+        ti.task_content,
+        ti.assigned_employee_count,
+        ti.task_type_id,
+        ti.employee_id,
+        ti.department_code,
+        ti.evaluation_policy_id,
+        ti.is_manager_written
+        FROM task_item ti
+        INNER JOIN evaluation_policy ep ON ti.evaluation_policy_id = ep.evaluation_policy_id
+        INNER JOIN department_member dm ON dm.employee_id = #{empId}
+        INNER JOIN task_type tt ON tt.task_type_id = ti.task_type_id
+        WHERE ep.year = #{year}
+        AND ep.half = #{half}
+        AND dm.manager_status = 'Y'  -- 부서장 여부 확인
+        AND ti.department_code = dm.department_code  -- 같은 부서 코드
+        AND ti.is_manager_written = TRUE;  -- 부서장이 작성한 과제만 조회
+
+    </select>
+
+    <!-- 개인 과제를 조회하는 쿼리 -->
+    <select id="findIndividualItemByEmpId" resultMap="taskItemResultMap">
+        SELECT DISTINCT
+        ti.task_item_id,
+        ti.task_name,
+        ti.task_content,
+        ti.assigned_employee_count,
+        ti.task_type_id,
+        ti.employee_id,
+        ti.department_code,
+        ti.evaluation_policy_id,
+        ti.is_manager_written
+        FROM task_item ti
+        INNER JOIN evaluation_policy ep ON ti.evaluation_policy_id = ep.evaluation_policy_id
+        INNER JOIN task_type tt ON tt.task_type_id = ti.task_type_id
+        WHERE ep.year = #{year}
+        AND ep.half = #{half}
+        AND ti.employee_id = #{empId}  -- 해당 사원의 개인 과제
+    </select>
+
+</mapper>

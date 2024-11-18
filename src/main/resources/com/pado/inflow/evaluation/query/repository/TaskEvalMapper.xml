@@ -1,0 +1,45 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.evaluation.query.repository.TaskEvalMapper">
+
+    <!-- 기본 결과 매핑 -->
+    <resultMap id="TaskEvalResultMap" type="com.pado.inflow.evaluation.query.dto.TaskEvalDTO">
+        <id property="taskEvalId" column="task_eval_id"/>
+        <result property="taskEvalName" column="task_eval_name"/>
+        <result property="taskEvalContent" column="task_eval_content"/>
+        <result property="score" column="score"/>
+        <result property="setRatio" column="set_ratio"/>
+        <result property="taskGrade" column="task_grade"/>
+        <result property="performanceInput" column="performance_input"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="relEvalStatus" column="rel_eval_status"/>
+        <result property="evaluationId" column="evaluation_id"/>
+        <result property="modifiableDate" column="modifiable_date"/>
+        <result property="taskTypeId" column="task_type_id"/>
+        <result property="taskItemId" column="task_item_id"/>
+    </resultMap>
+
+    <select id="findTaskEvalList" resultMap="TaskEvalResultMap">
+        SELECT
+            te.task_eval_id,
+            te.task_eval_name,
+            te.task_eval_content,
+            te.score,
+            te.set_ratio,
+            te.task_grade,
+            te.performance_input,
+            te.created_at,
+            te.rel_eval_status,
+            te.evaluation_id,
+            te.modifiable_date,
+            te.task_type_id,
+            te.task_item_id
+          FROM task_eval te
+         INNER JOIN evaluation e ON te.evaluation_id = e.evaluation_id
+         INNER JOIN task_item ti ON te.task_item_id = ti.task_item_id
+         WHERE e.employee_id = #{empId}
+           AND e.year = #{year}
+           AND e.half = #{half}
+    </select>
+</mapper>
