@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("queryGradePolicyController")
+@RestController("queryGradeController")
 @RequestMapping("/api/evaluation/grade")
 public class GradeController {
 
