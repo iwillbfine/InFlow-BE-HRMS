@@ -1,6 +1,7 @@
 package com.pado.inflow.vacation.command.domain.aggregate.entity;
 
 import com.pado.inflow.vacation.command.domain.aggregate.type.PaidStatus;
+import com.pado.inflow.vacation.command.domain.aggregate.type.VacationPolicyStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,10 @@ public class VacationPolicy {
 
     @Column(name = "vacation_policy_description")
     private String vacationPolicyDescription;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "vacation_policy_status")
+    private VacationPolicyStatus vacationPolicyStatus;
 
     @Column(name = "allocation_days")
     private Long allocationDays;

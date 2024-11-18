@@ -16,6 +16,7 @@ public class VacationPolicyDTO {
     private Long vacationPolicyId;
     private String vacationPolicyName;
     private String vacationPolicyDescription;
+    private String vacationPolicyStatus;
     private Long allocationDays;
     private String paidStatus;
     private Integer year;

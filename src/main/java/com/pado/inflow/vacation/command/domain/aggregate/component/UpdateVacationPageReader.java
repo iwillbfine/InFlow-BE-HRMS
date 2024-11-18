@@ -28,11 +28,9 @@ public class UpdateVacationPageReader implements ItemReader<Vacation> {
     public Vacation read() {
         // 현재 페이지의 데이터가 비어있다면 새 페이지를 로드
         if (currentVacations == null || currentVacations.isEmpty()) {
-            // 현재 시간
-            // 페이지 크기 100
             Page<Vacation> currentVacationPage = vacationRepository.findByExpiredAtBefore(
-                    LocalDateTime.now(), // 현재 시간
-                    PageRequest.of(currentPage++, 100) // 페이지 크기 100
+                    LocalDateTime.now(),
+                    PageRequest.of(currentPage++, 100)
             );
 
             // 더 이상 데이터가 없다면 null 반환
@@ -45,12 +43,7 @@ public class UpdateVacationPageReader implements ItemReader<Vacation> {
         }
 
         // 데이터를 모두 소비했다면 null 반환
-        if (currentVacations.isEmpty()) {
-            return null;
-        }
-
-        // 첫 번째 데이터를 반환
-        return currentVacations.remove(0);
+        return currentVacations.isEmpty() ? null : currentVacations.remove(0);
     }
 
 }

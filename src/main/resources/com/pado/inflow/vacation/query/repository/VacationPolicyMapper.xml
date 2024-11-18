@@ -6,6 +6,7 @@
         <id property="vacationPolicyId" column="VACATION_POLICY_ID"/>
         <result property="vacationPolicyName" column="VACATION_POLICY_NAME"/>
         <result property="vacationPolicyDescription" column="VACATION_POLICY_DESCRIPTION"/>
+        <result property="vacationPolicyStatus" column="VACATION_POLICY_STATUS"/>
         <result property="allocationDays" column="ALLOCATION_DAYS"/>
         <result property="paidStatus" column="PAID_STATUS"/>
         <result property="year" column="YEAR"/>
@@ -19,6 +20,7 @@
                A.VACATION_POLICY_ID
              , A.VACATION_POLICY_NAME
              , A.VACATION_POLICY_DESCRIPTION
+             , A.VACATION_POLICY_STATUS
              , A.ALLOCATION_DAYS
              , A.PAID_STATUS
              , A.YEAR
