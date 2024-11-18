@@ -39,8 +39,8 @@ public class TaskItemController {
     @GetMapping("/individualTask")
     public ResponseDTO<?> findindividualTaskItemByEmpId(
             @RequestParam( value = "year")  Integer year
-            ,@RequestParam( value = "half")  String half
-            ,@RequestParam( value = "empId") Long empId
+           ,@RequestParam( value = "half")  String half
+           ,@RequestParam( value = "empId") Long empId
     ) {
         List<TaskItemDTO> TaskItemList =
                 taskItemService.findindividualTaskItemByEmpId(year, half, empId);
