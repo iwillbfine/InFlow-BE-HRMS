@@ -46,7 +46,7 @@ public enum ErrorCode {
     DUPLICATE_NICKNAME_EXISTS(40014, HttpStatus.BAD_REQUEST, "중복된 닉네임입니다."),
     DUPLICATE_ENTRY(40014, HttpStatus.BAD_REQUEST, "중복된 사원입니다."),
     DUPLICATE_TASK_TYPE(40015, HttpStatus.BAD_REQUEST, "중복된 과제 유형입니다."),
-
+    UPDATE_DENIED(40016, HttpStatus.BAD_REQUEST, "이미 해당 과제 유형이 사용중이므로 업데이트가 불가능합니다."),
     //403
     FORBIDDEN_ROLE(40300, HttpStatus.FORBIDDEN, "권한이 존재하지 않습니다."),
     ACCESS_DENIED(40310, HttpStatus.FORBIDDEN, "접근이 거부되었습니다."),
