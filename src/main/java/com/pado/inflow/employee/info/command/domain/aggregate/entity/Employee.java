@@ -8,7 +8,7 @@ import com.pado.inflow.employee.info.enums.JoinType; // 올바른 JoinType 임�
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "employee")
@@ -38,7 +38,7 @@ public class Employee {
     private String name;
 
     @Column(name = "birth_date", nullable = false)
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "resident_registration_number", nullable = false)
     private String residentRegistrationNumber;
@@ -53,14 +53,14 @@ public class Employee {
     private String profileImgUrl;
 
     @Column(name = "join_date", nullable = false)
-    private LocalDateTime joinDate;
+    private LocalDate joinDate;
 
     @Column(name = "join_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private JoinType joinType; // 올바른 JoinType 클래스 사용
 
     @Column(name = "resignation_date")
-    private LocalDateTime resignationDate;
+    private LocalDate resignationDate;
 
     @Column(name = "resignation_status", nullable = false)
     @Enumerated(EnumType.STRING)

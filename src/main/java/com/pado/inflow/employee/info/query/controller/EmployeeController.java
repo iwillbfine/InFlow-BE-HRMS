@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController("employeeQueryController")
-@RequestMapping("/api/employee/employees")
+@RequestMapping("/api/employees")
 public class EmployeeController {
     private final Environment env;
     private final ModelMapper modelMapper;

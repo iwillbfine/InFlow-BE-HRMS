@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("EQueryController")
-@RequestMapping("/api/employee/educations")
+@RequestMapping("/api/educations")
 public class EducationController {
 
     private final EducationService educationService;

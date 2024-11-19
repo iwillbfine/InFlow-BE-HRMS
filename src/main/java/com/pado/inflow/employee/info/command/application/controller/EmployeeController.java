@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("employeeCommandController")
-@RequestMapping("/api/employee/employees")
+@RequestMapping("/api/employees")
 public class EmployeeController {
 
     private final Environment env;
@@ -66,7 +66,7 @@ public class EmployeeController {
     }
     
     
-    //3. 비밀번호 재설정 (아직 시큐리 적용전이라 만들기 전임)
+    //3. 비밀번호 재설정
 
 
 }

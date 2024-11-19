@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("CQueryController")
-@RequestMapping("/api/employee/career")
+@RequestMapping("/api/careers")
 public class CareerController {
 
     private final CareerService careerService;
