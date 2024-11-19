@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("queryEvaluationController")
-@RequestMapping("/api/evaluation/evaluations")
+@RequestMapping("/api/evaluations/evaluation")
 public class EvaluationController {
 
     @Autowired

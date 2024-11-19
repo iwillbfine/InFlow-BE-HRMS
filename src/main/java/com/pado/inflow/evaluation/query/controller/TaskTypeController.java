@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("queryTaskTypeController")
-@RequestMapping("/api/evaluation/taskTypes")
+@RequestMapping("/api/evaluations/taskType")
 public class TaskTypeController {
 
 
@@ -21,7 +21,7 @@ public class TaskTypeController {
     }
 
     // 과제 유형 조회
-    @GetMapping
+    @GetMapping("/allTaskType")
     public ResponseDTO<?> findTaskType() {
         List<TaskTypeDTO> taskTypes = taskTypeService.findAllTaskTypes();
         return ResponseDTO.ok(taskTypes);

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("queryTaskEvalController")
-@RequestMapping("/api/evaluation/taskEval")
+@RequestMapping("/api/evaluations/taskEval")
 public class TaskEvalController {
 
     private final TaskEvalService taskEvalService;

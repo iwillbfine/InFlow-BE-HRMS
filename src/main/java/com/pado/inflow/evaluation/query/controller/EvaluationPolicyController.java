@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("queryEvaluationPolicyController")
-@RequestMapping("/api/evaluation/evaluationPolicy")
+@RequestMapping("/api/evaluations/evaluationPolicy")
 public class EvaluationPolicyController {
 
     @Autowired
@@ -19,6 +19,7 @@ public class EvaluationPolicyController {
         this.evaluationPolicyService = evaluationPolicyService;
     }
 
+    // 평가 정책 리스트 조회
     @GetMapping("/find")
     public ResponseDTO<?> findEvaluationPolicyByYearAndHalf(
             @RequestParam(value = "year") Integer year,
@@ -29,6 +30,7 @@ public class EvaluationPolicyController {
         return ResponseDTO.ok(selectedEvaluationPolicy);
     }
 
+    // 평가 정책 단건 조회
     @GetMapping("/{evaluationPolicyId}")
     public ResponseDTO<?> findEvaluationPolicyByevaluationPolicyId(
             @PathVariable( value = "evaluationPolicyId") Long evaluationPolicyId

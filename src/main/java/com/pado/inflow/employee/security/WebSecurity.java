@@ -98,12 +98,36 @@ public class WebSecurity {
                     .requestMatchers(new AntPathRequestMatcher("/api/vacations/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/vacations/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
+                    /* -------------------------------------------------------------------------------------------------------------------------------------------------------------- */
                     // 설명. 6. evaluation(평가) 도메인
-                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
+                    // 과제 유형 ( Task_Type )
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskType/allTaskType", "GET")).hasAnyRole(    "EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskType/create", "POST")).hasAnyRole(   "HR", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskType/**", "PATCH")).hasAnyRole(  "HR", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskType/**", "DELETE")).hasAnyRole( "HR", "ADMIN")
+
+                    // 과제 항목 ( Task_Item )
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskItem/departmentTask", "GET")).hasAnyRole("MANAGER", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskItem/individualTasks", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskItem/individualTask/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskItem/commonTasks", "GET")).hasAnyRole("HR", "ADMIN")
+
+                    // 과제별 평가 ( Task_Eval )
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskEval/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
+                    // 평가 등급 ( grade )
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/grade/**", "GET")).hasAnyRole("HR", "ADMIN")
+
+                    // 평가 피드백 ( feedback )
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/feedback/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
+                    // 평가 정책 ( EvaluationPolicy )
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/evaluationPolicy/**", "GET")).hasAnyRole("HR", "ADMIN")
+
+                    // 평가 ( Evaluation )
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/evaluation/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                    /* -------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
                     // 설명. 7. payroll(급여) 도메인
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
