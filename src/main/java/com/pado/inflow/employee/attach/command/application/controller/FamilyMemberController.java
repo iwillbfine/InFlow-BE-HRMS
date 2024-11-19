@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("FMCommandController")
-@RequestMapping("/api/employee/family-members")
+@RequestMapping("/api/family-members")
 public class FamilyMemberController {
 
     private final FamilyMemberService familyMemberService;

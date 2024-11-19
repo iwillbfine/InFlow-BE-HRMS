@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("QCommandController")
-@RequestMapping("/api/employee/qualification")
+@RequestMapping("/api/qualifications")
 public class QualificationController {
 
     private final QualificationService qualificationService;

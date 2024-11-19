@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("QQueryController")
-@RequestMapping("/api/employee/qualification")
+@RequestMapping("/api/qualifications")
 public class QualificationController {
 
     private final QualificationService qualificationService;

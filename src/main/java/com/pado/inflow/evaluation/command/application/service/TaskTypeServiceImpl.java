@@ -60,7 +60,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
                 taskTypeRepository.findEvaluationsPoliciesByTaskTypeId(taskTypeId);
 
         if ( evaluationPolicies != null ) {
-            throw new CommonException(ErrorCode.UPDATE_DENIED);
+            throw new CommonException(ErrorCode.UPDATE_FAILURE);
         }
 
         // 모두 통과하면 수정
