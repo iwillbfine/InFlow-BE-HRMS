@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,17 +42,31 @@ public class InsertVacationItemProcessor implements ItemProcessor<Employee, List
     public List<Vacation> process(@Nonnull Employee employee) {
         List<Vacation> vacations = new ArrayList<>();
 
+        // 현재 날짜
+        LocalDate currentDate = LocalDate.now();
+
+        // 입사 날짜와의 차이
+        long daysBetween = ChronoUnit.DAYS.between(employee.getJoinDate(), currentDate);
+
         // 각 휴가 정책에 따라 사원에게 휴가 지급
         for (VacationPolicy policy : vacationPolicies) {
             String cron = policy.getAutoAllocationCycle();
 
             if (isValidDate(cron)) {
-                // 여성 보건 휴가만 여성에게 지급
                 if (policy.getVacationPolicyStatus() == VacationPolicyStatus.WOMAN_ONLY) {
-                    if (employee.getGender() == Gender.FEMALE){
+                    // 여성 보건 휴가만 여성에게 지급
+                    if (employee.getGender() == Gender.FEMALE)
                         vacations.add(createVacation(policy, employee, LocalDate.now().plusMonths(1).withDayOfMonth(1).atStartOfDay()));
-                    }
+                } else if (policy.getVacationPolicyStatus() == VacationPolicyStatus.ROOKIE){
+                    // 근속일이 1년 미만인 경우 매월 연차 1일 발생
+                    if (daysBetween < 365)
+                        vacations.add(createVacation(policy, employee, LocalDate.of(LocalDate.now().getYear(), 12, 31).atStartOfDay()));
+                } else if (policy.getVacationPolicyStatus() == VacationPolicyStatus.LONG_TERM){
+                    // 근속일이 5년 이상인 경우 장기 근속 휴가 발생
+                    if (daysBetween >= 1825)
+                        vacations.add(createVacation(policy, employee, LocalDate.of(LocalDate.now().getYear(), 12, 31).atStartOfDay()));
                 } else {
+                    // 1년단위로 발생하는 휴가
                     vacations.add(createVacation(policy, employee, LocalDate.of(LocalDate.now().getYear(), 12, 31).atStartOfDay()));
                 }
             }
