@@ -36,6 +36,16 @@ public class JwtFilter extends OncePerRequestFilter {
 
         log.info("UsernamePasswordAuthenticationFilter보다 먼저 동작하는 필터");
 
+        String requestURI = request.getRequestURI();
+        log.info("Request URI: {}", requestURI);
+
+        // 로그인 요청은 필터를 통과시킴
+        if ("/api/login".equals(requestURI) || "/api/register".equals(requestURI)) {
+            log.info("로그인/회원가입 요청은 필터를 통과합니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authorizationHeader = request.getHeader("Authorization");
         log.info("Authorization header: {}", authorizationHeader);
 

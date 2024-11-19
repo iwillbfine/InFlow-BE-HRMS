@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class ResponseEmployeeDTO {
 
@@ -15,6 +17,9 @@ public class ResponseEmployeeDTO {
 
     @JsonProperty("name") // 이름
     private String name;
+
+    @JsonProperty("birth_date") // 생년월일
+    private LocalDate birthDate;
 
     @JsonProperty("email") // 이메일
     private String email;
@@ -70,15 +75,4 @@ public class ResponseEmployeeDTO {
     @JsonProperty("gender") // 성별
     private String gender;
 
-    //설명. 엔티티로 부터 DTO형식으로 변환
-    public static ResponseEmployeeDTO fromEntity(Employee employee) {
-        ResponseEmployeeDTO dto = new ResponseEmployeeDTO();
-        dto.setEmployeeId(employee.getEmployeeId());
-        dto.setEmployeeNumber(employee.getEmployeeNumber());
-        dto.setName(employee.getName());
-        dto.setEmail(employee.getEmail());
-        dto.setPhoneNumber(employee.getPhoneNumber());
-        dto.setProfileImgUrl(employee.getProfileImgUrl());
-        return dto;
-    }
 }

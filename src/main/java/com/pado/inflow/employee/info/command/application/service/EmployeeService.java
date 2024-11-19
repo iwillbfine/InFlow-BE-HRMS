@@ -19,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,42 +46,61 @@ public class EmployeeService implements UserDetailsService {
     /**
      * 설명. 1. 사원 등록
      */
-    @Transactional
-    public List<ResponseEmployeeDTO> registerEmployees(List<RequestEmployeeDTO> employeeDTOs) {
-        //설명. DTO -> Entity 변환 및 저장
-        List<Employee> employees = employeeDTOs.stream()
-                .map(dto -> modelMapper.map(dto, Employee.class))
-                .collect(Collectors.toList());
-        
-        //설명. Jpa의 saveAll통한 리스트 순차 저장
-        List<Employee> savedEmployees = employeeRepository.saveAll(employees);
-
-        //설명. Entity -> Response DTO 변환
-        return savedEmployees.stream()
-                .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
-                .collect(Collectors.toList());
-    }
-    //설명. 스프링 시큐리티 활성화 전 API 개발
 //    @Transactional
 //    public List<ResponseEmployeeDTO> registerEmployees(List<RequestEmployeeDTO> employeeDTOs) {
-//        // DTO -> Entity 변환 및 비밀번호 암호화
+//        //설명. DTO -> Entity 변환 및 저장
 //        List<Employee> employees = employeeDTOs.stream()
-//                .map(dto -> {
-//                    Employee employee = modelMapper.map(dto, Employee.class);
-//                    // 비밀번호 암호화 처리
-//                    employee.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
-//                    return employee;
-//                })
+//                .map(dto -> modelMapper.map(dto, Employee.class))
 //                .collect(Collectors.toList());
 //
-//        // Jpa의 saveAll을 통한 리스트 순차 저장
+//        //설명. Jpa의 saveAll통한 리스트 순차 저장
 //        List<Employee> savedEmployees = employeeRepository.saveAll(employees);
 //
-//        // Entity -> Response DTO 변환
+//        //설명. Entity -> Response DTO 변환
 //        return savedEmployees.stream()
 //                .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
 //                .collect(Collectors.toList());
 //    }
+
+
+    //설명. 사원 등록 (초기 비밀번호: "사번!성명@생년월일")
+    @Transactional
+    public List<ResponseEmployeeDTO> registerEmployees(List<RequestEmployeeDTO> employeeDTOs) {
+        // DTO -> Entity 변환 및 초기 비밀번호 생성/암호화
+        List<Employee> employees = employeeDTOs.stream()
+                .map(dto -> {
+                    Employee employee = modelMapper.map(dto, Employee.class);
+
+                    // 초기 비밀번호 생성
+                    String initialPassword = generateInitialPassword(
+                            dto.getEmployeeNumber(),
+                            dto.getName(),
+                            dto.getBirthDate()
+                    );
+
+                    // 비밀번호 암호화 처리
+                    employee.setPassword(bCryptPasswordEncoder.encode(initialPassword));
+                    return employee;
+                })
+                .collect(Collectors.toList());
+
+        // Jpa의 saveAll을 통한 리스트 순차 저장
+        List<Employee> savedEmployees = employeeRepository.saveAll(employees);
+
+        // Entity -> Response DTO 변환
+        return savedEmployees.stream()
+                .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
+    // 설명. 초기 비밀번호: "사번!성명@생년월일"
+    private String generateInitialPassword(String employeeNumber, String name, LocalDate birthDate) {
+        // LocalDate를 "YYYYMMDD" 형태의 문자열로 변환
+        String birthDateStr = birthDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return employeeNumber + "!" + name + "@" + birthDateStr;
+    }
+
 
 
     /**

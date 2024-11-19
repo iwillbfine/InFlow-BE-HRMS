@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -23,7 +24,6 @@ public class RequestEmployeeDTO {
     @JsonProperty("employee_role") // 사원 역할 (ENUM)
     private EmployeeRole employeeRole;
 
-    @NotBlank
     @JsonProperty("password") // 비밀번호
     private String password;
 
@@ -37,7 +37,7 @@ public class RequestEmployeeDTO {
 
     @NotNull
     @JsonProperty("birth_date") // 생년월일
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     @NotBlank
     @JsonProperty("resident_registration_number") // 주민등록번호
@@ -58,14 +58,14 @@ public class RequestEmployeeDTO {
 
     @NotNull
     @JsonProperty("join_date") // 입사일
-    private LocalDateTime joinDate;
+    private LocalDate joinDate;
 
     @NotNull
     @JsonProperty("join_type") // 입사 유형 (ENUM)
     private JoinType joinType;
 
     @JsonProperty("resignation_date") // 퇴사일
-    private LocalDateTime resignationDate;
+    private LocalDate resignationDate;
 
     @NotNull
     @JsonProperty("resignation_status") // 퇴사 상태 (ENUM)
