@@ -116,7 +116,7 @@ public class InsertVacationItemProcessor implements ItemProcessor<Employee, List
 
         for (int i = cronParts.size()-1; i >= 3; i--) {
             if (cronParts.get(i).equals("*")) continue;
-            else if (!cronParts.get(i).equals(dateParts[i])) return false;
+            if (!cronParts.get(i).equals(dateParts[i])) return false;
         }
 
         return true;
