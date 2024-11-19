@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("queryVacationTypeController")
-@RequestMapping("/api/vacation/types")
+@RequestMapping("/api/vacation-types")
 public class VacationTypeController {
 
     private final VacationTypeService vacationTypeService;

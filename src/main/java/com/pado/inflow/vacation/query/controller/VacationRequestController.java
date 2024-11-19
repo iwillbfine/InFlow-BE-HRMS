@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("queryVacationRequestController")
-@RequestMapping("/api/vacation/requests")
+@RequestMapping("/api/vacation-requests")
 public class VacationRequestController {
 
     private final VacationRequestService vacationRequestService;
