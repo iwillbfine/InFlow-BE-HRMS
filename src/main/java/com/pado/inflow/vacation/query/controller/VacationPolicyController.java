@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("queryVacationPolicyController")
-@RequestMapping("/api/vacation/policies")
+@RequestMapping("/api/vacation-policies")
 public class VacationPolicyController {
 
     private final VacationPolicyService vacationPolicyService;

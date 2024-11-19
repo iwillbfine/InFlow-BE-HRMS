@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController("commandVacationRequestController")
-@RequestMapping("/api/vacation/requests")
+@RequestMapping("/api/vacation-requests")
 public class VacationRequestController {
 
     private final VacationRequestService vacationRequestService;

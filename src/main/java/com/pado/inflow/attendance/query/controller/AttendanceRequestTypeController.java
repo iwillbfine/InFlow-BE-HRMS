@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("queryAttendanceRequestTypeController")
-@RequestMapping("/api/attendance-request/types")
+@RequestMapping("/api/attendance-request-types")
 public class AttendanceRequestTypeController {
 
     private final AttendanceRequestTypeService attendanceRequestTypeService;
