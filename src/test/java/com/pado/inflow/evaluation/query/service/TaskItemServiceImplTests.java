@@ -5,10 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.scheduling.config.Task;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,14 +19,14 @@ class TaskItemServiceImplTests {
     private TaskItemService taskItemService;
 
     @Test
-    @DisplayName("부서 과제 조회 테스트")
+    @DisplayName("부서 과제 리스트 조회 테스트")
     void findDepartmentTasksTest() {
         //given
         TaskItemDTO testData = new TaskItemDTO();
         testData.setDepartmentCode("DP006");
 
         //when
-        List<TaskItemDTO> selectedTasks = taskItemService.findTaskItemByEmpIdAndYearAndHalf(2023, "1st", 8L);
+        List<TaskItemDTO> selectedTasks = taskItemService.findTaskItemsByEmpIdAndYearAndHalf(2023, "1st", 8L);
 
         //then
         assertNotNull(selectedTasks);
@@ -36,7 +34,22 @@ class TaskItemServiceImplTests {
     }
 
     @Test
-    @DisplayName("개인 과제 조회 테스트")
+    @DisplayName("부서 과제 단건 조회 테스트")
+    void findDepartmentTaskTest() {
+        //given
+        TaskItemDTO testData = new TaskItemDTO();
+        testData.setDepartmentCode("DP006");
+
+        //when
+        TaskItemDTO selectedTasks = taskItemService.findTaskItemByTaskItemId(1L);
+
+        //then
+        assertNotNull(selectedTasks);
+        assertEquals(testData.getDepartmentCode(), selectedTasks.getDepartmentCode());
+    }
+
+    @Test
+    @DisplayName("개인 과제 리스트 조회 테스트")
     void findIndividualTasksTest() {
         //given
         TaskItemDTO testData = new TaskItemDTO();
@@ -51,7 +64,7 @@ class TaskItemServiceImplTests {
     }
 
     @Test
-    @DisplayName("과제 단건 조회 테스트")
+    @DisplayName("개인 과제 단건 조회 테스트")
     void getTaskItemByTaskItemIdTest() {
         //given
         TaskItemDTO testData = new TaskItemDTO();
@@ -65,7 +78,7 @@ class TaskItemServiceImplTests {
     }
 
     @Test
-    @DisplayName("공통 과제 조회 테스트")
+    @DisplayName("공통 과제 리스트 조회 테스트")
     void getCommonTasksTest() {
         //given
         TaskItemDTO testData = new TaskItemDTO();
@@ -79,4 +92,19 @@ class TaskItemServiceImplTests {
         assertEquals(testData.getDepartmentCode(), selectedDatas.get(0).getDepartmentCode());
     }
 
+    @Test
+    @DisplayName("공통 과제 단건 조회 테스트")
+    void getCommonTaskTest() {
+        //given
+        TaskItemDTO testData = new TaskItemDTO();
+        testData.setTaskItemId(9L);
+
+        //when
+        TaskItemDTO selectedData = taskItemService.findCommonTaskItemByTaskItemId(9L);
+
+        //then
+        assertNotNull(selectedData);
+        assertEquals(testData.getTaskItemId(), selectedData.getTaskItemId());
+
+    }
 }

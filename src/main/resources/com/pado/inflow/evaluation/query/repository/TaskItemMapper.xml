@@ -15,8 +15,8 @@
         <result property="isManagerWritten" column="is_manager_written"/>
     </resultMap>
 
-    <!-- 부서 과제 조회 -->
-    <select id="findDepartmentTaskItemByEmpIdAndYearAndHalf" resultMap="taskItemResultMap">
+    <!-- 부서 과제 리스트 조회 -->
+    <select id="findDepartmentTaskItemsByEmpIdAndYearAndHalf" resultMap="taskItemResultMap">
         SELECT DISTINCT
         ti.task_item_id,
         ti.task_name,
@@ -36,7 +36,22 @@
         AND dm.manager_status = 'Y'
         AND ti.department_code = dm.department_code
         AND ti.is_manager_written = TRUE;
+    </select>
 
+    <!-- 부서 과제 단건 조회 -->
+    <select id="findDepartmentTaskItemByEmpIdAndYearAndHalf" resultMap="taskItemResultMap">
+        SELECT
+        ti.task_item_id,
+        ti.task_name,
+        ti.task_content,
+        ti.assigned_employee_count,
+        ti.task_type_id,
+        ti.employee_id,
+        ti.department_code,
+        ti.evaluation_policy_id,
+        ti.is_manager_written
+        FROM task_item ti
+        WHERE ti.task_item_id = #{taskItemId}
     </select>
 
     <!-- 개인 과제 조회 -->
@@ -76,7 +91,7 @@
     </select>
 
     <!-- 공통 과제 조회 -->
-    <select id="findCommonTaskItemByYearAndHalf" resultMap="taskItemResultMap">
+    <select id="findCommonTaskItemsByYearAndHalf" resultMap="taskItemResultMap">
         SELECT DISTINCT
         ti.task_item_id,
         ti.task_name,
@@ -97,4 +112,19 @@
         AND ti.department_code = dm.department_code
     </select>
 
+    <!-- CommonItem 단건 조회 -->
+    <select id="findCommonTaskItemByTaskItemId" resultMap="taskItemResultMap">
+        SELECT
+        ti.task_item_id,
+        ti.task_name,
+        ti.task_content,
+        ti.assigned_employee_count,
+        ti.task_type_id,
+        ti.employee_id,
+        ti.department_code,
+        ti.evaluation_policy_id,
+        ti.is_manager_written
+        FROM task_item ti
+        WHERE ti.task_item_id = #{taskItemId}
+    </select>
 </mapper>

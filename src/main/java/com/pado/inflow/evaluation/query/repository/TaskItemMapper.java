@@ -8,11 +8,15 @@ import java.util.List;
 @Mapper
 public interface TaskItemMapper {
 
-    List<TaskItemDTO> findDepartmentTaskItemByEmpIdAndYearAndHalf(Integer year, String half, Long empId);
+    List<TaskItemDTO> findDepartmentTaskItemsByEmpIdAndYearAndHalf(Integer year, String half, Long empId);
 
     List<TaskItemDTO> findIndividualItemByEmpId(Integer year, String half, Long empId);
 
-    List<TaskItemDTO> findCommonTaskItemByYearAndHalf(Integer year, String half, Long empId);
+    List<TaskItemDTO> findCommonTaskItemsByYearAndHalf(Integer year, String half, Long empId);
 
     TaskItemDTO findTaskItemByTaskItemId(Long taskItemId);
+
+    TaskItemDTO findDepartmentTaskItemByEmpIdAndYearAndHalf(Long taskItemId);
+
+    TaskItemDTO findCommonTaskItemByTaskItemId(Long taskItemId);
 }
