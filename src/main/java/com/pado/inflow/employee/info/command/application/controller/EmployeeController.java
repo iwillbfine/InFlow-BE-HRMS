@@ -64,9 +64,16 @@ public class EmployeeController {
         ResponseEmployeeDTO updatedEmployee = employeeService.updateEmployeeByEmployeeNumber(employeeNumber, updateEmployeeDTO);
         return ResponseDTO.ok(updatedEmployee);
     }
-    
-    
-    //3. 비밀번호 재설정
 
+
+    // 설명. 3. 비밀번호 재설정
+    @PatchMapping("/{employee_number}/re-password")
+    public ResponseDTO<String> updatePassword(
+            @PathVariable("employee_number") String employeeNumber, // 명시적으로 이름 지정
+            @RequestParam("new_password") String newPassword) { // 명시적으로 이름 지정
+
+        employeeService.resetPassword(employeeNumber, newPassword);
+        return ResponseDTO.ok("비밀번호가 성공적으로 재설정되었습니다.");
+    }
 
 }
