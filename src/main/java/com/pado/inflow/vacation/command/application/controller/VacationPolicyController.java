@@ -6,7 +6,7 @@ import com.pado.inflow.vacation.command.application.service.VacationPolicyServic
 import org.springframework.web.bind.annotation.*;
 
 @RestController("commandVacationPolicyController")
-@RequestMapping("/api/vacation/policies")
+@RequestMapping("/api/vacation-policies")
 public class VacationPolicyController {
 
     private final VacationPolicyService vacationPolicyService;

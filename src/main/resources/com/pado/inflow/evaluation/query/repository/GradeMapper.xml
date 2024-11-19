@@ -26,4 +26,17 @@
         AND ep.half = #{half}
         ORDER BY g.start_ratio DESC
     </select>
+
+    <!-- 평가등급 단건 조회 -->
+    <select id="getGradeByGradeId" resultMap="gradeResultMap">
+        SELECT
+        g.grade_id,
+        g.grade_name,
+        g.start_ratio,
+        g.end_ratio,
+        g.absolute_grade_ratio,
+        g.evaluation_policy_id
+        FROM grade g
+        WHERE g.grade_id = #{gradeId}
+    </select>
 </mapper>

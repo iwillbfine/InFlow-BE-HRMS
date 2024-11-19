@@ -17,6 +17,7 @@
         <result property="taskTypeId" column="task_type_id"/>
     </resultMap>
 
+    <!-- 평가정책 리스트 조회 -->
     <select id="findPolicyByYearAndHalf" resultMap="evaluationPolicyResultMap">
         SELECT
         evaluation_policy_id,
@@ -36,5 +37,24 @@
         WHERE
         year = #{year}
         AND half = #{half}
+    </select>
+
+    <!-- 평가정책 단건 조회 -->
+    <select id="getEvaluationPolicyByEvaluationPolicyId" resultMap="evaluationPolicyResultMap">
+        SELECT
+        evaluation_policy_id,
+        start_date,
+        end_date,
+        year,
+        half,
+        task_ratio,
+        min_rel_eval_count,
+        created_at,
+        modifiable_date,
+        policy_description,
+        policy_register_id,
+        task_type_id
+        FROM evaluation_policy
+        WHERE evaluation_policy_id = #{evaluationPolicyId}
     </select>
 </mapper>

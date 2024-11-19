@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface TaskEvalMapper {
     List<TaskEvalDTO> findTaskEvalList(Long empId, Integer year, String half);
+
+    TaskEvalDTO findTaskEvalByTaskEvalId(Long taskEvalId);
 }

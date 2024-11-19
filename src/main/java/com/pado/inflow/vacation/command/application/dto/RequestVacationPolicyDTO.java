@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class RequestVacationPolicyDTO {
     private String vacationPolicyName;
     private String vacationPolicyDescription;
+    private String vacationPolicyStatus;
     private Long allocationDays;
     private String paidStatus;
     private Integer year;

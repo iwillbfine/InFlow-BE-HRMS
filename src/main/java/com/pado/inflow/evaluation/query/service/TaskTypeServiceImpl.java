@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service("queryTaskTypeService")
 public class TaskTypeServiceImpl implements TaskTypeService {
 
     private final TaskTypeMapper taskTypeMapper;

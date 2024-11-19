@@ -7,4 +7,6 @@ import java.util.List;
 public interface EvaluationPolicyService {
 
     List<EvaluationPolicyDTO> findPolicyWithYearAndHalf(Integer year, String half);
+
+    EvaluationPolicyDTO findPolicyByevaluationPolicyId(Long evaluationPolicyId);
 }

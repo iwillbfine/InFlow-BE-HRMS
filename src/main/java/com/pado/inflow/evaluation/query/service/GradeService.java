@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface GradeService {
     List<GradeDTO> findGradeByYearAndHalf(Integer year, String half);
+
+    GradeDTO findGradeByGradeId(Long gradeId);
 }

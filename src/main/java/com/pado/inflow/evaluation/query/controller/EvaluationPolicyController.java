@@ -4,10 +4,7 @@ import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.evaluation.query.dto.EvaluationPolicyDTO;
 import com.pado.inflow.evaluation.query.service.EvaluationPolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +27,13 @@ public class EvaluationPolicyController {
         List<EvaluationPolicyDTO> selectedEvaluationPolicy =
                 evaluationPolicyService.findPolicyWithYearAndHalf(year,half);
         return ResponseDTO.ok(selectedEvaluationPolicy);
+    }
+
+    @GetMapping("/{evaluationPolicyId}")
+    public ResponseDTO<?> findEvaluationPolicyByevaluationPolicyId(
+            @PathVariable( value = "evaluationPolicyId") Long evaluationPolicyId
+    ) {
+        EvaluationPolicyDTO evaluationPolicy = evaluationPolicyService.findPolicyByevaluationPolicyId(evaluationPolicyId);
+        return ResponseDTO.ok(evaluationPolicy);
     }
 }

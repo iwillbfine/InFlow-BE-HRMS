@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface GradeMapper {
     List<GradeDTO> findGradeByYearAndHalf(Integer year, String half);
+
+    GradeDTO getGradeByGradeId(Long gradeId);
 }

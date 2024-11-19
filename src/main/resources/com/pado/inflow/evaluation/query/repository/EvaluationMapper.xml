@@ -1,0 +1,29 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.evaluation.query.repository.EvaluationMapper">
+
+    <resultMap id="EvaluationResultMap" type="com.pado.inflow.evaluation.query.dto.EvaluationDTO">
+        <id property="evaluationId" column="evaluation_id"/>
+        <result property="evaluationType" column="evaluation_type"/>
+        <result property="finGrade" column="fin_grade"/>
+        <result property="finScore" column="fin_score"/>
+        <result property="year" column="year"/>
+        <result property="half" column="half"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="evaluatorId" column="evaluator_id"/>
+        <result property="employeeId" column="employee_id"/>
+    </resultMap>
+
+    <select id="getFinalEvaluationGrade" resultMap="EvaluationResultMap">
+        SELECT
+               e.evaluation_id,
+               e.evaluation_type,
+               e.fin_grade
+          FROM evaluation e
+         WHERE e.employee_id = #{empId}
+           AND e.year = #{year}
+           AND e.half = #{half}
+           AND e.evaluator_id != #{empId}
+    </select>
+</mapper>

@@ -50,4 +50,33 @@ class TaskItemServiceImplTests {
         assertEquals(testData.getEmployeeId(), selectedTasks.get(0).getEmployeeId());
     }
 
+    @Test
+    @DisplayName("과제 단건 조회 테스트")
+    void getTaskItemByTaskItemIdTest() {
+        //given
+        TaskItemDTO testData = new TaskItemDTO();
+        testData.setTaskItemId(1L);
+
+        //when
+        TaskItemDTO selectedData = taskItemService.findIndividualTaskItemByTaskItemId(1L);
+
+        //then
+        assertEquals(testData.getTaskItemId(), selectedData.getTaskItemId());
+    }
+
+    @Test
+    @DisplayName("공통 과제 조회 테스트")
+    void getCommonTasksTest() {
+        //given
+        TaskItemDTO testData = new TaskItemDTO();
+        testData.setDepartmentCode("DP002");
+
+        //when
+        List<TaskItemDTO> selectedDatas = taskItemService.getCommonTaskItem(2023,"1st",6L);
+
+        //then
+        assertNotNull(selectedDatas);
+        assertEquals(testData.getDepartmentCode(), selectedDatas.get(0).getDepartmentCode());
+    }
+
 }
