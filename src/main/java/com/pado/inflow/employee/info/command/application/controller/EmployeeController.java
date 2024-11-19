@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("employeeCommandController")
-@RequestMapping("/api/employee/employees")
+@RequestMapping("/api/employees")
 public class EmployeeController {
 
     private final Environment env;

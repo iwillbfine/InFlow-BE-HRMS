@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("LTCommandController")
-@RequestMapping("/api/employee/language-test")
+@RequestMapping("/api/language-tests")
 public class LanguageTestController {
 
     private final LanguageTestService languageTestService;

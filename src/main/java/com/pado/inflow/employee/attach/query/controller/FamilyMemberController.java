@@ -16,7 +16,7 @@ import java.util.List;
 import static java.lang.Long.parseLong;
 
 @RestController("FMQueryController")
-@RequestMapping("/api/employee/family-members")
+@RequestMapping("/api/family-members")
 public class FamilyMemberController {
 
     static FamilyMemberService familyMemberService;

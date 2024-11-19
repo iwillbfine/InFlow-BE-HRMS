@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("CCommandController")
-@RequestMapping("/api/employee/career")
+@RequestMapping("/api/careers")
 public class CareerController {
 
     private final CareerService careerService;
