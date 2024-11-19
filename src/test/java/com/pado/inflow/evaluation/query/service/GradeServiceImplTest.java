@@ -48,7 +48,7 @@ class GradeServiceImplTest {
 
         //then
         assertEquals(testData.getGradeId(), selectedData.getGradeId());
-        
+
     }
 
 }

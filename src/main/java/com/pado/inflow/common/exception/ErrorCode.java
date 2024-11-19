@@ -45,6 +45,7 @@ public enum ErrorCode {
     DUPLICATE_NICKNAME(40013, HttpStatus.BAD_REQUEST, "이미 사용 중인 닉네임입니다."),
     DUPLICATE_NICKNAME_EXISTS(40014, HttpStatus.BAD_REQUEST, "중복된 닉네임입니다."),
     DUPLICATE_ENTRY(40014, HttpStatus.BAD_REQUEST, "중복된 사원입니다."),
+    DUPLICATE_TASK_TYPE(40015, HttpStatus.BAD_REQUEST, "중복된 과제 유형입니다."),
 
     //403
     FORBIDDEN_ROLE(40300, HttpStatus.FORBIDDEN, "권한이 존재하지 않습니다."),
