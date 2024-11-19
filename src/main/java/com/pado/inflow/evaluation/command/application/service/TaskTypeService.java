@@ -9,4 +9,6 @@ public interface TaskTypeService {
     CreateTaskTypeResponseDTO createTaskTypeByTaskTypeName(CreateTaskTypeRequestDTO createTaskTypeRequestDTO);
 
     UpdateTaskTypeResponseDTO updateTaskTypeByTaskTypeId(Long taskTypeId, UpdateTaskTypeRequestDTO updateTaskTypeRequestDTO);
+
+    void deleteTaskTypeByTaskTypeId(Long taskTypeId);
 }

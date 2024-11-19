@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("queryTaskItemController")
-@RequestMapping("/api/evaluation/taskItem")
+@RequestMapping("/api/evaluations/taskItem")
 public class TaskItemController {
 
     @Autowired
@@ -20,7 +20,7 @@ public class TaskItemController {
         this.taskItemService = taskItemService;
     }
 
-    // 부서 과제 항목 조회
+    // 부서 과제 항목 리스트 조회
     @GetMapping("/departmentTask")
     public ResponseDTO<?> findDepartmentTaskItemByEmpId(
             @RequestParam( value = "year")  Integer year
@@ -31,6 +31,8 @@ public class TaskItemController {
                 taskItemService.findTaskItemByEmpIdAndYearAndHalf(year, half, empId);
         return ResponseDTO.ok(TaskItemList);
     }
+
+    // 부서 과제 항목 단건 조회
 
     // 개인 과제 항목 리스트 조회
     @GetMapping("/individualTasks")
@@ -49,22 +51,25 @@ public class TaskItemController {
     public ResponseDTO<?> findIndividualTeskByTaskItemId(
             @PathVariable Long taskItemId
     ) {
-        TaskItemDTO taskItem = taskItemService.findIndividualTaskItemByTaskItemId(taskItemId);
+        TaskItemDTO taskItem =
+                taskItemService.findIndividualTaskItemByTaskItemId(taskItemId);
         return ResponseDTO.ok(taskItem);
     }
 
-    // 공통 과제 조회
-    @GetMapping("/commonTask")
+    // 공통 과제 항목 리스트 조회
+    @GetMapping("/commonTasks")
     public ResponseDTO<?> findCommonTaskItemByEmpId(
             @RequestParam( value = "year") Integer year
            ,@RequestParam( value = "half") String half
             ,@RequestParam( value = "empId") Long empId
     ) {
-        List<TaskItemDTO> CommonTaskList = taskItemService.getCommonTaskItem(year, half, empId);
+        List<TaskItemDTO> CommonTaskList =
+                taskItemService.getCommonTaskItem(year, half, empId);
 
         return ResponseDTO.ok(CommonTaskList);
 
     }
 
+    //공통 과제 항목 단건 조회
 }
 

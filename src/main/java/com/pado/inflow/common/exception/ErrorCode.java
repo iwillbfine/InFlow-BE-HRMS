@@ -20,7 +20,8 @@ public enum ErrorCode {
     MISSING_REQUIRED_FIELD(40012, HttpStatus.BAD_REQUEST, "필수 필드가 누락되었습니다."), // JSON 또는 요청 데이터에서 필수 필드가 누락된 경우
     INVALID_VERIFICATION_CODE(40013, HttpStatus.BAD_REQUEST, "잘못된 인증번호입니다. 인증번호를 다시 확인해주세요"), // 인증번호가 잘못되었거나 유효하지 않은 경우
     INSUFFICIENT_VACATION_DAYS(40014, HttpStatus.BAD_REQUEST, "휴가일수가 부족합니다."), // 휴가 신청 시 잔여 휴가일이 부족한 경우
-
+    TASK_TYPE_UPDATE_FAILURE(40015, HttpStatus.BAD_REQUEST, "이미 해당 과제 유형이 사용중이므로 업데이트가 불가능합니다."),
+    TASK_TYPE_DELETE_FAILURE(40016, HttpStatus.BAD_REQUEST,"해당 과제 유형이 사용중이므로 삭제할수 없습니다."),
     // 파일 관련 오류
     UNSUPPORTED_FILE_FORMAT(40020, HttpStatus.BAD_REQUEST, "지원되지 않는 파일 형식입니다."), // 업로드된 파일의 형식이 지원되지 않는 경우
     FILE_UPLOAD_ERROR(40021, HttpStatus.BAD_REQUEST, "파일 업로드에 실패했습니다."), // 파일 업로드 중 오류 발생
@@ -42,7 +43,6 @@ public enum ErrorCode {
     EXIST_USER(40112, HttpStatus.UNAUTHORIZED, "이미 회원가입한 회원입니다."), // 이미 회원가입된 사용자
     NOT_FOUND_USER_ID(40113, HttpStatus.UNAUTHORIZED, "아이디를 잘못 입력하셨습니다."), // 잘못된 아이디 입력
     INVALID_PASSWORD(40114, HttpStatus.UNAUTHORIZED, "비밀번호를 잘못 입력하셨습니다."), // 비밀번호가 잘못된 경우
-    UPDATE_FAILURE(40015, HttpStatus.BAD_REQUEST, "이미 해당 과제 유형이 사용중이므로 업데이트가 불가능합니다."),
 
     // 403: 권한 부족 (Forbidden)
     FORBIDDEN_ROLE(40300, HttpStatus.FORBIDDEN, "요청한 리소스에 대한 권한이 없습니다."), // 사용자가 요청한 리소스에 대한 권한이 없는 경우

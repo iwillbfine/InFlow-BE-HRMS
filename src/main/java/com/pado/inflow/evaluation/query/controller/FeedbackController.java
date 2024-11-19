@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("queryFeedbackController")
-@RequestMapping("/api/evaluation/feedback")
+@RequestMapping("/api/evaluations/feedback")
 public class FeedbackController {
 
     private final FeedbackService feedbackService;
