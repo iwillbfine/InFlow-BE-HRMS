@@ -37,4 +37,19 @@ class TaskEvalServiceImplTest {
 
     }
 
+    @Test
+    @DisplayName("과제별 평가 단건 조회 테스트")
+    void taskEvalFindTest() {
+        //given
+        TaskEvalDTO testData = new TaskEvalDTO();
+        testData.setTaskGrade("S");
+
+        //when
+        TaskEvalDTO selectedData = taskEvalService.getTaskEvalItem(1L);
+
+        //then
+        assertEquals(testData.getTaskGrade(), selectedData.getTaskGrade());
+
+    }
+
 }

@@ -27,4 +27,10 @@ public class GradeServiceImpl implements GradeService{
         }
         return selectedGradeList;
     }
+
+    @Override
+    public GradeDTO findGradeByGradeId(Long gradeId) {
+        GradeDTO selectedGrade = gradeMapper.getGradeByGradeId(gradeId);
+        return selectedGrade;
+    }
 }
