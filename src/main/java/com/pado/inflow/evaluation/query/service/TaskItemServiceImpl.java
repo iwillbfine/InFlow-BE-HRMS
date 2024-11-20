@@ -28,7 +28,7 @@ public class TaskItemServiceImpl implements TaskItemService{
         List<TaskItemDTO> selectedTaskItemList =
                 taskItemMapper.findDepartmentTaskItemsByEmpIdAndYearAndHalf(year, half, empId);
 
-        if (selectedTaskItemList == null) {
+        if ( !selectedTaskItemList.isEmpty() ) {
             throw new CommonException(ErrorCode.NOT_FOUND_TASK);
         }
 
@@ -46,24 +46,14 @@ public class TaskItemServiceImpl implements TaskItemService{
 
         return selectedItem;
     }
-
-    // 공통 과제 항목 리스트 조회
-    @Override
-    public TaskItemDTO findCommonTaskItemByTaskItemId(Long taskItemId) {
-        TaskItemDTO selectedItem = taskItemMapper.findCommonTaskItemByTaskItemId(taskItemId);
-
-        if (selectedItem == null) {
-            throw new CommonException(ErrorCode.NOT_FOUND_TASK);
-        }
-        return selectedItem;
-    }
+    
 
     // 개인 과제 항목 리스트 조회
     @Override
     public List<TaskItemDTO> findindividualTaskItemByEmpId(Integer year, String half, Long empId) {
         List<TaskItemDTO> selectedTaskItem = taskItemMapper.findIndividualItemByEmpId(year, half, empId);
 
-        if (selectedTaskItem == null) {
+        if ( !selectedTaskItem.isEmpty() ) {
             throw new CommonException(ErrorCode.NOT_FOUND_TASK);
         }
         return selectedTaskItem;
@@ -84,12 +74,22 @@ public class TaskItemServiceImpl implements TaskItemService{
     @Override
     public List<TaskItemDTO> getCommonTaskItem(Integer year, String half, Long empId) {
         List<TaskItemDTO> selectedTaskItem = taskItemMapper.findCommonTaskItemsByYearAndHalf(year, half, empId);
-        if (selectedTaskItem == null) {
+        if ( !selectedTaskItem.isEmpty() ) {
             throw new CommonException(ErrorCode.NOT_FOUND_TASK);
         }
         return selectedTaskItem;
     }
 
+    // 공통 과제 항목 조회
+    @Override
+    public TaskItemDTO findCommonTaskItemByTaskItemId(Long taskItemId) {
+        TaskItemDTO selectedItem = taskItemMapper.findCommonTaskItemByTaskItemId(taskItemId);
+
+        if (selectedItem == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK);
+        }
+        return selectedItem;
+    }
 
 
 }

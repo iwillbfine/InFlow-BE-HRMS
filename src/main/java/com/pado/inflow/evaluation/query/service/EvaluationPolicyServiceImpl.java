@@ -25,7 +25,7 @@ public class EvaluationPolicyServiceImpl implements EvaluationPolicyService {
         List<EvaluationPolicyDTO> selectedPolicy =
                 evaluationPolicyMapper.findPolicyByYearAndHalf(year, half);
 
-        if (selectedPolicy == null) {
+        if ( !selectedPolicy.isEmpty() ) {
             throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION_POLICY);
         }
         return selectedPolicy;
