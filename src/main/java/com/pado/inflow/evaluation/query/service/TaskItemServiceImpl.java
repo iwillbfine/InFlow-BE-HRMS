@@ -91,6 +91,16 @@ public class TaskItemServiceImpl implements TaskItemService{
         return selectedItem;
     }
 
+    @Override
+    public List<TaskItemDTO> findTaskItems(Long evaluationPolicyId) {
+        List<TaskItemDTO> selectedTaskItems = taskItemMapper.findTaskItemByEvaluationPolicyId(evaluationPolicyId);
+
+        if (selectedTaskItems == null || selectedTaskItems.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK);
+        }
+        return selectedTaskItems;
+    }
+
 
 }
 

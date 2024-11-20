@@ -38,4 +38,12 @@ public class EvaluationPolicyController {
                 evaluationPolicyService.updateEvaluationPolicy(updateEvaluationPolicyRequestDTO, evaluationPolicyId);
         return ResponseDTO.ok(updatedEvaluationPolicy);
     }
+
+    @DeleteMapping("/{evaluationPolicyId}")
+    public ResponseDTO<String> deleteEvaluationPolicy(
+            @PathVariable( value = "evaluationPolicyId") Long evaluationPolicyId
+    ) {
+        evaluationPolicyService.deleteEvaluationPolicyByEvaluationPolicyId(evaluationPolicyId);
+        return ResponseDTO.ok("평가 정책 삭제를 완료하였습니다.");
+    }
 }

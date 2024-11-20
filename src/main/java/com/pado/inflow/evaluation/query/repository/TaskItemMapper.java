@@ -19,4 +19,6 @@ public interface TaskItemMapper {
     TaskItemDTO findDepartmentTaskItemByEmpIdAndYearAndHalf(Long taskItemId);
 
     TaskItemDTO findCommonTaskItemByTaskItemId(Long taskItemId);
+
+    List<TaskItemDTO> findTaskItemByEvaluationPolicyId(Long evaluationPolicyId);
 }

@@ -127,4 +127,20 @@
         FROM task_item ti
         WHERE ti.task_item_id = #{taskItemId}
     </select>
+
+    <!-- EvaluationPolicyId로 TaskItem 리스트 조회 -->
+    <select id="findTaskItemByEvaluationPolicyId" resultMap="taskItemResultMap">
+        SELECT
+        ti.task_item_id,
+        ti.task_name,
+        ti.task_content,
+        ti.assigned_employee_count,
+        ti.task_type_id,
+        ti.employee_id,
+        ti.department_code,
+        ti.evaluation_policy_id,
+        ti.is_manager_written
+        FROM task_item ti
+        WHERE ti.evaluation_policy_id = #{evaluationPolicyId}
+    </select>
 </mapper>

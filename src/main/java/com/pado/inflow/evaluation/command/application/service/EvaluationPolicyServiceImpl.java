@@ -9,7 +9,9 @@ import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.UpdateEv
 import com.pado.inflow.evaluation.command.domain.aggregate.entity.EvaluationPolicyEntity;
 import com.pado.inflow.evaluation.command.domain.repository.EvaluationPolicyRepository;
 import com.pado.inflow.evaluation.query.dto.EvaluationPolicyDTO;
+import com.pado.inflow.evaluation.query.dto.TaskItemDTO;
 import com.pado.inflow.evaluation.query.repository.EvaluationPolicyMapper;
+import com.pado.inflow.evaluation.query.repository.TaskItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,8 @@ public class EvaluationPolicyServiceImpl implements EvaluationPolicyService {
     @Autowired
     private final EvaluationPolicyRepository evaluationPolicyRepository;
     private final EvaluationPolicyMapper evaluationPolicyMapper;
+    @Autowired
+    private TaskItemMapper taskItemMapper;
 
     public EvaluationPolicyServiceImpl(EvaluationPolicyRepository evaluationPolicyRepository, EvaluationPolicyMapper evaluationPolicyMapper) {
         this.evaluationPolicyRepository = evaluationPolicyRepository;
@@ -151,5 +155,32 @@ public class EvaluationPolicyServiceImpl implements EvaluationPolicyService {
         UpdateEvaluationPolicyResponseDTO responseDTO = savedEntity.toResponseDTO();
 
         return responseDTO;
+    }
+
+    @Override
+    public void deleteEvaluationPolicyByEvaluationPolicyId(Long evaluationPolicyId) {
+
+        // 삭제하려는 평가 정책 조회
+        EvaluationPolicyDTO selectedPolicy =
+                evaluationPolicyMapper.getEvaluationPolicyByEvaluationPolicyId(evaluationPolicyId);
+        if (selectedPolicy == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION_POLICY);
+        }
+        // 평가 시작일 이전인지 확인.
+        if (selectedPolicy.getStartDate().isBefore(LocalDateTime.now())) {
+            throw new CommonException(ErrorCode.POLICY_ALREADY_STARTED);
+        }
+
+        // 해당 평가 정책을 참조하고있는 과제 항목이 있는지 확인
+        List<TaskItemDTO> selectedTaskItem =
+                taskItemMapper.findTaskItemByEvaluationPolicyId(evaluationPolicyId);
+
+        if (selectedTaskItem != null && !selectedTaskItem.isEmpty()) {
+            throw new CommonException(ErrorCode.POLICY_IN_USE);
+        }
+
+        // 삭제
+        EvaluationPolicyEntity willBeDeletedEntity = selectedPolicy.toEntity();
+        evaluationPolicyRepository.delete(willBeDeletedEntity);
     }
 }
