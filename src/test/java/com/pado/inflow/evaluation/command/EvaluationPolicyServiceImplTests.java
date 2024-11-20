@@ -126,4 +126,53 @@ class EvaluationPolicyServiceImplTests {
 
     }
 
+    @Test
+    @DisplayName("평가 정책 수정 테스트 - 성공")
+    void EvaluationPolicyUpdateTest() {
+        //given
+
+        // 기존 평가 정책 데이터
+        EvaluationPolicyDTO testData = new EvaluationPolicyDTO();
+        testData.setStartDate(LocalDateTime.now().plusDays(10));
+        testData.setEndDate(LocalDateTime.now().plusDays(20));
+        testData.setYear(2024);
+        testData.setHalf("1st");
+        testData.setTaskRatio(0.3);
+        testData.setMinRelEvalCount(20L);
+        testData.setModifiableDate(LocalDateTime.now().plusDays(5));
+        testData.setCreatedAt(LocalDateTime.now().withNano(0));
+        testData.setPolicyDescription("기존 정책");
+        testData.setPolicyRegisterId(6L);
+        testData.setTaskTypeId(1L);
+
+        EvaluationPolicyEntity savedEntity = evaluationPolicyRepository.save(testData.toEntity());
+
+        // 평가 정책 수정 요청 데이터
+
+        EvaluationPolicyDTO updateRequest = new EvaluationPolicyDTO();
+        updateRequest.setStartDate(LocalDateTime.now().plusDays(15));        // 시작일 비교 OK
+        updateRequest.setEndDate(LocalDateTime.now().plusDays(25));         // 종료일 비교 OK
+        updateRequest.setYear(2024);
+        updateRequest.setHalf("1st");
+        updateRequest.setTaskRatio(0.4);
+        updateRequest.setMinRelEvalCount(20L);
+        updateRequest.setModifiableDate(LocalDateTime.now().plusDays(5));
+        updateRequest.setCreatedAt(LocalDateTime.now().withNano(0));
+        updateRequest.setPolicyDescription("수정된 정책");
+        updateRequest.setPolicyRegisterId(6L);
+        updateRequest.setTaskTypeId(1L);
+
+
+        //when
+        EvaluationPolicyEntity updatedData = evaluationPolicyRepository.save(updateRequest.toEntity());
+
+
+        //then
+        assertNotNull(updatedData);
+        assertEquals(updateRequest.getTaskRatio(), updatedData.getTaskRatio());
+        assertEquals(updateRequest.getPolicyDescription(), updatedData.getPolicyDescription());
+
+    }
+
+
 }

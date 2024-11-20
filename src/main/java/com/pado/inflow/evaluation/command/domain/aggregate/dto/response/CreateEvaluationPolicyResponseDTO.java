@@ -54,16 +54,6 @@ public class CreateEvaluationPolicyResponseDTO {
     private Long taskTypeId;
 
 
-    /*
-     Entity -> DTO 변환 메소드가 Static인 이유
-     :
-     static이 없다면 인스턴스를 먼저 생성하고
-     ExampleDTO example = new ExampleDTO();
-     "ExampleDTO.EntityToDTO(ExampleEntity);" 와 같이 사용해야하나
-     static 메소드의 경우
-     ExampleDTO example = ExanpleDTO.EntityToDTO(ExampleEntity)
-     처럼 한 번에 수월하게 코딩이 가능하기 때문이다.
-     */
     public static CreateEvaluationPolicyResponseDTO EntityToDTO(EvaluationPolicyEntity entity) {
         return CreateEvaluationPolicyResponseDTO.builder()
                 .evaluationPolicyId(entity.getEvaluationPolicyId())
