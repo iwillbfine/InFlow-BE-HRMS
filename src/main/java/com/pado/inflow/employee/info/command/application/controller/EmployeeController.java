@@ -48,7 +48,7 @@ public class EmployeeController {
     /* 설명. 2.1 사원 정보 수정 (ID 기준) */
     @PatchMapping("/employee-id/{employeeId}")
     public ResponseDTO<ResponseEmployeeDTO> updateEmployeeById(
-            @PathVariable Long employeeId,
+            @PathVariable(value="employeeId") Long employeeId,
             @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
 
         ResponseEmployeeDTO updatedEmployee = employeeService.updateEmployeeById(employeeId, updateEmployeeDTO);
@@ -58,7 +58,7 @@ public class EmployeeController {
     /* 설명. 2.2 사원 정보 수정 (사번 기준) */
     @PatchMapping("/employee-number/{employeeNumber}")
     public ResponseDTO<ResponseEmployeeDTO> updateEmployeeByEmployeeNumber(
-            @PathVariable String employeeNumber,
+            @PathVariable(value="employeeNumber") String employeeNumber,
             @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
 
         ResponseEmployeeDTO updatedEmployee = employeeService.updateEmployeeByEmployeeNumber(employeeNumber, updateEmployeeDTO);
@@ -69,7 +69,7 @@ public class EmployeeController {
     // 설명. 3. 비밀번호 재설정
     @PatchMapping("/{employee_number}/re-password")
     public ResponseDTO<String> updatePassword(
-            @PathVariable("employee_number") String employeeNumber, // 명시적으로 이름 지정
+            @PathVariable(value="employee_number") String employeeNumber, // 명시적으로 이름 지정
             @RequestParam("new_password") String newPassword) { // 명시적으로 이름 지정
 
         employeeService.resetPassword(employeeNumber, newPassword);

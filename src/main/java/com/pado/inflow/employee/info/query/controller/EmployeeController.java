@@ -45,14 +45,14 @@ public class EmployeeController {
 
     // 1.3. 설명: 사원 정보 사번으로 조회
     @GetMapping("/number/{employeeNumber}")
-    public ResponseDTO<EmployeeDTO> getEmployeeByNumber(@PathVariable String employeeNumber) {
+    public ResponseDTO<EmployeeDTO> getEmployeeByNumber(@PathVariable(value = "employeeNumber") String employeeNumber) {
         EmployeeDTO employee = employeeService.getEmployeeByNumber(employeeNumber);
         return ResponseDTO.ok(employee);
     }
 
     // 1.4. 설명: 사원 정보 id로 조회
     @GetMapping("/id/{employeeId}")
-    public ResponseDTO<EmployeeDTO> getEmployeeById(@PathVariable Long employeeId) {
+    public ResponseDTO<EmployeeDTO> getEmployeeById(@PathVariable(value = "employeeId") Long employeeId) {
         EmployeeDTO employee = employeeService.getEmployeeById(employeeId);
         return ResponseDTO.ok(employee);
     }
