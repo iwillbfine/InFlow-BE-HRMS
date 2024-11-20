@@ -19,7 +19,7 @@ public class FeedbackServiceImpl implements FeedbackService{
 
     @Override
     public FeedbackDTO findFeedbackByempIdAndYearAndHalf(Long empId, Integer year, String half) {
-        // EmpId 유효성 검증 추가 필요?
+
         FeedbackDTO selectedFeedback = feedbackMapper.findEmpFeedback(empId, year, half);
         if (selectedFeedback == null) {
             throw new CommonException(ErrorCode.NOT_FOUND_FEEDBACK);

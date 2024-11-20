@@ -50,11 +50,9 @@ public class EvaluationPolicyEntity {
     @Column(name = "policy_description", nullable = false, columnDefinition = "TEXT")
     private String policyDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "policy_register_id", nullable = false)
-    private Employee policyRegister;
+    @Column(name = "policy_register_id")
+    private Long policyRegisterId;  // Entity 대신 ID만 저장
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_type_id", nullable = false)
-    private TaskTypeEntity taskType;
+    @Column(name = "task_type_id")
+    private Long taskTypeId;        // Entity 대신 ID만 저장
 }
