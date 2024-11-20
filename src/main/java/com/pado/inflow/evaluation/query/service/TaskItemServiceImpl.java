@@ -21,41 +21,45 @@ public class TaskItemServiceImpl implements TaskItemService{
         this.taskItemMapper = taskItemMapper;
     }
 
-    // 부서별 과제 항목 조회
+    // 부서별 과제 항목 리스트 조회
     @Override
-    public List<TaskItemDTO> findTaskItemByEmpIdAndYearAndHalf(Integer year, String half, Long empId) {
+    public List<TaskItemDTO> findTaskItemsByEmpIdAndYearAndHalf(Integer year, String half, Long empId) {
 
         List<TaskItemDTO> selectedTaskItemList =
-                taskItemMapper.findDepartmentTaskItemByEmpIdAndYearAndHalf(year, half, empId);
+                taskItemMapper.findDepartmentTaskItemsByEmpIdAndYearAndHalf(year, half, empId);
 
-        if (selectedTaskItemList == null) {
+        if ( selectedTaskItemList == null || selectedTaskItemList.isEmpty() ) {
             throw new CommonException(ErrorCode.NOT_FOUND_TASK);
         }
 
         return selectedTaskItemList;
     }
 
-    // 개인 과제 항목 조회
+    // 부서 과제 단건 조회
+    @Override
+    public TaskItemDTO findTaskItemByTaskItemId(Long taskItemId) {
+        TaskItemDTO selectedItem = taskItemMapper.findDepartmentTaskItemByEmpIdAndYearAndHalf(taskItemId);
+
+        if (selectedItem == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK);
+        }
+
+        return selectedItem;
+    }
+
+
+    // 개인 과제 항목 리스트 조회
     @Override
     public List<TaskItemDTO> findindividualTaskItemByEmpId(Integer year, String half, Long empId) {
         List<TaskItemDTO> selectedTaskItem = taskItemMapper.findIndividualItemByEmpId(year, half, empId);
 
-        if (selectedTaskItem == null) {
+        if ( selectedTaskItem == null || selectedTaskItem.isEmpty() ) {
             throw new CommonException(ErrorCode.NOT_FOUND_TASK);
         }
         return selectedTaskItem;
     }
 
-    // 공통 과제 항목 조회
-    @Override
-    public List<TaskItemDTO> getCommonTaskItem(Integer year, String half, Long empId) {
-        List<TaskItemDTO> selectedTaskItem = taskItemMapper.findCommonTaskItemByYearAndHalf(year, half, empId);
-        if (selectedTaskItem == null) {
-            throw new CommonException(ErrorCode.NOT_FOUND_TASK);
-        }
-        return selectedTaskItem;
-    }
-
+    // 개인 과제 항목 단건 조회
     @Override
     public TaskItemDTO findIndividualTaskItemByTaskItemId(Long taskItemId) {
         TaskItemDTO selectedTaskItem = taskItemMapper.findTaskItemByTaskItemId(taskItemId);
@@ -64,6 +68,27 @@ public class TaskItemServiceImpl implements TaskItemService{
             throw new CommonException(ErrorCode.NOT_FOUND_TASK);
         }
         return selectedTaskItem;
+    }
+
+    // 공통 과제 항목 리스트 조회
+    @Override
+    public List<TaskItemDTO> getCommonTaskItem(Integer year, String half, Long empId) {
+        List<TaskItemDTO> selectedTaskItem = taskItemMapper.findCommonTaskItemsByYearAndHalf(year, half, empId);
+        if ( selectedTaskItem == null || selectedTaskItem.isEmpty() ) {
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK);
+        }
+        return selectedTaskItem;
+    }
+
+    // 공통 과제 항목 조회
+    @Override
+    public TaskItemDTO findCommonTaskItemByTaskItemId(Long taskItemId) {
+        TaskItemDTO selectedItem = taskItemMapper.findCommonTaskItemByTaskItemId(taskItemId);
+
+        if (selectedItem == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK);
+        }
+        return selectedItem;
     }
 
 

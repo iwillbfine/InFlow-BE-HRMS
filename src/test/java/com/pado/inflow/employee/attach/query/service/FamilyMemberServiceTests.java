@@ -1,7 +1,7 @@
 package com.pado.inflow.employee.attach.query.service;
 
 import com.pado.inflow.employee.attach.query.dto.FamilyMemberDTO;
-import org.bson.assertions.Assertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

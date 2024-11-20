@@ -23,4 +23,8 @@ public class TaskTypeEntity {
     @Column(name = "task_type_name")
     private String taskTypeName;
 
+    // 업데이트용 메서드
+    public void updateTaskTypeName(String newTaskTypeName) {
+        this.taskTypeName = newTaskTypeName;
+    }
 }

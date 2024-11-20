@@ -22,7 +22,7 @@ public class TaskEvalServiceImpl implements TaskEvalService{
     @Override
     public List<TaskEvalDTO> findTaskEval(Long empId, Integer year, String half) {
         List<TaskEvalDTO> selectedTaskEvalList = taskEvalMapper.findTaskEvalList(empId, year, half);
-        if (selectedTaskEvalList == null) {
+        if ( selectedTaskEvalList == null || selectedTaskEvalList.isEmpty() ) {
             throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION);
         }
         return selectedTaskEvalList;

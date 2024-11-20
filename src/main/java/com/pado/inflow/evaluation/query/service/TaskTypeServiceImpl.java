@@ -22,7 +22,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public List<TaskTypeDTO> findAllTaskTypes() {
         List<TaskTypeDTO> TaskTypeList = taskTypeMapper.findAllTaskTypes();
-        if (TaskTypeList == null) {
+        if (TaskTypeList == null || TaskTypeList.isEmpty()) {
             throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION_POLICY);
         }
         return TaskTypeList;

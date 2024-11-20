@@ -22,7 +22,7 @@ public class GradeServiceImpl implements GradeService{
 
         List<GradeDTO> selectedGradeList = gradeMapper.findGradeByYearAndHalf(year, half);
 
-        if (selectedGradeList == null) {
+        if ( selectedGradeList == null || selectedGradeList.isEmpty() ) {
             throw new CommonException(ErrorCode.NOT_FOUND_GRADE);
         }
         return selectedGradeList;

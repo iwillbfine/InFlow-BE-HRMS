@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("queryGradeController")
-@RequestMapping("/api/evaluation/grade")
+@RequestMapping("/api/evaluations/grade")
 public class GradeController {
 
     private final GradeService gradeService;

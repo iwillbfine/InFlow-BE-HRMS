@@ -20,12 +20,21 @@ public enum ErrorCode {
     MISSING_REQUIRED_FIELD(40012, HttpStatus.BAD_REQUEST, "필수 필드가 누락되었습니다."), // JSON 또는 요청 데이터에서 필수 필드가 누락된 경우
     INVALID_VERIFICATION_CODE(40013, HttpStatus.BAD_REQUEST, "잘못된 인증번호입니다. 인증번호를 다시 확인해주세요"), // 인증번호가 잘못되었거나 유효하지 않은 경우
     INSUFFICIENT_VACATION_DAYS(40014, HttpStatus.BAD_REQUEST, "휴가일수가 부족합니다."), // 휴가 신청 시 잔여 휴가일이 부족한 경우
-
+    TASK_TYPE_UPDATE_FAILURE(40015, HttpStatus.BAD_REQUEST, "이미 해당 과제 유형이 사용중이므로 업데이트가 불가능합니다."),
+    TASK_TYPE_DELETE_FAILURE(40016, HttpStatus.BAD_REQUEST,"해당 과제 유형이 사용중이므로 삭제할수 없습니다."),
     // 파일 관련 오류
     UNSUPPORTED_FILE_FORMAT(40020, HttpStatus.BAD_REQUEST, "지원되지 않는 파일 형식입니다."), // 업로드된 파일의 형식이 지원되지 않는 경우
     FILE_UPLOAD_ERROR(40021, HttpStatus.BAD_REQUEST, "파일 업로드에 실패했습니다."), // 파일 업로드 중 오류 발생
     FILE_CONVERSION_ERROR(40022, HttpStatus.BAD_REQUEST, "파일 변환에 실패했습니다."), // 업로드된 파일의 변환 작업 중 오류 발생
     FILE_SIZE_EXCEEDED(40023, HttpStatus.BAD_REQUEST, "파일 크기가 허용된 최대 크기를 초과했습니다."), // 파일 크기가 제한을 초과한 경우
+    ALREADY_EXIST_POLICY_TYPE(40024, HttpStatus.BAD_REQUEST, "해당 과제 유형에 해당하는 평가 정책이 이미 존재합니다."),
+    EXCEED_TOTAL_RATIO(40025, HttpStatus.BAD_REQUEST, "과제 반영 비율의 총 합은 100%를 넘길 수 없습니다."),
+    INVALID_START_DATE(40001, HttpStatus.BAD_REQUEST, "평가 시작일은 현재 시점보다 미래여야 합니다."),
+    INVALID_END_DATE(40002, HttpStatus.BAD_REQUEST, "평가 종료일은 현재 시점보다 미래여야 합니다."),
+    INVALID_DATE_RANGE(40003, HttpStatus.BAD_REQUEST, "평가 종료일은 시작일보다 미래여야 합니다."),
+    INVALID_MODIFIABLE_DATE(40004, HttpStatus.BAD_REQUEST, "평가 정책 수정 가능일은 현재 시점보다 미래여야 합니다."),
+    INVALID_MODIFIABLE_DATE_RANGE(40005, HttpStatus.BAD_REQUEST, "평가 정책 수정 가능일은 평가 시작일보다 이전이어야 합니다."),
+
 
     // 401: 인증 실패 (Unauthorized)
     INVALID_HEADER_VALUE(40100, HttpStatus.UNAUTHORIZED, "올바르지 않은 헤더값입니다."), // 헤더 값이 잘못되었거나 누락된 경우
