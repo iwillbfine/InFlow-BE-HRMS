@@ -1,0 +1,39 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.payroll.query.repository.PayrollMapper">
+    <select id="findPaymentByEmployeeIdAndYearAndMonth" resultType="com.pado.inflow.payroll.query.dto.PayrollDTO">
+        SELECT
+            payment_id AS paymentId,
+            paid_at AS paidAt,
+            monthly_salary AS monthlySalary,
+            actual_salary AS actualSalary,
+            non_taxable_amount AS nonTaxableAmount,
+            family_member_num AS familyMemberNum,
+            valid_child_num AS validChildNum,
+            total_working_day_num AS totalWorkingDayNum,
+            actual_working_day_num AS actualWorkingDayNum,
+            paid_vacation_num AS paidVacationNum,
+            unpaid_vacation_num AS unpaidVacationNum,
+            public_holiday_num AS publicHolidayNum,
+            bonus,
+            annual_vacation_allowance AS annualVacationAllowance,
+            overtime_allowance AS overtimeAllowance,
+            national_pension_deductible AS nationalPensionDeductible,
+            health_insurance_deductible AS healthInsuranceDeductible,
+            long_term_care_insurance_deductible AS longTermCareInsuranceDeductible,
+            employment_insurance_deductible AS employmentInsuranceDeductible,
+            income_tax_deductible AS incomeTaxDeductible,
+            local_income_tax_deductible AS localIncomeTaxDeductible,
+            child_deductible AS childDeductible,
+            total_deductible AS totalDeductible,
+            employee_id AS employeeId,
+            public_holiday_id AS publicHolidayId,
+            earned_income_tax_id AS earnedIncomeTaxId
+        FROM
+            payment
+        WHERE employee_id = #{employeeId}
+          AND YEAR(paid_at) = #{year}
+          AND MONTH(paid_at) = #{month}
+    </select>
+</mapper>

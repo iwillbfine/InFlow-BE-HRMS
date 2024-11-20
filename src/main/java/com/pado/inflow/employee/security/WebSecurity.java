@@ -78,7 +78,7 @@ public class WebSecurity {
                     // 그외.. 테이블 관련 api
 
                      // 설명. 3. department(부서) 도메인
-                    .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/departments/members/search/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
@@ -133,8 +133,11 @@ public class WebSecurity {
                     /* -------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
                     // 설명. 7. payroll(급여) 도메인
-                    .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
+                    // 사원별 연월별 급여 명세서 조회
+                    .requestMatchers(new AntPathRequestMatcher("/api/payrolls/details", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
+                        .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
