@@ -10,12 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class EmployeeNumServiceTests {
+class EmployeeNumServiceImplTests {
 
     private final EmployeeNumService employeeNumService;
 
     @Autowired
-    public EmployeeNumServiceTests(EmployeeNumService employeeNumService) {
+    public EmployeeNumServiceImplTests(EmployeeNumService employeeNumService) {
         this.employeeNumService = employeeNumService;
     }
 
