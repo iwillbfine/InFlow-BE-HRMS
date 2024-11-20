@@ -1,15 +1,14 @@
 package com.pado.inflow.payroll.query.controller;
 
 import com.pado.inflow.common.ResponseDTO;
+import com.pado.inflow.payroll.query.dto.AllPaymentsDTO;
+import com.pado.inflow.payroll.query.dto.PageDTO;
 import com.pado.inflow.payroll.query.dto.PayrollDTO;
 import com.pado.inflow.payroll.query.service.PayrollService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("queryPayrollController")
 @RequestMapping("/api/payrolls")
 public class PayrollController {
 
@@ -21,12 +20,19 @@ public class PayrollController {
     }
 
     // 사원의 월별 상세 급여 명세서 조회
-    @GetMapping("/details")
-    public ResponseDTO<?> getPaymentByEmployeeIdAndYearAndMonth(@RequestParam("employeeId") Long employeeId,
+    @GetMapping("/details/{employeeId}")
+    public ResponseDTO<?> getPaymentByEmployeeIdAndYearAndMonth(@PathVariable Long employeeId,
                                                                 @RequestParam("year") Integer year,
                                                                 @RequestParam("month") Integer month) {
-        PayrollDTO payment = payrollService.getPaymentDetail(employeeId, year, month);
+        PayrollDTO payment = payrollService.findPaymentDetail(employeeId, year, month);
         return ResponseDTO.ok(payment);
+    }
+
+    @GetMapping("/all/{employeeId}")
+    public ResponseDTO<?> getAllPayments(@PathVariable Long employeeId,
+                                         @RequestParam(value = "page", defaultValue = "1") Integer pageNo) {
+        PageDTO<AllPaymentsDTO> payments = payrollService.findPaymentsByEmployeeId(employeeId, pageNo);
+        return ResponseDTO.ok(payments);
     }
 
 
