@@ -4,7 +4,6 @@ import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.evaluation.query.dto.EvaluationPolicyDTO;
 import com.pado.inflow.evaluation.query.repository.EvaluationPolicyMapper;
-import org.apache.ibatis.ognl.Evaluation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class EvaluationPolicyServiceImpl implements EvaluationPolicyService {
         List<EvaluationPolicyDTO> selectedPolicy =
                 evaluationPolicyMapper.findPolicyByYearAndHalf(year, half);
 
-        if ( !selectedPolicy.isEmpty() ) {
+        if ( selectedPolicy == null || selectedPolicy.isEmpty() ) {
             throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION_POLICY);
         }
         return selectedPolicy;

@@ -36,4 +36,29 @@
           AND YEAR(paid_at) = #{year}
           AND MONTH(paid_at) = #{month}
     </select>
+
+    <select id="getTotalPaymentsByEmployeeId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM payment
+        WHERE employee_id = #{employeeId}
+    </select>
+
+    <select id="findPaymentsByEmployeeId" resultType="com.pado.inflow.payroll.query.dto.AllPaymentsDTO">
+        SELECT
+            payment_id AS paymentId,
+            paid_at AS paidAt,
+            monthly_salary AS monthlySalary,
+            actual_salary AS actualSalary,
+            non_taxable_amount AS nonTaxableSalary,
+            total_deductible AS totalDeductible,
+            employee_id AS employeeId
+        FROM
+            payment
+        WHERE
+            employee_id = #{employeeId}
+        ORDER BY
+            paid_at DESC
+        LIMIT #{elementsPerPage} OFFSET #{offset}
+    </select>
+
 </mapper>

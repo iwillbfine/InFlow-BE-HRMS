@@ -61,7 +61,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
                 taskTypeRepository.findEvaluationsPoliciesByTaskTypeId(taskTypeId);
 
         // == null 여부는 빈 list 반환하기에 isEmpty로 에러 처리
-        if ( !evaluationPolicies.isEmpty() ) {
+        if ( evaluationPolicies != null && !evaluationPolicies.isEmpty() ) {
             throw new CommonException(ErrorCode.TASK_TYPE_UPDATE_FAILURE);
         }
 
@@ -87,7 +87,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
                 taskTypeRepository.findEvaluationsPoliciesByTaskTypeId(taskTypeId);
 
         // == null 여부는 빈 list 반환하기에 isEmpty로 에러 처리
-        if ( !evaluationPolicies.isEmpty() ) {
+        if ( evaluationPolicies != null && !evaluationPolicies.isEmpty() ) {
             throw new CommonException(ErrorCode.TASK_TYPE_DELETE_FAILURE);
         }
 

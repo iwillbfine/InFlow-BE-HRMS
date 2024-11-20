@@ -17,7 +17,7 @@ public interface TaskTypeRepository extends JpaRepository<TaskTypeEntity, Long> 
     Optional<TaskTypeEntity> findByTaskTypeId(Long taskTypeId);
 
     // 특정 TaskType에 연결된 모든 EvaluationPolicy를 반환
-    @Query("SELECT e FROM EvaluationPolicyEntity e WHERE e.taskType.taskTypeId = :taskTypeId")
+    @Query("SELECT e FROM EvaluationPolicyEntity e WHERE e.taskTypeId = :taskTypeId")
     List<EvaluationPolicyEntity> findEvaluationsPoliciesByTaskTypeId(Long taskTypeId);
 
 }

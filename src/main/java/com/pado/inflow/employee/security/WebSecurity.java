@@ -127,6 +127,7 @@ public class WebSecurity {
 
                     // 평가 정책 ( EvaluationPolicy )
                     .requestMatchers(new AntPathRequestMatcher("/api/evaluations/evaluationPolicy/**", "GET")).hasAnyRole("HR", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/evaluationPolicy/policyCreation", "POST")).hasAnyRole("HR", "ADMIN")
 
                     // 평가 ( Evaluation )
                     .requestMatchers(new AntPathRequestMatcher("/api/evaluations/evaluation/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
@@ -137,6 +138,8 @@ public class WebSecurity {
                     // 사원별 연월별 급여 명세서 조회
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/details", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
+                    // 사원별 전체 급여 내역 조회
+                    .requestMatchers(new AntPathRequestMatcher("/api/payrolls/all", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
