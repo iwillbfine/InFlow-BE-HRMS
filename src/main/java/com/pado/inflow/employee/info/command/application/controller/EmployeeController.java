@@ -75,5 +75,7 @@ public class EmployeeController {
         employeeService.resetPassword(employeeNumber, newPassword);
         return ResponseDTO.ok("비밀번호가 성공적으로 재설정되었습니다.");
     }
+    
+    // 설명. 4. 재직증명서 발급
 
 }
