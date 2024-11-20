@@ -5,10 +5,7 @@ import com.pado.inflow.evaluation.command.application.service.EvaluationPolicySe
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.CreateEvaluationPolicyRequestDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.CreateEvaluationPolicyResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController("CommandEvaluationPolicyController")
 @RequestMapping("/api/evaluations/evaluationPolicy")
@@ -29,4 +26,6 @@ public class EvaluationPolicyController {
                 evaluationPolicyService.createEvaluationPolicy(createEvaluationPolicyRequestDTO);
         return ResponseDTO.ok(createdEvaluationPolicy);
     }
+
+
 }

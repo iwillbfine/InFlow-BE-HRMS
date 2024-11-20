@@ -23,7 +23,8 @@ public class EvaluationPolicyServiceImpl implements EvaluationPolicyService {
 
     @Override
     @Transactional
-    public CreateEvaluationPolicyResponseDTO createEvaluationPolicy(CreateEvaluationPolicyRequestDTO createEvaluationPolicyRequestDTO) {
+    public CreateEvaluationPolicyResponseDTO createEvaluationPolicy(
+            CreateEvaluationPolicyRequestDTO createEvaluationPolicyRequestDTO) {
 
 
         // DTO와 동일한 Year, Half에 해당하는 평가 정책 List
