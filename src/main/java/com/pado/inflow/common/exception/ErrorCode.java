@@ -27,6 +27,8 @@ public enum ErrorCode {
     FILE_UPLOAD_ERROR(40021, HttpStatus.BAD_REQUEST, "파일 업로드에 실패했습니다."), // 파일 업로드 중 오류 발생
     FILE_CONVERSION_ERROR(40022, HttpStatus.BAD_REQUEST, "파일 변환에 실패했습니다."), // 업로드된 파일의 변환 작업 중 오류 발생
     FILE_SIZE_EXCEEDED(40023, HttpStatus.BAD_REQUEST, "파일 크기가 허용된 최대 크기를 초과했습니다."), // 파일 크기가 제한을 초과한 경우
+    ALREADY_EXIST_POLICY_TYPE(40024, HttpStatus.BAD_REQUEST, "해당 과제 유형에 해당하는 평가 정책이 이미 존재합니다."),
+    EXCEED_TOTAL_RATIO(40025, HttpStatus.BAD_REQUEST, "과제 반영 비율의 총 합은 100%를 넘길 수 없습니다."),
 
     // 401: 인증 실패 (Unauthorized)
     INVALID_HEADER_VALUE(40100, HttpStatus.UNAUTHORIZED, "올바르지 않은 헤더값입니다."), // 헤더 값이 잘못되었거나 누락된 경우
