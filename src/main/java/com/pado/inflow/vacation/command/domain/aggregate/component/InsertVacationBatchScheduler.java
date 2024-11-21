@@ -5,6 +5,7 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class InsertVacationBatchScheduler {
 
     @Autowired
     public InsertVacationBatchScheduler(JobLauncher jobLauncher,
-                                        Job vacationInsertJob) {
+                                        @Qualifier("vacationInsertJob") Job vacationInsertJob) {
         this.jobLauncher = jobLauncher;
         this.vacationInsertJob = vacationInsertJob;
     }
