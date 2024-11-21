@@ -1,6 +1,7 @@
 package com.pado.inflow.department.query.repository;
 
 
+import com.pado.inflow.department.query.dto.GetDepartmentDetailDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,6 +21,12 @@ public interface DepartmentMapper {
 
     // 3. 사원 코드로 사원 정보 상세 조회
     List<GetDepartmentMemberDTO> findDepartmentMemberDetailByMemberCode(@Param("employeeNumber") String employeeNumber);
+
+
+    /* 관리자 권한 */
+    // 1. 부서코드로 부서 상세정보 조회
+    List<GetDepartmentDetailDTO> findDepartmentDetailByDepartmentCode(@Param("departmentCode") String departmentCode);
+
 
 
 
