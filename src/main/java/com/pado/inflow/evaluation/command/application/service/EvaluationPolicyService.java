@@ -9,4 +9,6 @@ public interface EvaluationPolicyService {
     CreateEvaluationPolicyResponseDTO createEvaluationPolicy(CreateEvaluationPolicyRequestDTO createEvaluationPolicyRequestDTO);
 
     UpdateEvaluationPolicyResponseDTO updateEvaluationPolicy(UpdateEvaluationPolicyRequestDTO updateEvaluationPolicyRequestDTO, Long evaluationPolicyId);
+
+    void deleteEvaluationPolicyByEvaluationPolicyId(Long evaluationPolicyId);
 }
