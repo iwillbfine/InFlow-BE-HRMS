@@ -12,8 +12,6 @@ public class UpdateTaskTypeResponseDTO {
     @JsonProperty("task_type_name")
     private String taskTypeName;
 
-    public UpdateTaskTypeResponseDTO() {
-    }
 
     public UpdateTaskTypeResponseDTO(Long taskTypeId, String taskTypeName) {
         this.taskTypeId = taskTypeId;

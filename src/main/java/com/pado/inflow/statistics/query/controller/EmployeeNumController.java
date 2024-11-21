@@ -4,10 +4,7 @@ import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.statistics.query.dto.YearlyEmployeeNumDTO;
 import com.pado.inflow.statistics.query.service.EmployeeNumService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,7 +31,7 @@ public class EmployeeNumController {
         return ResponseDTO.ok(result);
     }
 
-    // 전체 기간의 사원수 통계 조회
+    // 특정 년도의 사원수 통계 조회
     @GetMapping("/{yearNum}")
     public ResponseDTO getMonthlyEmployeeNum(@PathVariable("yearNum") int yearNum) {
         List<YearlyEmployeeNumDTO> result = employeeNumService.getOneYearEmpNums(yearNum);
