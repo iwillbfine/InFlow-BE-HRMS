@@ -9,6 +9,7 @@ import lombok.*;
 @Data // 테스트용
 public class DepartmentMemberDTO {
 
+
     private Long departmentMemberId;
     private String employeeNumber;
     private String name;
