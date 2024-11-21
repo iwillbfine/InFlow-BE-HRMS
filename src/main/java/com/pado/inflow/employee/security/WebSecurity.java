@@ -58,27 +58,30 @@ public class WebSecurity {
 
         // 설명. 권한 설정
         http.authorizeHttpRequests(authz -> authz
-                    // 설명. 1. 로그인은 어떤 사용자도 이용 가능
-                    .requestMatchers(new AntPathRequestMatcher("/api/login", "POST")).permitAll()
+                        // 설명. 1. 로그인은 어떤 사용자도 이용 가능
+                        .requestMatchers(new AntPathRequestMatcher("/api/login", "POST")).permitAll()
 
-                    // 설명. 2. employee(사원) 도메인
-                    // 설명. 2.1. 사원 테이블 관련 API
-                    .requestMatchers(new AntPathRequestMatcher("/api/employees/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/employees/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/employees/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/employees/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/employees/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    // 설명. 2.2. 인사 발령 테이블 관련 API
-                    .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        // 설명. 2. employee(사원) 도메인
+                        // 설명. 2.1. 사원 테이블 관련 API
+                        .requestMatchers(new AntPathRequestMatcher("/api/employees/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/employees/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/employees/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/employees/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/employees/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
-                    // 그외.. 테이블 관련 api
+                        // 설명. 2.2. 인사 발령 테이블 관련 API
+                        .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        // 설명. 2.3. 회사 테이블 관련 API
+                        .requestMatchers(new AntPathRequestMatcher("/api/companies/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
-                     // 설명. 3. department(부서) 도메인
-                    .requestMatchers(new AntPathRequestMatcher("/api/departments/members/search/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        // 그외.. 테이블 관련 api
+
+                        // 설명. 3. department(부서) 도메인
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/members/search/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/departments/code/{departmentCode}/employees/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
@@ -143,20 +146,21 @@ public class WebSecurity {
 
                     // 사원별 전체 급여 내역 조회
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/all", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
                         .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
-                    // 설명. 8. statistics(통계) 도메인
-                    .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        // 설명. 8. statistics(통계) 도메인
+                        .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
-                    // 설명. 기타 요청은 인증 필요
-                    .anyRequest().authenticated()
+                        // 설명. 기타 요청은 인증 필요
+                        .anyRequest().authenticated()
                 )
                 // 설명. authenticationManager 등록
                 .authenticationManager(authenticationManager)
