@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class GetMemberDetailDTO {
+public class GetMemberDetailFromListDTO {
 
     // 사원 검색 상세조회에서 보여줄 정보
     // 사원명, 직책, 상위/하위 부서, 사내 메일, 휴대번호
