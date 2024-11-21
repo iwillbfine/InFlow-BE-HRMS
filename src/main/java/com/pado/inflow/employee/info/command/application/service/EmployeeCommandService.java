@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("employeeCommandService")
-public class EmployeeService implements UserDetailsService {
+public class EmployeeCommandService implements UserDetailsService {
 
     private final EmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
@@ -34,7 +34,7 @@ public class EmployeeService implements UserDetailsService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository
+    public EmployeeCommandService(EmployeeRepository employeeRepository
             , ModelMapper modelMapper
             , BCryptPasswordEncoder bCryptPasswordEncoder
     ) {
@@ -173,6 +173,7 @@ public class EmployeeService implements UserDetailsService {
         return employeeRepository.findByEmployeeNumber(employeeNumber)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
     }
+
 
     // 설명.5.2 시큐리티를 위한 설정
     //  로그인 시 security가 자동으로 호출하는 메소드 */

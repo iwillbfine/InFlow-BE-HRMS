@@ -3,7 +3,7 @@ package com.pado.inflow.employee.security;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
-import com.pado.inflow.employee.info.command.application.service.EmployeeService;
+import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
 import com.pado.inflow.employee.security.dto.AuthTokens;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -30,13 +30,13 @@ public class JwtUtil {
     private final Key secretKey;
     private final long accessExpirationTime;
     private final long refreshExpirationTime;
-    private final EmployeeService employeeService;
+    private final EmployeeCommandService employeeService;
 
     public JwtUtil(
             @Value("${token.secret}") String secretKey,
             @Value("${token.access-expiration-time}") long accessExpirationTime,
             @Value("${token.refresh-expiration-time}") long refreshExpirationTime,
-            EmployeeService employeeService
+            EmployeeCommandService employeeService
     ) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);

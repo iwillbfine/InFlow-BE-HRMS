@@ -5,131 +5,93 @@
 
 <mapper namespace="com.pado.inflow.employee.info.query.repository.EmployeeMapper">
 
+    <!-- ResultMap 정의 -->
+    <resultMap id="EmployeeResultMap" type="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
+        <result property="employeeId" column="employee_id"/>
+        <result property="employeeNumber" column="employee_number"/>
+        <result property="employeeRole" column="employee_role"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="name" column="name"/>
+        <result property="birthDate" column="birth_date"/>
+        <result property="residentRegistrationNumber" column="resident_registration_number"/>
+        <result property="email" column="email"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="profileImgUrl" column="profile_img_url"/>
+        <result property="joinDate" column="join_date"/>
+        <result property="joinType" column="join_type"/>
+        <result property="resignationDate" column="resignation_date"/>
+        <result property="resignationStatus" column="resignation_status"/>
+        <result property="salary" column="salary"/>
+        <result property="monthlySalary" column="monthly_salary"/>
+        <result property="streetAddress" column="street_address"/>
+        <result property="detailedAddress" column="detailed_address"/>
+        <result property="postcode" column="postcode"/>
+        <result property="departmentCode" column="department_code"/>
+        <result property="attendanceStatusTypeCode" column="attendance_status_type_code"/>
+        <result property="positionCode" column="position_code"/>
+        <result property="roleCode" column="role_code"/>
+        <result property="dutyCode" column="duty_code"/>
+    </resultMap>
+
+    <!-- ResultMap for Employment Certificate -->
+    <resultMap id="EmploymentCertificateResultMap" type="com.pado.inflow.employee.info.query.dto.EmploymentCertificateDTO">
+        <result property="employeeName" column="name"/>
+        <result property="birthDate" column="birth_date"/>
+        <result property="address" column="full_address"/>
+        <result property="departmentName" column="department_name"/>
+        <result property="positionName" column="position_name"/>
+        <result property="companyName" column="company_name"/>
+        <result property="companyAddress" column="company_address"/>
+        <result property="ceoName" column="ceo"/>
+        <result property="businessRegistrationNumber" column="business_registration_number"/>
+        <result property="residentRegistrationNumber" column="resident_registration_number"/>
+        <result property="companyStampUrl" column="company_stamp_url"/>
+    </resultMap>
     <!-- 전체 사원 조회 -->
-    <select id="findAllEmployees" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
-        SELECT
-            employee_id AS employeeId,
-            employee_number AS employeeNumber,
-            employee_role AS employeeRole,
-            password,
-            gender,
-            name,
-            birth_date AS birthDate,
-            resident_registration_number AS residentRegistrationNumber,
-            email,
-            phone_number AS phoneNumber,
-            profile_img_url AS profileImgUrl,
-            join_date AS joinDate,
-            join_type AS joinType,
-            resignation_date AS resignationDate,
-            resignation_status AS resignationStatus,
-            salary,
-            monthly_salary AS monthlySalary,
-            street_address AS streetAddress,
-            detailed_address AS detailedAddress,
-            postcode,
-            department_code AS departmentCode,
-            attendance_status_type_code AS attendanceStatusTypeCode,
-            position_code AS positionCode,
-            role_code AS roleCode,
-            duty_code AS dutyCode
-        FROM employee
+    <select id="findAllEmployees" resultMap="EmployeeResultMap">
+        SELECT * FROM employee
     </select>
 
     <!-- 이름으로 사원 조회 -->
-    <select id="findEmployeesByName" parameterType="String" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
-        SELECT
-            employee_id AS employeeId,
-            employee_number AS employeeNumber,
-            employee_role AS employeeRole,
-            password,
-            gender,
-            name,
-            birth_date AS birthDate,
-            resident_registration_number AS residentRegistrationNumber,
-            email,
-            phone_number AS phoneNumber,
-            profile_img_url AS profileImgUrl,
-            join_date AS joinDate,
-            join_type AS joinType,
-            resignation_date AS resignationDate,
-            resignation_status AS resignationStatus,
-            salary,
-            monthly_salary AS monthlySalary,
-            street_address AS streetAddress,
-            detailed_address AS detailedAddress,
-            postcode,
-            department_code AS departmentCode,
-            attendance_status_type_code AS attendanceStatusTypeCode,
-            position_code AS positionCode,
-            role_code AS roleCode,
-            duty_code AS dutyCode
-        FROM employee
-        WHERE name = #{name}
+    <select id="findEmployeesByName" parameterType="String" resultMap="EmployeeResultMap">
+        SELECT * FROM employee WHERE name = #{name}
     </select>
 
     <!-- 사번으로 사원 조회 -->
-    <select id="findEmployeeByNumber" parameterType="String" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO" resultSetType="FORWARD_ONLY">
-        SELECT
-            employee_id AS employeeId,
-            employee_number AS employeeNumber,
-            employee_role AS employeeRole,
-            password,
-            gender,
-            name,
-            birth_date AS birthDate,
-            resident_registration_number AS residentRegistrationNumber,
-            email,
-            phone_number AS phoneNumber,
-            profile_img_url AS profileImgUrl,
-            join_date AS joinDate,
-            join_type AS joinType,
-            resignation_date AS resignationDate,
-            resignation_status AS resignationStatus,
-            salary,
-            monthly_salary AS monthlySalary,
-            street_address AS streetAddress,
-            detailed_address AS detailedAddress,
-            postcode,
-            department_code AS departmentCode,
-            attendance_status_type_code AS attendanceStatusTypeCode,
-            position_code AS positionCode,
-            role_code AS roleCode,
-            duty_code AS dutyCode
-        FROM employee
-        WHERE employee_number = #{employeeNumber}
+    <select id="findEmployeeByNumber" parameterType="String" resultMap="EmployeeResultMap">
+        SELECT * FROM employee WHERE employee_number = #{employeeNumber}
     </select>
 
     <!-- ID로 사원 조회 -->
-    <select id="findEmployeeById" parameterType="Long" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO" resultSetType="FORWARD_ONLY">
+    <select id="findEmployeeById" parameterType="Long" resultMap="EmployeeResultMap">
+        SELECT * FROM employee WHERE employee_id = #{employeeId}
+    </select>
+
+    <!-- 재직증명서 발급을 위한 데이터 조회 -->
+    <select id="getEmploymentCertificateInfo" parameterType="String" resultMap="EmploymentCertificateResultMap">
         SELECT
-            employee_id AS employeeId,
-            employee_number AS employeeNumber,
-            employee_role AS employeeRole,
-            password,
-            gender,
-            name,
-            birth_date AS birthDate,
-            resident_registration_number AS residentRegistrationNumber,
-            email,
-            phone_number AS phoneNumber,
-            profile_img_url AS profileImgUrl,
-            join_date AS joinDate,
-            join_type AS joinType,
-            resignation_date AS resignationDate,
-            resignation_status AS resignationStatus,
-            salary,
-            monthly_salary AS monthlySalary,
-            street_address AS streetAddress,
-            detailed_address AS detailedAddress,
-            postcode,
-            department_code AS departmentCode,
-            attendance_status_type_code AS attendanceStatusTypeCode,
-            position_code AS positionCode,
-            role_code AS roleCode,
-            duty_code AS dutyCode
-        FROM employee
-        WHERE employee_id = #{employeeId}
+            e.name,
+            e.birth_date,
+            CONCAT(e.street_address, ', ', e.detailed_address) AS full_address,
+            d.department_name,
+            p.position_name,
+            c.company_name,
+            c.company_address,
+            c.ceo,
+            c.business_registration_number,
+            e.resident_registration_number,
+            c.company_stamp_url
+        FROM
+            employee e
+                JOIN
+            department d ON e.department_code = d.department_code
+                JOIN
+            `position` p ON e.position_code = p.position_code
+                JOIN
+            company c ON 1 = 1
+        WHERE
+            e.employee_number = #{employeeNumber}
     </select>
 
 </mapper>
