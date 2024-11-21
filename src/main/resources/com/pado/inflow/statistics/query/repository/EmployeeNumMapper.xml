@@ -2,7 +2,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.statistics.query.repository.EmployeeNumMapper">
-    <resultMap id="ResultMap1" type="com.pado.inflow.statistics.query.dto.EmployeeNumDTO" autoMapping="true">
+    <resultMap id="ResultMap" type="com.pado.inflow.statistics.query.dto.EmployeeNumDTO" autoMapping="true">
         <result property="year" column="YEAR"/>
         <collection property="monthly" column="YEAR" ofType="com.pado.inflow.statistics.query.dto.MonthlyEmployeeNumDTO" autoMapping="true">
             <result property="month" column="month"/>
@@ -13,7 +13,7 @@
         </collection>
     </resultMap>
     
-    <select id="getAllYears" resultMap="ResultMap1">
+    <select id="getAllYears" resultMap="ResultMap" parameterType="string">
         SELECT
                year
              , month
@@ -22,20 +22,11 @@
              , joined_employee_num as joinedEmployeeNum
              , lefted_employee_num as leftedEmployeeNum
           FROM MONTHLY_EMPLOYEE_NUM_STATISTICS
-         GROUP BY YEAR
-         ORDER BY YEAR DESC
-    </select>
-
-    <select id="getOneYear" resultMap="ResultMap1" parameterType="string">
-        SELECT
-               year
-             , month
-             , half
-             , total_employee_num as totalEmployeeNum
-             , joined_employee_num as joinedEmployeeNum
-             , lefted_employee_num as leftedEmployeeNum
-          FROM MONTHLY_EMPLOYEE_NUM_STATISTICS
-         WHERE year = #{year}
+         <where>
+             <if test="year != null">
+                 year = #{year}
+             </if>
+         </where>
          GROUP BY YEAR
          ORDER BY YEAR DESC
     </select>
