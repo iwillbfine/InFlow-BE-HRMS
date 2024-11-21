@@ -20,13 +20,13 @@ public class FeedbackServiceImplTests {
     private FeedBackService feedBackService;
 
     @Test
-    @DisplayName("피드백 생성 - 성공 테스트")
+    @DisplayName("피드백 생성 실패 테스트 - 중복된 피드백 생성 ")
     void feedbackCreationSuccess() {
         // given
-
         CreateFeedbackRequestDTO duplicateFeedback = new CreateFeedbackRequestDTO();
         duplicateFeedback.setContent("중복 피드백 시도");
         duplicateFeedback.setEvaluationId(2L);  // 같은 평가 ID로 시도
+
         //when & then
         assertThrows(CommonException.class, () -> {
             feedBackService.createFeedback(duplicateFeedback);
