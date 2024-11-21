@@ -2,6 +2,7 @@ package com.pado.inflow.department.query.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
 import com.pado.inflow.department.query.repository.DepartmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,26 @@ public class DepartmentService {
         }
 
         return departmentMembers;
+    }
+
+    //3. 선택한 사원 상세 정보 조회
+    // 사원 코드를 통한 사원 상세 정보 조회
+    public List<GetDepartmentMemberDTO> findEmployeeDetailByEmployeeNumber(String employeeNumber){
+        if(employeeNumber == null || employeeNumber.trim().isEmpty()){
+            throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
+        }
+
+        List<GetDepartmentMemberDTO> departmentMember;
+        try{
+            departmentMember = departmentMapper.findDepartmentMemberDetailByMemberCode(employeeNumber);
+
+            if (departmentMember == null || departmentMember.isEmpty()) {
+                throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT_MEMBER);
+            }
+        } catch (Exception e) {
+            throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+        return departmentMember;
     }
 
 
