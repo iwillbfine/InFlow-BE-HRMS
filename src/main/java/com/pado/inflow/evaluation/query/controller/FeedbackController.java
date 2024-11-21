@@ -3,10 +3,8 @@ package com.pado.inflow.evaluation.query.controller;
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.evaluation.query.dto.FeedbackDTO;
 import com.pado.inflow.evaluation.query.service.FeedbackService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.coyote.Response;
+import org.springframework.web.bind.annotation.*;
 
 @RestController("queryFeedbackController")
 @RequestMapping("/api/evaluations/feedback")
@@ -19,13 +17,22 @@ public class FeedbackController {
     }
 
     @GetMapping("/find")
-    public ResponseDTO<?> findFeedback(
+    public ResponseDTO<?> findFeedbacks(
             @RequestParam( value = "empId") Long empId
            ,@RequestParam( value =  "year") Integer year
            ,@RequestParam( value =  "half") String half
     ) {
         FeedbackDTO selectedFeedback =
                 feedbackService.findFeedbackByempIdAndYearAndHalf(empId, year, half);
+        return ResponseDTO.ok(selectedFeedback);
+    }
+
+    // 피드백Id로 단건 조회
+    @GetMapping("/{feedbackId}")
+    public ResponseDTO<?> findFeedback(
+            @PathVariable( value = "feedbackId") Long feedbackId
+    ) {
+        FeedbackDTO selectedFeedback = feedbackService.findFeedbackByFeedbackId(feedbackId);
         return ResponseDTO.ok(selectedFeedback);
     }
 }
