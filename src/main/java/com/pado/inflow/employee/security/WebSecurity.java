@@ -1,6 +1,6 @@
 package com.pado.inflow.employee.security;
 
-import com.pado.inflow.employee.info.command.application.service.EmployeeService;
+import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,12 +26,12 @@ import java.util.List;
 public class WebSecurity {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private EmployeeService employeeService;
+    private EmployeeCommandService employeeService;
     private Environment env;
     private JwtUtil jwtUtil;
 
     @Autowired
-    public WebSecurity(BCryptPasswordEncoder bCryptPasswordEncoder,  EmployeeService employeeService
+    public WebSecurity(BCryptPasswordEncoder bCryptPasswordEncoder,  EmployeeCommandService employeeService
             , Environment env, JwtUtil jwtUtil) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.employeeService = employeeService;
@@ -77,6 +77,7 @@ public class WebSecurity {
                         .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         // 설명. 2.3. 회사 테이블 관련 API
                         .requestMatchers(new AntPathRequestMatcher("/api/companies/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
 
                         // 그외.. 테이블 관련 api
 
