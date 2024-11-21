@@ -1,0 +1,20 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.payroll.query.repository.IrregularAllowanceMapper">
+    <select id="findAllIrregularAllowances" resultType="com.pado.inflow.payroll.query.dto.IrregularAllowanceDTO">
+        SELECT
+            irregular_allowance_id AS irregularAllowanceId,
+            irregular_allowance_name AS irregularAllowanceName,
+            amount
+        FROM
+            irregular_allowance
+        ORDER BY amount ASC
+        LIMIT #{elementsPerPage} OFFSET #{offset}
+    </select>
+    
+    <select id="getTotalIrregularAllowances" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM irregular_allowance
+    </select>
+</mapper>

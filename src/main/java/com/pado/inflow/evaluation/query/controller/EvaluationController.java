@@ -4,10 +4,7 @@ import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.evaluation.query.dto.EvaluationDTO;
 import com.pado.inflow.evaluation.query.service.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController("queryEvaluationController")
 @RequestMapping("/api/evaluations/evaluation")
@@ -30,6 +27,17 @@ public class EvaluationController {
         EvaluationDTO selectedEvaluation =
                 evaluationService.findEvaluationGrade(empId, year, half);
         return ResponseDTO.ok(selectedEvaluation);
+    }
+
+    // 평가 ID로 평가 단건 조회
+    @GetMapping("/{evaluationId}")
+    public ResponseDTO<?> findEvaluationByEvaluationId(
+            @PathVariable( value = "evaluationID") Long evaluationId
+    ) {
+        EvaluationDTO selectedEvaluation =
+                evaluationService.findEvaluationByEvaluationId(evaluationId);
+        return ResponseDTO.ok(selectedEvaluation);
+
     }
 
 }

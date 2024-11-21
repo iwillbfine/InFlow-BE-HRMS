@@ -18,4 +18,6 @@ public interface TaskItemService {
     TaskItemDTO findTaskItemByTaskItemId(Long taskItemId);
 
     TaskItemDTO findCommonTaskItemByTaskItemId(Long taskItemId);
+
+    List<TaskItemDTO> findTaskItems(Long evaluationPolicyId);
 }

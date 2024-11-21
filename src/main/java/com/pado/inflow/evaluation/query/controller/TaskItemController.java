@@ -84,7 +84,15 @@ public class TaskItemController {
     ) {
         TaskItemDTO commonTask = taskItemService.findCommonTaskItemByTaskItemId(taskItemId);
         return ResponseDTO.ok(commonTask);
+    }
 
+    // 평가 정책Id로 과제 List 조회
+    @GetMapping("/TaskItems/{evaluationPolicyId}")
+    public ResponseDTO<?> findTaskItemByEvaluationPolicyId(
+            @PathVariable( value = "evaluationPolicyId") Long evaluationPolicyId
+    ) {
+        List<TaskItemDTO> selectedTaskItems = taskItemService.findTaskItems(evaluationPolicyId);
+        return ResponseDTO.ok(selectedTaskItems);
     }
 }
 
