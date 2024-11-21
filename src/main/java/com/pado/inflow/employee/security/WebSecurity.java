@@ -140,7 +140,7 @@ public class WebSecurity {
 
                     // 사원별 전체 급여 내역 조회
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/all", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
