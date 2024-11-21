@@ -8,7 +8,9 @@ import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.Reques
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseEmployeeDTO;
 import com.pado.inflow.employee.info.query.dto.EmploymentCertificateDTO;
 import com.pado.inflow.employee.info.query.service.EmployeeQueryService;
+import net.nurigo.sdk.message.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,16 @@ public class EmployeeController {
     private final Environment env;
     private final EmployeeCommandService employeeCommandService;
     private final EmployeeQueryService employeeQueryService;
+
+
+    @Value("${coolsms.api.key}")
+    private String apiKey;
+
+    @Value("${coolsms.api.secret}")
+    private String apiSecret;
+
+    @Value("${coolsms.api.number}")
+    private String fromPhoneNumber;
 
     @Autowired
     public EmployeeController(Environment env,EmployeeCommandService employeeCommandService,EmployeeQueryService employeeQueryService) {
