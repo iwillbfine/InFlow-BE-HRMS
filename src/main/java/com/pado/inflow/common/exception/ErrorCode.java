@@ -38,6 +38,7 @@ public enum ErrorCode {
     POLICY_IN_USE(40032, HttpStatus.BAD_REQUEST, "과제 항목에서 참조 중인 평가 정책은 삭제할 수 없습니다."),
     FEEDBACK_CREATE_FAILURE(40033, HttpStatus.BAD_REQUEST, "평가 시작일 이전 및 종료일 이후에는 피드백을 생성할 수 없습니다"),
     DUPLICATED_FEEDBACK_CREATION(40034, HttpStatus.BAD_REQUEST, "해당 사원에 대한 피드백이 이미 존재합니다."),
+    FEEDBACK_UPDATE_FAILURE(40035, HttpStatus.BAD_REQUEST, "평가 기간에만 피드백을 수정할 수 있습니다."),
 
 
     // 401: 인증 실패 (Unauthorized)
