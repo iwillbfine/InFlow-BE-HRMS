@@ -2,6 +2,7 @@ package com.pado.inflow.department.query.controller;
 
 
 import com.pado.inflow.common.ResponseDTO;
+import com.pado.inflow.department.query.dto.GetDepartmentDetailDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
 import com.pado.inflow.department.query.service.DepartmentService;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +40,21 @@ public class DepartmentController {
 
     // 3. 선택한 사원 상세 정보 조회
     // 공통 부서에 속한 사원들 목록 중 특정 사원 선택하면 해당 사원에 대한 상세 정보 조회가 가능하다
-    @GetMapping("/search/members/employee-code/{employeeNumber}")
+    @GetMapping("/search/members/detail/employee-code/{employeeNumber}")
     public ResponseDTO<List<GetDepartmentMemberDTO>> getEmployeesByEmployeeNumber(@PathVariable String employeeNumber){
         List<GetDepartmentMemberDTO> departmentMemberDetail = departmentService.findEmployeeDetailByEmployeeNumber(employeeNumber);
         return ResponseDTO.ok(departmentMemberDetail);
     }
+
+
+    /* 인사팀 권한 - 부서 관리 */
+    // 1. 인사팀의 부서 상세정보 조회 -by 부서코드
+    @GetMapping("/detail/department-code/{departmentCode}")
+    public ResponseDTO<List<GetDepartmentDetailDTO>> getDepartmentDetailByDepartmentCode(@PathVariable String departmentCode){
+        List<GetDepartmentDetailDTO> departmentDetail = departmentService.findDepartmentDetailByDepartmentCode(departmentCode);
+        return ResponseDTO.ok(departmentDetail);
+    }
+
 
 
 }
