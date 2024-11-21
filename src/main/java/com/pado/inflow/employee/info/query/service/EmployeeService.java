@@ -46,7 +46,6 @@ public class EmployeeService {
     }
 
     // 1.4. 설명: 사원 정보 id로 조회
-
     public EmployeeDTO getEmployeeById(Long employeeId) {
         return employeeMapper.findEmployeeById(employeeId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
