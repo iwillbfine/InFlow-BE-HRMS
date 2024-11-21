@@ -152,8 +152,11 @@ public class WebSecurity {
                         .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
                         // 급여 비과세 항목 전체 조회
-                        .requestMatchers(new AntPathRequestMatcher("/api/non-taxable-payrolls/**", "GET")).hasAnyRole("HR", "MANAGER", "ADMIN")
-                
+                        .requestMatchers(new AntPathRequestMatcher("/api/non-taxable-payrolls/**", "GET")).hasAnyRole("HR","ADMIN")
+
+                        // 급여 비정기 수당 항목 전체 조회
+                        .requestMatchers(new AntPathRequestMatcher("/api/irregular-allowances/**", "GET")).hasAnyRole("HR", "ADMIN")
+
                         // 설명. 8. statistics(통계) 도메인
                         .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/statistics/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
