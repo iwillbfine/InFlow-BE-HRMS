@@ -2,6 +2,7 @@ package com.pado.inflow.department.query.controller;
 
 
 import com.pado.inflow.common.ResponseDTO;
+import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
 import com.pado.inflow.department.query.service.DepartmentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,34 +11,39 @@ import java.util.List;
 @RestController("departmentQueryController")
 @RequestMapping("/api/departments")
 public class DepartmentController {
-    // myBatis에서 작성한 xml 쿼리를 호출
-    // 컨트롤러는 클라이언트 요청을 받아 데이터를 전달하는 역할
 
-    private final DepartmentService departmentService;  // 서비스 계층에서 만든 서비스 객체 호출
-
+    private final DepartmentService departmentService;
     public DepartmentController(DepartmentService departmentService){
             this.departmentService = departmentService;
     }
 
 
-    // 1. 키워드 입력하여 요청 전송 API
-    // keyword 입력하여 사원 목록 조회
 
-
+    // 1. 검색창을 통한 사원 목록 조회, 부서 폴더를 통한 사원 목록 조회
     @GetMapping("/search/members")
-    public ResponseDTO<List<String>> getEmployeesByKeyword(@RequestParam String keyword) {
-        List<String> departmentMembers = departmentService.findEmployeesByKeyword(keyword);
-        return ResponseDTO.ok(departmentMembers);
+    public ResponseDTO<List<GetDepartmentMemberDTO>> getEmployeesByKeywordOrDepartmentCode(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String departmentCode) {
+
+        if (keyword != null) {
+            // 키워드 기반 조회
+            return ResponseDTO.ok(departmentService.findEmployeesByKeyword(keyword));
+        } else if (departmentCode != null) {
+            // 부서 코드 기반 조회
+            return ResponseDTO.ok(departmentService.findEmployeesByDepartmentCode(departmentCode));
+        } else {
+            // 둘 다 없는 경우 예외 처리
+            throw new IllegalArgumentException("keyword 또는 departmentCode 중 하나를 반드시 제공해야 합니다.");
+        }
     }
 
-    // 2. 부서 폴더 구조에서 해당 부서에 속하는 사원 목록
-    // 만약 상위 부서를 클릭하면, 상위 부서에 속하는 모든 사원 목록 조회
-    // 만약 하위 부서를 클릭하면, 하위 부서에 속하는 모든 사원 목록 조회
-    // 계층 구조 이용하기 -> 단 검색 조건이 like 가 아님 (1번 서비스와 동일하게 하면 될듯)
-    @GetMapping("/code/{departmentCode}/employees")
-    public ResponseDTO<List<String>> getEmployeesByDepartmentCode(@PathVariable String departmentCode ){
-        List<String> departmentMembers = departmentService.findEmployeesByDepartmentCode(departmentCode);
-        return ResponseDTO.ok(departmentMembers);
+    // 3. 선택한 사원 상세 정보 조회
+    // 공통 부서에 속한 사원들 목록 중 특정 사원 선택하면 해당 사원에 대한 상세 정보 조회가 가능하다
+    @GetMapping("/search/members/employee-code/{employeeNumber}")
+    public ResponseDTO<List<GetDepartmentMemberDTO>> getEmployeesByEmployeeNumber(@PathVariable String employeeNumber){
+        List<GetDepartmentMemberDTO> departmentMemberDetail = departmentService.findEmployeeDetailByEmployeeNumber(employeeNumber);
+        return ResponseDTO.ok(departmentMemberDetail);
     }
+
 
 }

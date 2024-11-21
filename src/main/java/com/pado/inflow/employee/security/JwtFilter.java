@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
-import com.pado.inflow.employee.info.command.application.service.EmployeeService;
+import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,10 +22,10 @@ import java.io.IOException;
 
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final EmployeeService employeeService;
+    private final EmployeeCommandService employeeService;
     private final JwtUtil jwtUtil;
 
-    public JwtFilter(EmployeeService employeeService, JwtUtil jwtUtil) {
+    public JwtFilter(EmployeeCommandService employeeService, JwtUtil jwtUtil) {
         this.employeeService = employeeService;
         this.jwtUtil = jwtUtil;
     }

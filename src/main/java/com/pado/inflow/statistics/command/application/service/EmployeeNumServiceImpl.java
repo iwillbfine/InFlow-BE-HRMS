@@ -2,7 +2,7 @@ package com.pado.inflow.statistics.command.application.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
-import com.pado.inflow.employee.info.query.service.EmployeeService;
+import com.pado.inflow.employee.info.query.service.EmployeeQueryService;
 import com.pado.inflow.statistics.command.domain.aggregate.dto.EmployeeNumDTO;
 import com.pado.inflow.statistics.command.domain.aggregate.dto.EmployeeNumInitDTO;
 import com.pado.inflow.statistics.command.domain.aggregate.entity.EmployeeNum;
@@ -23,12 +23,12 @@ import java.util.Optional;
 public class EmployeeNumServiceImpl implements EmployeeNumService {
 
     private final EmployeeNumRepository employeeNumRepository;
-    private final EmployeeService employeeService;
+    private final EmployeeQueryService employeeService;
     private final ModelMapper modelMapper;
 
     @Autowired
     public EmployeeNumServiceImpl(EmployeeNumRepository employeeNumRepository,
-                                  EmployeeService employeeService,
+                                  EmployeeQueryService employeeService,
                                   ModelMapper modelMapper) {
         this.employeeNumRepository = employeeNumRepository;
         this.employeeService = employeeService;

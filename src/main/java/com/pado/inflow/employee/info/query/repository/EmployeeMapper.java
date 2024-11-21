@@ -1,6 +1,7 @@
 package com.pado.inflow.employee.info.query.repository;
 
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
+import com.pado.inflow.employee.info.query.dto.EmploymentCertificateDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,8 +18,12 @@ public interface EmployeeMapper {
    List<EmployeeDTO> findEmployeesByName(@Param("name") String name);
 
     // 설명.3. 사번으로 사원 조회
-    Optional<EmployeeDTO> findEmployeeByNumber(@Param("employeeNumber") String employeeNumber);
+   EmployeeDTO findEmployeeByNumber(@Param("employeeNumber") String employeeNumber);
 
     // 설명.4. ID로 사원 조회
-    Optional<EmployeeDTO> findEmployeeById(@Param("employeeId") Long employeeId);
+   EmployeeDTO findEmployeeById(@Param("employeeId") Long employeeId);
+
+
+    // 재직증명서 발급 데이터 조회
+    EmploymentCertificateDTO getEmploymentCertificateInfo(String employeeNumber);
 }
