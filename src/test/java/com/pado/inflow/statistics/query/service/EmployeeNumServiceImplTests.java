@@ -22,14 +22,14 @@ class EmployeeNumServiceImplTests {
     @DisplayName("전체 기간의 사원수 통계 조회")
     @Test
     public void getYearlyEmployeeNum() {
-        assertTrue(employeeNumService.getYearlyEmpNums().size() > 0);
+        assertTrue(employeeNumService.getYearlyEmpNums(null).size() > 0);
     }
 
     @DisplayName("특정 년도의 사원수 통계 조회")
     @ParameterizedTest
-    @ValueSource(ints = {2023, 2022})
-    public void getMonthlyEmployeeNum(int year) {
-        assertTrue(employeeNumService.getOneYearEmpNums(year).size() > 0);
+    @ValueSource(strings = {"2023", "2022"})
+    public void getMonthlyEmployeeNum(String year) {
+        assertTrue(employeeNumService.getYearlyEmpNums(year).size() > 0);
     }
 
 }
