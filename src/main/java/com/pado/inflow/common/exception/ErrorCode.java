@@ -117,7 +117,9 @@ public enum ErrorCode {
     TOO_MANY_REQUESTS(42900, HttpStatus.TOO_MANY_REQUESTS, "요청 횟수가 너무 많습니다. 잠시 후 다시 시도해 주세요."),
 
     // 500: 서버 내부 오류 (Internal Server Error)
-    INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다");
+    INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다"),
+    PASSWORD_ENCODING_FAILED(50001, HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 암호화 실패"),
+    SmsSendingException(50002, HttpStatus.INTERNAL_SERVER_ERROR, "SMS 전송 실패");
 
     private final Integer code;
     private final HttpStatus httpStatus;

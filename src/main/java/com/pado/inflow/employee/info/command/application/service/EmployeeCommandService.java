@@ -30,77 +30,85 @@ public class EmployeeCommandService implements UserDetailsService {
 
     private final EmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
-    // 추후 비밀번호 설정할 예정
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final SmsService smsService; // 문자 전송 서비스 추가
 
     @Autowired
     public EmployeeCommandService(EmployeeRepository employeeRepository
             , ModelMapper modelMapper
             , BCryptPasswordEncoder bCryptPasswordEncoder
+            , SmsService smsService
     ) {
         this.employeeRepository = employeeRepository;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder =bCryptPasswordEncoder;
+        this.smsService=smsService;
     }
 
-    /**
-     * 설명. 1. 사원 등록
-     */
-//    @Transactional
-//    public List<ResponseEmployeeDTO> registerEmployees(List<RequestEmployeeDTO> employeeDTOs) {
-//        //설명. DTO -> Entity 변환 및 저장
-//        List<Employee> employees = employeeDTOs.stream()
-//                .map(dto -> modelMapper.map(dto, Employee.class))
-//                .collect(Collectors.toList());
-//
-//        //설명. Jpa의 saveAll통한 리스트 순차 저장
-//        List<Employee> savedEmployees = employeeRepository.saveAll(employees);
-//
-//        //설명. Entity -> Response DTO 변환
-//        return savedEmployees.stream()
-//                .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
-//                .collect(Collectors.toList());
-//    }
-
-
-    //설명. 사원 등록 (초기 비밀번호: "사번!성명@생년월일")
+    //설명.1.1 사원 등록 ( 환영 메시지를 전송, 초기 비밀번호: "사번!성명@생년월일")
     @Transactional
     public List<ResponseEmployeeDTO> registerEmployees(List<RequestEmployeeDTO> employeeDTOs) {
-        // DTO -> Entity 변환 및 초기 비밀번호 생성/암호화
         List<Employee> employees = employeeDTOs.stream()
                 .map(dto -> {
                     Employee employee = modelMapper.map(dto, Employee.class);
 
-                    // 초기 비밀번호 생성
-                    String initialPassword = generateInitialPassword(
-                            dto.getEmployeeNumber(),
-                            dto.getName(),
-                            dto.getBirthDate()
-                    );
+                    // 초기 비밀번호 생성 및 암호화
+                    String initialPassword = generateInitialPassword(dto);
+                    employee.setPassword(encodePassword(initialPassword));
 
-                    // 비밀번호 암호화 처리
-                    employee.setPassword(bCryptPasswordEncoder.encode(initialPassword));
                     return employee;
                 })
                 .collect(Collectors.toList());
 
-        // Jpa의 saveAll을 통한 리스트 순차 저장
+        // 저장된 사원 리스트
         List<Employee> savedEmployees = employeeRepository.saveAll(employees);
 
-        // Entity -> Response DTO 변환
+        // 문자 전송 및 응답 생성
+//        savedEmployees.forEach(employee -> {
+//            String welcomeMessage = generateWelcomeMessage(employee);
+//            smsService.sendSms(employee.getPhoneNumber(), welcomeMessage); // 문자 전송
+//        });
+
         return savedEmployees.stream()
                 .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
                 .collect(Collectors.toList());
     }
 
-
-    // 설명. 초기 비밀번호: "사번!성명@생년월일"
-    private String generateInitialPassword(String employeeNumber, String name, LocalDate birthDate) {
-        // LocalDate를 "YYYYMMDD" 형태의 문자열로 변환
-        String birthDateStr = birthDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        return employeeNumber + "!" + name + "@" + birthDateStr;
+    //설명.1.2 초기 비밀번호 생성
+    private String generateInitialPassword(RequestEmployeeDTO dto) {
+        return String.format("%s!%s@%s",
+                dto.getEmployeeNumber(),
+                dto.getName(),
+                dto.getBirthDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        );
     }
 
+     //설명.1.3. 환영 메시지 생성
+     private String generateWelcomeMessage(Employee employee) {
+         return String.format(
+                 "\n[InFlow 환영 메시지]\n\n"
+                         + "안녕하세요, %s님, InFlow 입사를 진심으로 축하드립니다!\n"
+                         + "귀하의 사번은 \"%s\"입니다.\n\n"
+                         + "처음 로그인을 위해 아래 단계를 따라주세요:\n"
+                         + "1. InFlow 웹사이트에 접속합니다.\n"
+                         + "2. 로그인 화면에서 사번을 입력해주세요.\n초기 비밀번호는 \"사번!성명@생년월일\" 입니다.\n"
+                         + "(초기 비밀번호 예시: 202400000!인플로@19990308)\n"
+                         + "3. 로그인 후, 보안을 위해 비밀번호를 반드시 변경해주세요.\n\n"
+                         + "문제가 발생하거나 도움이 필요하시면 관리자에게 문의 바랍니다.\n\n",
+                 employee.getName(),
+                 employee.getEmployeeNumber()
+         );
+     }
+
+
+    //설명.1.4. 비밀번호 암호화
+    private String encodePassword(String password) {
+        try {
+            return bCryptPasswordEncoder.encode(password);
+        } catch (Exception e) {
+            throw new CommonException(ErrorCode.PASSWORD_ENCODING_FAILED);
+        }
+    }
 
     /**
      * 설명. 2.1 사원 정보 수정 (ID 기준)
