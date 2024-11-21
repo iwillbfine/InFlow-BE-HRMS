@@ -1,0 +1,134 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.statistics.query.repository.OvertimeAllowanceMapper">
+    <resultMap id="ResultMap" type="com.pado.inflow.statistics.query.dto.OvertimeAllowanceDTO" autoMapping="true">
+        <result property="year" column="year"/>
+        <result property="yearlyEmployeeCount" column="yearlyEmployeeCount"/>
+        <result property="yearlyTotalAmount" column="yearlyTotalAmount"/>
+        <collection property="monthly" ofType="com.pado.inflow.statistics.query.dto.MonthlyOvertimeAllowance" autoMapping="true">
+            <result property="month" column="month"/>
+            <result property="monthlyEmployeeCount" column="monthlyEmployeeCount"/>
+            <result property="monthlyTotalAmount" column="monthlyTotalAmount"/>
+            <collection property="depts" ofType="com.pado.inflow.statistics.query.dto.DeptOvertimeAllowance" autoMapping="true">
+                <result property="departmentCode" column="departmentCode"/>
+                <result property="departmentName" column="departmentName"/>
+                <result property="employeeCount" column="employeeCount"/>
+                <result property="totalAmount" column="totalAmount"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <resultMap id="ResultMap2" type="com.pado.inflow.statistics.query.dto.DeptOvertimeAllowanceDTO" autoMapping="true">
+        <result property="departmentCode" column="departmentCode"/>
+        <result property="departmentName" column="departmentName"/>
+        <collection property="years" ofType="com.pado.inflow.statistics.query.dto.YearsOA" autoMapping="true">
+            <result property="year" column="year"/>
+            <result property="yearlyEmployeeCount" column="yearlyEmployeeCount"/>
+            <result property="yearlyTotalAmount" column="yearlyTotalAmount"/>
+            <collection property="months" ofType="com.pado.inflow.statistics.query.dto.MonthsOA" autoMapping="true">
+                <result property="month" column="month"/>
+                <result property="monthlyEmployeeCount" column="monthlyEmployeeCount"/>
+                <result property="monthlyTotalAmount" column="monthlyTotalAmount"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="getAllOA" resultMap="ResultMap" parameterType="string">
+        WITH YEARLY_DATA AS
+		  (SELECT YEAR(PAID_AT) AS YEAR,
+				  COUNT(DISTINCT EMPLOYEE_ID) AS yearlyEmployeeCount,
+				  SUM(OVERTIME_ALLOWANCE) AS yearlyTotalAmount
+		     FROM PAYMENT
+		    GROUP BY YEAR(PAID_AT)),
+			 MONTHLY_DATA AS
+		  (SELECT YEAR(PAID_AT) AS YEAR,
+				  MONTH(PAID_AT) AS MONTH,
+				  COUNT(DISTINCT EMPLOYEE_ID) AS monthlyEmployeeCount,
+				  SUM(OVERTIME_ALLOWANCE) AS monthlyTotalAmount
+		     FROM PAYMENT
+		    GROUP BY YEAR(PAID_AT),
+					MONTH(PAID_AT)),
+			 DEPT_DATA AS
+		  (SELECT YEAR(P.PAID_AT) AS YEAR,
+				  MONTH(P.PAID_AT) AS MONTH,
+				  COUNT(DISTINCT P.EMPLOYEE_ID) AS employeeCount,
+				  SUM(P.OVERTIME_ALLOWANCE) AS totalAmount,
+				  PP.DEPARTMENT_CODE AS departmentCode,
+				  DD.DEPARTMENT_NAME AS departmentName
+		     FROM PAYMENT P
+		    INNER JOIN DEPARTMENT_MEMBER PP ON P.EMPLOYEE_ID = PP.EMPLOYEE_ID
+		    INNER JOIN DEPARTMENT DD ON PP.DEPARTMENT_CODE = DD.DEPARTMENT_CODE
+		    GROUP BY YEAR(P.PAID_AT),
+					MONTH(P.PAID_AT),
+					PP.DEPARTMENT_CODE)
+		SELECT Y.year AS YEAR,
+			   Y.yearlyEmployeeCount AS yearlyEmployeeCount,
+			   Y.yearlyTotalAmount AS yearlyTotalAmount,
+			   M.month AS MONTH,
+			   M.monthlyEmployeeCount AS monthlyEmployeeCount,
+			   M.monthlyTotalAmount AS monthlyTotalAmount,
+			   D.departmentCode AS departmentCode,
+			   D.departmentName AS departmentName,
+			   D.employeeCount AS employeeCount,
+			   D.totalAmount AS totalAmount
+		  FROM YEARLY_DATA Y
+		  LEFT JOIN MONTHLY_DATA M ON Y.year = M.year
+		  LEFT JOIN DEPT_DATA D ON M.year = D.year
+		   AND M.month = D.month 
+	      <where>
+			<if test="year != null">
+				Y.YEAR = #{YEAR} 
+			</if>
+		  </where>
+		 ORDER BY Y.year DESC, M.month, D.departmentCode;
+    </select>
+	
+	<select id="getDeptOA" resultMap="ResultMap2" parameterType="string">
+		WITH YEARLY_DATA AS
+		  (SELECT YEAR(PAID_AT) AS YEAR,
+				  COUNT(DISTINCT EMPLOYEE_ID) AS yearlyEmployeeCount,
+				  SUM(OVERTIME_ALLOWANCE) AS yearlyTotalAmount
+		     FROM PAYMENT
+		    GROUP BY YEAR(PAID_AT)),
+			 MONTHLY_DATA AS
+		  (SELECT YEAR(PAID_AT) AS YEAR,
+				  MONTH(PAID_AT) AS MONTH,
+				  COUNT(DISTINCT EMPLOYEE_ID) AS monthlyEmployeeCount,
+				  SUM(OVERTIME_ALLOWANCE) AS monthlyTotalAmount
+		     FROM PAYMENT
+		    GROUP BY YEAR(PAID_AT),
+					MONTH(PAID_AT)),
+			 DEPT_DATA AS
+		  (SELECT YEAR(P.PAID_AT) AS YEAR,
+				  MONTH(P.PAID_AT) AS MONTH,
+				  COUNT(DISTINCT P.EMPLOYEE_ID) AS employeeCount,
+				  SUM(P.OVERTIME_ALLOWANCE) AS totalAmount,
+				  PP.DEPARTMENT_CODE AS departmentCode,
+				  DD.DEPARTMENT_NAME AS departmentName
+		     FROM PAYMENT P
+		    INNER JOIN DEPARTMENT_MEMBER PP ON P.EMPLOYEE_ID = PP.EMPLOYEE_ID
+		    INNER JOIN DEPARTMENT DD ON PP.DEPARTMENT_CODE = DD.DEPARTMENT_CODE
+		    GROUP BY YEAR(P.PAID_AT),
+					MONTH(P.PAID_AT),
+					PP.DEPARTMENT_CODE)
+		SELECT D.departmentCode AS departmentCode,
+			   D.departmentName AS departmentName,
+			   Y.year AS YEAR,
+			   Y.yearlyEmployeeCount AS yearlyEmployeeCount,
+			   Y.yearlyTotalAmount AS yearlyTotalAmount,
+			   M.month AS MONTH,
+			   M.monthlyEmployeeCount AS monthlyEmployeeCount,
+			   M.monthlyTotalAmount AS monthlyTotalAmount
+		  FROM YEARLY_DATA Y
+		  LEFT JOIN MONTHLY_DATA M ON Y.year = M.year
+		  LEFT JOIN DEPT_DATA D ON M.year = D.year
+		   AND M.month = D.month
+	    <where>
+			<if test="deptCode != null">
+				D.departmentCode = #{deptCode}
+			</if>
+		</where>
+		 ORDER BY Y.year DESC, M.month ASC;
+	</select>
+</mapper>

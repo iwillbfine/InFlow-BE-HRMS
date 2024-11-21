@@ -74,6 +74,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         return responseDTO;
     }
 
+
     @Override
     @Transactional
     public void deleteTaskTypeByTaskTypeId(Long taskTypeId) {

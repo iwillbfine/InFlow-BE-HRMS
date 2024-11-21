@@ -1,6 +1,7 @@
 package com.pado.inflow.evaluation.command.domain.aggregate.entity;
 
 import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.UpdateEvaluationPolicyResponseDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.entity.TaskTypeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,11 @@ public class EvaluationPolicyEntity {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
     @Column(name = "modifiable_date", nullable = false)
     private LocalDateTime modifiableDate;
 
@@ -55,4 +61,23 @@ public class EvaluationPolicyEntity {
 
     @Column(name = "task_type_id")
     private Long taskTypeId;        // Entity 대신 ID만 저장
+
+
+    // Entity -> ResponseDTO 변환 메서드
+    public UpdateEvaluationPolicyResponseDTO toResponseDTO() {
+        return UpdateEvaluationPolicyResponseDTO.builder()
+                .evaluationPolicyId(this.evaluationPolicyId)
+                .startDate(this.startDate)
+                .endDate(this.endDate)
+                .year(this.year)
+                .half(this.half)
+                .taskRatio(this.taskRatio)
+                .minRelEvalCount(this.minRelEvalCount)
+                .createdAt(this.createdAt)
+                .modifiableDate(this.modifiableDate)
+                .policyDescription(this.policyDescription)
+                .policyRegisterId(this.policyRegisterId)
+                .taskTypeId(this.taskTypeId)
+                .build();
+    }
 }

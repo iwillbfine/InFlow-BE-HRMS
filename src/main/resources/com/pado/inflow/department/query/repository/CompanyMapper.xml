@@ -1,0 +1,32 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.department.query.repository.CompanyMapper">
+
+    <!-- 회사 정보 매핑 -->
+    <resultMap id="CompanyResultMap" type="com.pado.inflow.department.query.dto.CompanyDTO">
+        <id property="companyId" column="COMPANY_ID"/>
+        <result property="companyName" column="COMPANY_NAME"/>
+        <result property="ceo" column="CEO"/>
+        <result property="businessRegistrationNumber" column="BUSINESS_REGISTRATION_NUMBER"/>
+        <result property="companyAddress" column="COMPANY_ADDRESS"/>
+        <result property="companyPhoneNumber" column="COMPANY_PHONE_NUMBER"/>
+        <result property="companyStampUrl" column="COMPANY_STAMP_URL"/>
+        <result property="companyLogoUrl" column="COMPANY_LOGO_URL"/>
+    </resultMap>
+
+    <!-- 회사 정보 가져오기 -->
+    <select id="getCompanyInfo" resultMap="CompanyResultMap">
+        SELECT
+        COMPANY_ID
+        , COMPANY_NAME
+        , CEO
+        , BUSINESS_REGISTRATION_NUMBER
+        , COMPANY_ADDRESS
+        , COMPANY_PHONE_NUMBER
+        , COMPANY_STAMP_URL
+        , COMPANY_LOGO_URL
+        FROM COMPANY
+        LIMIT 1
+    </select>
+</mapper>

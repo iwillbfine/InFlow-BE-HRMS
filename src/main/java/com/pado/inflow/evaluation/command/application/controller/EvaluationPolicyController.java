@@ -3,7 +3,9 @@ package com.pado.inflow.evaluation.command.application.controller;
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.evaluation.command.application.service.EvaluationPolicyService;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.CreateEvaluationPolicyRequestDTO;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.UpdateEvaluationPolicyRequestDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.CreateEvaluationPolicyResponseDTO;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.UpdateEvaluationPolicyResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,5 +29,13 @@ public class EvaluationPolicyController {
         return ResponseDTO.ok(createdEvaluationPolicy);
     }
 
-
+    @PatchMapping("/{evaluationPolicyId}")
+    public ResponseDTO<UpdateEvaluationPolicyResponseDTO> updateEvaluationPolicy(
+            @PathVariable( value = "evaluationPolicyId") Long evaluationPolicyId
+           ,@RequestBody UpdateEvaluationPolicyRequestDTO updateEvaluationPolicyRequestDTO
+            ) {
+        UpdateEvaluationPolicyResponseDTO updatedEvaluationPolicy =
+                evaluationPolicyService.updateEvaluationPolicy(updateEvaluationPolicyRequestDTO, evaluationPolicyId);
+        return ResponseDTO.ok(updatedEvaluationPolicy);
+    }
 }
