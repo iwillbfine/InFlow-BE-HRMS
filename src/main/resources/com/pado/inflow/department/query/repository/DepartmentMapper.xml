@@ -147,8 +147,8 @@
             dm.name AS employeeName,
             dm.profile_img_url AS profileImageUrl,
             dm.role_name AS roleName,
-            e.email AS email,
-            e.phone_number AS phoneNumber
+            e.email AS employeeEmail,
+            e.phone_number AS employeePhoneNumber
           FROM
             department_member dm
         JOIN
