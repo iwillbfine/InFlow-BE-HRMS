@@ -5,7 +5,6 @@ import com.pado.inflow.statistics.command.application.service.EmployeeNumService
 import com.pado.inflow.statistics.command.domain.aggregate.entity.EmployeeNum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +21,7 @@ public class EmployeeNumController {
         this.employeeNumService = employeeNumService;
     }
 
+    // 사원수 통계 초기화
     @PostMapping
     public ResponseDTO initEmployeeNum() {
         List<EmployeeNum> result = employeeNumService.initEmployeeNum();
