@@ -29,11 +29,13 @@ public enum ErrorCode {
     FILE_SIZE_EXCEEDED(40023, HttpStatus.BAD_REQUEST, "파일 크기가 허용된 최대 크기를 초과했습니다."), // 파일 크기가 제한을 초과한 경우
     ALREADY_EXIST_POLICY_TYPE(40024, HttpStatus.BAD_REQUEST, "해당 과제 유형에 해당하는 평가 정책이 이미 존재합니다."),
     EXCEED_TOTAL_RATIO(40025, HttpStatus.BAD_REQUEST, "과제 반영 비율의 총 합은 100%를 넘길 수 없습니다."),
-    INVALID_START_DATE(40001, HttpStatus.BAD_REQUEST, "평가 시작일은 현재 시점보다 미래여야 합니다."),
-    INVALID_END_DATE(40002, HttpStatus.BAD_REQUEST, "평가 종료일은 현재 시점보다 미래여야 합니다."),
-    INVALID_DATE_RANGE(40003, HttpStatus.BAD_REQUEST, "평가 종료일은 시작일보다 미래여야 합니다."),
-    INVALID_MODIFIABLE_DATE(40004, HttpStatus.BAD_REQUEST, "평가 정책 수정 가능일은 현재 시점보다 미래여야 합니다."),
-    INVALID_MODIFIABLE_DATE_RANGE(40005, HttpStatus.BAD_REQUEST, "평가 정책 수정 가능일은 평가 시작일보다 이전이어야 합니다."),
+    INVALID_START_DATE(40026, HttpStatus.BAD_REQUEST, "평가 시작일은 현재 시점보다 미래여야 합니다."),
+    INVALID_END_DATE(400027, HttpStatus.BAD_REQUEST, "평가 종료일은 현재 시점보다 미래여야 합니다."),
+    INVALID_DATE_RANGE(40028, HttpStatus.BAD_REQUEST, "평가 종료일은 시작일보다 미래여야 합니다."),
+    INVALID_MODIFIABLE_DATE(40029, HttpStatus.BAD_REQUEST, "평가 정책 수정 가능일은 현재 시점보다 미래여야 합니다."),
+    INVALID_MODIFIABLE_DATE_RANGE(40030, HttpStatus.BAD_REQUEST, "평가 정책 수정 가능일은 평가 시작일보다 이전이어야 합니다."),
+    POLICY_ALREADY_STARTED(40031, HttpStatus.BAD_REQUEST, "이미 시작된 평가 정책은 삭제할 수 없습니다."),
+    POLICY_IN_USE(40032, HttpStatus.BAD_REQUEST, "과제 항목에서 참조 중인 평가 정책은 삭제할 수 없습니다."),
 
 
     // 401: 인증 실패 (Unauthorized)

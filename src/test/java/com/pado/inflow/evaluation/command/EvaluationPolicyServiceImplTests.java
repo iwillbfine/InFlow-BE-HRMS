@@ -4,11 +4,10 @@ import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.evaluation.command.application.service.EvaluationPolicyService;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.CreateEvaluationPolicyRequestDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.UpdateEvaluationPolicyRequestDTO;
-import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.UpdateEvaluationPolicyResponseDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.entity.EvaluationPolicyEntity;
 import com.pado.inflow.evaluation.command.domain.repository.EvaluationPolicyRepository;
 import com.pado.inflow.evaluation.query.dto.EvaluationPolicyDTO;
-import org.apache.ibatis.ognl.Evaluation;
+import com.pado.inflow.evaluation.query.service.TaskItemService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -31,6 +30,9 @@ class EvaluationPolicyServiceImplTests {
 
     @Autowired
     private EvaluationPolicyService evaluationPolicyService;
+
+    @Autowired
+    private TaskItemService taskItemService;
 
     @Test
     @DisplayName("평가 정책 생성 성공 테스트")
@@ -394,5 +396,51 @@ class EvaluationPolicyServiceImplTests {
         assertThrows(CommonException.class, () -> {
             evaluationPolicyService.updateEvaluationPolicy(updateRequest, 999L);
         });
+    }
+
+    @Test
+    @DisplayName("평가 정책 삭제 성공 테스트")
+    void deleteEvaluationPolicySuccessTest() {
+        // given
+        EvaluationPolicyDTO testData = new EvaluationPolicyDTO();
+        testData.setStartDate(LocalDateTime.now().plusDays(10));  // 미래 시작일
+        testData.setEndDate(LocalDateTime.now().plusDays(20));
+        testData.setYear(2024);
+        testData.setHalf("1st");
+        testData.setTaskRatio(0.3);
+        testData.setMinRelEvalCount(20L);
+        testData.setModifiableDate(LocalDateTime.now().plusDays(5));
+        testData.setCreatedAt(LocalDateTime.now());
+        testData.setPolicyDescription("삭제될 정책");
+        testData.setPolicyRegisterId(6L);
+        testData.setTaskTypeId(1L);
+
+        EvaluationPolicyEntity savedEntity = evaluationPolicyRepository.save(testData.toEntity());
+
+        // when
+        evaluationPolicyService.deleteEvaluationPolicyByEvaluationPolicyId(savedEntity.getEvaluationPolicyId());
+
+        // then
+        assertThrows(CommonException.class, () -> {
+            taskItemService.findTaskItems(savedEntity.getEvaluationPolicyId());
+        });
+    }
+
+    @Test
+    @DisplayName("평가 정책 삭제 실패 테스트 - 이미 시작된 정책")
+    void deleteEvaluationPolicyFailureTestAlreadyStarted() {
+
+    }
+
+    @Test
+    @DisplayName("평가 정책 삭제 실패 테스트 - 참조중인 과제 항목 존재")
+    void deleteEvaluationPolicyFailureTestPolicyInUse() {
+
+    }
+
+    @Test
+    @DisplayName("평가 정책 삭제 실패 테스트 - 존재하지 않는 정책")
+    void deleteEvaluationPolicyFailureTestNotFound() {
+        
     }
 }
