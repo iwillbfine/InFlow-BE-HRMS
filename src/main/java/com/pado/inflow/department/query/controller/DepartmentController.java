@@ -18,24 +18,28 @@ public class DepartmentController {
     }
 
 
-    // 1. 키워드 입력하여 요청 전송 API
-    // keyword 입력하여 사원 목록 조회
-    @GetMapping("/search/members")
-    public ResponseDTO<List<String>> getEmployeesByKeyword(@RequestParam String keyword) {
-        List<String> departmentMembers = departmentService.findEmployeesByKeyword(keyword);
-        return ResponseDTO.ok(departmentMembers);
-    }
 
-    // 2. 부서 폴더 구조에서 해당 부서에 속하는 사원 목록
-    @GetMapping("/code/{departmentCode}/members")
-    public ResponseDTO<List<String>> getEmployeesByDepartmentCode(@PathVariable String departmentCode ){
-        List<String> departmentMembers = departmentService.findEmployeesByDepartmentCode(departmentCode);
-        return ResponseDTO.ok(departmentMembers);
+    // 1. 검색창을 통한 사원 목록 조회, 부서 폴더를 통한 사원 목록 조회
+    @GetMapping("/search/members")
+    public ResponseDTO<List<GetDepartmentMemberDTO>> getEmployeesByKeywordOrDepartmentCode(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String departmentCode) {
+
+        if (keyword != null) {
+            // 키워드 기반 조회
+            return ResponseDTO.ok(departmentService.findEmployeesByKeyword(keyword));
+        } else if (departmentCode != null) {
+            // 부서 코드 기반 조회
+            return ResponseDTO.ok(departmentService.findEmployeesByDepartmentCode(departmentCode));
+        } else {
+            // 둘 다 없는 경우 예외 처리
+            throw new IllegalArgumentException("keyword 또는 departmentCode 중 하나를 반드시 제공해야 합니다.");
+        }
     }
 
     // 3. 선택한 사원 상세 정보 조회
     // 공통 부서에 속한 사원들 목록 중 특정 사원 선택하면 해당 사원에 대한 상세 정보 조회가 가능하다
-    @GetMapping("/employees/{employeeNumber}")
+    @GetMapping("/search/members/employee-code/{employeeNumber}")
     public ResponseDTO<List<GetDepartmentMemberDTO>> getEmployeesByEmployeeNumber(@PathVariable String employeeNumber){
         List<GetDepartmentMemberDTO> departmentMemberDetail = departmentService.findEmployeeDetailByEmployeeNumber(employeeNumber);
         return ResponseDTO.ok(departmentMemberDetail);
