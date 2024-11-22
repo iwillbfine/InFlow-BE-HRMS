@@ -3,22 +3,73 @@ package com.pado.inflow.department.query.service;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.department.query.dto.GetDepartmentDetailDTO;
+import com.pado.inflow.department.query.dto.GetDepartmentHierarchyDTO;
+import com.pado.inflow.department.query.dto.GetDepartmentListDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
 import com.pado.inflow.department.query.repository.DepartmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service("departmentQueryService")
 public class DepartmentService {
+
+    // 로그
+    private static final Logger logger = LoggerFactory.getLogger(DepartmentService.class);
+
     private final DepartmentMapper departmentMapper;
 
     @Autowired
     public DepartmentService(DepartmentMapper departmentMapper) {
         this.departmentMapper = departmentMapper;
     }
+
+    // 공통: 사원찾기 & 부서관리 - 폴더구조 ui
+    public List<GetDepartmentHierarchyDTO>findDepartmentHierarchy(){
+        List<GetDepartmentHierarchyDTO> departmentHierarchyList;
+
+        departmentHierarchyList = departmentMapper.findDepartmentHierarchy();
+
+        if (departmentHierarchyList == null || departmentHierarchyList.isEmpty()){
+            throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT);
+        }
+        return departmentHierarchyList;
+    }
+    // 데이터 계층 구조로 변환하기
+    // db에서 데이터 조회 -> 해시맵으로 데이터 분류 -> 계층 구조 만들기
+    public List<GetDepartmentHierarchyDTO> findDepartmentHierarchyAsTree(){
+        // 플랫 리스트 조회
+        List<GetDepartmentHierarchyDTO> departmentFlatList = findDepartmentHierarchy();
+
+        // 플랫 리스트를 계층 구조로 변환
+        // 플랫 리스트 변환 - 부서 코드를 키로 갖는 맵 형태로 변환
+        Map<String, GetDepartmentHierarchyDTO> departmentHierarchyMap = departmentFlatList.stream()
+                .collect(Collectors.toMap(GetDepartmentHierarchyDTO::getDepartmentCode, dept -> dept));
+
+        List<GetDepartmentHierarchyDTO> hierarchy = new ArrayList<>();
+
+        for (GetDepartmentHierarchyDTO department : departmentFlatList) {
+            if (department.getUpperDepartmentCode() == null) {
+                // 최상위 부서
+                hierarchy.add(department);
+
+            } else {
+                // 상위 부서에 추가
+                GetDepartmentHierarchyDTO parent = departmentHierarchyMap.get(department.getUpperDepartmentCode());
+                if (parent != null) {
+                    parent.getSubDepartments().add(department);
+                }
+            }
+        }
+        return hierarchy;
+
+    }
+
 
     // 1. 검색창 검색어 입력을 통한 사원 리스트 조회
     public List<GetDepartmentMemberDTO> findEmployeesByKeyword(String keyword){
@@ -102,13 +153,30 @@ public class DepartmentService {
             departmentDetail = departmentMapper.findDepartmentDetailByDepartmentCode(departmentCode);
                 if (departmentDetail == null || departmentDetail.isEmpty()) {
 
-                    throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT_MEMBER);
+                    throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT);
                 }
         } catch (Exception e) {
                 throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
         return departmentDetail;
 
+    }
+
+    // 2. 키워드를 통한 부서 목록 조회
+    public List<GetDepartmentListDTO> findDepartmentListByKeyword(String keyword){
+        if(keyword == null || keyword.trim().isEmpty()){
+            throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
+        }
+        List<GetDepartmentListDTO> departmentList;
+        try{
+            departmentList = departmentMapper.findDepartmentListByKeyword(keyword);
+            if(departmentList == null || departmentList.isEmpty()){
+                throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT);
+            }
+        } catch ( Exception e) {
+            throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+        return departmentList;
     }
 
 
