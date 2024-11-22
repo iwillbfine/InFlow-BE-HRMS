@@ -117,6 +117,7 @@ public enum ErrorCode {
     // 409: 중복 데이터 (Conflict)
     DUPLICATE_ENTRY(40900,  HttpStatus.CONFLICT, "중복된 사원입니다."),
     DUPLICATE_TASK_TYPE(40901, HttpStatus.BAD_REQUEST, "중복된 과제 유형입니다."),
+    DUPLICATE_CONTRACT(40902, HttpStatus.BAD_REQUEST, "한번 작성한 계약서는 수정이 불가합니다."),
 
     // 429: 요청 과다 (Too Many Requests)
     TOO_MANY_REQUESTS(42900, HttpStatus.TOO_MANY_REQUESTS, "요청 횟수가 너무 많습니다. 잠시 후 다시 시도해 주세요."),
