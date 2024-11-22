@@ -1,0 +1,30 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.payroll.query.repository.SeverancePayMapper">
+    <resultMap id="SeveranceResultMap" type="com.pado.inflow.payroll.query.dto.SeverancePayDTO">
+        <!-- 기본 필드 매핑 -->
+        <id property="employeeId" column="employee_id" />
+        <result property="joinDate" column="join_date" javaType="java.time.LocalDate" />
+        <result property="totalWorkingDays" column="total_working_days" />
+
+        <!-- SummaryDTO 매핑 -->
+        <association property="totalSummary" javaType="com.pado.inflow.payroll.query.dto.SummaryDTO">
+            <result property="totalDays" column="total_days" />
+            <result property="totalPay" column="total_pay" />
+        </association>
+
+        <!-- PeriodicPayDTO 매핑 -->
+        <collection property="recentThreeMonthsPay" ofType="com.pado.inflow.payroll.query.dto.PeriodicPayDTO">
+            <result property="period" column="period" />
+            <result property="workingDays" column="working_days" />
+            <result property="basePay" column="base_pay" />
+            <result property="extraPay" column="extra_pay" />
+        </collection>
+    </resultMap>
+
+    <select id="getSeveranceData" parameterType="map" resultType="com.pado.inflow.payroll.query.dto.SeverancePayDTO">
+
+    </select>
+
+</mapper>

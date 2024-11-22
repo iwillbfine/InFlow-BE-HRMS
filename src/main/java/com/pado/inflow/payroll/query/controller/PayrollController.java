@@ -28,12 +28,12 @@ public class PayrollController {
         return ResponseDTO.ok(payment);
     }
 
+    // 사원의 전체 급여 내역 조회
     @GetMapping("/all/{employeeId}")
     public ResponseDTO<?> getAllPayments(@PathVariable Long employeeId,
                                          @RequestParam(value = "page", defaultValue = "1") Integer pageNo) {
         PageDTO<AllPaymentsDTO> payments = payrollService.findPaymentsByEmployeeId(employeeId, pageNo);
         return ResponseDTO.ok(payments);
     }
-
 
 }
