@@ -2,13 +2,10 @@ package com.pado.inflow.employee.info.command.application.controller;
 
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
-import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.EmploymentCertificateRequest;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestEmployeeDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestUpdateEmployeeDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseEmployeeDTO;
-import com.pado.inflow.employee.info.query.dto.EmploymentCertificateDTO;
 import com.pado.inflow.employee.info.query.service.EmployeeQueryService;
-import net.nurigo.sdk.message.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -93,17 +90,4 @@ public class EmployeeController {
         return ResponseDTO.ok("비밀번호가 성공적으로 재설정되었습니다.");
     }
 
-    // 설명. 4. 재직증명서 발급
-    @PostMapping("/employment-certificate")
-    public ResponseDTO<EmploymentCertificateDTO> getEmploymentCertificate(
-            @RequestBody EmploymentCertificateRequest request) {
-
-        // employeeQueryService를 통해 정보 조회
-        EmploymentCertificateDTO certificateInfo = employeeQueryService.getEmploymentCertificateInfo(request.getEmployeeNumber());
-
-        // 용도 추가
-        certificateInfo.setPurpose(request.getPurpose());
-
-        return ResponseDTO.ok(certificateInfo);
-    }
 }
