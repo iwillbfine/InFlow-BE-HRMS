@@ -6,13 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class YearlyEmployeeNumDTO {
-    private int year;
-    private List<EmployeeNumDTO> monthly;
+public class MonthlyEmployeeNumDTO {
+    private int month;
+    private String half;
+    private int totalEmployeeNum;
+    private int joinedEmployeeNum;
+    private int leftedEmployeeNum;
 }

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class EmployeeNumMapperDTO {
-    private int year;
-    private String monthlyData;
+public class HalfTaskEvaluation {
+    private String half;
 }

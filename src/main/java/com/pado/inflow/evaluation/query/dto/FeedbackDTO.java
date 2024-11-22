@@ -1,5 +1,6 @@
 package com.pado.inflow.evaluation.query.dto;
 
+import com.pado.inflow.evaluation.command.domain.aggregate.entity.FeedbackEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,4 +16,13 @@ public class FeedbackDTO {
     private String content;
     private LocalDateTime createdAt;
     private Long evaluationId;
+
+    // Entity 변환 메서드
+    public FeedbackEntity toEntity() {
+        return FeedbackEntity.builder()
+                .feedbackId(this.feedbackId)
+                .content(this.content)
+                .evaluationId(this.evaluationId)
+                .build();
+    }
 }

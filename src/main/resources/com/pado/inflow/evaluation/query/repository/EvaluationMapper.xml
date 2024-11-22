@@ -26,4 +26,20 @@
            AND e.half = #{half}
            AND e.evaluator_id != #{empId}
     </select>
+
+    <!-- 평가Id로 평가 단건 조회 -->
+    <select id="getEvaluationByEvaluationId" resultMap="EvaluationResultMap">
+        SELECT
+        e.evaluation_id,
+        e.evaluation_type,
+        e.fin_grade,
+        e.fin_score,
+        e.year,
+        e.half,
+        e.created_at,
+        e.evaluator_id,
+        e.employee_id
+        FROM evaluation e
+        WHERE e.evaluation_id = #{evaluationId}
+    </select>
 </mapper>

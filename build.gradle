@@ -63,21 +63,12 @@ dependencies {
 
 //    //필기. S3 라이브러리 추가
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-//
-//    //필기 Redis 라이브러리 추가
-//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-//
-//    //필기. Mail 라이브러리 추가
-//    implementation 'org.springframework.boot:spring-boot-starter-mail'
-
-
-    //필기. bootstrap.yml을 인지시키기 위한 dependency
-//	implementation 'org.springframework.cloud:spring-cloud-starter-config'
-//	implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
 
     //필기. spring boot의 모니터링 시스템 또는 동적 설정 변경 등 부가적인 기능 제공
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    
+
+    //필기. 누리고 앱
+    implementation 'net.nurigo:sdk:4.3.0'
 }
 
 tasks.named('test') {

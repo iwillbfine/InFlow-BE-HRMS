@@ -10,7 +10,14 @@ import lombok.NoArgsConstructor;
 public class PeriodicPayDTO {
 
     private String period;
+
+    // 기간 별 일 수
     private Integer workingDays;
-    private Integer totalPay;
+
+    // 계약 급여 (월 급여 + 비과세 급여)
+    private Integer basePay;
+
+    // 기타 수당 (초과근무 수당)
+    private Integer extraPay;
 
 }

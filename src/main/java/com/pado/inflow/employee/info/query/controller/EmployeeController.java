@@ -2,9 +2,10 @@ package com.pado.inflow.employee.info.query.controller;
 
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
-import com.pado.inflow.employee.info.query.service.EmployeeService;
+import com.pado.inflow.employee.info.query.service.EmployeeQueryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController("employeeQueryController")
@@ -20,10 +20,10 @@ import java.util.List;
 public class EmployeeController {
     private final Environment env;
     private final ModelMapper modelMapper;
-    private final EmployeeService employeeService;
+    private final EmployeeQueryService employeeService;
 
-    @Autowired
-    public EmployeeController(Environment env, ModelMapper modelMapper, EmployeeService employeeService) {
+      @Autowired
+    public EmployeeController(Environment env, ModelMapper modelMapper, EmployeeQueryService employeeService) {
         this.env = env;
         this.modelMapper = modelMapper;
         this.employeeService = employeeService;

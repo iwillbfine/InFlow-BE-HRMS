@@ -20,14 +20,14 @@ import java.util.List;
 public class VacationBatchConfig {
 
     // 휴가 만료 처리
-    @Bean
+    @Bean("vacationUpdateJob")
     public Job vacationUpdateJob(JobRepository jobRepository, Step vacationUpdateStep) {
         return new JobBuilder("vacationUpdateJob", jobRepository)
                 .start(vacationUpdateStep) // 첫 번째 스텝 실행
                 .build();
     }
 
-    @Bean
+    @Bean("vacationUpdateStep")
     public Step vacationUpdateStep(JobRepository jobRepository,
                                    PlatformTransactionManager transactionManager,
                                    UpdateVacationPageReader vacationPageReader,
@@ -43,14 +43,14 @@ public class VacationBatchConfig {
     }
 
     // 만료된 휴가 삭제 처리
-    @Bean
+    @Bean("vacationDeleteJob")
     public Job vacationDeleteJob(JobRepository jobRepository, Step vacationDeleteStep) {
         return new JobBuilder("vacationDeleteJob", jobRepository)
                 .start(vacationDeleteStep)
                 .build();
     }
 
-    @Bean
+    @Bean("vacationDeleteStep")
     public Step vacationDeleteStep(JobRepository jobRepository,
                                           PlatformTransactionManager transactionManager,
                                           DeleteVacationPageReader deleteVacationPageReader,
@@ -63,14 +63,14 @@ public class VacationBatchConfig {
     }
 
     // 휴가 지급
-    @Bean
+    @Bean("vacationInsertJob")
     public Job vacationInsertJob(JobRepository jobRepository, Step vacationInsertStep) {
         return new JobBuilder("vacationInsertJob", jobRepository)
                 .start(vacationInsertStep)
                 .build();
     }
 
-    @Bean
+    @Bean("vacationInsertStep")
     public Step vacationInsertStep(JobRepository jobRepository,
                                    PlatformTransactionManager transactionManager,
                                    EmployeePageReader employeePageReader,

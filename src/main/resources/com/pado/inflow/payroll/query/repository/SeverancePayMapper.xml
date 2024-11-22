@@ -23,7 +23,7 @@
         </collection>
     </resultMap>
 
-    <select id="getSeveranceData" parameterType="map" resultType="com.pado.inflow.payroll.query.dto.SeverancePayDTO">
+    <select id="getSeveranceData" resultMap="SeveranceResultMap">
 
     </select>
 

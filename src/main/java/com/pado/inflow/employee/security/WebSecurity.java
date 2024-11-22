@@ -1,6 +1,6 @@
 package com.pado.inflow.employee.security;
 
-import com.pado.inflow.employee.info.command.application.service.EmployeeService;
+import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,12 +26,12 @@ import java.util.List;
 public class WebSecurity {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private EmployeeService employeeService;
+    private EmployeeCommandService employeeService;
     private Environment env;
     private JwtUtil jwtUtil;
 
     @Autowired
-    public WebSecurity(BCryptPasswordEncoder bCryptPasswordEncoder,  EmployeeService employeeService
+    public WebSecurity(BCryptPasswordEncoder bCryptPasswordEncoder,  EmployeeCommandService employeeService
             , Environment env, JwtUtil jwtUtil) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.employeeService = employeeService;
@@ -78,11 +78,13 @@ public class WebSecurity {
                         // 설명. 2.3. 회사 테이블 관련 API
                         .requestMatchers(new AntPathRequestMatcher("/api/companies/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
+
                         // 그외.. 테이블 관련 api
 
                         // 설명. 3. department(부서) 도메인
-                        .requestMatchers(new AntPathRequestMatcher("/api/departments/members/search/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/api/departments/code/{departmentCode}/employees/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/search/members/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/search/members/detail/employee-code/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/search/members/detail/department-code/**", "GET")).hasAnyRole("HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
@@ -120,14 +122,17 @@ public class WebSecurity {
                     .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskItem/commonTask/**", "GET")).hasAnyRole("HR", "ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskItem/TaskItems/**", "GET")).hasAnyRole("HR", "ADMIN")
 
-                        // 과제별 평가 ( Task_Eval )
-                        .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskEval/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                    // 과제별 평가 ( Task_Eval )
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskEval/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
-                        // 평가 등급 ( grade )
-                        .requestMatchers(new AntPathRequestMatcher("/api/evaluations/grade/**", "GET")).hasAnyRole("HR", "ADMIN")
+                    // 평가 등급 ( grade )
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/grade/**", "GET")).hasAnyRole("HR", "ADMIN")
 
-                        // 평가 피드백 ( feedback )
-                        .requestMatchers(new AntPathRequestMatcher("/api/evaluations/feedback/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                    // 평가 피드백 ( feedback )
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/feedback/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/feedback/**", "POST")).hasAnyRole(  "MANAGER", "ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/evaluations/feedback/**", "PATCH")).hasAnyRole( "MANAGER", "ADMIN")
+
 
                     // 평가 정책 ( EvaluationPolicy )
                     .requestMatchers(new AntPathRequestMatcher("/api/evaluations/evaluationPolicy/**", "GET")).hasAnyRole("HR", "ADMIN")

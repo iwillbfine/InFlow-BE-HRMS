@@ -4,7 +4,7 @@ package com.pado.inflow.employee.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
-import com.pado.inflow.employee.info.command.application.service.EmployeeService;
+import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
 import com.pado.inflow.employee.info.enums.ResignationStatus;
 import com.pado.inflow.employee.security.dto.RequestLoginVO;
 import com.pado.inflow.employee.security.dto.ResponseLoginVO;
@@ -37,12 +37,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final EmployeeService employeeService;
+    private final EmployeeCommandService employeeService;
     private final Environment env;
     private final BCryptPasswordEncoder bCryptPasswordEncoder; // 추가
 
     public AuthenticationFilter(AuthenticationManager authenticationManager,
-                                EmployeeService employeeService,
+                                EmployeeCommandService employeeService,
                                 Environment env,
                                 BCryptPasswordEncoder bCryptPasswordEncoder) { // 추가
         super(authenticationManager);
