@@ -4,7 +4,7 @@ import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.department.query.dto.GetDepartmentDetailDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentHierarchyDTO;
-import com.pado.inflow.department.query.dto.GetDepartmentListDTO;
+import com.pado.inflow.department.query.dto.GetDepartmentListByKeywordDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
 import com.pado.inflow.department.query.repository.DepartmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,11 +163,11 @@ public class DepartmentService {
     }
 
     // 2. 키워드를 통한 부서 목록 조회
-    public List<GetDepartmentListDTO> findDepartmentListByKeyword(String keyword){
+    public List<GetDepartmentListByKeywordDTO> findDepartmentListByKeyword(String keyword){
         if(keyword == null || keyword.trim().isEmpty()){
             throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
         }
-        List<GetDepartmentListDTO> departmentList;
+        List<GetDepartmentListByKeywordDTO> departmentList;
         try{
             departmentList = departmentMapper.findDepartmentListByKeyword(keyword);
             if(departmentList == null || departmentList.isEmpty()){
