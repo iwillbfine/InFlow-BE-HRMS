@@ -110,6 +110,7 @@
 
 
     <!-- 조직도의 하위 폴더를 통해 사원 목록 조회 -->
+    <!-- 부서 코드를 통한 사원 리스트 조회 -->
     <select id="findDepartmentMembersByDepartmentCode"
             resultType="com.pado.inflow.department.query.dto.GetDepartmentMemberDTO">
         WITH RECURSIVE department_hierarchy AS (
@@ -164,7 +165,7 @@
             );
     </select>
 
-    <!-- 조직도의 하위 폴더를 통해 사원 목록 조회 -->
+    <!-- 사원 코드로 사원 상세 정보 조회 -->
     <select id="findDepartmentMemberDetailByMemberCode"
             resultType="com.pado.inflow.department.query.dto.GetMemberDetailFromListDTO">
         WITH RECURSIVE department_hierarchy AS (
@@ -199,8 +200,9 @@
             dm.name AS employeeName,
             dm.profile_img_url AS profileImageUrl,
             dm.role_name AS roleName,
-            e.email AS employeeEmail,
-            e.phone_number AS employeePhoneNumber
+            dm.email AS employeeEmail,
+            dm.phone_number AS employeePhoneNumber,
+            dm.attendance_status_type_name AS attendanceStatusTypeName
           FROM
             department_member dm
         JOIN
@@ -211,10 +213,10 @@
             department d
         ON
             dm.department_code = d.department_code
-        JOIN
-            employee e
-        ON
-            dm.employee_number = e.employee_number
+<!--        JOIN-->
+<!--            employee e-->
+<!--        ON-->
+<!--            dm.employee_number = e.employee_number-->
         WHERE
             e.employee_number = #{employeeNumber} OR #{employeeNumber} IS NULL;
     </select>

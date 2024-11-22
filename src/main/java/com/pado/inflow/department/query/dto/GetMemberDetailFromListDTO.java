@@ -33,5 +33,8 @@ public class GetMemberDetailFromListDTO {
     @JsonProperty("employee_phone_number")
     private String employeePhoneNumber;    // 사내 번호
 
+    @JsonProperty("attendance_status_type_name")
+    private String attendanceStatusTypeName;    // 근태 상태
+
 
 }
