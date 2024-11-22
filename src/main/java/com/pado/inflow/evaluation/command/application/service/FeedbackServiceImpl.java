@@ -3,7 +3,9 @@ package com.pado.inflow.evaluation.command.application.service;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.CreateFeedbackRequestDTO;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.UpdateFeedbackRequestDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.CreateFeedbackResponseDTO;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.UpdateFeedbackResponseDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.entity.FeedbackEntity;
 import com.pado.inflow.evaluation.command.domain.repository.FeedbackRepository;
 import com.pado.inflow.evaluation.query.dto.EvaluationDTO;
@@ -75,6 +77,35 @@ public class FeedbackServiceImpl implements FeedBackService {
                 feedbackRepository.save(createFeedbackRequestDTO.toEntity());
 
         CreateFeedbackResponseDTO responseDTO = FeedbackEntity.toDTO(savedEntity);
+
+        return responseDTO;
+    }
+
+    @Override
+    @Transactional
+    public UpdateFeedbackResponseDTO updateFeedback(Long feedbackId, UpdateFeedbackRequestDTO updateFeedbackRequestDTO) {
+
+        // 피드백 조회
+        FeedbackDTO selectedFeedback =
+                feedbackService.findFeedbackByFeedbackId(feedbackId);
+
+        // 피드백id로 평가 조회 및 년도 반기로 정책 조회
+        EvaluationDTO selectedEvaluation =
+                evaluationService.findEvaluationByEvaluationId(selectedFeedback.getEvaluationId());
+
+        // 평가 시작일 이후이면서 평가 종료일 이전인지 확인
+        List<EvaluationPolicyDTO> selectedEvaluationPolicy =
+                evaluationPolicyService.findPolicyWithYearAndHalf(selectedEvaluation.getYear(), selectedEvaluation.getHalf());
+
+        if (selectedEvaluationPolicy.get(0).getStartDate().isAfter(LocalDateTime.now())
+                || selectedEvaluationPolicy.get(0).getEndDate().isBefore(LocalDateTime.now())) {
+            throw new CommonException(ErrorCode.FEEDBACK_UPDATE_FAILURE);
+        }
+
+        selectedFeedback.setContent(updateFeedbackRequestDTO.getContent());
+        FeedbackEntity savedEntity = feedbackRepository.save(selectedFeedback.toEntity());
+
+        UpdateFeedbackResponseDTO responseDTO = FeedbackEntity.toUpdateDTO(savedEntity);
 
         return responseDTO;
     }
