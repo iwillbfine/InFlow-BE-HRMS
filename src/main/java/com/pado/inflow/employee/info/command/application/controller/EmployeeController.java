@@ -1,19 +1,22 @@
 package com.pado.inflow.employee.info.command.application.controller;
 
 import com.pado.inflow.common.ResponseDTO;
+import com.pado.inflow.common.exception.CommonException;
+import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
-import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.EmploymentCertificateRequest;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestEmployeeDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestUpdateEmployeeDTO;
+import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseEmployeeDTO;
-import com.pado.inflow.employee.info.query.dto.EmploymentCertificateDTO;
 import com.pado.inflow.employee.info.query.service.EmployeeQueryService;
-import net.nurigo.sdk.message.model.Message;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController("employeeCommandController")
@@ -93,17 +96,31 @@ public class EmployeeController {
         return ResponseDTO.ok("비밀번호가 성공적으로 재설정되었습니다.");
     }
 
-    // 설명. 4. 재직증명서 발급
-    @PostMapping("/employment-certificate")
-    public ResponseDTO<EmploymentCertificateDTO> getEmploymentCertificate(
-            @RequestBody EmploymentCertificateRequest request) {
 
-        // employeeQueryService를 통해 정보 조회
-        EmploymentCertificateDTO certificateInfo = employeeQueryService.getEmploymentCertificateInfo(request.getEmployeeNumber());
-
-        // 용도 추가
-        certificateInfo.setPurpose(request.getPurpose());
-
-        return ResponseDTO.ok(certificateInfo);
+    // 설명. 4. 서명된 계약서 등록
+    /**
+     * 계약서 등록
+     * @return 성공 메시지와 S3 URL
+     */
+    @PostMapping("/contracts")
+    public ResponseDTO<ResponseContractDTO> uploadContract(
+            @RequestParam("contract_type") String contractType,  // 계약서 종류
+            @RequestParam("employee_id") Long employeeId,         // 사원 ID
+            @RequestParam("reviewer_id") Long reviewerId,         // 검토자 ID
+            @RequestParam("contract_file") MultipartFile file              // 업로드 파일
+    ) {
+        try {
+            // RequestContractDTO 대신 개별 필드를 전달
+            ResponseContractDTO response = employeeCommandService.uploadContract(
+                    contractType, employeeId, reviewerId, file
+            );
+            return ResponseDTO.ok(response);
+        } catch (IllegalArgumentException e) {
+            // 잘못된 요청 데이터 처리
+            throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
+        } catch (IOException e) {
+            // S3 업로드 실패 처리
+            throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR);
+        }
     }
 }

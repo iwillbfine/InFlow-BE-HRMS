@@ -37,15 +37,18 @@ public class S3Config {
                 .build();
     }
 
-    // Getters for bucket names
+    //설명. 버킷들 이름 Getters
+    //설명.1. 회사 버킷
     public String getInflowCompanyBucket() {
         return inflowCompanyBucket;
     }
 
+    //설명.2. 사원 계약서 버킷
     public String getInflowContractBucket() {
         return inflowContractBucket;
     }
 
+    //설명.3. 근태 및 휴가 버킷
     public String getInflowVacationAttendanceBucket() {
         return inflowVacationAttendanceBucket;
     }

@@ -1,11 +1,17 @@
 package com.pado.inflow.employee.info.command.application.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.config.S3Config;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestEmployeeDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestUpdateEmployeeDTO;
+import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseEmployeeDTO;
+import com.pado.inflow.employee.info.command.domain.aggregate.entity.Contract;
 import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
+import com.pado.inflow.employee.info.command.domain.repository.ContractRepository;
 import com.pado.inflow.employee.info.command.domain.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +24,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service("employeeCommandService")
@@ -33,16 +43,27 @@ public class EmployeeCommandService implements UserDetailsService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SmsService smsService; // 문자 전송 서비스 추가
 
+    //설명. AWS 설정
+    private final AmazonS3Client s3Client;
+    private final ContractRepository contractRepository;
+    private final S3Config s3Config;
+
     @Autowired
     public EmployeeCommandService(EmployeeRepository employeeRepository
             , ModelMapper modelMapper
             , BCryptPasswordEncoder bCryptPasswordEncoder
             , SmsService smsService
+            , AmazonS3Client s3Client
+            , ContractRepository contractRepository
+            , S3Config s3Config
     ) {
         this.employeeRepository = employeeRepository;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder =bCryptPasswordEncoder;
         this.smsService=smsService;
+        this.s3Client = s3Client;
+        this.contractRepository = contractRepository;
+        this.s3Config = s3Config;
     }
 
     //설명.1.1 사원 등록 ( 환영 메시지를 전송, 초기 비밀번호: "사번!성명@생년월일")
@@ -209,4 +230,48 @@ public class EmployeeCommandService implements UserDetailsService {
                 grantedAuthorities);
     }
 
+    // 설명.6. 계약서 등록
+    @Transactional
+    public ResponseContractDTO uploadContract(
+            String contractType,
+            Long employeeId,
+            Long reviewerId,
+            MultipartFile file
+    ) throws IOException {
+        //현재 날짜
+        LocalDateTime currentDate=LocalDateTime.now().withNano(0);
+
+        // 파일 이름 생성 ( 계약서 종류, 사원ID )
+        String fileName = contractType + "_" + employeeId;
+
+        // 파일명 중복 확인
+        if (contractRepository.existsByFileName(fileName)) {
+            throw new CommonException(ErrorCode.DUPLICATE_CONTRACT);
+        }
+
+        // S3에 파일 업로드
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(file.getContentType());
+        metadata.setContentLength(file.getSize());
+
+        String bucketName = s3Config.getInflowContractBucket();
+        s3Client.putObject(bucketName, fileName, file.getInputStream(), metadata);
+
+        // S3 URL 생성
+        String fileUrl = s3Client.getUrl(bucketName, fileName).toString();
+
+        // 계약서 테이블에 데이터 저장
+        Contract contract = new Contract();
+        contract.setContractType(contractType);
+        contract.setEmployeeId(employeeId);
+        contract.setReviewerId(reviewerId);
+        contract.setFileUrl(fileUrl);
+        contract.setFileName(fileName);
+        contract.setCreatedAt(currentDate);
+
+        contract = contractRepository.save(contract);
+
+        // 응답 생성
+        return new ResponseContractDTO(contract.getContractId(), fileUrl, "계약서가 성공적으로 업로드되었습니다.");
+    }
 }
