@@ -8,7 +8,7 @@ public interface DepartmentMemberRepository extends JpaRepository<DepartmentMemb
     /**
      * 특정 사원의 부서 구성원 데이터를 삭제
      */
-    void deleteByEmployeeId(Long employeeId);
+    void deleteByEmployeeNumber(String employeeNumber);
 
     /**
      * 특정 사원의 사원 번호로 부서 구성원 존재 여부 확인

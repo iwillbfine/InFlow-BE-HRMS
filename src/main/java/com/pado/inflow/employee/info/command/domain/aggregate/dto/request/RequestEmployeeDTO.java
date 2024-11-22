@@ -52,7 +52,6 @@ public class RequestEmployeeDTO {
     @JsonProperty("phone_number") // 전화번호
     private String phoneNumber;
 
-    @NotBlank
     @JsonProperty("profile_img_url") // 프로필 이미지 URL
     private String profileImgUrl;
 

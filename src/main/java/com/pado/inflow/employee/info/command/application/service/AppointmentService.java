@@ -46,7 +46,7 @@ public class AppointmentService {
     @Transactional(rollbackFor = Exception.class) // API 호출 실패 시 트랜잭션 롤백 처리.
     public ResponseAppointmentDTO processAppointment(RequestAppointmentDTO appointmentRequestDTO) {
         // 1. 기존 부서 구성원 데이터 삭제
-        departmentMemberRepository.deleteByEmployeeId(appointmentRequestDTO.getEmployeeId());
+        departmentMemberRepository.deleteByEmployeeNumber(appointmentRequestDTO.getEmployeeNumber());
 
         // 2. 사원 정보 수정
         Employee employee = updateEmployeeInfo(appointmentRequestDTO);
@@ -65,7 +65,7 @@ public class AppointmentService {
      * 설명: 사원 정보를 수정하여 부서, 직위, 직책, 직무 정보를 업데이트.
      */
     private Employee updateEmployeeInfo(RequestAppointmentDTO appointmentRequestDTO) {
-        Employee employee = employeeRepository.findById(appointmentRequestDTO.getEmployeeId())
+        Employee employee = employeeRepository.findByEmployeeNumber(appointmentRequestDTO.getEmployeeNumber())
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
         employee.setDepartmentCode(appointmentRequestDTO.getDepartmentCode());
@@ -79,9 +79,13 @@ public class AppointmentService {
      * 설명: 인사 발령 이력을 추가하여 DB에 기록.
      */
     private Appointment addAppointmentHistory(RequestAppointmentDTO appointmentRequestDTO) {
+
+        Employee employee = employeeRepository.findByEmployeeNumber(appointmentRequestDTO.getEmployeeNumber())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+
         Appointment appointment = new Appointment();
         appointment.setAppointedAt(LocalDateTime.now().withNano(0));
-        appointment.setEmployeeId(appointmentRequestDTO.getEmployeeId());
+        appointment.setEmployeeId(employee.getEmployeeId());
         appointment.setAuthorizerId(appointmentRequestDTO.getAuthorizerId());
         appointment.setDepartmentCode(appointmentRequestDTO.getDepartmentCode());
         appointment.setPositionCode(appointmentRequestDTO.getPositionCode());
