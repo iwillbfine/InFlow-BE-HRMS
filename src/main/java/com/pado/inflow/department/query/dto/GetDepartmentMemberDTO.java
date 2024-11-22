@@ -12,6 +12,7 @@ import lombok.*;
 @Data
 public class GetDepartmentMemberDTO {
 
+    // 사원찾기
     // 사원명, 사원코드, 부서명 의 키워드 입력을 통한 사원 목록 조회 DTO
 
     @JsonProperty("department_name")

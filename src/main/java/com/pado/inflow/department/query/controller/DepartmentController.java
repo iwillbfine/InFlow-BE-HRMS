@@ -4,7 +4,7 @@ package com.pado.inflow.department.query.controller;
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentDetailDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentHierarchyDTO;
-import com.pado.inflow.department.query.dto.GetDepartmentListDTO;
+import com.pado.inflow.department.query.dto.GetDepartmentListByKeywordDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
 import com.pado.inflow.department.query.service.DepartmentService;
 import org.springframework.web.bind.annotation.*;
@@ -67,8 +67,8 @@ public class DepartmentController {
 
     // 부서관리 - 2. 키워드에 해당하는 부서 목록 조회
     @GetMapping("/search/departments")
-    public ResponseDTO<List<GetDepartmentListDTO>> getDepartmentListByKeyword(@RequestParam String keyword){
-        List<GetDepartmentListDTO> departmentList = departmentService.findDepartmentListByKeyword(keyword);
+    public ResponseDTO<List<GetDepartmentListByKeywordDTO>> getDepartmentListByKeyword(@RequestParam String keyword){
+        List<GetDepartmentListByKeywordDTO> departmentList = departmentService.findDepartmentListByKeyword(keyword);
         return ResponseDTO.ok(departmentList);
     }
 

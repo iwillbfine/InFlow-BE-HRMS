@@ -12,6 +12,7 @@ import lombok.*;
 @Data
 public class GetMemberDetailFromListDTO {
 
+    // 사원찾기
     // 사원 검색 상세조회에서 보여줄 정보
     // 사원명, 직책, 상위/하위 부서, 사내 메일, 휴대번호
 
@@ -32,6 +33,9 @@ public class GetMemberDetailFromListDTO {
 
     @JsonProperty("employee_phone_number")
     private String employeePhoneNumber;    // 사내 번호
+
+    @JsonProperty("attendance_status_type_name")
+    private String attendanceStatusTypeName;    // 근태 상태
 
 
 }
