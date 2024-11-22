@@ -2,6 +2,7 @@ package com.pado.inflow.evaluation.command.domain.aggregate.entity;
 
 
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.CreateFeedbackResponseDTO;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.UpdateFeedbackResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,4 +52,15 @@ public class FeedbackEntity {
                 .evaluationId(entity.getEvaluationId())
                 .build();
     }
+
+    // Update ResponseDTO 변환
+    public static UpdateFeedbackResponseDTO toUpdateDTO(FeedbackEntity entity) {
+        return UpdateFeedbackResponseDTO.builder()
+                .feedbackId(entity.getFeedbackId())
+                .content(entity.getContent())
+                .evaluationId(entity.getEvaluationId())
+                .build();
+    }
+
+
 }

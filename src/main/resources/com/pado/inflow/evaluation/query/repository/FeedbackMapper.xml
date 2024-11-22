@@ -21,4 +21,15 @@
         AND e.half = #{half}
         AND e.employee_id = #{empId}
     </select>
+
+    <select id="findFeedbackByFeedbackId" resultMap="feedbackResultMap">
+        SELECT
+        f.feedback_id,
+        f.content,
+        f.created_at,
+        f.evaluation_id
+        FROM feedback f
+        WHERE f.feedback_id = #{feedbackId}
+
+    </select>
 </mapper>

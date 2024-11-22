@@ -1,5 +1,11 @@
 package com.pado.inflow.evaluation.query.service;
 
+import com.pado.inflow.common.exception.CommonException;
+import com.pado.inflow.evaluation.command.application.service.FeedBackService;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.CreateFeedbackRequestDTO;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.UpdateFeedbackRequestDTO;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.CreateFeedbackResponseDTO;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.UpdateFeedbackResponseDTO;
 import com.pado.inflow.evaluation.query.dto.FeedbackDTO;
 import com.pado.inflow.evaluation.query.repository.FeedbackMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -8,8 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -17,6 +22,8 @@ class FeedbackServiceImplTest {
 
     @Autowired
     private  FeedbackMapper feedbackMapper;
+    @Autowired
+    private FeedBackService feedBackService;
 
     @Test
     @DisplayName("사원 피드백 조회 테스트")
@@ -36,4 +43,98 @@ class FeedbackServiceImplTest {
         assertEquals(testData.getContent(), selectedData.getContent());
 
     }
+
+    @Test
+    @DisplayName("피드백Id로 피드백 단건 조회 테스트")
+    void feedbackSelectTestByFeedbackId() {
+        //given
+        FeedbackDTO testData = new FeedbackDTO();
+        testData.setFeedbackId(1L);
+
+        //when
+        FeedbackDTO selectedData = feedbackMapper.findFeedbackByFeedbackId(1L);
+
+        //then
+        assertEquals(testData.getFeedbackId(), selectedData.getFeedbackId());
+    }
+
+    @Test
+    @DisplayName("피드백 수정 성공 테스트")
+    void updateFeedbackSuccessTest() {
+        // given
+        // 1. 기존 피드백 생성
+        CreateFeedbackRequestDTO createRequest = new CreateFeedbackRequestDTO();
+        createRequest.setContent("기존 피드백 내용");
+        createRequest.setEvaluationId(2L);  // 실제 DB의 평가 ID
+
+        CreateFeedbackResponseDTO createdFeedback =
+                feedBackService.createFeedback(createRequest);
+
+        // 2. 수정 요청 데이터 준비
+        UpdateFeedbackRequestDTO updateRequest = new UpdateFeedbackRequestDTO();
+        updateRequest.setContent("수정된 피드백 내용");
+
+        // when
+        UpdateFeedbackResponseDTO response =
+                feedBackService.updateFeedback(createdFeedback.getFeedbackId(), updateRequest);
+
+        // then
+        assertNotNull(response);
+        assertEquals("수정된 피드백 내용", response.getContent());
+        assertEquals(createdFeedback.getFeedbackId(), response.getFeedbackId());
+        assertEquals(createdFeedback.getEvaluationId(), response.getEvaluationId());
+    }
+
+    @Test
+    @DisplayName("피드백 수정 실패 - 평가 기간 외 수정 시도")
+    void updateFeedbackFailureOutOfPeriodTest() {
+        // given
+        Long feedbackId = 1L;  // 실제 DB의 피드백 ID
+
+        UpdateFeedbackRequestDTO updateRequest = new UpdateFeedbackRequestDTO();
+        updateRequest.setContent("수정 시도 내용");
+
+        // when & then
+        assertThrows(CommonException.class, () -> {
+            feedBackService.updateFeedback(feedbackId, updateRequest);
+        }, "평가 기간이 아닌 경우 수정이 불가능해야 합니다.");
+    }
+
+    @Test
+    @DisplayName("피드백 수정 실패 - 존재하지 않는 피드백")
+    void updateFeedbackFailureNotFoundTest() {
+        // given
+        Long nonExistentFeedbackId = 999999L;
+
+        UpdateFeedbackRequestDTO updateRequest = new UpdateFeedbackRequestDTO();
+        updateRequest.setContent("수정 시도 내용");
+
+        // when & then
+        assertThrows(CommonException.class, () -> {
+            feedBackService.updateFeedback(nonExistentFeedbackId, updateRequest);
+        }, "존재하지 않는 피드백에 대한 수정 시도시 예외가 발생해야 합니다.");
+    }
+
+    @Test
+    @DisplayName("피드백 수정 실패 - 평가 정책 없음")
+    void updateFeedbackFailureNoPolicyTest() {
+        // given
+        // 1. 기존 피드백 생성 (평가 정책이 없는 평가에 대한)
+        CreateFeedbackRequestDTO createRequest = new CreateFeedbackRequestDTO();
+        createRequest.setContent("기존 피드백 내용");
+        createRequest.setEvaluationId(99999L);  // 정책이 없는 평가 ID
+
+        CreateFeedbackResponseDTO createdFeedback =
+                feedBackService.createFeedback(createRequest);
+
+        // 2. 수정 시도
+        UpdateFeedbackRequestDTO updateRequest = new UpdateFeedbackRequestDTO();
+        updateRequest.setContent("수정 시도 내용");
+
+        // when & then
+        assertThrows(CommonException.class, () -> {
+            feedBackService.updateFeedback(createdFeedback.getFeedbackId(), updateRequest);
+        }, "평가 정책이 없는 경우 수정이 불가능해야 합니다.");
+    }
+
 }
