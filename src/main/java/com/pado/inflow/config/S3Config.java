@@ -15,8 +15,18 @@ public class S3Config {
 
     @Value("${cloud.aws.credentials.secret-key}")
     private String accessSecret;
+
     @Value("${cloud.aws.region.static}")
     private String region;
+
+    @Value("${cloud.aws.s3.buckets.inflow-company}")
+    private String inflowCompanyBucket;
+
+    @Value("${cloud.aws.s3.buckets.inflow-contract}")
+    private String inflowContractBucket;
+
+    @Value("${cloud.aws.s3.buckets.inflow-vacation-attendance}")
+    private String inflowVacationAttendanceBucket;
 
     @Bean
     public AmazonS3Client s3Client() {
@@ -25,5 +35,18 @@ public class S3Config {
                 .withRegion(region)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .build();
+    }
+
+    // Getters for bucket names
+    public String getInflowCompanyBucket() {
+        return inflowCompanyBucket;
+    }
+
+    public String getInflowContractBucket() {
+        return inflowContractBucket;
+    }
+
+    public String getInflowVacationAttendanceBucket() {
+        return inflowVacationAttendanceBucket;
     }
 }
