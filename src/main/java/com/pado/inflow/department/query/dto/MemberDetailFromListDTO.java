@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class GetMemberDetailFromListDTO {
+public class MemberDetailFromListDTO {
 
     // 사원찾기
     // 사원 검색 상세조회에서 보여줄 정보

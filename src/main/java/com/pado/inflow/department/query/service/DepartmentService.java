@@ -27,8 +27,8 @@ public class DepartmentService {
     }
 
     // 공통: 사원찾기 & 부서관리 - 폴더구조 ui
-    public List<GetDepartmentHierarchyDTO>findDepartmentHierarchy(){
-        List<GetDepartmentHierarchyDTO> departmentHierarchyList;
+    public List<DepartmentHierarchyDTO>findDepartmentHierarchy(){
+        List<DepartmentHierarchyDTO> departmentHierarchyList;
 
         departmentHierarchyList = departmentMapper.findDepartmentHierarchy();
 
@@ -39,25 +39,25 @@ public class DepartmentService {
     }
     // 데이터 계층 구조로 변환하기
     // db에서 데이터 조회 -> 해시맵으로 데이터 분류 -> 계층 구조 만들기
-    public List<GetDepartmentHierarchyDTO> findDepartmentHierarchyAsTree(){
+    public List<DepartmentHierarchyDTO> findDepartmentHierarchyAsTree(){
         // 플랫 리스트 조회
-        List<GetDepartmentHierarchyDTO> departmentFlatList = findDepartmentHierarchy();
+        List<DepartmentHierarchyDTO> departmentFlatList = findDepartmentHierarchy();
 
         // 플랫 리스트를 계층 구조로 변환
         // 플랫 리스트 변환 - 부서 코드를 키로 갖는 맵 형태로 변환
-        Map<String, GetDepartmentHierarchyDTO> departmentHierarchyMap = departmentFlatList.stream()
-                .collect(Collectors.toMap(GetDepartmentHierarchyDTO::getDepartmentCode, dept -> dept));
+        Map<String, DepartmentHierarchyDTO> departmentHierarchyMap = departmentFlatList.stream()
+                .collect(Collectors.toMap(DepartmentHierarchyDTO::getDepartmentCode, dept -> dept));
 
-        List<GetDepartmentHierarchyDTO> hierarchy = new ArrayList<>();
+        List<DepartmentHierarchyDTO> hierarchy = new ArrayList<>();
 
-        for (GetDepartmentHierarchyDTO department : departmentFlatList) {
+        for (DepartmentHierarchyDTO department : departmentFlatList) {
             if (department.getUpperDepartmentCode() == null) {
                 // 최상위 부서
                 hierarchy.add(department);
 
             } else {
                 // 상위 부서에 추가
-                GetDepartmentHierarchyDTO parent = departmentHierarchyMap.get(department.getUpperDepartmentCode());
+                DepartmentHierarchyDTO parent = departmentHierarchyMap.get(department.getUpperDepartmentCode());
                 if (parent != null) {
                     parent.getSubDepartments().add(department);
                 }
@@ -140,12 +140,12 @@ public class DepartmentService {
 
     /* 인사팀 권한 - 부서 관리 */
     // 1. 부서 코드를 통한 부서 상세정보 조회
-    public List<GetDepartmentDetailDTO> findDepartmentDetailByDepartmentCode(String departmentCode){
+    public List<DepartmentDetailDTO> findDepartmentDetailByDepartmentCode(String departmentCode){
         if(departmentCode == null || departmentCode.trim().isEmpty()){
             throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
         }
 
-        List<GetDepartmentDetailDTO> departmentDetail;
+        List<DepartmentDetailDTO> departmentDetail;
         try {
             departmentDetail = departmentMapper.findDepartmentDetailByDepartmentCode(departmentCode);
                 if (departmentDetail == null || departmentDetail.isEmpty()) {
@@ -160,11 +160,11 @@ public class DepartmentService {
     }
 
     // 2. 키워드를 통한 부서 목록 조회
-    public List<HrRoleGetDepartmentListByKeywordDTO> findDepartmentListByKeyword(String keyword){
+    public List<HrDepartmentListByKeywordDTO> findDepartmentListByKeyword(String keyword){
         if(keyword == null || keyword.trim().isEmpty()){
             throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
         }
-        List<HrRoleGetDepartmentListByKeywordDTO> departmentList;
+        List<HrDepartmentListByKeywordDTO> departmentList;
         try{
             departmentList = departmentMapper.findDepartmentListByKeyword(keyword);
             if(departmentList == null || departmentList.isEmpty()){
@@ -178,13 +178,14 @@ public class DepartmentService {
 
     /* 팀장 권한 - 내 부서 관리 */
     // 1. 부서 코드를 통한 사원 목록 조회
-    public List<ManagerRoleGetDepartmentMemberListByDepartmentCodeDTO> findDepartmentMemberListByDepartmentCode(String departmentCode){
+    // 2. 키워드를 통한 사원 목록 조회
+    public List<ManagerDepartmentMemberListDTO> findDepartmentMemberListByDepartmentCode(String departmentCode, String keyword){
         if (departmentCode == null || departmentCode.trim().isEmpty()){
             throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
         }
-        List<ManagerRoleGetDepartmentMemberListByDepartmentCodeDTO> departmentMemberList;
+        List<ManagerDepartmentMemberListDTO> departmentMemberList;
         try{
-            departmentMemberList = departmentMapper.findDepartmentMemberListByDepartmentCode(departmentCode);
+            departmentMemberList = departmentMapper.findDepartmentMemberListForManager(departmentCode, keyword);
             if(departmentMemberList == null || departmentMemberList.isEmpty()){
                 throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT);
             }
@@ -193,8 +194,6 @@ public class DepartmentService {
         }
         return departmentMemberList;
     }
-
-
 
 
 

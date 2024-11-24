@@ -21,8 +21,8 @@ public class DepartmentController {
 
     // 공통: 사원찾기 & 부서관리 - 폴더구조 ui 컨트롤러
     @GetMapping("/hierarchy")
-    public ResponseDTO<List<GetDepartmentHierarchyDTO>> getAllDepartmentHierarchy(){
-        List<GetDepartmentHierarchyDTO> departmentHierarchyTree = departmentService.findDepartmentHierarchyAsTree();
+    public ResponseDTO<List<DepartmentHierarchyDTO>> getAllDepartmentHierarchy(){
+        List<DepartmentHierarchyDTO> departmentHierarchyTree = departmentService.findDepartmentHierarchyAsTree();
         return ResponseDTO.ok(departmentHierarchyTree);
 
     }
@@ -57,30 +57,31 @@ public class DepartmentController {
     /* 인사팀 권한 - 부서 관리 */
     // 부서관리 - 1. 인사팀의 부서 상세정보 조회 -by 부서코드
     @GetMapping("/detail/department-code/{departmentCode}")
-    public ResponseDTO<List<GetDepartmentDetailDTO>> getDepartmentDetailByDepartmentCode(@PathVariable String departmentCode){
-        List<GetDepartmentDetailDTO> departmentDetail = departmentService.findDepartmentDetailByDepartmentCode(departmentCode);
+    public ResponseDTO<List<DepartmentDetailDTO>> getDepartmentDetailByDepartmentCode(@PathVariable String departmentCode){
+        List<DepartmentDetailDTO> departmentDetail = departmentService.findDepartmentDetailByDepartmentCode(departmentCode);
         return ResponseDTO.ok(departmentDetail);
     }
 
     // 부서관리 - 2. 키워드에 해당하는 부서 목록 조회
     @GetMapping("/search/departments")
-    public ResponseDTO<List<HrRoleGetDepartmentListByKeywordDTO>> getDepartmentListByKeyword(@RequestParam String keyword){
-        List<HrRoleGetDepartmentListByKeywordDTO> departmentList = departmentService.findDepartmentListByKeyword(keyword);
+    public ResponseDTO<List<HrDepartmentListByKeywordDTO>> getDepartmentListByKeyword(@RequestParam String keyword){
+        List<HrDepartmentListByKeywordDTO> departmentList = departmentService.findDepartmentListByKeyword(keyword);
         return ResponseDTO.ok(departmentList);
     }
 
-    
+
     /* 팀장 권한 - 내 부서 관리 */
     // 1. 부서 코드를 통한 사원 목록 조회
-    @GetMapping("/search/{departmentCode}/members")
-    public ResponseDTO<List<ManagerRoleGetDepartmentMemberListByDepartmentCodeDTO>>
-            getDepartmentMemberListByDepartmentCode(@PathVariable String departmentCode){
-        List<ManagerRoleGetDepartmentMemberListByDepartmentCodeDTO> memberList
-                = departmentService.findDepartmentMemberListByDepartmentCode(departmentCode);
+    // 2. 사원명 키워드를 통한 사원 목록 조회
+    @GetMapping("/my-department/{departmentCode}/members")
+    public ResponseDTO<List<ManagerDepartmentMemberListDTO>> getMyDepartmentMemberListByDepartmentCode(
+            @PathVariable String departmentCode,
+            @RequestParam(required = false) String keyword){
+        List<ManagerDepartmentMemberListDTO> memberList
+                = departmentService.findDepartmentMemberListByDepartmentCode(departmentCode, keyword);
         return ResponseDTO.ok(memberList);
 
     }
-
 
 
 
