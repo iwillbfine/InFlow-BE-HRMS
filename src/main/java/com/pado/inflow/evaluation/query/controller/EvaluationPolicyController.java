@@ -38,4 +38,17 @@ public class EvaluationPolicyController {
         EvaluationPolicyDTO evaluationPolicy = evaluationPolicyService.findPolicyByevaluationPolicyId(evaluationPolicyId);
         return ResponseDTO.ok(evaluationPolicy);
     }
+
+    @GetMapping("/policySearch")
+    public ResponseDTO<?> findEvaluationPolicyByYearAndHalfAndTaskTypeId(
+            @RequestParam(value = "year") Integer year,
+            @RequestParam(value = "half") String half,
+            @RequestParam(value = "taskTypeId") Long taskTypeId
+    ) {
+        EvaluationPolicyDTO evaluationPolicy =
+                evaluationPolicyService.findPolicyByYearAndHalfAndTaskTypeId(year, half, taskTypeId);
+        return ResponseDTO.ok(evaluationPolicy);
+
+    }
 }
+

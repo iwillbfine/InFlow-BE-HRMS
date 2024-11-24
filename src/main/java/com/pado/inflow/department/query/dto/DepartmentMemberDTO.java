@@ -1,5 +1,6 @@
 package com.pado.inflow.department.query.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Getter
@@ -8,7 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @Data // 테스트용
 public class DepartmentMemberDTO {
-
 
     private Long departmentMemberId;
     private String employeeNumber;
