@@ -95,8 +95,11 @@ public class TaskItemServiceImpl implements TaskItemService {
                 evaluationPolicyMapper.getEvaluationPolicyByEvaluationPolicyId(taskItemUpdateRequestDTO.getEvaluationPolicyId());
 
         LocalDateTime now = LocalDateTime.now();
+        YearMonth currentYearMonth = YearMonth.now();
+        YearMonth modifiableYearMonth = YearMonth.from(selectedPolicy.getModifiableDate()); // 9월
+        YearMonth policyStartYearMonth = YearMonth.from(selectedPolicy.getStartDate());     // 6월 or 12월
 
-        // 평가 시작일 이전 - 수정 가능
+        // 평가 시작일 이전 - 자유롭게 수정 가능
         if (now.isBefore(selectedPolicy.getStartDate())) {
             TaskItemDTO selectedData = taskItemMapper.findTaskItemByTaskItemId(taskItemId);
             selectedData.setTaskName(taskItemUpdateRequestDTO.getTaskName());
@@ -105,13 +108,10 @@ public class TaskItemServiceImpl implements TaskItemService {
             TaskItemEntity savedTaskItem = taskItemRepository.save(selectedData.toEntity());
             return savedTaskItem.toResponseDTO();
         }
-
-        // 평가 시작일 이후 - 수정 가능 월에만 수정 가능
+        // 평가 시작일 이후, 수정 가능월에만 수정 가능
         else {
-            YearMonth currentYearMonth = YearMonth.now();
-            YearMonth policyYearMonth = YearMonth.from(selectedPolicy.getModifiableDate());
-
-            if (!currentYearMonth.equals(policyYearMonth)) {
+            if (!currentYearMonth.equals(modifiableYearMonth) ||
+                    !currentYearMonth.isAfter(policyStartYearMonth)) {
                 throw new CommonException(ErrorCode.NOT_IN_MODIFICATION_PERIOD);
             }
 
