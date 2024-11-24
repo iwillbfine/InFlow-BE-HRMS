@@ -68,22 +68,28 @@ public class EmployeeController {
     /* 설명. 2.1 사원 정보 수정 (ID 기준) */
     @PatchMapping("/employee-id/{employeeId}")
     public ResponseDTO<ResponseEmployeeDTO> updateEmployeeById(
-            @PathVariable(value="employeeId") Long employeeId,
-            @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
+            @PathVariable(value = "employeeId") Long employeeId,
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "phone_number", required = false) String phoneNumber,
+            @RequestParam(value = "street_address", required = false) String streetAddress,
+            @RequestParam(value = "detailed_address", required = false) String detailedAddress,
+            @RequestParam(value = "profile_img", required = false) MultipartFile profileImg) {
 
-        ResponseEmployeeDTO updatedEmployee =  employeeCommandService.updateEmployeeById(employeeId, updateEmployeeDTO);
+        ResponseEmployeeDTO updatedEmployee = employeeCommandService.updateEmployeeById(
+                employeeId, email, phoneNumber, streetAddress, detailedAddress, profileImg);
         return ResponseDTO.ok(updatedEmployee);
     }
 
-    /* 설명. 2.2 사원 정보 수정 (사번 기준) */
-    @PatchMapping("/employee-number/{employeeNumber}")
-    public ResponseDTO<ResponseEmployeeDTO> updateEmployeeByEmployeeNumber(
-            @PathVariable(value="employeeNumber") String employeeNumber,
-            @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
 
-        ResponseEmployeeDTO updatedEmployee = employeeCommandService.updateEmployeeByEmployeeNumber(employeeNumber, updateEmployeeDTO);
-        return ResponseDTO.ok(updatedEmployee);
-    }
+//    /* 설명. 2.2 사원 정보 수정 (사번 기준) */
+//    @PatchMapping("/employee-number/{employeeNumber}")
+//    public ResponseDTO<ResponseEmployeeDTO> updateEmployeeByEmployeeNumber(
+//            @PathVariable(value="employeeNumber") String employeeNumber,
+//            @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
+//
+//        ResponseEmployeeDTO updatedEmployee = employeeCommandService.updateEmployeeByEmployeeNumber(employeeNumber, updateEmployeeDTO);
+//        return ResponseDTO.ok(updatedEmployee);
+//    }
 
 
     // 설명. 3. 비밀번호 재설정
