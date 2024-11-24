@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ManagerRoleGetDepartmentMemberListByDepartmentCodeDTO {
+public class ManagerDepartmentMemberListDTO {
 
     // 사원명, 사원 부서경로, 사원코드, 근태상태,
 
