@@ -2,10 +2,10 @@ package com.pado.inflow.evaluation.command.application.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
-import com.pado.inflow.department.command.domain.aggregate.entity.Department;
 import com.pado.inflow.department.query.dto.DepartmentMemberDTO;
 import com.pado.inflow.department.query.repository.DepartmentMemberMapper;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.CreateTaskItemRequestDTO;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.UpdateTaskItemReqeustDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.TaskItemResponseDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.entity.TaskItemEntity;
 import com.pado.inflow.evaluation.command.domain.repository.TaskItemRepository;
@@ -13,10 +13,16 @@ import com.pado.inflow.evaluation.query.dto.EvaluationPolicyDTO;
 import com.pado.inflow.evaluation.query.dto.TaskItemDTO;
 import com.pado.inflow.evaluation.query.dto.TaskTypeDTO;
 import com.pado.inflow.evaluation.query.repository.EvaluationPolicyMapper;
+import com.pado.inflow.evaluation.query.repository.TaskItemMapper;
 import com.pado.inflow.evaluation.query.repository.TaskTypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+
+import static java.time.LocalDateTime.now;
 
 @Service("CommandTaskItemService")
 @Transactional
@@ -29,6 +35,8 @@ public class TaskItemServiceImpl implements TaskItemService {
     private EvaluationPolicyMapper evaluationPolicyMapper;
     @Autowired
     private TaskTypeMapper taskTypeMapper;
+    @Autowired
+    private TaskItemMapper taskItemMapper;
 
     public TaskItemServiceImpl(TaskItemRepository taskItemRepository, DepartmentMemberMapper departmentMemberMapper) {
         this.taskItemRepository = taskItemRepository;
@@ -78,5 +86,41 @@ public class TaskItemServiceImpl implements TaskItemService {
         TaskItemResponseDTO responseDTO = savedTaskItem.toResponseDTO();
 
         return responseDTO;
+    }
+
+    @Override
+    public TaskItemResponseDTO UpdateTaskItem(Long taskItemId, UpdateTaskItemReqeustDTO taskItemUpdateRequestDTO) {
+        // 평가 정책 조회
+        EvaluationPolicyDTO selectedPolicy =
+                evaluationPolicyMapper.getEvaluationPolicyByEvaluationPolicyId(taskItemUpdateRequestDTO.getEvaluationPolicyId());
+
+        LocalDateTime now = LocalDateTime.now();
+
+        // 평가 시작일 이전 - 수정 가능
+        if (now.isBefore(selectedPolicy.getStartDate())) {
+            TaskItemDTO selectedData = taskItemMapper.findTaskItemByTaskItemId(taskItemId);
+            selectedData.setTaskName(taskItemUpdateRequestDTO.getTaskName());
+            selectedData.setTaskContent(taskItemUpdateRequestDTO.getTaskContent());
+
+            TaskItemEntity savedTaskItem = taskItemRepository.save(selectedData.toEntity());
+            return savedTaskItem.toResponseDTO();
+        }
+
+        // 평가 시작일 이후 - 수정 가능 월에만 수정 가능
+        else {
+            YearMonth currentYearMonth = YearMonth.now();
+            YearMonth policyYearMonth = YearMonth.from(selectedPolicy.getModifiableDate());
+
+            if (!currentYearMonth.equals(policyYearMonth)) {
+                throw new CommonException(ErrorCode.NOT_IN_MODIFICATION_PERIOD);
+            }
+
+            TaskItemDTO selectedData = taskItemMapper.findTaskItemByTaskItemId(taskItemId);
+            selectedData.setTaskName(taskItemUpdateRequestDTO.getTaskName());
+            selectedData.setTaskContent(taskItemUpdateRequestDTO.getTaskContent());
+
+            TaskItemEntity savedTaskItem = taskItemRepository.save(selectedData.toEntity());
+            return savedTaskItem.toResponseDTO();
+        }
     }
 }

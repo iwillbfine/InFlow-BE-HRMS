@@ -3,6 +3,7 @@ package com.pado.inflow.evaluation.command.application.controller;
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.evaluation.command.application.service.TaskItemService;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.CreateTaskItemRequestDTO;
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.UpdateTaskItemReqeustDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.TaskItemResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,14 @@ public class TaskItemController {
         TaskItemResponseDTO createdTaskItem =
                 taskItemService.createTaskItem(year, half, taskTypeId, createTaskItemRequestDTO);
         return ResponseDTO.ok(createdTaskItem);
+    }
 
+    @PatchMapping("/update/{TaskItemId}")
+    public ResponseDTO<TaskItemResponseDTO> taskItemUpdate(
+            @PathVariable( value = "taskItemId") Long taskItemId
+           ,@RequestParam UpdateTaskItemReqeustDTO taskItemUpdateRequestDTO
+    ) {
+        TaskItemResponseDTO updatedTaskItem = taskItemService.UpdateTaskItem(taskItemId, taskItemUpdateRequestDTO);
+        return ResponseDTO.ok(updatedTaskItem);
     }
 }
