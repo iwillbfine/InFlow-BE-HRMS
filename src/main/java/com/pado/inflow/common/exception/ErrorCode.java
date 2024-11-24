@@ -113,6 +113,8 @@ public enum ErrorCode {
     NOT_FOUND_ATTENDANCE_STATUS_TYPE(40445, HttpStatus.NOT_FOUND, "출석 상태 유형이 존재하지 않습니다."),
     NOT_FOUND_DEPARTMENT(40446, HttpStatus.NOT_FOUND, "부서 정보가 존재하지 않습니다."),
     NOT_FOUND_COMPANY(40447, HttpStatus.NOT_FOUND, "회사 정보가 존재하지 않습니다."),
+    NOT_FOUND_TASK_NAME(40448, HttpStatus.NOT_FOUND,"과제명을 입력해주세요."),
+    NOT_FOUND_TASK_ITEM_CONTENT(40448, HttpStatus.NOT_FOUND,"과제 내용을 입력해주세요."),
 
     // 409: 중복 데이터 (Conflict)
     DUPLICATE_ENTRY(40900,  HttpStatus.CONFLICT, "중복된 사원입니다."),

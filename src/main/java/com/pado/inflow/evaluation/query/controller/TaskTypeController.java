@@ -4,6 +4,7 @@ import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.evaluation.query.dto.TaskTypeDTO;
 import com.pado.inflow.evaluation.query.service.TaskTypeService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,8 +23,17 @@ public class TaskTypeController {
 
     // 과제 유형 조회
     @GetMapping("/allTaskType")
-    public ResponseDTO<?> findTaskType() {
+    public ResponseDTO<?> findTaskTypes() {
         List<TaskTypeDTO> taskTypes = taskTypeService.findAllTaskTypes();
         return ResponseDTO.ok(taskTypes);
+    }
+
+    @GetMapping("{taskTypeId}")
+    public ResponseDTO<?> findTaskType(
+            @PathVariable( value = "taskTypeId") Long taskTypeId
+    ) {
+        TaskTypeDTO selectedTaskType = taskTypeService.findTaskType(taskTypeId);
+        return ResponseDTO.ok(selectedTaskType);
+
     }
 }

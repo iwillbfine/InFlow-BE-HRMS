@@ -20,6 +20,7 @@ public class EvaluationPolicyController {
         this.evaluationPolicyService = evaluationPolicyService;
     }
 
+    // 평가 정책 생성
     @PostMapping("/policyCreation")
     public ResponseDTO<CreateEvaluationPolicyResponseDTO> createEvaluationPolicy(
             @RequestBody CreateEvaluationPolicyRequestDTO createEvaluationPolicyRequestDTO
@@ -29,6 +30,7 @@ public class EvaluationPolicyController {
         return ResponseDTO.ok(createdEvaluationPolicy);
     }
 
+    // 평가 정책 수정
     @PatchMapping("/{evaluationPolicyId}")
     public ResponseDTO<UpdateEvaluationPolicyResponseDTO> updateEvaluationPolicy(
             @PathVariable( value = "evaluationPolicyId") Long evaluationPolicyId
@@ -39,6 +41,7 @@ public class EvaluationPolicyController {
         return ResponseDTO.ok(updatedEvaluationPolicy);
     }
 
+    // 평가 정책 삭제
     @DeleteMapping("/{evaluationPolicyId}")
     public ResponseDTO<String> deleteEvaluationPolicy(
             @PathVariable( value = "evaluationPolicyId") Long evaluationPolicyId

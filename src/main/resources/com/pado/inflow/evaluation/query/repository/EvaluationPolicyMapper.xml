@@ -57,4 +57,26 @@
         FROM evaluation_policy
         WHERE evaluation_policy_id = #{evaluationPolicyId}
     </select>
+
+    <select id="findPolicyByYearAndHalfAndTaskTypeId" resultMap="evaluationPolicyResultMap">
+        SELECT
+        evaluation_policy_id,
+        start_date,
+        end_date,
+        year,
+        half,
+        task_ratio,
+        min_rel_eval_count,
+        created_at,
+        modifiable_date,
+        policy_description,
+        policy_register_id,
+        task_type_id
+        FROM
+        evaluation_policy
+        WHERE
+        year = #{year}
+        AND half = #{half}
+        AND task_type_id = #{taskTypeId}
+    </select>
 </mapper>

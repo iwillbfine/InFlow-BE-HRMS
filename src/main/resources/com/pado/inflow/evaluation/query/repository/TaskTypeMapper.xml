@@ -14,4 +14,13 @@
           FROM
                 TASK_TYPE
     </select>
+
+    <select id="findTaskTypeByTaskTypeId" resultMap="taskTypeResultMap">
+        SELECT
+        TASK_TYPE_ID
+        , TASK_TYPE_NAME
+        FROM
+        TASK_TYPE
+         WHERE TASK_TYPE_ID = #{taskTypeId}
+    </select>
 </mapper>

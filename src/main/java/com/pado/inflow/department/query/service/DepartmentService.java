@@ -2,6 +2,7 @@ package com.pado.inflow.department.query.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.department.query.dto.DepartmentMemberDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentDetailDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
 import com.pado.inflow.department.query.repository.DepartmentMapper;
@@ -110,10 +111,5 @@ public class DepartmentService {
         return departmentDetail;
 
     }
-
-
-
-
-
 
 }

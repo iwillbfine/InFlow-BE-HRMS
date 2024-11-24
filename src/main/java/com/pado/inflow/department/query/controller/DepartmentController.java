@@ -2,6 +2,7 @@ package com.pado.inflow.department.query.controller;
 
 
 import com.pado.inflow.common.ResponseDTO;
+import com.pado.inflow.department.query.dto.DepartmentMemberDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentDetailDTO;
 import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
 import com.pado.inflow.department.query.service.DepartmentService;

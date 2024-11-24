@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface TaskTypeMapper {
     List<TaskTypeDTO> findAllTaskTypes();
+
+    TaskTypeDTO findTaskTypeByTaskTypeId(Long taskTypeId);
 }
