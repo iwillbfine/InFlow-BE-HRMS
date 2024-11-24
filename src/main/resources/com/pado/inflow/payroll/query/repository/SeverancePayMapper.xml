@@ -3,15 +3,13 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.payroll.query.repository.SeverancePayMapper">
     <resultMap id="SeveranceResultMap" type="com.pado.inflow.payroll.query.dto.SeverancePayDTO">
-        <!-- 기본 필드 매핑 -->
         <id property="employeeId" column="employee_id" />
         <result property="joinDate" column="join_date" javaType="java.time.LocalDate" />
-        <result property="totalWorkingDays" column="total_working_days" />
 
         <!-- SummaryDTO 매핑 -->
         <association property="totalSummary" javaType="com.pado.inflow.payroll.query.dto.SummaryDTO">
             <result property="totalDays" column="total_days" />
-            <result property="totalPay" column="total_pay" />
+            <result property="totalAmount" column="total_amount" />
         </association>
 
         <!-- PeriodicPayDTO 매핑 -->
@@ -24,7 +22,32 @@
     </resultMap>
 
     <select id="getSeveranceData" resultMap="SeveranceResultMap">
+        SELECT
+            e.employee_id,
+            e.join_date,
 
+        /* PeriodicPayDTO 상세 */
+            CONCAT(DATE_FORMAT(p.paid_at, '%Y-%m'), '-01') AS period_start,
+            DATE_FORMAT(LAST_DAY(p.paid_at), '%Y-%m-%d') AS period_end,
+            DATEDIFF(LAST_DAY(p.paid_at), p.paid_at) + 1 AS working_days,
+            p.monthly_salary AS base_pay,
+            (p.overtime_allowance + p.annual_vacation_allowance + p.bonus) AS extra_pay,
+
+        /* SummaryDTO 합계 */
+            SUM(DATEDIFF(LAST_DAY(p.paid_at), p.paid_at) + 1) OVER() AS total_days,
+            SUM(p.monthly_salary + p.overtime_allowance + p.annual_vacation_allowance + p.bonus)
+            OVER() AS total_amount
+        FROM
+            employee e
+        INNER JOIN
+            payment p ON e.employee_id = p.employee_id
+        WHERE
+            e.employee_id = #{employeeId}
+        AND
+            p.paid_at BETWEEN DATE_SUB(#{referenceDate}, INTERVAL 3 MONTH) AND #{referenceDate}
+        ORDER BY
+            p.paid_at DESC
     </select>
+
 
 </mapper>

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class SeverancePayDTO {
 
     // 직전 3개월 급여 정보
     @JsonProperty("recent_three_months_pay")
-    private PeriodicPayDTO recentThreeMonthsPay;
+    private List<PeriodicPayDTO> recentThreeMonthsPay;
 
     // 연간 총 상여금
     @JsonProperty("total_bonus")

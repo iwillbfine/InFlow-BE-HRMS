@@ -2,6 +2,7 @@ package com.pado.inflow.payroll.query.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.payroll.common.Common;
 import com.pado.inflow.payroll.query.dto.PeriodicPayDTO;
 import com.pado.inflow.payroll.query.dto.SeverancePayDTO;
 import com.pado.inflow.payroll.query.dto.SummaryDTO;
@@ -27,39 +28,37 @@ public class SeverancePayServiceImpl implements SeverancePayService{
 
         SeverancePayDTO severancePayDTO = severancePayMapper.getSeveranceData(employeeId, referenceDate);
 
-        // 입사일 및 퇴사일 설정
-        LocalDate joinDate = severancePayDTO.getJoinDate();
-        LocalDate severanceDate = referenceDate;
-
-        if (joinDate.isAfter(severanceDate)) {
-            throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
+        if (severancePayDTO == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE);
         }
 
-        // 재직 일수 계산
-        Integer totalWorkingDays = calculateTotalWorkingDays(joinDate, severanceDate);
-        severancePayDTO.setTotalWorkingDays(totalWorkingDays);
+        // 3개월 간 총 근무일과 급여 계산
+        int totalDays = severancePayDTO.getRecentThreeMonthsPay().stream()
+                .mapToInt(PeriodicPayDTO::getWorkingDays).sum();
+        int totalAmount = severancePayDTO.getRecentThreeMonthsPay().stream()
+                .mapToInt(dto -> dto.getBasePay() + dto.getExtraPay()).sum();
 
-        // 직전 3개월 급여로 평균 임금 계산
-        SummaryDTO summary = severancePayDTO.getTotalSummary();
-        if (summary != null) {
-            int totalEarnings = summary.getTotalAmount();
-            int totalDays = summary.getTotalDays();
+        // SummaryDTO(총합을 나타내는 필드) 설정
+        severancePayDTO.setTotalSummary(new SummaryDTO(totalDays, totalAmount));
 
-            int averageWage = totalDays > 0 ? totalWorkingDays / totalDays : 0;
-            severancePayDTO.setAverageWage(averageWage);
-        }
+        // 평균 임금 계산
+        int averageWage = totalAmount / totalDays;
 
-        // 연간 총 상여금 조회
-        Integer totalBouns = severancePayMapper.getTotalBonus(employeeId, referenceDate);
+        // 통상 임금 게산
+        int hourlyOrdinaryWage = severancePayDTO.getRecentThreeMonthsPay().stream()
+                .mapToInt(dto -> dto.getBasePay() / 209).max().orElse(0);
+        int dailyordinaryWage = hourlyOrdinaryWage * 8; // 일일 통상 임금
 
-    }
+        // 최종 퇴직금 계산
+        int sevarancePay = Math.max(averageWage, dailyordinaryWage) * 30 * severancePayDTO.getTotalWorkingDays() / 365;
 
-    public int calculateTotalWorkingDays(LocalDate joinDate, LocalDate severanceDate) {
-        if (joinDate == null || severanceDate == null) {
-            throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
-        }
+        // 결과값 dto 매핑
+        severancePayDTO.setAverageWage(averageWage);
+        severancePayDTO.setOrdinaryWage(dailyordinaryWage);
+        severancePayDTO.setSeverancePay(sevarancePay);
 
-        return (int) ChronoUnit.DAYS.between(joinDate, severanceDate);
+        return severancePayDTO;
+
     }
 
 }
