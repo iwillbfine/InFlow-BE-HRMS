@@ -68,29 +68,6 @@ public class DepartmentService {
     }
 
 
-//    // 1. 검색창 검색어 입력을 통한 사원 리스트 조회
-//    public List<GetDepartmentMemberDTO> findEmployeesByKeyword(String keyword){
-//        // 검색어가 비어있거나 null일 경우 예외 처리
-//        if (keyword == null || keyword.trim().isEmpty()) {
-//            throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
-//        }
-//
-//        List<GetDepartmentMemberDTO> departmentMembers;
-//        try {
-//            // Mapper 호출
-//            departmentMembers = departmentMapper.findDepartmentMembersByKeyword(keyword);
-//
-//            // 결과가 비어있는 경우 예외 처리
-//            if (departmentMembers == null || departmentMembers.isEmpty()) {
-//                throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT_MEMBER);
-//            }
-//        } catch (Exception e) {
-//            // Mapper 호출 중 다른 예외 발생 시 처리
-//            throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
-//        }
-//
-//        return departmentMembers;
-//    }
 
     // 1. 검색창 검색어 입력을 통한 사원 리스트 조회
     public List<GetDepartmentMemberDTO> findEmployeesByKeyword(String keyword) {
@@ -109,31 +86,25 @@ public class DepartmentService {
 
         return departmentMembers;
     }
-
+    
 
     // 2. 부서 코드를 통한 사원 리스트 조회
-    public List<GetDepartmentMemberDTO> findEmployeesByDepartmentCode(String departmentCode){
-        if(departmentCode == null || departmentCode.trim().isEmpty()){
+    public List<GetDepartmentMemberDTO> findEmployeesByDepartmentCode(String departmentCode) {
+        // 부서 코드가 비어있거나 null일 경우 예외 처리
+        if (departmentCode == null || departmentCode.trim().isEmpty()) {
             throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
         }
-        List<GetDepartmentMemberDTO> departmentMembers;
-        try {
-            // Mapper 호출
-            departmentMembers = departmentMapper.findDepartmentMembersByDepartmentCode(departmentCode);
 
-            // 결과가 비어있는 경우 예외 처리
-            if (departmentMembers == null || departmentMembers.isEmpty()) {
-                throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT_MEMBER);
-            }
-        } catch (Exception e) {
-            // Mapper 호출 중 다른 예외 발생 시 처리
-            throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
+        // Mapper 호출
+        List<GetDepartmentMemberDTO> departmentMembers = departmentMapper.findDepartmentMembersByDepartmentCode(departmentCode);
+
+        // 결과가 비어있는 경우 예외 처리
+        if (departmentMembers == null || departmentMembers.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT_MEMBER);
         }
 
         return departmentMembers;
     }
-
-
 
     //3. 선택한 사원 상세 정보 조회
     // 사원 코드를 통한 사원 상세 정보 조회
