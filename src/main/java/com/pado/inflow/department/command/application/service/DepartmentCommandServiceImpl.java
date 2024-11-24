@@ -2,10 +2,7 @@ package com.pado.inflow.department.command.application.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
-import com.pado.inflow.department.command.domain.aggregate.dto.AddDepartmentRequestDTO;
-import com.pado.inflow.department.command.domain.aggregate.dto.DeleteDepartmentRequestDTO;
-import com.pado.inflow.department.command.domain.aggregate.dto.DepartmentDropdownDTO;
-import com.pado.inflow.department.command.domain.aggregate.dto.DepartmentResponseDTO;
+import com.pado.inflow.department.command.domain.aggregate.dto.*;
 import com.pado.inflow.department.command.domain.aggregate.entity.Department;
 import com.pado.inflow.department.command.domain.aggregate.entity.DepartmentMember;
 import com.pado.inflow.department.command.domain.repository.DepartmentMemberRepository;
@@ -82,7 +79,7 @@ public class DepartmentCommandServiceImpl implements DepartmentCommandService {
         Department department = departmentRepository.findById(departmentCode)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT));
 
-        // 현재 시간 
+        // 현재 시간
         LocalDateTime now = new Date().toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
@@ -90,6 +87,53 @@ public class DepartmentCommandServiceImpl implements DepartmentCommandService {
         department.setDisbandedAt(now);
         departmentRepository.save(department); // 저장
 
+    }
+
+    // 부서 수정
+    @Override
+    @Transactional
+    public DepartmentResponseDTO updateDepartment(String departmentCode, UpdateDepartmentRequestDTO updateDepartmentRequestDTO) {
+        // 1. 부서 존재 여부 확인
+        Department department = departmentRepository.findById(departmentCode)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT));
+
+        // 2. 전달된 필드만 업데이트
+        if (updateDepartmentRequestDTO.getDepartmentName() != null) {
+            department.setDepartmentName(updateDepartmentRequestDTO.getDepartmentName());
+        }
+        if (updateDepartmentRequestDTO.getMinEmployeeNum() != null) {
+            department.setMinEmployeeNum(updateDepartmentRequestDTO.getMinEmployeeNum());
+        }
+        if (updateDepartmentRequestDTO.getUpperDepartmentCode() != null) {
+            department.setUpperDepartmentCode(updateDepartmentRequestDTO.getUpperDepartmentCode());
+        }
+
+        // 3. 부서장 변경 로직 추가
+        if (updateDepartmentRequestDTO.getDepartmentHeadName() != null) {
+            // 3-1. 부서 구성원 테이블에서 해당 이름의 사원이 존재하는지 확인
+            DepartmentMember newDepartmentHead = departmentMemberRepository.findByName(updateDepartmentRequestDTO.getDepartmentHeadName())
+                    .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+
+            // 3-2. 기존 부서장의 역할 변경
+            departmentMemberRepository.updateRoleAndDepartmentCodeByDepartmentCode(departmentCode, "직원");
+
+            // 3-3. 새로운 부서장의 역할 및 부서 코드 설정
+            newDepartmentHead.setRoleName("부서장");
+            newDepartmentHead.setDepartmentCode(departmentCode);
+            departmentMemberRepository.save(newDepartmentHead);
+        }
+
+        // 4. 부서 업데이트 후 저장
+        Department updatedDepartment = departmentRepository.save(department);
+
+        // 5. 응답 DTO 생성 및 반환
+        return new DepartmentResponseDTO(
+                updatedDepartment.getDepartmentCode(),
+                updatedDepartment.getDepartmentName(),
+                updatedDepartment.getMinEmployeeNum(),
+                updatedDepartment.getUpperDepartmentCode(),
+                updateDepartmentRequestDTO.getDepartmentHeadName() // 새로운 부서장 이름 반환
+        );
     }
 
 }

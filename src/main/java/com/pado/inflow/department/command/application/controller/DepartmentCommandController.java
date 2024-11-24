@@ -6,6 +6,7 @@ import com.pado.inflow.department.command.application.service.DepartmentCommandS
 import com.pado.inflow.department.command.domain.aggregate.dto.AddDepartmentRequestDTO;
 import com.pado.inflow.department.command.domain.aggregate.dto.DepartmentDropdownDTO;
 import com.pado.inflow.department.command.domain.aggregate.dto.DepartmentResponseDTO;
+import com.pado.inflow.department.command.domain.aggregate.dto.UpdateDepartmentRequestDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,5 +43,15 @@ public class DepartmentCommandController {
     @DeleteMapping("/{departmentCode}")
     public void deleteDepartment(@PathVariable String departmentCode){
         departmentService.deleteDepartment(departmentCode);
+    }
+
+    // 부서 수정
+    @PatchMapping("/{departmentCode}")
+    public ResponseDTO<DepartmentResponseDTO> updateDepartment(
+            @PathVariable String departmentCode,
+            @RequestBody UpdateDepartmentRequestDTO updateDepartmentRequestDTO
+    ){
+        DepartmentResponseDTO updatedDepartment = departmentService.updateDepartment(departmentCode, updateDepartmentRequestDTO);
+        return ResponseDTO.ok(updatedDepartment);
     }
 }
