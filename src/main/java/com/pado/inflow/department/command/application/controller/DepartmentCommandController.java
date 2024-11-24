@@ -33,8 +33,14 @@ public class DepartmentCommandController {
     public ResponseDTO<DepartmentResponseDTO> addDepartment(
             @RequestBody AddDepartmentRequestDTO addDepartmentRequestDTO
     ) {
-        System.out.println("Request DTO from Controller: " + addDepartmentRequestDTO);
         DepartmentResponseDTO addedDepartment = departmentService.addDepartment(addDepartmentRequestDTO);
         return ResponseDTO.ok(addedDepartment);
+    }
+
+    // 부서 삭제
+    // disbanded_at 필드값을 부서 삭제 API 요청 시간으로 수정
+    @DeleteMapping("/{departmentCode}")
+    public void deleteDepartment(@PathVariable String departmentCode){
+        departmentService.deleteDepartment(departmentCode);
     }
 }

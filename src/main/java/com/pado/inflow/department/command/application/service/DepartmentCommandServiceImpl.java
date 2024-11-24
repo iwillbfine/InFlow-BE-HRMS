@@ -3,6 +3,7 @@ package com.pado.inflow.department.command.application.service;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.department.command.domain.aggregate.dto.AddDepartmentRequestDTO;
+import com.pado.inflow.department.command.domain.aggregate.dto.DeleteDepartmentRequestDTO;
 import com.pado.inflow.department.command.domain.aggregate.dto.DepartmentDropdownDTO;
 import com.pado.inflow.department.command.domain.aggregate.dto.DepartmentResponseDTO;
 import com.pado.inflow.department.command.domain.aggregate.entity.Department;
@@ -13,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @Service("DepartmentService")
@@ -31,16 +35,14 @@ public class DepartmentCommandServiceImpl implements DepartmentCommandService {
     // 드롭다운 서비스
     @Override
     @Transactional
-
     public List<DepartmentDropdownDTO> getDepartmentsForDropdown() {
         return departmentRepository.findAllForDropdown();
     }
 
+    // 부서 추가
     @Override
     @Transactional
     public DepartmentResponseDTO addDepartment(AddDepartmentRequestDTO addDepartmentRequestDTO) {
-
-        System.out.println("Request DTO: " + addDepartmentRequestDTO);
 
         // 1. 부서 정보 저장
         Department department = new Department();
@@ -71,4 +73,23 @@ public class DepartmentCommandServiceImpl implements DepartmentCommandService {
 
         return responseDTO;
     }
+
+    // 부서 삭제
+    @Override
+    @Transactional
+    public void deleteDepartment(String departmentCode){
+        // 부서 존재 여부 확인
+        Department department = departmentRepository.findById(departmentCode)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT));
+
+        // 현재 시간 
+        LocalDateTime now = new Date().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+
+        department.setDisbandedAt(now);
+        departmentRepository.save(department); // 저장
+
+    }
+
 }

@@ -15,11 +15,13 @@ public interface DepartmentCommandService {
     // 부서 추가
     DepartmentResponseDTO addDepartment(AddDepartmentRequestDTO addDepartmentRequestDTO);
 
-//    // 부서 수정
+
+    // 부서 삭제
+    void deleteDepartment(String departmentCode);
+
+    //    // 부서 수정
 //    DepartmentResponseDTO updateDepartment(UpdateDepartmentRequestDTO updateDepartmentRequestDTO);
 //
-//    // 부서 삭제
-//    void deleteDepartment(Long departmentId);
 
 
 }

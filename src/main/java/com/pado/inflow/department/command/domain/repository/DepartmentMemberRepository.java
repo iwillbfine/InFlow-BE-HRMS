@@ -22,7 +22,7 @@ public interface DepartmentMemberRepository extends JpaRepository<DepartmentMemb
      * @return 해당 사원 번호가 존재하면 true, 없으면 false
      */
     boolean existsByEmployeeNumber(String employeeNumber);
-    
+
     // 이름을 기준으로 특정 부서원을 찾는 메서드
     Optional<DepartmentMember> findByName(String name);
 }
