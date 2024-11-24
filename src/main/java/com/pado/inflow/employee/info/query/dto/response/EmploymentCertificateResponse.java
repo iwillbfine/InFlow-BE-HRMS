@@ -1,10 +1,10 @@
-package com.pado.inflow.employee.info.query.dto;
+package com.pado.inflow.employee.info.query.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class EmploymentCertificateDTO {
+public class EmploymentCertificateResponse {
     //설명. 사원 정보
     @JsonProperty("employee_name")
     private String employeeName;
@@ -20,9 +20,6 @@ public class EmploymentCertificateDTO {
 
     @JsonProperty("position_name")
     private String positionName;
-
-    @JsonProperty("resident_registration_number")
-    private String residentRegistrationNumber;
 
     @JsonProperty("purpose")
     private String purpose;

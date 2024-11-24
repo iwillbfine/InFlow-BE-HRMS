@@ -2,9 +2,7 @@ package com.pado.inflow.department.query.controller;
 
 
 import com.pado.inflow.common.ResponseDTO;
-import com.pado.inflow.department.query.dto.DepartmentMemberDTO;
-import com.pado.inflow.department.query.dto.GetDepartmentDetailDTO;
-import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
+import com.pado.inflow.department.query.dto.*;
 import com.pado.inflow.department.query.service.DepartmentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +14,20 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
     public DepartmentController(DepartmentService departmentService){
-            this.departmentService = departmentService;
+        this.departmentService = departmentService;
     }
 
 
 
-    // 1. 검색창을 통한 사원 목록 조회, 부서 폴더를 통한 사원 목록 조회
+    // 공통: 사원찾기 & 부서관리 - 폴더구조 ui 컨트롤러
+    @GetMapping("/hierarchy")
+    public ResponseDTO<List<GetDepartmentHierarchyDTO>> getAllDepartmentHierarchy(){
+        List<GetDepartmentHierarchyDTO> departmentHierarchyTree = departmentService.findDepartmentHierarchyAsTree();
+        return ResponseDTO.ok(departmentHierarchyTree);
+
+    }
+
+    // 사원찾기 - 1. 검색창을 통한 사원 목록 조회, 부서 폴더를 통한 사원 목록 조회
     @GetMapping("/search/members")
     public ResponseDTO<List<GetDepartmentMemberDTO>> getEmployeesByKeywordOrDepartmentCode(
             @RequestParam(required = false) String keyword,
@@ -39,7 +45,7 @@ public class DepartmentController {
         }
     }
 
-    // 3. 선택한 사원 상세 정보 조회
+    // 사원찾기 - 2. 선택한 사원 상세 정보 조회
     // 공통 부서에 속한 사원들 목록 중 특정 사원 선택하면 해당 사원에 대한 상세 정보 조회가 가능하다
     @GetMapping("/search/members/detail/employee-code/{employeeNumber}")
     public ResponseDTO<List<GetDepartmentMemberDTO>> getEmployeesByEmployeeNumber(@PathVariable String employeeNumber){
@@ -49,12 +55,33 @@ public class DepartmentController {
 
 
     /* 인사팀 권한 - 부서 관리 */
-    // 1. 인사팀의 부서 상세정보 조회 -by 부서코드
+    // 부서관리 - 1. 인사팀의 부서 상세정보 조회 -by 부서코드
     @GetMapping("/detail/department-code/{departmentCode}")
     public ResponseDTO<List<GetDepartmentDetailDTO>> getDepartmentDetailByDepartmentCode(@PathVariable String departmentCode){
         List<GetDepartmentDetailDTO> departmentDetail = departmentService.findDepartmentDetailByDepartmentCode(departmentCode);
         return ResponseDTO.ok(departmentDetail);
     }
+
+    // 부서관리 - 2. 키워드에 해당하는 부서 목록 조회
+    @GetMapping("/search/departments")
+    public ResponseDTO<List<HrRoleGetDepartmentListByKeywordDTO>> getDepartmentListByKeyword(@RequestParam String keyword){
+        List<HrRoleGetDepartmentListByKeywordDTO> departmentList = departmentService.findDepartmentListByKeyword(keyword);
+        return ResponseDTO.ok(departmentList);
+    }
+
+    
+    /* 팀장 권한 - 내 부서 관리 */
+    // 1. 부서 코드를 통한 사원 목록 조회
+    @GetMapping("/search/{departmentCode}/members")
+    public ResponseDTO<List<ManagerRoleGetDepartmentMemberListByDepartmentCodeDTO>>
+            getDepartmentMemberListByDepartmentCode(@PathVariable String departmentCode){
+        List<ManagerRoleGetDepartmentMemberListByDepartmentCodeDTO> memberList
+                = departmentService.findDepartmentMemberListByDepartmentCode(departmentCode);
+        return ResponseDTO.ok(memberList);
+
+    }
+
+
 
 
 

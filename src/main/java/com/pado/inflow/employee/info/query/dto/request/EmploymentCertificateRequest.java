@@ -1,4 +1,4 @@
-package com.pado.inflow.employee.info.command.domain.aggregate.dto.request;
+package com.pado.inflow.employee.info.query.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

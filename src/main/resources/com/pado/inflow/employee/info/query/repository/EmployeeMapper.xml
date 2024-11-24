@@ -5,7 +5,7 @@
 
 <mapper namespace="com.pado.inflow.employee.info.query.repository.EmployeeMapper">
 
-    <!-- ResultMap 정의 -->
+    <!-- 사원 ResultMap 정의 -->
     <resultMap id="EmployeeResultMap" type="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
         <result property="employeeId" column="employee_id"/>
         <result property="employeeNumber" column="employee_number"/>
@@ -14,7 +14,6 @@
         <result property="gender" column="gender"/>
         <result property="name" column="name"/>
         <result property="birthDate" column="birth_date"/>
-        <result property="residentRegistrationNumber" column="resident_registration_number"/>
         <result property="email" column="email"/>
         <result property="phoneNumber" column="phone_number"/>
         <result property="profileImgUrl" column="profile_img_url"/>
@@ -34,8 +33,8 @@
         <result property="dutyCode" column="duty_code"/>
     </resultMap>
 
-    <!-- ResultMap for Employment Certificate -->
-    <resultMap id="EmploymentCertificateResultMap" type="com.pado.inflow.employee.info.query.dto.EmploymentCertificateDTO">
+    <!-- ResultMap for Employment Certificate(재직 증명서)-->
+    <resultMap id="EmploymentCertificateResultMap" type="com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse">
         <result property="employeeName" column="name"/>
         <result property="birthDate" column="birth_date"/>
         <result property="address" column="full_address"/>
@@ -45,9 +44,43 @@
         <result property="companyAddress" column="company_address"/>
         <result property="ceoName" column="ceo"/>
         <result property="businessRegistrationNumber" column="business_registration_number"/>
-        <result property="residentRegistrationNumber" column="resident_registration_number"/>
         <result property="companyStampUrl" column="company_stamp_url"/>
     </resultMap>
+
+
+    <!-- ResultMap for Employment Contract(표준 근로 게약서)-->
+    <resultMap id="EmploymentContractResultMap" type="com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse">
+        <result property="employeeId" column="employee_id"/>
+        <result property="employeeName" column="name"/>
+        <result property="employeeAddress" column="employee_address"/>
+        <result property="employeePhoneNumber" column="phone_number"/>
+        <result property="birthDate" column="birth_date"/>
+        <result property="departmentName" column="department_name"/>
+        <result property="positionName" column="position_name"/>
+        <result property="roleName" column="role_name"/>
+        <result property="dutyName" column="duty_name"/>
+        <result property="contractStartDate" column="join_date"/>
+        <result property="contractEndDate" column="resignation_date"/>
+        <result property="salaryAmount" column="monthly_salary"/>
+        <result property="employerName" column="company_name"/>
+        <result property="employerCeo" column="ceo"/>
+        <result property="employerAddress" column="company_address"/>
+        <result property="employerPhoneNumber" column="company_phone_number"/>
+        <result property="ceoSignature" column="ceo_signature"/>
+        <collection property="irregularAllowances" ofType="com.pado.inflow.payroll.query.dto.IrregularAllowanceDTO">
+            <result property="allowanceName" column="allowanceName"/>
+            <result property="allowanceAmount" column="allowanceAmount"/>
+        </collection>
+    </resultMap>
+
+    <!-- ResultMap for Security Agreement(비밀유지서약서) -->
+    <resultMap id="SecurityAgreementResultMap" type="com.pado.inflow.employee.info.query.dto.response.ResponseSecurityAgreementResponse">
+        <result property="employeeName" column="name"/>
+        <result property="companyName" column="company_name"/>
+        <result property="corporateRegistrationNumber" column="business_registration_number"/>
+        <result property="companyAddress" column="company_address"/>
+    </resultMap>
+
     <!-- 전체 사원 조회 -->
     <select id="findAllEmployees" resultMap="EmployeeResultMap">
         SELECT * FROM employee
@@ -80,7 +113,6 @@
             c.company_address,
             c.ceo,
             c.business_registration_number,
-            e.resident_registration_number,
             c.company_stamp_url
         FROM
             employee e
@@ -93,5 +125,63 @@
         WHERE
             e.employee_number = #{employeeNumber}
     </select>
+
+    <!-- 근로계약서 발급 데이터 조회 -->
+    <select id="getEmploymentContractInfo" parameterType="String" resultType="com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse">
+        SELECT
+            e.employee_id AS employeeId,
+            e.name AS employeeName,
+            CONCAT(e.street_address, ', ', e.detailed_address) AS employeeAddress,
+            e.phone_number AS employeePhoneNumber,
+            e.birth_date AS birthDate,
+            d.department_name AS departmentName,
+            p.position_name AS positionName,
+            r.role_name AS roleName,
+            du.duty_name AS dutyName,
+            e.join_date AS contractStartDate,
+            e.resignation_date AS contractEndDate,
+            e.monthly_salary AS salaryAmount,
+            c.company_name AS companyName,
+            c.ceo AS ceoName,
+            c.company_address AS companyAddress,
+            c.company_phone_number AS companyPhoneNumber,
+            c.ceo_signature AS ceoSignature
+        FROM
+            employee e
+                JOIN department d ON e.department_code = d.department_code
+                JOIN `position` p ON e.position_code = p.position_code
+                JOIN `role` r ON e.role_code = r.role_code
+                JOIN duty du ON e.duty_code = du.duty_code
+                JOIN company c ON 1 = 1
+        WHERE
+            e.employee_number = #{employeeNumber};
+    </select>
+
+    <!-- 비정기 수당 데이터 조회 -->
+    <select id="getIrregularAllowances" resultType="com.pado.inflow.payroll.query.dto.IrregularAllowanceDTO">
+        SELECT
+            irregular_allowance_id AS irregularAllowanceId,
+            irregular_allowance_name AS irregularAllowanceName,
+            amount
+        FROM
+            irregular_allowance;
+    </select>
+
+
+    <!-- 비밀 유지 서약서 발급 데이터 조회 -->
+    <select id="getSecurityAgreementInfo" parameterType="String" resultType="com.pado.inflow.employee.info.query.dto.response.ResponseSecurityAgreementResponse">
+        SELECT
+            e.name AS employeeName,
+            c.company_name AS companyName,
+            c.business_registration_number AS corporateRegistrationNumber,
+            c.company_address AS companyAddress
+        FROM
+            employee e
+                JOIN
+            company c ON 1 = 1
+        WHERE
+            e.employee_number = #{employeeNumber}
+    </select>
+
 
 </mapper>
