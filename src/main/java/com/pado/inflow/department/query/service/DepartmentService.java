@@ -179,22 +179,18 @@ public class DepartmentService {
     /* 팀장 권한 - 내 부서 관리 */
     // 1. 부서 코드를 통한 사원 목록 조회
     // 2. 키워드를 통한 사원 목록 조회
-    public List<ManagerDepartmentMemberListDTO> findDepartmentMemberListByDepartmentCode(String departmentCode, String keyword){
-        if (departmentCode == null || departmentCode.trim().isEmpty()){
-            throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
+    public List<ManagerDepartmentMemberListDTO> findDepartmentMemberListByDepartmentCode(String departmentCode, String keyword) {
+        if (departmentCode == null || departmentCode.trim().isEmpty()) {
+            throw new CommonException(ErrorCode.INVALID_INPUT_VALUE); // 잘못된 부서 코드 입력
         }
-        List<ManagerDepartmentMemberListDTO> departmentMemberList;
-        try{
-            departmentMemberList = departmentMapper.findDepartmentMemberListForManager(departmentCode, keyword);
-            if(departmentMemberList == null || departmentMemberList.isEmpty()){
-                throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT);
-            }
-        } catch (Exception e){
-            throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
+        List<ManagerDepartmentMemberListDTO> departmentMemberList = departmentMapper.findDepartmentMemberListForManager(departmentCode, keyword);
+
+        if (departmentMemberList == null || departmentMemberList.isEmpty()) {
+            // 조회된 사원이 없는 경우
+            throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT_MEMBER);
         }
         return departmentMemberList;
     }
-
 
 
 
