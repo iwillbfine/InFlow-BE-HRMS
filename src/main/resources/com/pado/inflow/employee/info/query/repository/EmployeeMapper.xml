@@ -14,7 +14,6 @@
         <result property="gender" column="gender"/>
         <result property="name" column="name"/>
         <result property="birthDate" column="birth_date"/>
-        <result property="residentRegistrationNumber" column="resident_registration_number"/>
         <result property="email" column="email"/>
         <result property="phoneNumber" column="phone_number"/>
         <result property="profileImgUrl" column="profile_img_url"/>
@@ -45,7 +44,6 @@
         <result property="companyAddress" column="company_address"/>
         <result property="ceoName" column="ceo"/>
         <result property="businessRegistrationNumber" column="business_registration_number"/>
-        <result property="residentRegistrationNumber" column="resident_registration_number"/>
         <result property="companyStampUrl" column="company_stamp_url"/>
     </resultMap>
 
@@ -115,7 +113,6 @@
             c.company_address,
             c.ceo,
             c.business_registration_number,
-            e.resident_registration_number,
             c.company_stamp_url
         FROM
             employee e

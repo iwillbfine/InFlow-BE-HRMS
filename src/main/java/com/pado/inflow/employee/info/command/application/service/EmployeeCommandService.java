@@ -13,6 +13,8 @@ import com.pado.inflow.employee.info.command.domain.aggregate.entity.Contract;
 import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
 import com.pado.inflow.employee.info.command.domain.repository.ContractRepository;
 import com.pado.inflow.employee.info.command.domain.repository.EmployeeRepository;
+import com.pado.inflow.employee.info.enums.EmployeeRole;
+import com.pado.inflow.employee.info.enums.ResignationStatus;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -71,12 +73,40 @@ public class EmployeeCommandService implements UserDetailsService {
     public List<ResponseEmployeeDTO> registerEmployees(List<RequestEmployeeDTO> employeeDTOs) {
         List<Employee> employees = employeeDTOs.stream()
                 .map(dto -> {
+                    //설명.1.1.1 요청 바디의 값 매핑
                     Employee employee = modelMapper.map(dto, Employee.class);
 
-                    // 초기 비밀번호 생성 및 암호화
+                    //설명.1.1.2 초기 비밀번호 생성 및 암호화
                     String initialPassword = generateInitialPassword(dto);
                     employee.setPassword(encodePassword(initialPassword));
 
+                    //설명.1.1.3 employee_role 설정
+                    if ("DP002".equals(dto.getDepartmentCode())) {
+                        employee.setEmployeeRole(EmployeeRole.HR);
+                    } else if ("P005".equals(dto.getPositionCode())) {
+                        employee.setEmployeeRole(EmployeeRole.MANAGER);
+                    } else {
+                        employee.setEmployeeRole(EmployeeRole.EMPLOYEE);
+                    }
+
+                    //설명.1.1.4 attendance_status_type_code 기본값 설정 (출근중)
+                    employee.setAttendanceStatusTypeCode("AS001");
+
+                    //설명.1.1.5 기본 프로필 이미지 설정
+                    employee.setProfileImgUrl("https://inflow-emp-profile.s3.ap-northeast-2.amazonaws.com/emp_basic_profile.png");
+
+                    //설명.1.1.6 퇴사여부->N
+                    employee.setResignationStatus(ResignationStatus.N);
+
+                    //설명.1.1.7 입사일->오늘
+                    employee.setJoinDate(LocalDate.now());
+
+                    // 설명.1.1.8 연봉 계산 (월급 * 12)
+                    if (dto.getMonthlySalary() != null) {
+                        employee.setSalary(dto.getMonthlySalary() * 12);
+                    } else {
+                        throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
+                    }
                     return employee;
                 })
                 .collect(Collectors.toList());
@@ -84,16 +114,17 @@ public class EmployeeCommandService implements UserDetailsService {
         // 저장된 사원 리스트
         List<Employee> savedEmployees = employeeRepository.saveAll(employees);
 
-        // 문자 전송 및 응답 생성
-//        savedEmployees.forEach(employee -> {
-//            String welcomeMessage = generateWelcomeMessage(employee);
-//            smsService.sendSms(employee.getPhoneNumber(), welcomeMessage); // 문자 전송
-//        });
+        // 문자 전송 및 응답 생성 (문자 전송은 주석 처리된 상태)
+        // savedEmployees.forEach(employee -> {
+        //     String welcomeMessage = generateWelcomeMessage(employee);
+        //     smsService.sendSms(employee.getPhoneNumber(), welcomeMessage); // 문자 전송
+        // });
 
         return savedEmployees.stream()
                 .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
                 .collect(Collectors.toList());
     }
+
 
     //설명.1.2 초기 비밀번호 생성
     private String generateInitialPassword(RequestEmployeeDTO dto) {
@@ -135,31 +166,104 @@ public class EmployeeCommandService implements UserDetailsService {
      * 설명. 2.1 사원 정보 수정 (ID 기준)
      */
     @Transactional
-    public ResponseEmployeeDTO updateEmployeeById(Long employeeId, RequestUpdateEmployeeDTO updateEmployeeDTO) {
+    public ResponseEmployeeDTO updateEmployeeById(Long employeeId, String email, String phoneNumber,
+                                                  String streetAddress, String detailedAddress, MultipartFile profileImg) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
-        updateEmployeeFields(employee, updateEmployeeDTO);
+        // 필드 업데이트
+        if (email != null) {
+            employee.setEmail(email);
+        }
+        if (phoneNumber != null) {
+            employee.setPhoneNumber(phoneNumber);
+        }
+        if (streetAddress != null) {
+            employee.setStreetAddress(streetAddress);
+        }
+        if (detailedAddress != null) {
+            employee.setDetailedAddress(detailedAddress);
+        }
 
-        //설명. jpa를 통한 수정
+        // 프로필 이미지 업데이트 처리
+        if (profileImg != null && !profileImg.isEmpty()) {
+            String defaultProfileImgUrl = "https://inflow-emp-profile.s3.ap-northeast-2.amazonaws.com/emp_basic_profile.png";
+
+            // 기존 프로필 이미지가 기본 이미지가 아닌 경우 삭제
+            if (!defaultProfileImgUrl.equals(employee.getProfileImgUrl())) {
+                deleteExistingProfileImage(employee.getProfileImgUrl());
+            }
+
+            // 새 프로필 이미지 업로드
+            String newProfileImgUrl = uploadProfileImageToS3(profileImg, employeeId);
+            employee.setProfileImgUrl(newProfileImgUrl);
+        }
+
+        // JPA를 통한 수정
         Employee updatedEmployee = employeeRepository.save(employee);
         return modelMapper.map(updatedEmployee, ResponseEmployeeDTO.class);
     }
 
     /**
-     * 설명. 2.2 사원 정보 수정 (사번 기준)
+     * 설명. 2.1.1 기존 프로필 이미지를 삭제하는 메서드
      */
-    @Transactional
-    public ResponseEmployeeDTO updateEmployeeByEmployeeNumber(String employeeNumber, RequestUpdateEmployeeDTO updateEmployeeDTO) {
-        Employee employee = employeeRepository.findByEmployeeNumber(employeeNumber)
-                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
-        
-        updateEmployeeFields(employee, updateEmployeeDTO);
-    
-        //설명. jpa를 통한 수정
-        Employee updatedEmployee = employeeRepository.save(employee);
-        return modelMapper.map(updatedEmployee, ResponseEmployeeDTO.class);
+    private void deleteExistingProfileImage(String imageUrl) {
+        try {
+            String bucketName = s3Config.getInflowEmpProfileBucket();
+            String key = extractKeyFromUrl(imageUrl);
+
+            s3Client.deleteObject(bucketName, key);
+            System.out.println("Deleted existing image from S3: " + key);
+        } catch (Exception e) {
+            System.err.println("Failed to delete existing image: " + e.getMessage());
+        }
     }
+
+    /**
+     * 설명. 2.1.2. S3 URL에서 파일 키 추출
+     */
+    private String extractKeyFromUrl(String url) {
+        String bucketName = s3Config.getInflowEmpProfileBucket();
+        return url.substring(url.indexOf(bucketName) + bucketName.length() + 1);
+    }
+
+    /**
+     * 설명. 2.1.3. 새 프로필 이미지를 S3에 업로드하는 메서드
+     */
+    private String uploadProfileImageToS3(MultipartFile profileImg, Long employeeId) {
+        try {
+            String bucketName = s3Config.getInflowEmpProfileBucket();
+            String fileName = employeeId + "_profile"; // 사원 ID_ 프로필
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(profileImg.getContentType());
+            metadata.setContentLength(profileImg.getSize());
+
+            s3Client.putObject(bucketName, fileName, profileImg.getInputStream(), metadata);
+
+            return s3Client.getUrl(bucketName, fileName).toString();
+        } catch (IOException e) {
+            throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR);
+        }
+    }
+
+
+//    /**설명. 사원 정보 수정 사번-추후 삭제 에정
+
+//     * 설명. 2.2 사원 정보 수정 (사번 기준)
+//     */
+//    @Transactional
+//    public ResponseEmployeeDTO updateEmployeeByEmployeeNumber(String employeeNumber, RequestUpdateEmployeeDTO updateEmployeeDTO) {
+//        Employee employee = employeeRepository.findByEmployeeNumber(employeeNumber)
+//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+//
+//        updateEmployeeFields(employee, updateEmployeeDTO);
+//
+//        //설명. jpa를 통한 수정
+//        Employee updatedEmployee = employeeRepository.save(employee);
+//        return modelMapper.map(updatedEmployee, ResponseEmployeeDTO.class);
+//    }
+
 
 
     //설명. 3. 비밀번호 재설정
