@@ -98,6 +98,15 @@ public class EmployeeCommandService implements UserDetailsService {
                     //설명.1.1.6 퇴사여부->N
                     employee.setResignationStatus(ResignationStatus.N);
 
+                    //설명.1.1.7 입사일->오늘
+                    employee.setJoinDate(LocalDate.now());
+
+                    // 설명.1.1.8 연봉 계산 (월급 * 12)
+                    if (dto.getMonthlySalary() != null) {
+                        employee.setSalary(dto.getMonthlySalary() * 12);
+                    } else {
+                        throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
+                    }
                     return employee;
                 })
                 .collect(Collectors.toList());
