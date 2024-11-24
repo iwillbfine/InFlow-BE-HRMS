@@ -33,9 +33,6 @@ public class EmployeeDTO {
     @JsonProperty("birth_date")
     private LocalDateTime birthDate;
 
-    @JsonProperty("resident_registration_number")
-    private String residentRegistrationNumber;
-
     @JsonProperty("email")
     private String email;
 

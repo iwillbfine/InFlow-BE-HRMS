@@ -1,10 +1,7 @@
 package com.pado.inflow.department.query.repository;
 
 
-import com.pado.inflow.department.query.dto.GetDepartmentDetailDTO;
-import com.pado.inflow.department.query.dto.GetDepartmentHierarchyDTO;
-import com.pado.inflow.department.query.dto.GetDepartmentListDTO;
-import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
+import com.pado.inflow.department.query.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,12 +27,16 @@ public interface DepartmentMapper {
     List<GetDepartmentMemberDTO> findDepartmentMemberDetailByMemberCode(@Param("employeeNumber") String employeeNumber);
 
 
-    /* 관리자 권한 */
+    /* 인사 권한 */
     // 1. 부서코드로 부서 상세정보 조회
     List<GetDepartmentDetailDTO> findDepartmentDetailByDepartmentCode(@Param("departmentCode") String departmentCode);
 
     // 2. 키워드를 통한 부서 목록 조회
-    List<GetDepartmentListDTO> findDepartmentListByKeyword(@Param("keyword") String keyword);
+    List<HrRoleGetDepartmentListByKeywordDTO> findDepartmentListByKeyword(@Param("keyword") String keyword);
+
+    /* 팀장 권한 */
+    //1. 부서 코드로 사원 목록 조회
+    List<ManagerRoleGetDepartmentMemberListByDepartmentCodeDTO> findDepartmentMemberListByDepartmentCode(@Param("departmentCode") String departmentCode);
 
 
 

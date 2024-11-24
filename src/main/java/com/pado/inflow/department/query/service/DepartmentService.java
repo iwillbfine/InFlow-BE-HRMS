@@ -2,10 +2,7 @@ package com.pado.inflow.department.query.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
-import com.pado.inflow.department.query.dto.GetDepartmentDetailDTO;
-import com.pado.inflow.department.query.dto.GetDepartmentHierarchyDTO;
-import com.pado.inflow.department.query.dto.GetDepartmentListDTO;
-import com.pado.inflow.department.query.dto.GetDepartmentMemberDTO;
+import com.pado.inflow.department.query.dto.*;
 import com.pado.inflow.department.query.repository.DepartmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -163,11 +160,11 @@ public class DepartmentService {
     }
 
     // 2. 키워드를 통한 부서 목록 조회
-    public List<GetDepartmentListDTO> findDepartmentListByKeyword(String keyword){
+    public List<HrRoleGetDepartmentListByKeywordDTO> findDepartmentListByKeyword(String keyword){
         if(keyword == null || keyword.trim().isEmpty()){
             throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
         }
-        List<GetDepartmentListDTO> departmentList;
+        List<HrRoleGetDepartmentListByKeywordDTO> departmentList;
         try{
             departmentList = departmentMapper.findDepartmentListByKeyword(keyword);
             if(departmentList == null || departmentList.isEmpty()){
@@ -177,6 +174,24 @@ public class DepartmentService {
             throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
         return departmentList;
+    }
+
+    /* 팀장 권한 - 내 부서 관리 */
+    // 1. 부서 코드를 통한 사원 목록 조회
+    public List<ManagerRoleGetDepartmentMemberListByDepartmentCodeDTO> findDepartmentMemberListByDepartmentCode(String departmentCode){
+        if (departmentCode == null || departmentCode.trim().isEmpty()){
+            throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
+        }
+        List<ManagerRoleGetDepartmentMemberListByDepartmentCodeDTO> departmentMemberList;
+        try{
+            departmentMemberList = departmentMapper.findDepartmentMemberListByDepartmentCode(departmentCode);
+            if(departmentMemberList == null || departmentMemberList.isEmpty()){
+                throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT);
+            }
+        } catch (Exception e){
+            throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+        return departmentMemberList;
     }
 
 

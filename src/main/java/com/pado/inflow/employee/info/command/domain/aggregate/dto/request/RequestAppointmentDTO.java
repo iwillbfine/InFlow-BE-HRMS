@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class RequestAppointmentDTO {
 
-    @JsonProperty("employee_id") // 발령 대상 사원 ID
-    private Long employeeId;
+    @JsonProperty("employee_number") // 발령 대상 사원 사번
+    private String employeeNumber;
 
     @JsonProperty("authorizer_id") // 발령 권한자 ID
     private Long authorizerId;

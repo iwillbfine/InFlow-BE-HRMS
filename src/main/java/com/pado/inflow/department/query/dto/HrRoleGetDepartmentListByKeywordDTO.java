@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetDepartmentListDTO {
+public class HrRoleGetDepartmentListByKeywordDTO {
 
     @JsonProperty("department_path")
     private String departmentPath;
