@@ -3,10 +3,10 @@ package com.pado.inflow.department.command.application.controller;
 
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.department.command.application.service.DepartmentCommandService;
+import com.pado.inflow.department.command.domain.aggregate.dto.AddDepartmentRequestDTO;
 import com.pado.inflow.department.command.domain.aggregate.dto.DepartmentDropdownDTO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.pado.inflow.department.command.domain.aggregate.dto.DepartmentResponseDTO;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +26,15 @@ public class DepartmentCommandController {
     public ResponseDTO<List<DepartmentDropdownDTO>> getDepartmentsForDropdown() {
         List<DepartmentDropdownDTO> departments = departmentService.getDepartmentsForDropdown();
         return ResponseDTO.ok(departments);
+    }
+
+    // 부서 추가
+    @PostMapping("/add-department")
+    public ResponseDTO<DepartmentResponseDTO> addDepartment(
+            @RequestBody AddDepartmentRequestDTO addDepartmentRequestDTO
+    ) {
+        System.out.println("Request DTO from Controller: " + addDepartmentRequestDTO);
+        DepartmentResponseDTO addedDepartment = departmentService.addDepartment(addDepartmentRequestDTO);
+        return ResponseDTO.ok(addedDepartment);
     }
 }

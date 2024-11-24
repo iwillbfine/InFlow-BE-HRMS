@@ -11,10 +11,10 @@ public interface DepartmentCommandService {
 
     // 부서 드롭다운
     List<DepartmentDropdownDTO> getDepartmentsForDropdown();
-//
-//    // 부서 추가
-//    DepartmentResponseDTO addDepartment(AddDepartmentRequestDTO addDepartmentRequestDTO);
-//
+
+    // 부서 추가
+    DepartmentResponseDTO addDepartment(AddDepartmentRequestDTO addDepartmentRequestDTO);
+
 //    // 부서 수정
 //    DepartmentResponseDTO updateDepartment(UpdateDepartmentRequestDTO updateDepartmentRequestDTO);
 //

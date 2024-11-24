@@ -22,4 +22,7 @@ public class DepartmentResponseDTO {
 
     @JsonProperty("upper_department_code")
     private String upperDepartmentCode;
+
+    @JsonProperty("department_head_name")
+    private String departmentHeadName;
 }
