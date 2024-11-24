@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TaskTypeService {
     List<TaskTypeDTO> findAllTaskTypes();
+
+    TaskTypeDTO findTaskType(Long taskTypeId);
 }

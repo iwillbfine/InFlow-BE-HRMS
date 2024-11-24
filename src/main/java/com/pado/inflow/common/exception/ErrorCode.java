@@ -39,6 +39,7 @@ public enum ErrorCode {
     FEEDBACK_CREATE_FAILURE(40033, HttpStatus.BAD_REQUEST, "평가 시작일 이전 및 종료일 이후에는 피드백을 생성할 수 없습니다"),
     DUPLICATED_FEEDBACK_CREATION(40034, HttpStatus.BAD_REQUEST, "해당 사원에 대한 피드백이 이미 존재합니다."),
     FEEDBACK_UPDATE_FAILURE(40035, HttpStatus.BAD_REQUEST, "평가 기간에만 피드백을 수정할 수 있습니다."),
+    NOT_IN_MODIFICATION_PERIOD(40036, HttpStatus.BAD_REQUEST, "과제 수정기간이 아닙니다."),
 
 
     // 401: 인증 실패 (Unauthorized)
@@ -113,6 +114,9 @@ public enum ErrorCode {
     NOT_FOUND_ATTENDANCE_STATUS_TYPE(40445, HttpStatus.NOT_FOUND, "출석 상태 유형이 존재하지 않습니다."),
     NOT_FOUND_DEPARTMENT(40446, HttpStatus.NOT_FOUND, "부서 정보가 존재하지 않습니다."),
     NOT_FOUND_COMPANY(40447, HttpStatus.NOT_FOUND, "회사 정보가 존재하지 않습니다."),
+    NOT_FOUND_TASK_NAME(40448, HttpStatus.NOT_FOUND,"과제명을 입력해주세요."),
+    NOT_FOUND_TASK_ITEM_CONTENT(40448, HttpStatus.NOT_FOUND,"과제 내용을 입력해주세요."),
+
 
     // 409: 중복 데이터 (Conflict)
     DUPLICATE_ENTRY(40900,  HttpStatus.CONFLICT, "중복된 사원입니다."),
