@@ -129,15 +129,9 @@ public class DepartmentService {
             throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
         }
 
-        List<DepartmentDetailDTO> departmentDetail;
-        try {
-            departmentDetail = departmentMapper.findDepartmentDetailByDepartmentCode(departmentCode);
-                if (departmentDetail == null || departmentDetail.isEmpty()) {
-
-                    throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT);
-                }
-        } catch (Exception e) {
-                throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
+        List<DepartmentDetailDTO> departmentDetail = departmentMapper.findDepartmentDetailByDepartmentCode(departmentCode);
+        if (departmentDetail == null || departmentDetail.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT);
         }
         return departmentDetail;
 
@@ -148,14 +142,9 @@ public class DepartmentService {
         if(keyword == null || keyword.trim().isEmpty()){
             throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
         }
-        List<HrDepartmentListByKeywordDTO> departmentList;
-        try{
-            departmentList = departmentMapper.findDepartmentListByKeyword(keyword);
-            if(departmentList == null || departmentList.isEmpty()){
-                throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT);
-            }
-        } catch ( Exception e) {
-            throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
+        List<HrDepartmentListByKeywordDTO> departmentList = departmentMapper.findDepartmentListByKeyword(keyword);
+        if (departmentList == null || departmentList.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT);
         }
         return departmentList;
     }
