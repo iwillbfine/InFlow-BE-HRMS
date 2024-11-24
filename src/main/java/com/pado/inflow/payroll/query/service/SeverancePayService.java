@@ -1,9 +1,12 @@
 package com.pado.inflow.payroll.query.service;
 
 import com.pado.inflow.payroll.query.dto.SeverancePayDTO;
+import com.pado.inflow.payroll.query.dto.TotalWorkingDaysDTO;
 
 import java.time.LocalDate;
 
 public interface SeverancePayService {
-    SeverancePayDTO calculateSeverancePay(Long employeeId, LocalDate referenceDate);
+    TotalWorkingDaysDTO getEstimateWorkingDays(Long employeeId);
+
+    SeverancePayDTO calculateSeverancePay(Long employeeId);
 }

@@ -1,53 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.pado.inflow.payroll.query.repository.SeverancePayMapper">
-    <resultMap id="SeveranceResultMap" type="com.pado.inflow.payroll.query.dto.SeverancePayDTO">
-        <id property="employeeId" column="employee_id" />
-        <result property="joinDate" column="join_date" javaType="java.time.LocalDate" />
 
-        <!-- SummaryDTO 매핑 -->
-        <association property="totalSummary" javaType="com.pado.inflow.payroll.query.dto.SummaryDTO">
-            <result property="totalDays" column="total_days" />
-            <result property="totalAmount" column="total_amount" />
-        </association>
-
-        <!-- PeriodicPayDTO 매핑 -->
-        <collection property="recentThreeMonthsPay" ofType="com.pado.inflow.payroll.query.dto.PeriodicPayDTO">
-            <result property="period" column="period" />
-            <result property="workingDays" column="working_days" />
-            <result property="basePay" column="base_pay" />
-            <result property="extraPay" column="extra_pay" />
-        </collection>
-    </resultMap>
-
-    <select id="getSeveranceData" resultMap="SeveranceResultMap">
+    <!-- 직원 기본 정보 조회 -->
+    <select id="getEmployeeInfo" resultType="com.pado.inflow.payroll.query.dto.EmployeeInfoDTO">
         SELECT
             e.employee_id,
-            e.join_date,
-
-        /* PeriodicPayDTO 상세 */
-            CONCAT(DATE_FORMAT(p.paid_at, '%Y-%m'), '-01') AS period_start,
-            DATE_FORMAT(LAST_DAY(p.paid_at), '%Y-%m-%d') AS period_end,
-            DATEDIFF(LAST_DAY(p.paid_at), p.paid_at) + 1 AS working_days,
-            p.monthly_salary AS base_pay,
-            (p.overtime_allowance + p.annual_vacation_allowance + p.bonus) AS extra_pay,
-
-        /* SummaryDTO 합계 */
-            SUM(DATEDIFF(LAST_DAY(p.paid_at), p.paid_at) + 1) OVER() AS total_days,
-            SUM(p.monthly_salary + p.overtime_allowance + p.annual_vacation_allowance + p.bonus)
-            OVER() AS total_amount
-        FROM
-            employee e
-        INNER JOIN
-            payment p ON e.employee_id = p.employee_id
-        WHERE
-            e.employee_id = #{employeeId}
-        AND
-            p.paid_at BETWEEN DATE_SUB(#{referenceDate}, INTERVAL 3 MONTH) AND #{referenceDate}
-        ORDER BY
-            p.paid_at DESC
+            e.name,
+            e.monthly_salary AS monthlySalary,
+            e.salary AS annualSalary
+        FROM employee e
+        WHERE e.employee_id = #{employeeId}
     </select>
 
+    <select id="getLastThreeMonthsPay" resultType="com.pado.inflow.payroll.query.dto.PeriodicPayDTO">
+        SELECT
+            -- 급여 시작일: 3개월 전 시작일 혹은 해당 월 첫날 중 더 늦은 날짜
+            GREATEST(
+                    DATE_FORMAT(p.paid_at, '%Y-%m-01'),
+                    DATE_SUB(#{endDate}, INTERVAL 3 MONTH)
+            ) AS startDate,
+
+            -- 급여 종료일: 퇴사일 전날 혹은 해당 월 마지막 날 중 더 빠른 날짜
+            LEAST(
+                    LAST_DAY(p.paid_at),
+                    #{endDate}
+            ) AS endDate,
+
+            -- 지급 일수
+            DATEDIFF(
+                    LEAST(LAST_DAY(p.paid_at), #{endDate}),
+                    GREATEST(DATE_FORMAT(p.paid_at, '%Y-%m-01'), DATE_SUB(#{endDate}, INTERVAL 3 MONTH))
+            ) + 1 AS daysInPeriod,
+
+            -- 기본급 및 수당
+            p.monthly_salary AS basicSalary,
+            p.non_taxable_amount AS allowance
+        FROM payment p
+        WHERE p.employee_id = #{employeeId}
+          AND p.paid_at BETWEEN DATE_SUB(#{endDate}, INTERVAL 3 MONTH) AND #{endDate}
+        ORDER BY p.paid_at DESC
+    </select>
+
+    <!-- 입사일 조회 -->
+    <select id="getJoinDateByEmployeeId" resultType="java.time.LocalDate">
+        SELECT e.join_date
+        FROM employee e
+        WHERE e.employee_id = #{employeeId}
+    </select>
+
+    <!-- 미사용 연차 일수 조회 -->
+    <select id="getUnusedLeaveDays" resultType="java.lang.Integer">
+        SELECT v.vacation_left
+        FROM vacation v
+        WHERE v.employee_id = #{employeeId}
+          AND v.expiration_status = 'N' -- 유효한 연차만 고려
+    </select>
 
 </mapper>

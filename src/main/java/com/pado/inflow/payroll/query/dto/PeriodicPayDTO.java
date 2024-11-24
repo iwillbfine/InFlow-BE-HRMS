@@ -1,23 +1,29 @@
 package com.pado.inflow.payroll.query.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class PeriodicPayDTO {
 
-    private String period;
+    @JsonProperty("start_date")
+    private LocalDate startDate;
 
-    // 기간 별 일 수
-    private Integer workingDays;
+    @JsonProperty("end_date")
+    private LocalDate endDate;
 
-    // 계약 급여 (월 급여 + 비과세 급여)
-    private Integer basePay;
+    @JsonProperty("days_in_period")
+    private int daysInPeriod;
 
-    // 기타 수당 (초과근무 수당)
-    private Integer extraPay;
+    @JsonProperty("basic_salary")
+    private int basicSalary; // 소수점 버림으로 인해 int 사용
 
+    @JsonProperty("allowance")
+    private int allowance; // 소수점 버림으로 인해 int 사용
 }
