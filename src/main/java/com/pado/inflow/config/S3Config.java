@@ -19,8 +19,8 @@ public class S3Config {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    @Value("${cloud.aws.s3.buckets.inflow-company}")
-    private String inflowCompanyBucket;
+    @Value("${cloud.aws.s3.buckets.inflow-emp-profile}")
+    private String inflowEmpProfileBucket;
 
     @Value("${cloud.aws.s3.buckets.inflow-contract}")
     private String inflowContractBucket;
@@ -38,9 +38,9 @@ public class S3Config {
     }
 
     //설명. 버킷들 이름 Getters
-    //설명.1. 회사 버킷
-    public String getInflowCompanyBucket() {
-        return inflowCompanyBucket;
+    //설명.1. 사원별 프로필 버킷
+    public String getInflowEmpProfileBucket() {
+        return inflowEmpProfileBucket;
     }
 
     //설명.2. 사원 계약서 버킷

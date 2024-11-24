@@ -40,9 +40,6 @@ public class Employee {
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
-    @Column(name = "resident_registration_number", nullable = false)
-    private String residentRegistrationNumber;
-
     @Column(name = "email", nullable = false)
     private String email;
 
