@@ -11,4 +11,6 @@ public interface EvaluationPolicyMapper {
     List<EvaluationPolicyDTO> findPolicyByYearAndHalf(Integer year, String half);
 
     EvaluationPolicyDTO getEvaluationPolicyByEvaluationPolicyId(Long evaluationPolicyId);
+
+    EvaluationPolicyDTO findPolicyByYearAndHalfAndTaskTypeId(Integer year, String half, Long taskTypeId);
 }

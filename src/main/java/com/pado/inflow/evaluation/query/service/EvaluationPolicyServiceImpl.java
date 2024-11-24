@@ -39,4 +39,15 @@ public class EvaluationPolicyServiceImpl implements EvaluationPolicyService {
         }
         return selectedPolicy;
     }
+
+    @Override
+    public EvaluationPolicyDTO findPolicyByYearAndHalfAndTaskTypeId(Integer year, String half, Long taskTypeId) {
+        EvaluationPolicyDTO selectedPolicy =
+                evaluationPolicyMapper.findPolicyByYearAndHalfAndTaskTypeId(year, half, taskTypeId);
+
+        if (selectedPolicy == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION_POLICY);
+        }
+        return selectedPolicy;
+    }
 }

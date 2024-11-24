@@ -9,4 +9,6 @@ public interface EvaluationPolicyService {
     List<EvaluationPolicyDTO> findPolicyWithYearAndHalf(Integer year, String half);
 
     EvaluationPolicyDTO findPolicyByevaluationPolicyId(Long evaluationPolicyId);
+
+    EvaluationPolicyDTO findPolicyByYearAndHalfAndTaskTypeId(Integer year, String half, Long taskTypeId);
 }
