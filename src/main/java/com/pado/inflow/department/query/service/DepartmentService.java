@@ -86,7 +86,7 @@ public class DepartmentService {
 
         return departmentMembers;
     }
-    
+
 
     // 2. 부서 코드를 통한 사원 리스트 조회
     public List<GetDepartmentMemberDTO> findEmployeesByDepartmentCode(String departmentCode) {
@@ -113,15 +113,10 @@ public class DepartmentService {
             throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
         }
 
-        List<GetDepartmentMemberDTO> departmentMember;
-        try{
-            departmentMember = departmentMapper.findDepartmentMemberDetailByMemberCode(employeeNumber);
-
-            if (departmentMember == null || departmentMember.isEmpty()) {
-                throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT_MEMBER);
-            }
-        } catch (Exception e) {
-            throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
+        List<GetDepartmentMemberDTO> departmentMember = departmentMapper.findDepartmentMemberDetailByMemberCode(employeeNumber);
+        // 결과가 비어있는 경우 예외 처리
+        if (departmentMember == null || departmentMember.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT_MEMBER);
         }
         return departmentMember;
     }
