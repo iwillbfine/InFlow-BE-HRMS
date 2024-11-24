@@ -13,6 +13,8 @@ import com.pado.inflow.employee.info.command.domain.aggregate.entity.Contract;
 import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
 import com.pado.inflow.employee.info.command.domain.repository.ContractRepository;
 import com.pado.inflow.employee.info.command.domain.repository.EmployeeRepository;
+import com.pado.inflow.employee.info.enums.EmployeeRole;
+import com.pado.inflow.employee.info.enums.ResignationStatus;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -71,11 +73,30 @@ public class EmployeeCommandService implements UserDetailsService {
     public List<ResponseEmployeeDTO> registerEmployees(List<RequestEmployeeDTO> employeeDTOs) {
         List<Employee> employees = employeeDTOs.stream()
                 .map(dto -> {
+                    //설명.1.1.1 요청 바디의 값 매핑
                     Employee employee = modelMapper.map(dto, Employee.class);
 
-                    // 초기 비밀번호 생성 및 암호화
+                    //설명.1.1.2 초기 비밀번호 생성 및 암호화
                     String initialPassword = generateInitialPassword(dto);
                     employee.setPassword(encodePassword(initialPassword));
+
+                    //설명.1.1.3 employee_role 설정
+                    if ("DP002".equals(dto.getDepartmentCode())) {
+                        employee.setEmployeeRole(EmployeeRole.HR);
+                    } else if ("P005".equals(dto.getPositionCode())) {
+                        employee.setEmployeeRole(EmployeeRole.MANAGER);
+                    } else {
+                        employee.setEmployeeRole(EmployeeRole.EMPLOYEE);
+                    }
+
+                    //설명.1.1.4 attendance_status_type_code 기본값 설정 (출근중)
+                    employee.setAttendanceStatusTypeCode("AS001");
+
+                    //설명.1.1.5 기본 프로필 이미지 설정
+                    employee.setProfileImgUrl("https://inflow-emp-profile.s3.ap-northeast-2.amazonaws.com/emp_basic_profile.png");
+
+                    //설명.1.1.6 퇴사여부->N
+                    employee.setResignationStatus(ResignationStatus.N);
 
                     return employee;
                 })
@@ -84,16 +105,17 @@ public class EmployeeCommandService implements UserDetailsService {
         // 저장된 사원 리스트
         List<Employee> savedEmployees = employeeRepository.saveAll(employees);
 
-        // 문자 전송 및 응답 생성
-//        savedEmployees.forEach(employee -> {
-//            String welcomeMessage = generateWelcomeMessage(employee);
-//            smsService.sendSms(employee.getPhoneNumber(), welcomeMessage); // 문자 전송
-//        });
+        // 문자 전송 및 응답 생성 (문자 전송은 주석 처리된 상태)
+        // savedEmployees.forEach(employee -> {
+        //     String welcomeMessage = generateWelcomeMessage(employee);
+        //     smsService.sendSms(employee.getPhoneNumber(), welcomeMessage); // 문자 전송
+        // });
 
         return savedEmployees.stream()
                 .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
                 .collect(Collectors.toList());
     }
+
 
     //설명.1.2 초기 비밀번호 생성
     private String generateInitialPassword(RequestEmployeeDTO dto) {

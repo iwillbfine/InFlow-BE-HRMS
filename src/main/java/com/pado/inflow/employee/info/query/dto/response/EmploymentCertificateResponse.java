@@ -21,9 +21,6 @@ public class EmploymentCertificateResponse {
     @JsonProperty("position_name")
     private String positionName;
 
-    @JsonProperty("resident_registration_number")
-    private String residentRegistrationNumber;
-
     @JsonProperty("purpose")
     private String purpose;
 
