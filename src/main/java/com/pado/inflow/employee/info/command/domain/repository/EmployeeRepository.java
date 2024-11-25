@@ -13,7 +13,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
      * 사번으로 사원 검색
      */
     Optional<Employee> findByEmployeeNumber(String employeeNumber);
-
+    Optional<Employee> findByEmployeeId(Long employeeId);
     // 퇴사 여부로 조회
     Page<Employee> findByResignationStatus(ResignationStatus resignationStatus, Pageable pageable);
 

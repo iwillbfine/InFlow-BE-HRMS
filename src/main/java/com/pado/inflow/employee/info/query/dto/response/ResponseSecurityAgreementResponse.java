@@ -19,4 +19,8 @@ public class ResponseSecurityAgreementResponse {
 
     @JsonProperty("agreement_date")
     private String agreementDate; // 서약 날짜 (현재 시각)
+
+    @JsonProperty("contract_id")
+    private Long contractId; // 계약서 Id
+
 }

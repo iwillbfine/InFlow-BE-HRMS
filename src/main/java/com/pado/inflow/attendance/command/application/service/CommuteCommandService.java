@@ -2,7 +2,7 @@ package com.pado.inflow.attendance.command.application.service;
 
 import com.pado.inflow.attendance.command.application.dto.CommuteDTO;
 
-public interface CommuteService {
+public interface CommuteCommandService {
 
     // 출근
     CommuteDTO goToWork(Long employeeId);
