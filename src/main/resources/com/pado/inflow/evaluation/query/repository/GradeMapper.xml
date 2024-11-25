@@ -39,4 +39,17 @@
         FROM grade g
         WHERE g.grade_id = #{gradeId}
     </select>
+
+    <select id="findGradeByEvaluationPolicyId" resultMap="gradeResultMap">
+        SELECT
+        g.grade_id,
+        g.grade_name,
+        g.start_ratio,
+        g.end_ratio,
+        g.absolute_grade_ratio,
+        g.evaluation_policy_id
+        FROM grade g
+        WHERE g.evaluation_policy_id = #{evaluationPolicyId}
+        ORDER BY g.start_ratio ASC
+    </select>
 </mapper>

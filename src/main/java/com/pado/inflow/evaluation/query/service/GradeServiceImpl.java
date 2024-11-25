@@ -33,4 +33,15 @@ public class GradeServiceImpl implements GradeService{
         GradeDTO selectedGrade = gradeMapper.getGradeByGradeId(gradeId);
         return selectedGrade;
     }
+
+    // Grade 생성에 필요한 로직
+    @Override
+    public List<GradeDTO> findByEvaluationPolicyId(Long evaluationPolicyId) {
+        List<GradeDTO> selectedGrades = gradeMapper.findGradeByEvaluationPolicyId(evaluationPolicyId);
+
+        if (selectedGrades == null && selectedGrades.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_GRADE);
+        }
+        return selectedGrades;
+    }
 }
