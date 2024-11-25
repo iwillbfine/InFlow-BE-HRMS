@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 class CommuteServiceTests {
 
     @Autowired
-    private CommuteService commuteService;
+    private CommuteQueryService commuteService;
 
     @DisplayName("사원별 출퇴근 내역 조회 테스트")
     @Test

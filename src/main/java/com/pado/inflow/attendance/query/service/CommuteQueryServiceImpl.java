@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CommuteServiceImpl implements CommuteService {
+public class CommuteQueryServiceImpl implements CommuteQueryService {
 
     private final Integer PAGE_SIZE = 10; // 페이지 간격
     private final Integer ELEMENTS_PER_PAGE = 10; // 한 페이지 당 요소 개수
@@ -19,7 +19,7 @@ public class CommuteServiceImpl implements CommuteService {
     private final CommuteMapper commuteMapper;
 
     @Autowired
-    public CommuteServiceImpl(CommuteMapper commuteMapper) {
+    public CommuteQueryServiceImpl(CommuteMapper commuteMapper) {
         this.commuteMapper = commuteMapper;
     }
 

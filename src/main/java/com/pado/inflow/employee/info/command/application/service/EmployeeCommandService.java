@@ -296,9 +296,9 @@ public class EmployeeCommandService implements UserDetailsService {
 
 
     //설명. 3. 비밀번호 재설정
-    public void resetPassword(String employeeNumber, String newPassword) {
+    public void resetPassword(Long employeeId, String newPassword) {
         // 사번으로 사원 조회
-        Employee employee = employeeRepository.findByEmployeeNumber(employeeNumber)
+        Employee employee = employeeRepository.findByEmployeeId(employeeId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER_ID));
 
         // 새 비밀번호 암호화 및 저장
