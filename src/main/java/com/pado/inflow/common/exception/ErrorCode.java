@@ -40,6 +40,7 @@ public enum ErrorCode {
     DUPLICATED_FEEDBACK_CREATION(40034, HttpStatus.BAD_REQUEST, "해당 사원에 대한 피드백이 이미 존재합니다."),
     FEEDBACK_UPDATE_FAILURE(40035, HttpStatus.BAD_REQUEST, "평가 기간에만 피드백을 수정할 수 있습니다."),
     NOT_IN_MODIFICATION_PERIOD(40036, HttpStatus.BAD_REQUEST, "과제 수정기간이 아닙니다."),
+    EVALUATION_SCHEDULER_INIT_FAILURE(40037, HttpStatus.BAD_REQUEST, "평가 및 평가정책별 평가 테이블 초기화 중 오류가 발생했습니다"),
 
 
     // 401: 인증 실패 (Unauthorized)

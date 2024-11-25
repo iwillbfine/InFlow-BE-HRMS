@@ -1,5 +1,7 @@
 package com.pado.inflow.evaluation.command.application.config.schedule.service;
 
+import com.pado.inflow.common.exception.CommonException;
+import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
 import com.pado.inflow.employee.info.query.repository.EmployeeMapper;
 import com.pado.inflow.evaluation.command.domain.aggregate.entity.EvaluationEntity;
@@ -16,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 
 @Service
 @Transactional
@@ -37,33 +38,36 @@ public class EvaluationScheduleService {
     }
 
     public void initializeEvaluation(int year, String half) {
+        try {
+            // 1. 활성 직원 조회
+            List<EmployeeDTO> employees = employeeMapper.findAllEmployees();
 
-        // 1. 활성 직원 조회
-        List<EmployeeDTO> employees = employeeMapper.findAllEmployees();
+            // 2. 연도와 반기로 평가정책 리스트 조회
+            List<EvaluationPolicyDTO> policies = evaluationPolicyMapper.findPolicyByYearAndHalf(year, half);
 
-        // 2. 연도와 반기로 평가정책 리스트 조회
-        List<EvaluationPolicyDTO> policies = evaluationPolicyMapper.findPolicyByYearAndHalf(year, half);
+            // 3. 평가 테이블 생성 - 각 직원마다 자기평가와 리더평가 생성
+            List<EvaluationEntity> evaluations = employees.stream()
+                    .flatMap(emp -> Stream.of(
+                            createEvaluation(year, half, emp, "자기평가"),
+                            createEvaluation(year, half, emp, "리더평가")
+                    ))
+                    .collect(Collectors.toList());
 
-        // 3. 평가 테이블 생성 - 각 직원마다 자기평가와 리더평가 생성
-        List<EvaluationEntity> evaluations = employees.stream()
-                .flatMap(emp -> Stream.of(
-                        createEvaluation(year, half, emp, "자기평가"),
-                        createEvaluation(year, half, emp, "리더평가")
-                ))
-                .collect(Collectors.toList());
+            // 4. 평가 엔티티 일괄 저장
+            evaluationRepository.saveAll(evaluations);
 
-        // 4. 평가 엔티티 일괄 저장
-        evaluationRepository.saveAll(evaluations);
+            // 5. Task_Type_Eval 테이블 생성
+            List<TaskTypeEvalEntity> taskTypeEvals = evaluations.stream()
+                    .flatMap(evaluation -> policies.stream()
+                            .map(policy -> createTaskTypeEval(evaluation, policy))
+                    )
+                    .collect(Collectors.toList());
 
-        // 5. Task_Type_Eval 테이블 생성
-        List<TaskTypeEvalEntity> taskTypeEvals = evaluations.stream()
-                .flatMap(evaluation -> policies.stream()
-                        .map(policy -> createTaskTypeEval(evaluation, policy))
-                )
-                .collect(Collectors.toList());
-
-        // 6. Task_Type_Eval 엔티티 일괄 저장
-        taskTypeEvalRepository.saveAll(taskTypeEvals);
+            // 6. Task_Type_Eval 엔티티 일괄 저장
+            taskTypeEvalRepository.saveAll(taskTypeEvals);
+        } catch (Exception e) {
+            throw new CommonException(ErrorCode.EVALUATION_SCHEDULER_INIT_FAILURE);
+        }
     }
 
     // 자기평가와 리더평가를 구분하여 평가 생성
