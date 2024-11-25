@@ -14,4 +14,7 @@ public interface LeaveReturnMapper {
     // 사웝별 휴복직 전체 개수 조회
     Integer getTotalLeaveReturnsByEmployeeId(Long employeeId);
 
+    // 당일기준 휴복직 내역 조회
+    LeaveReturnDTO findTodayLeaveByEmployeeId(Long employeeId);
+
 }

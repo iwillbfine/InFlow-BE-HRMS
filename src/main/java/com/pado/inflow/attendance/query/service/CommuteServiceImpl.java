@@ -48,12 +48,13 @@ public class CommuteServiceImpl implements CommuteService {
     // 당일 재택 출퇴근 내역 조회
     @Override
     public CommuteDTO findTodayRemoteByEmployeeId(Long employeeId) {
-        CommuteDTO commuteDTO = commuteMapper.findTodayRemoteByEmployeeId(employeeId);
-        if(commuteDTO == null) {
-            throw new CommonException(ErrorCode.NOT_FOUND_COMMUTE);
-        }
+        return commuteMapper.findTodayRemoteByEmployeeId(employeeId);
+    }
 
-        return commuteDTO;
+    // 당일 출퇴근 내역 조회
+    @Override
+    public CommuteDTO findTodayCommuteByEmployeeId(Long employeeId) {
+        return commuteMapper.findTodayCommuteByEmployeeId(employeeId);
     }
 
 }

@@ -59,4 +59,10 @@ public class VacationRequestServiceImpl implements VacationRequestService {
         return new PageDTO<>(vacationRequests, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
     }
 
+    // 당일기준 휴가중인지 검사
+    @Override
+    public Boolean isVacationNow(Long employeeId) {
+        return vacationRequestMapper.findTodayVacationByEmployeeId(employeeId) != null;
+    }
+
 }
