@@ -13,4 +13,7 @@ public interface VacationRequestService {
     // 사원별 휴가 신청 내역 전체 조회
     PageDTO<VacationRequestDTO> findVacationRequestsByEmployeeId(Long employeeId, Integer pageNo);
 
+    // 당일기준 휴가중인지 검사
+    Boolean isVacationNow(Long employeeId);
+
 }
