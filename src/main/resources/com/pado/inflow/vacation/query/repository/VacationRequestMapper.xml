@@ -87,4 +87,25 @@
          WHERE A.EMPLOYEE_ID = #{ employeeId }
     </select>
 
+    <select id="findTodayVacationByEmployeeId" resultMap="vacationRequestResultMap" parameterType="Long">
+        SELECT
+               A.VACATION_REQUEST_ID
+             , A.START_DATE
+             , A.END_DATE
+             , A.CREATED_AT
+             , A.REQUEST_REASON
+             , A.REQUEST_STATUS
+             , A.REJECTION_REASON
+             , A.CANCELED_AT
+             , A.CANCEL_REASON
+             , A.CANCEL_STATUS
+             , A.EMPLOYEE_ID
+             , A.VACATION_ID
+         FROM VACATION_REQUEST A
+        WHERE A.EMPLOYEE_ID = #{ employeeId }
+          AND A.REQUEST_STATUS = 'ACCEPT'
+          AND A.CANCEL_STATUS = 'N'
+          AND CURRENT_DATE BETWEEN DATE(A.START_DATE) AND DATE(A.END_DATE)
+    </select>
+
 </mapper>

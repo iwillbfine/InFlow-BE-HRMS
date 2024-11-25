@@ -35,4 +35,38 @@
          WHERE A.EMPLOYEE_ID = #{ employeeId }
     </select>
 
+    <select id="findTodayRemoteByEmployeeId" resultMap="commuteResultMap" parameterType="Long">
+        SELECT
+               A.COMMUTE_ID
+             , A.START_TIME
+             , A.END_TIME
+             , A.REMOTE_STATUS
+             , A.OVERTIME_STATUS
+             , A.EMPLOYEE_ID
+             , A.ATTENDANCE_REQUEST_ID
+          FROM COMMUTE A
+         WHERE A.ATTENDANCE_REQUEST_ID = (
+            SELECT B.ATTENDANCE_REQUEST_ID
+              FROM ATTENDANCE_REQUEST B
+             WHERE B.ATTENDANCE_REQUEST_TYPE_ID = 1
+               AND B.REQUEST_STATUS = 'ACCEPT'
+               AND B.CANCEL_STATUS = 'N'
+               AND DATE(B.START_DATE) = CURRENT_DATE
+               AND B.EMPLOYEE_ID = #{ employeeId }
+         )
+    </select>
+
+    <select id="findTodayCommuteByEmployeeId" resultMap="commuteResultMap" parameterType="Long">
+        SELECT
+               A.COMMUTE_ID
+             , A.START_TIME
+             , A.END_TIME
+             , A.REMOTE_STATUS
+             , A.OVERTIME_STATUS
+             , A.EMPLOYEE_ID
+             , A.ATTENDANCE_REQUEST_ID
+          FROM COMMUTE A
+         WHERE A.EMPLOYEE_ID = #{ employeeId } AND DATE(B.START_DATE) = CURRENT_DATE
+    </select>
+
 </mapper>
