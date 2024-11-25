@@ -104,22 +104,14 @@ public class EmployeeController {
 
 
     // 설명. 4. 서명된 계약서 등록
-    /**
-     * 계약서 등록
-     * @return 성공 메시지와 S3 URL
-     */
     @PostMapping("/contracts")
     public ResponseDTO<ResponseContractDTO> uploadContract(
-            @RequestParam("contract_type") String contractType,  // 계약서 종류
-            @RequestParam("employee_id") Long employeeId,         // 사원 ID
-            @RequestParam("reviewer_id") Long reviewerId,         // 검토자 ID
-            @RequestParam("contract_file") MultipartFile file              // 업로드 파일
+            @RequestParam("contract_id") Long contractId,           // 계약서 ID
+            @RequestParam("contract_file") MultipartFile file     // 업로드 파일
     ) {
         try {
-            // RequestContractDTO 대신 개별 필드를 전달
-            ResponseContractDTO response = employeeCommandService.uploadContract(
-                    contractType, employeeId, reviewerId, file
-            );
+            // 서비스 호출 및 결과 반환
+            ResponseContractDTO response = employeeCommandService.updateContract(contractId, file);
             return ResponseDTO.ok(response);
         } catch (IllegalArgumentException e) {
             // 잘못된 요청 데이터 처리
@@ -129,4 +121,5 @@ public class EmployeeController {
             throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR);
         }
     }
+
 }

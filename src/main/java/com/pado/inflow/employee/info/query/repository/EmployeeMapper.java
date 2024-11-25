@@ -1,5 +1,6 @@
 package com.pado.inflow.employee.info.query.repository;
 
+import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse;
@@ -27,15 +28,22 @@ public interface EmployeeMapper {
 
 
     //설명.5. 재직증명서 발급 데이터 조회
-    EmploymentCertificateResponse getEmploymentCertificateInfo(String employeeNumber);
+    EmploymentCertificateResponse getEmploymentCertificateInfo(Long employeeId);
 
     //설명.6.근로계약서 발급 데이터 조회
-    EmploymentContractResponse getEmploymentContractInfo(@Param("employeeNumber") String employeeNumber);
+    EmploymentContractResponse getEmploymentContractInfo(@Param("employeeId") Long employeeId);
 
     //설명.6.1. 비정기 수당 데이터 데이터 조회
     List<IrregularAllowanceDTO> getIrregularAllowances();
 
     //설명.7. 비밀 유지 서약서 발급 데이터 조회
-    ResponseSecurityAgreementResponse getSecurityAgreementInfo(@Param("employeeNumber") String employeeNumber);
+    ResponseSecurityAgreementResponse getSecurityAgreementInfo(@Param("employeeId") Long employeeId);
+
+    // 설명.8. 사원별 계약서 리스트 조회
+    List<ResponseContractDTO> getContractListByEmployeeId(@Param("employeeId") Long employeeId);
+
+    // 설명.9. 계약서 단건 조회
+    ResponseContractDTO findContractByContractId(@Param("contractId") Long contractId);
+
 
 }

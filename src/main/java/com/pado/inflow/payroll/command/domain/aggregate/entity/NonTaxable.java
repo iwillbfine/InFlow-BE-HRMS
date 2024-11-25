@@ -19,6 +19,6 @@ public class NonTaxable {
     @Column(name = "non_taxable_name", nullable = false)
     private String nonTaxableName;
 
-    @Column(name="amount", nullable = false)
+    @Column(name= "amount", nullable = false)
     private Integer amount;
 }

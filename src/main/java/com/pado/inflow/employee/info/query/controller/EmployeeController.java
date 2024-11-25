@@ -1,6 +1,9 @@
 package com.pado.inflow.employee.info.query.controller;
 
 import com.pado.inflow.common.ResponseDTO;
+import com.pado.inflow.common.exception.CommonException;
+import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.query.dto.request.EmploymentCertificateRequest;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse;
@@ -62,7 +65,7 @@ public class EmployeeController {
             @RequestBody EmploymentCertificateRequest request) {
 
         // employeeQueryService를 통해 정보 조회
-        EmploymentCertificateResponse certificateInfo = employeeService.getEmploymentCertificateInfo(request.getEmployeeNumber());
+        EmploymentCertificateResponse certificateInfo = employeeService.getEmploymentCertificateInfo(request.getEmployeeId());
 
         // 용도 추가
         certificateInfo.setPurpose(request.getPurpose());
@@ -71,29 +74,52 @@ public class EmployeeController {
     }
 
     // 설명. 3. 근로 계약서 내용 반환
-    @GetMapping("/{employeeNumber}/employment-contract")
+    @GetMapping("/{employeeId}/employment-contract")
     public ResponseDTO<EmploymentContractResponse> getEmploymentContract(
-            @PathVariable("employeeNumber") String employeeNumber) {
+            @PathVariable("employeeId") Long employeeId) {
 
         // EmployeeQueryService를 통해 근로계약서 정보 조회
-        EmploymentContractResponse employmentContract = employeeService.getEmploymentContract(employeeNumber);
+        EmploymentContractResponse employmentContract = employeeService.getEmploymentContract(employeeId);
 
         return ResponseDTO.ok(employmentContract);
     }
 
     // 설명. 4. 비밀 유지 서약서 내용 반환
-    @GetMapping("/{employeeNumber}/security-agreement")
+    @GetMapping("/{employeeId}/security-agreement")
     public ResponseDTO<ResponseSecurityAgreementResponse> getSecurityAgreement(
-            @PathVariable("employeeNumber") String employeeNumber) {
+            @PathVariable("employeeId") Long employeeId) {
 
         // EmployeeQueryService를 통해 비밀유지서약서 정보 조회
-        ResponseSecurityAgreementResponse securityAgreement = employeeService.getSecurityAgreement(employeeNumber);
+        ResponseSecurityAgreementResponse securityAgreement = employeeService.getSecurityAgreement(employeeId);
 
         return ResponseDTO.ok(securityAgreement);
     }
 
-    // 설명. 5. 사원별 계약서 리스트 조회
 
+    // 설명. 5. 서명된 계약서 리스트 조회
+    @GetMapping("/{employeeId}/contracts")
+    public ResponseDTO<List<ResponseContractDTO>> getContractList(
+            @PathVariable("employeeId") Long employeeId) {
+        try {
+            // 계약서 리스트 조회
+            List<ResponseContractDTO> contractList = employeeService.getContractListByEmployeeId(employeeId);
+            return ResponseDTO.ok(contractList);
+        } catch (IllegalArgumentException e) {
+            throw new CommonException(ErrorCode.NOT_FOUND_CONTRACT);
+        }
+    }
 
-    // 설명. 6. 서명된 계약서 파일 조회
+    // 설명. 6. 서명된 계약서 단건 조회
+    @GetMapping("/contracts/{contractId}")
+    public ResponseDTO<ResponseContractDTO> getContract(
+            @PathVariable("contractId") Long contractId) {
+        try {
+            // 계약서 단건 조회
+            ResponseContractDTO contract = employeeService.getContract(contractId);
+            return ResponseDTO.ok(contract);
+        } catch (IllegalArgumentException e) {
+            throw new CommonException(ErrorCode.NOT_FOUND_CONTRACT);
+        }
+    }
+
 }

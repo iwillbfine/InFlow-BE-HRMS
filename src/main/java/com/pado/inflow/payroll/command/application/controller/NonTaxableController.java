@@ -25,6 +25,7 @@ public class NonTaxableController {
         return ResponseDTO.ok(resNonTaxableDTO);
     }
 
+    // 비정기 수당 항목 수정
     @PutMapping("/{id}")
     public ResponseDTO<?> updateNonTaxable(@PathVariable("id") Long nonTaxableId, @RequestBody RequestNonTaxableDTO reqNonTaxableDTO) {
         ResponseNonTaxableDTO resNonTaxableDTO = nonTaxableService.updateNonTaxable(nonTaxableId, reqNonTaxableDTO);
