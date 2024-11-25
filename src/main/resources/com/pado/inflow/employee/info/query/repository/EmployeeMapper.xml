@@ -183,5 +183,19 @@
             e.employee_number = #{employeeNumber}
     </select>
 
+    <!-- 설명.5. 사원별 계약서 리스트 조회 -->
+    <select id="getContractListByEmployeeId" resultType="com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO">
+        SELECT
+            contract_id AS contractId,
+            contract_type AS contractType,
+            file_url AS fileUrl,
+            contract_status AS contractStatus,
+            consent_status AS consentStatus,
+            created_at AS createdAt,
+            employee_id AS employeeId
+        FROM contract
+        WHERE employee_id = #{employeeId}
+    </select>
+
 
 </mapper>

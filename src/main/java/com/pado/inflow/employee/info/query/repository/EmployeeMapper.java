@@ -1,5 +1,6 @@
 package com.pado.inflow.employee.info.query.repository;
 
+import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse;
@@ -37,5 +38,12 @@ public interface EmployeeMapper {
 
     //설명.7. 비밀 유지 서약서 발급 데이터 조회
     ResponseSecurityAgreementResponse getSecurityAgreementInfo(@Param("employeeNumber") String employeeNumber);
+
+    // 설명.8. 사원별 계약서 리스트 조회
+    List<ResponseContractDTO> getContractListByEmployeeId(@Param("employeeId") Long employeeId);
+
+    // 설명.9. 계약서 단건 조회
+    ResponseContractDTO getContractById(@Param("contractId") Long contractId);
+
 
 }

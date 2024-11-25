@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -89,30 +90,29 @@ public class EmployeeCommandService implements UserDetailsService {
                         employee.setEmployeeRole(EmployeeRole.EMPLOYEE);
                     }
 
-                    //설명.1.1.4 attendance_status_type_code 기본값 설정 (출근중)
+                    // 설명.1.1.4. 기본값 설정
                     employee.setAttendanceStatusTypeCode("AS001");
-
-                    //설명.1.1.5 기본 프로필 이미지 설정
                     employee.setProfileImgUrl("https://inflow-emp-profile.s3.ap-northeast-2.amazonaws.com/emp_basic_profile.png");
-
-                    //설명.1.1.6 퇴사여부->N
                     employee.setResignationStatus(ResignationStatus.N);
-
-                    //설명.1.1.7 입사일->오늘
                     employee.setJoinDate(LocalDate.now());
 
-                    // 설명.1.1.8 연봉 계산 (월급 * 12)
+                    // 설명.1.1.5 연봉 계산 (월급 * 12)
                     if (dto.getMonthlySalary() != null) {
                         employee.setSalary(dto.getMonthlySalary() * 12);
                     } else {
                         throw new CommonException(ErrorCode.INVALID_INPUT_VALUE);
                     }
-                    return employee;
+
+                    // 설명.1.1.6. 사원 정보 저장
+                    Employee savedEmployee = employeeRepository.save(employee);
+
+                    // 설명.1.1.7. 초기 계약서 생성 및 저장
+                    List<Contract> contracts = createInitialContracts(savedEmployee);
+                    contractRepository.saveAll(contracts);
+                    
+                    return savedEmployee;
                 })
                 .collect(Collectors.toList());
-
-        // 저장된 사원 리스트
-        List<Employee> savedEmployees = employeeRepository.saveAll(employees);
 
         // 문자 전송 및 응답 생성 (문자 전송은 주석 처리된 상태)
         // savedEmployees.forEach(employee -> {
@@ -120,7 +120,7 @@ public class EmployeeCommandService implements UserDetailsService {
         //     smsService.sendSms(employee.getPhoneNumber(), welcomeMessage); // 문자 전송
         // });
 
-        return savedEmployees.stream()
+        return employees.stream()
                 .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
                 .collect(Collectors.toList());
     }
@@ -162,6 +162,32 @@ public class EmployeeCommandService implements UserDetailsService {
         }
     }
 
+    // 설명.1.1.9 회원가입 시 초기 계약서 생성 메서드
+    private List<Contract> createInitialContracts(Employee employee) {
+        List<Contract> contracts = new ArrayList<>();
+
+        // 근로계약서
+        Contract employmentContract = new Contract();
+        employmentContract.setContractType("EMPLOYMENT");
+        employmentContract.setEmployeeId(employee.getEmployeeId());
+        employmentContract.setFileUrl(null); // 초기 파일 URL은 NULL
+        employmentContract.setContractStatus("SIGNING"); // 초기 상태는 SIGNING
+        employmentContract.setCreatedAt(null); // 등록 시각은 NULL
+        employmentContract.setConsentStatus("N"); // 초기 동의 여부는 N
+        contracts.add(employmentContract);
+
+        // 비밀유지서약서
+        Contract securityContract = new Contract();
+        securityContract.setContractType("SECURITY");
+        securityContract.setEmployeeId(employee.getEmployeeId());
+        securityContract.setFileUrl(null); // 초기 파일 URL은 NULL
+        securityContract.setContractStatus("SIGNING"); // 초기 상태는 SIGNING
+        securityContract.setCreatedAt(null); // 등록 시각은 NULL
+        securityContract.setConsentStatus("N"); // 초기 동의 여부는 N
+        contracts.add(securityContract);
+
+        return contracts;
+    }
     /**
      * 설명. 2.1 사원 정보 수정 (ID 기준)
      */
@@ -246,6 +272,9 @@ public class EmployeeCommandService implements UserDetailsService {
             throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR);
         }
     }
+
+    //설명.2.2. 인사팀 프로필 사진 수정
+
 
 
 //    /**설명. 사원 정보 수정 사번-추후 삭제 에정
@@ -334,26 +363,25 @@ public class EmployeeCommandService implements UserDetailsService {
                 grantedAuthorities);
     }
 
-    // 설명.6. 계약서 등록
+    // 설명. 6. 서명된 계약서 등록 (수정)
     @Transactional
-    public ResponseContractDTO uploadContract(
-            String contractType,
-            Long employeeId,
-            Long reviewerId,
+    public ResponseContractDTO updateContract(
+            Long contractId,
             MultipartFile file
     ) throws IOException {
-        //현재 날짜
-        LocalDateTime currentDate=LocalDateTime.now().withNano(0);
+        // 1. 기존 계약서 조회
+        Contract contract = contractRepository.findById(contractId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_CONTRACT));
 
-        // 파일 이름 생성 ( 계약서 종류, 사원ID )
-        String fileName = contractType + "_" + employeeId;
-
-        // 파일명 중복 확인
-        if (contractRepository.existsByFileName(fileName)) {
+        // 2. 기존 계약서에 파일 URL이 존재하면 수정 불가 예외 발생
+        if (contract.getFileUrl() != null && !contract.getFileUrl().isEmpty()) {
             throw new CommonException(ErrorCode.DUPLICATE_CONTRACT);
         }
 
-        // S3에 파일 업로드
+        // 3. 파일 이름 생성 (계약서 종류 + 사원ID + 타임스탬프)
+        String fileName = contract.getContractType() + "_" + contract.getEmployeeId() + "_" + System.currentTimeMillis();
+
+        // 4. S3에 파일 업로드
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());
@@ -361,21 +389,27 @@ public class EmployeeCommandService implements UserDetailsService {
         String bucketName = s3Config.getInflowContractBucket();
         s3Client.putObject(bucketName, fileName, file.getInputStream(), metadata);
 
-        // S3 URL 생성
+        // 5. S3 URL 생성
         String fileUrl = s3Client.getUrl(bucketName, fileName).toString();
 
-        // 계약서 테이블에 데이터 저장
-        Contract contract = new Contract();
-        contract.setContractType(contractType);
-        contract.setEmployeeId(employeeId);
-        contract.setReviewerId(reviewerId);
-        contract.setFileUrl(fileUrl);
-        contract.setFileName(fileName);
-        contract.setCreatedAt(currentDate);
+        // 6. 계약서 정보 업데이트
+        contract.setFileUrl(fileUrl);                    // 파일 URL 갱신
+        contract.setFileName(fileName);                  // 파일 이름 갱신
+        contract.setContractStatus("REGISTERED");        // 계약 상태 변경
+        contract.setConsentStatus("Y");                  // 동의 상태 변경
+        contract.setCreatedAt(LocalDateTime.now().withNano(0));      // 수정된 시간 설정
 
-        contract = contractRepository.save(contract);
+        contract = contractRepository.save(contract);    // 업데이트된 계약서 저장
 
-        // 응답 생성
-        return new ResponseContractDTO(contract.getContractId(), fileUrl, "계약서가 성공적으로 업로드되었습니다.");
+        // 7. 응답 DTO 생성 및 반환
+        return new ResponseContractDTO(
+                contract.getContractId(),
+                contract.getContractType(),
+                contract.getFileUrl(),
+                contract.getContractStatus(),
+                contract.getConsentStatus(),
+                contract.getCreatedAt().toString(),
+                contract.getEmployeeId()
+        );
     }
 }

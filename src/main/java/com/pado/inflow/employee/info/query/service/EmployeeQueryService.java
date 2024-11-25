@@ -2,6 +2,7 @@ package com.pado.inflow.employee.info.query.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse;
@@ -205,5 +206,15 @@ public class EmployeeQueryService {
 
         return agreement;
     }
+
+    // 설명.5. 계약서 리스트 조회
+    public List<ResponseContractDTO> getContractListByEmployeeId(Long employeeId) {
+        List<ResponseContractDTO> contracts = employeeMapper.getContractListByEmployeeId(employeeId);
+        if (contracts.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_CONTRACT);
+        }
+        return contracts;
+    }
+
 
 }

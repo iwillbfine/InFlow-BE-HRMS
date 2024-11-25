@@ -1,6 +1,9 @@
 package com.pado.inflow.employee.info.query.controller;
 
 import com.pado.inflow.common.ResponseDTO;
+import com.pado.inflow.common.exception.CommonException;
+import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.query.dto.request.EmploymentCertificateRequest;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse;
@@ -92,8 +95,27 @@ public class EmployeeController {
         return ResponseDTO.ok(securityAgreement);
     }
 
-    // 설명. 5. 사원별 계약서 리스트 조회
 
+    // 설명. 5. 서명된 계약서 리스트 조회
+    @GetMapping("/{employeeId}/contracts")
+    public ResponseDTO<List<ResponseContractDTO>> getContractList(
+            @PathVariable("employeeId") Long employeeId) {
+        try {
+            // 계약서 리스트 조회
+            List<ResponseContractDTO> contractList = employeeService.getContractListByEmployeeId(employeeId);
+            return ResponseDTO.ok(contractList);
+        } catch (IllegalArgumentException e) {
+            throw new CommonException(ErrorCode.NOT_FOUND_CONTRACT);
+        }
+    }
 
-    // 설명. 6. 서명된 계약서 파일 조회
+//    // 설명. 6. 서명된 계약서 단건 조회
+//    public ResponseContractDTO getContractById(Long contractId) {
+//        // Mapper를 통해 단건 계약서 조회
+//        ResponseContractDTO contract = employeeMapper.getContractById(contractId);
+//        if (contract == null) {
+//            throw new CommonException(ErrorCode.NOT_FOUND_CONTRACT);
+//        }
+//        return contract;
+//    }
 }
