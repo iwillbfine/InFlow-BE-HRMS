@@ -25,7 +25,6 @@ public class EmployeeController {
 
     private final Environment env;
     private final EmployeeCommandService employeeCommandService;
-    private final EmployeeQueryService employeeQueryService;
 
 
     @Value("${coolsms.api.key}")
@@ -38,10 +37,9 @@ public class EmployeeController {
     private String fromPhoneNumber;
 
     @Autowired
-    public EmployeeController(Environment env,EmployeeCommandService employeeCommandService,EmployeeQueryService employeeQueryService) {
+    public EmployeeController(Environment env,EmployeeCommandService employeeCommandService) {
         this.env = env;
         this.employeeCommandService=employeeCommandService;
-        this.employeeQueryService=employeeQueryService;
     }
 
     // 설명. 0. 헬스 체크

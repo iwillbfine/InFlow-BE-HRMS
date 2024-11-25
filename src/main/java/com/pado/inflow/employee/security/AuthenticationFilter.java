@@ -41,18 +41,15 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-//    private final EmployeeCommandService employeeService;
     private final EmployeeRepository employeeRepository;
     private final Environment env;
     private final BCryptPasswordEncoder bCryptPasswordEncoder; // 추가
 
     public AuthenticationFilter(AuthenticationManager authenticationManager,
-//                                EmployeeCommandService employeeService,
                                 EmployeeRepository employeeRepository,
                                 Environment env,
                                 BCryptPasswordEncoder bCryptPasswordEncoder) { // 추가
         super(authenticationManager);
-//        this.employeeService = employeeService;
         this.employeeRepository=employeeRepository;
         this.env = env;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder; // 필드 초기화
@@ -121,12 +118,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             throw e;
         }
     }
-
+    
+    //설명. 로그인에 성공하고 응답하는 인증 필터
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
+
 
         log.info("로그인 성공하고 security가 관리하는 principal객체(authResult): {}", authResult);
 
@@ -144,6 +143,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .collect(Collectors.toList());
         claims.put("auth", roles);
         claims.put("employeeId", loginEmployee.getEmployeeId());
+        claims.put("employeeNumber", employeeNumber);
 
         // 만료 시간 설정
         long accessExpiration = System.currentTimeMillis() + getExpirationTime(env.getProperty("token.access-expiration-time"));

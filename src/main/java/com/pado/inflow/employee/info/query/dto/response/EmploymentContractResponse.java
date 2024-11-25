@@ -102,4 +102,7 @@ public class EmploymentContractResponse {
 
     @JsonProperty("issue_date")
     private LocalDate issueDate; // 계약 작성일
+
+    @JsonProperty("contract_id")
+    private Long contractId; // 계약서id
 }
