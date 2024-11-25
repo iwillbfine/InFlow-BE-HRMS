@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Service
+@Service("appCommuteService")
 public class CommuteServiceImpl implements CommuteService {
 
     private final ModelMapper modelMapper;
