@@ -18,7 +18,7 @@ public class GradeController {
         this.gradeService = gradeService;
     }
 
-    // 등급 생성
+    // 등급 생성 ( 현 상황에서는 등급을 순서대로 생성해야함 )
     @PostMapping("/gradeCreation")
     public ResponseDTO<List<GradeResponseDTO>> GradeCreate(
             @RequestBody CreateGradeRequestDTO createGradeRequestDTO
