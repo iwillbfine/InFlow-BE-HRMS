@@ -197,6 +197,7 @@ public class EmployeeQueryService {
     // 설명.4.비밀 유지 서약서 내용 반환
     public ResponseSecurityAgreementResponse getSecurityAgreement(Long employeeId) {
         ResponseSecurityAgreementResponse agreement = employeeMapper.getSecurityAgreementInfo(employeeId);
+
         if (agreement == null) {
             throw new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE);
         }

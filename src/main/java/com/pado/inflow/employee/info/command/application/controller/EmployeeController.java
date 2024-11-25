@@ -5,6 +5,7 @@ import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestEmployeeDTO;
+import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestPasswordDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.RequestUpdateEmployeeDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseEmployeeDTO;
@@ -25,7 +26,6 @@ public class EmployeeController {
 
     private final Environment env;
     private final EmployeeCommandService employeeCommandService;
-    private final EmployeeQueryService employeeQueryService;
 
 
     @Value("${coolsms.api.key}")
@@ -38,10 +38,9 @@ public class EmployeeController {
     private String fromPhoneNumber;
 
     @Autowired
-    public EmployeeController(Environment env,EmployeeCommandService employeeCommandService,EmployeeQueryService employeeQueryService) {
+    public EmployeeController(Environment env,EmployeeCommandService employeeCommandService) {
         this.env = env;
         this.employeeCommandService=employeeCommandService;
-        this.employeeQueryService=employeeQueryService;
     }
 
     // 설명. 0. 헬스 체크
@@ -93,12 +92,11 @@ public class EmployeeController {
 
 
     // 설명. 3. 비밀번호 재설정
-    @PatchMapping("/{employee_number}/re-password")
+    @PatchMapping("/re-password")
     public ResponseDTO<String> updatePassword(
-            @PathVariable(value="employee_number") String employeeNumber, // 명시적으로 이름 지정
-            @RequestParam("new_password") String newPassword) { // 명시적으로 이름 지정
+            @RequestBody RequestPasswordDTO requestPasswordDTO) { // 명시적으로 이름 지정
 
-        employeeCommandService.resetPassword(employeeNumber, newPassword);
+        employeeCommandService.resetPassword(requestPasswordDTO.getEmployeeId(), requestPasswordDTO.getNewPassword());
         return ResponseDTO.ok("비밀번호가 성공적으로 재설정되었습니다.");
     }
 

@@ -15,12 +15,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service("appCommuteService")
-public class CommuteServiceImpl implements CommuteService {
+public class CommuteCommandServiceImpl implements CommuteCommandService {
 
     private final ModelMapper modelMapper;
     private final CommuteRepository commuteRepository;
 
-    public CommuteServiceImpl(ModelMapper modelMapper, CommuteRepository commuteRepository) {
+    public CommuteCommandServiceImpl(ModelMapper modelMapper, CommuteRepository commuteRepository) {
         this.modelMapper = modelMapper;
         this.commuteRepository = commuteRepository;
     }

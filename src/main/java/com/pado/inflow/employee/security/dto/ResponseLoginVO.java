@@ -26,9 +26,9 @@ public class ResponseLoginVO {
     @JsonProperty("refresh_token_expiry")
     private Date refreshTokenExpiry;
 
-    @JsonProperty("employeeId")
+    @JsonProperty("employee_id")
     private Long employee_id;
 
-    @JsonProperty("employeeNumber")
+    @JsonProperty("employee_number")
     private String employee_number;
 }
