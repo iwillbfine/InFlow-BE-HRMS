@@ -226,6 +226,7 @@
     <!-- **** 인사팀 권한  - 부서 관리 **** -->
     <!-- 설명. 1. 부서 코드를 통해 부서 정보 상세 조회 -> 다시해야함 (인사 기본 테이블 조인)-->
     <!-- 부서 코드를 통해 해당 부서 코드의 부서명/부서코드/상위부서명/최소인원수/부서장을 조회할 수 있다. -->
+    <!-- 상위 부서의 경우 최소 인원수는 하위 부서들의 최소 인원수 합 -->
     <select id="findDepartmentDetailByDepartmentCode"
             resultType="com.pado.inflow.department.query.dto.DepartmentDetailDTO">
         SELECT
@@ -314,7 +315,7 @@
           FROM
             department
           WHERE
-            department_code = #{departmentCode} -- 요청한 부서 코드
+            department_code = #{departmentCode}
 
         UNION ALL
 
@@ -357,12 +358,6 @@
 
     <!-- 3. 사원 코드를 통한 사원 상세 정보 조회 -> 사원목록에서 사원 선택하면, 해당 사원의 모든 정보가 뜨도록 API 호출 -->
     <!-- 인사 기본에서 사원의 모든 정보 조회 API 가져다 쓰기 -->
-
-
-    
-
-
-
 
 
 
