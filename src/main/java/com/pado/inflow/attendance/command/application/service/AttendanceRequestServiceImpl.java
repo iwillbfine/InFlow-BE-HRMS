@@ -74,17 +74,11 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         // 날짜 String -> LocalDateTime 변환
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date;
-        LocalDateTime startTime;
         LocalDateTime startDate;
-        LocalDateTime endTime;
         LocalDateTime endDate;
         try {
             date = LocalDate.parse(reqCommuteRequestDTO.getStartDate(), formatter);
-
-            startTime = date.atTime(9, 0); // 오전 9시 0분 0초
             startDate = date.atStartOfDay();
-
-            endTime = date.atTime(18, 0); // 오후 6시 0분 0초
             endDate = date.atStartOfDay();
 
         } catch (DateTimeParseException e) {
@@ -118,8 +112,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         // 재택근무 내역 등록
         CommuteDTO commuteDTO = CommuteDTO
                 .builder()
-                .startTime(startTime)
-                .endTime(endTime)
+                .startTime(null)
+                .endTime(null)
                 .remoteStatus(RemoteStatus.Y)
                 .overtimeStatus(OvertimeStatus.N)
                 .employeeId(attendanceRequest.getEmployeeId())
