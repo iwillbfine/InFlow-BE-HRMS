@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface GradeService {
     List<GradeResponseDTO> createGrade(CreateGradeRequestDTO createGradeRequestDTO, Integer year, String half);
+
+    GradeResponseDTO updateGrade(Long gradeId);
 }

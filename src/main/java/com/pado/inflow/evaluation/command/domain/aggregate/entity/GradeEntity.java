@@ -45,4 +45,11 @@ public class GradeEntity {
                 .evaluationPolicyId(this.evaluationPolicyId)
                 .build();
     }
+
+    public void updateGrade(String gradeName, Double startRatio, Double endRatio, Double absoluteGradeRatio) {
+        this.gradeName = gradeName;
+        this.startRatio = startRatio;
+        this.endRatio = endRatio;
+        this.absoluteGradeRatio = absoluteGradeRatio;
+    }
 }
