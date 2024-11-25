@@ -17,4 +17,10 @@ public interface CommuteMapper {
     // 사원별 출퇴근 내역 전체 개수 조회
     Integer getTotalCommutesByEmployeeId(Long employeeId);
 
+    // 당일 재택 출퇴근 내역 조회
+    CommuteDTO findTodayRemoteByEmployeeId(Long employeeId);
+
+    // 당일 출퇴근 내역 조회
+    CommuteDTO findTodayCommuteByEmployeeId(Long employeeId);
+
 }
