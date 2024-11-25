@@ -20,11 +20,14 @@ public class AuthTokens {
     private String tokenType;
 
     @JsonProperty("access_token_expiry")
-    private long accessTokenExpiry;
+    private Long accessTokenExpiry;
 
     @JsonProperty("refresh_token_expiry")
-    private long refreshTokenExpiry;
+    private Long refreshTokenExpiry;
 
-    @JsonProperty("user_auth_id")
-    private String userAuthId;
+    @JsonProperty("employee_id")
+    private Long employeeId;
+
+    @JsonProperty("employee_number")
+    private String employeeNumber;
 }

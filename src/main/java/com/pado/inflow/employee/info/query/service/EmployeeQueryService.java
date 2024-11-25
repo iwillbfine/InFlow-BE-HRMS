@@ -2,6 +2,7 @@ package com.pado.inflow.employee.info.query.service;
 
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse;
@@ -64,8 +65,8 @@ public class EmployeeQueryService {
     }
 
     // 설명.2. 재직증명서 내용 반환
-    public EmploymentCertificateResponse getEmploymentCertificateInfo(String employeeNumber) {
-        EmploymentCertificateResponse certificate = employeeMapper.getEmploymentCertificateInfo(employeeNumber);
+    public EmploymentCertificateResponse getEmploymentCertificateInfo(Long employeeId) {
+        EmploymentCertificateResponse certificate = employeeMapper.getEmploymentCertificateInfo(employeeId);
         if (certificate == null) {
             throw new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE);
         }
@@ -80,9 +81,9 @@ public class EmployeeQueryService {
     }
 
     // 설명.3.근로계약서 내용 반환
-    public EmploymentContractResponse getEmploymentContract(String employeeNumber) {
+    public EmploymentContractResponse getEmploymentContract(Long employeeId) {
         // 사원 근로 계약 정보 조회
-        EmploymentContractResponse contract = employeeMapper.getEmploymentContractInfo(employeeNumber);
+        EmploymentContractResponse contract = employeeMapper.getEmploymentContractInfo(employeeId);
 
         // 비정기 수당 정보 조회
         List<IrregularAllowanceDTO> allowances = employeeMapper.getIrregularAllowances();
@@ -194,8 +195,8 @@ public class EmployeeQueryService {
     }
 
     // 설명.4.비밀 유지 서약서 내용 반환
-    public ResponseSecurityAgreementResponse getSecurityAgreement(String employeeNumber) {
-        ResponseSecurityAgreementResponse agreement = employeeMapper.getSecurityAgreementInfo(employeeNumber);
+    public ResponseSecurityAgreementResponse getSecurityAgreement(Long employeeId) {
+        ResponseSecurityAgreementResponse agreement = employeeMapper.getSecurityAgreementInfo(employeeId);
         if (agreement == null) {
             throw new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE);
         }
@@ -204,6 +205,24 @@ public class EmployeeQueryService {
         agreement.setAgreementDate(LocalDate.now().toString());
 
         return agreement;
+    }
+
+    // 설명.5. 계약서 리스트 조회
+    public List<ResponseContractDTO> getContractListByEmployeeId(Long employeeId) {
+        List<ResponseContractDTO> contracts = employeeMapper.getContractListByEmployeeId(employeeId);
+        if (contracts.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_CONTRACT);
+        }
+        return contracts;
+    }
+
+    // 설명.6. 단건 계약서 조회
+    public ResponseContractDTO getContract(Long contractId) {
+        ResponseContractDTO contract = employeeMapper.findContractByContractId(contractId);
+        if (contract == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_CONTRACT);
+        }
+        return contract;
     }
 
 }
