@@ -20,6 +20,9 @@ public class ResponseContractDTO {
     @JsonProperty("contract_type")
     private String contractType; // 계약서 종류
 
+    @JsonProperty("file_name")
+    private String fileName; // 계약서 파일명
+
     @JsonProperty("file_url")
     private String fileUrl; // 계약서 파일 URL
 

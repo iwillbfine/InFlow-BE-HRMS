@@ -102,7 +102,7 @@
     </select>
 
     <!-- 재직증명서 발급을 위한 데이터 조회 -->
-    <select id="getEmploymentCertificateInfo" parameterType="String" resultMap="EmploymentCertificateResultMap">
+    <select id="getEmploymentCertificateInfo" parameterType="Long" resultMap="EmploymentCertificateResultMap">
         SELECT
             e.name,
             e.birth_date,
@@ -123,11 +123,11 @@
                 JOIN
             company c ON 1 = 1
         WHERE
-            e.employee_number = #{employeeNumber}
+            e.employee_id = #{employeeId}
     </select>
 
     <!-- 근로계약서 발급 데이터 조회 -->
-    <select id="getEmploymentContractInfo" parameterType="String" resultType="com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse">
+    <select id="getEmploymentContractInfo" parameterType="Long" resultType="com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse">
         SELECT
             e.employee_id AS employeeId,
             e.name AS employeeName,
@@ -154,7 +154,7 @@
                 JOIN duty du ON e.duty_code = du.duty_code
                 JOIN company c ON 1 = 1
         WHERE
-            e.employee_number = #{employeeNumber};
+            e.employee_id = #{employeeId}
     </select>
 
     <!-- 비정기 수당 데이터 조회 -->
@@ -169,7 +169,7 @@
 
 
     <!-- 비밀 유지 서약서 발급 데이터 조회 -->
-    <select id="getSecurityAgreementInfo" parameterType="String" resultType="com.pado.inflow.employee.info.query.dto.response.ResponseSecurityAgreementResponse">
+    <select id="getSecurityAgreementInfo" parameterType="Long" resultType="com.pado.inflow.employee.info.query.dto.response.ResponseSecurityAgreementResponse">
         SELECT
             e.name AS employeeName,
             c.company_name AS companyName,
@@ -180,7 +180,7 @@
                 JOIN
             company c ON 1 = 1
         WHERE
-            e.employee_number = #{employeeNumber}
+            e.employee_id = #{employeeId}
     </select>
 
     <!-- 설명.5. 사원별 계약서 리스트 조회 -->
@@ -188,6 +188,7 @@
         SELECT
             contract_id AS contractId,
             contract_type AS contractType,
+            file_name AS fileName,
             file_url AS fileUrl,
             contract_status AS contractStatus,
             consent_status AS consentStatus,
@@ -197,5 +198,19 @@
         WHERE employee_id = #{employeeId}
     </select>
 
+    <!-- 단건 계약서 조회 -->
+    <select id="findContractByContractId" resultType="com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO">
+        SELECT
+            contract_id AS contractId,
+            contract_type AS contractType,
+            file_name AS fileName,
+            file_url AS fileUrl,
+            contract_status AS contractStatus,
+            consent_status AS consentStatus,
+            created_at AS createdAt,
+            employee_id AS employeeId
+        FROM contract
+        WHERE contract_id = #{contractId}
+    </select>
 
 </mapper>

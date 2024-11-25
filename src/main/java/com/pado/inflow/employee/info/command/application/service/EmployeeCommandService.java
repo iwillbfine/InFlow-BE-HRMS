@@ -379,7 +379,7 @@ public class EmployeeCommandService implements UserDetailsService {
         }
 
         // 3. 파일 이름 생성 (계약서 종류 + 사원ID + 타임스탬프)
-        String fileName = contract.getContractType() + "_" + contract.getEmployeeId() + "_" + System.currentTimeMillis();
+        String fileName = contract.getContractType() + "_" + contract.getEmployeeId();
 
         // 4. S3에 파일 업로드
         ObjectMetadata metadata = new ObjectMetadata();
@@ -405,6 +405,7 @@ public class EmployeeCommandService implements UserDetailsService {
         return new ResponseContractDTO(
                 contract.getContractId(),
                 contract.getContractType(),
+                contract.getFileName(),
                 contract.getFileUrl(),
                 contract.getContractStatus(),
                 contract.getConsentStatus(),
