@@ -461,6 +461,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         AttendanceRequest attendanceRequest =
                 attendanceRequestRepository.save(modelMapper.map(resLeaveReturnRequestDTO, AttendanceRequest.class));
 
+        System.out.println("1");
+
         // 첨부 파일 DB 저장
         for (Map<String, String> file : reqLeaveRequestDTO.getAttachments()) {
             ResponseAttendanceRequestFileDTO resAttendanceRequestFileDTO = ResponseAttendanceRequestFileDTO
@@ -473,6 +475,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
             attendanceRequestFileRepository.save(modelMapper.map(resAttendanceRequestFileDTO, AttendanceRequestFile.class));
         }
 
+        System.out.println("2");
+
         // 휴직 내역 등록
         LeaveReturnDTO leaveReturnDTO = LeaveReturnDTO
                 .builder()
@@ -483,6 +487,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                 .build();
 
         leaveReturnRepository.save(modelMapper.map(leaveReturnDTO, LeaveReturn.class));
+
+        System.out.println("3");
 
         return modelMapper.map(attendanceRequest, ResponseLeaveReturnRequestDTO.class);
     }

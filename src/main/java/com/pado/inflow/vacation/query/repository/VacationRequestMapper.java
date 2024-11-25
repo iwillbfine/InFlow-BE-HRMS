@@ -20,4 +20,7 @@ public interface VacationRequestMapper {
     // 사원별 휴가 신청 내역 전체 개수 조회
     Integer getTotalVacationRequestsByEmployeeId(Long employeeId);
 
+    // 당일기준 휴가 내역 조회
+    VacationRequestDTO findTodayVacationByEmployeeId(Long employeeId);
+
 }

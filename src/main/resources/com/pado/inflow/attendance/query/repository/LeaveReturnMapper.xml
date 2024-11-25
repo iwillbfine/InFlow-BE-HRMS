@@ -31,4 +31,16 @@
          WHERE A.EMPLOYEE_ID = #{ employeeId }
     </select>
 
+    <select id="findTodayLeaveByEmployeeId" resultMap="leaveReturnResultMap" parameterType="Long">
+        SELECT
+               A.LEAVE_RETURN_ID
+             , A.START_DATE
+             , A.END_DATE
+             , A.EMPLOYEE_ID
+             , A.ATTENDANCE_REQUEST_ID
+          FROM LEAVE_RETURN A
+         WHERE A.EMPLOYEE_ID = #{ employeeId }
+           AND CURRENT_DATE BETWEEN DATE(A.START_DATE) AND DATE(A.END_DATE)
+    </select>
+
 </mapper>
