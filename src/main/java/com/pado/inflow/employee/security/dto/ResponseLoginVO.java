@@ -26,6 +26,9 @@ public class ResponseLoginVO {
     @JsonProperty("refresh_token_expiry")
     private Date refreshTokenExpiry;
 
-    @JsonProperty("user_auth_id")  // 기존의 user_identifier를 user_auth_id로 변경
-    private String userAuthId;
+    @JsonProperty("employee_id")
+    private Long employee_id;
+
+    @JsonProperty("employee_number")
+    private String employee_number;
 }

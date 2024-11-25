@@ -10,4 +10,6 @@ public interface GradeMapper {
     List<GradeDTO> findGradeByYearAndHalf(Integer year, String half);
 
     GradeDTO getGradeByGradeId(Long gradeId);
+
+    List<GradeDTO> findGradeByEvaluationPolicyId(Long evaluationPolicyId);
 }

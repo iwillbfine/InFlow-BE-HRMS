@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class EmploymentCertificateRequest {
-    @JsonProperty("employee_number")
-    private String employeeNumber;
+    @JsonProperty("employee_id")
+    private Long employeeId;
     @JsonProperty("purpose")
     private String purpose;
 }

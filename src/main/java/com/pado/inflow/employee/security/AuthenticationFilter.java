@@ -3,11 +3,15 @@ package com.pado.inflow.employee.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pado.inflow.common.ResponseDTO;
+import com.pado.inflow.common.exception.CommonException;
+import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
 import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
+import com.pado.inflow.employee.info.command.domain.repository.EmployeeRepository;
 import com.pado.inflow.employee.info.enums.ResignationStatus;
 import com.pado.inflow.employee.security.dto.RequestLoginVO;
 import com.pado.inflow.employee.security.dto.ResponseLoginVO;
+import com.pado.inflow.payroll.common.Common;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,16 +41,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final EmployeeCommandService employeeService;
+    private final EmployeeRepository employeeRepository;
     private final Environment env;
     private final BCryptPasswordEncoder bCryptPasswordEncoder; // 추가
 
     public AuthenticationFilter(AuthenticationManager authenticationManager,
-                                EmployeeCommandService employeeService,
+                                EmployeeRepository employeeRepository,
                                 Environment env,
                                 BCryptPasswordEncoder bCryptPasswordEncoder) { // 추가
         super(authenticationManager);
-        this.employeeService = employeeService;
+        this.employeeRepository=employeeRepository;
         this.env = env;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder; // 필드 초기화
     }
@@ -75,14 +79,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             String employeeNumber = creds.getEmployeeNumber();
             log.info("사용자 조회 중: userAuthId = {}", employeeNumber);
 
-            // 2. 사용자 조회 (userAuthId를 기준으로 조회)
-            Employee loginEmployee = employeeService.findByEmployeeNumber(employeeNumber);
+            // 2. 사용자 조회 및 예외 처리 (employeeNumber를 기준으로 조회)
+            Employee loginEmployee = employeeRepository.findByEmployeeNumber(employeeNumber)
+                    .orElseThrow(() -> {
+                        log.error("아이디가 잘못되었습니다. employeeNumber = {}", employeeNumber);
+                        return new BadCredentialsException("아이디를 잘못 입력하셨습니다.");
+                    });
 
-            // 3. 아이디 체크
-            if (loginEmployee == null) {
-                log.error("아이디가 잘못되었습니다. employeeNumber = {}", employeeNumber);
-                throw new BadCredentialsException("아이디를 잘못 입력하셨습니다."); // 아이디가 없을 경우 예외 처리
-            }
             log.info("사용자 조회 성공: {}",loginEmployee);
 
             // 4. 사용자 퇴사 여부 확인
@@ -115,24 +118,32 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             throw e;
         }
     }
-
+    
+    //설명. 로그인에 성공하고 응답하는 인증 필터
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
+
         log.info("로그인 성공하고 security가 관리하는 principal객체(authResult): {}", authResult);
 
         // 사용자 인증 정보 및 식별자 생성
-        String userAuthId = ((User) authResult.getPrincipal()).getUsername();
+        String employeeNumber = ((User) authResult.getPrincipal()).getUsername();
 
+        // 사용자 정보 조회 후 id 반환
+        Employee loginEmployee = employeeRepository.findByEmployeeNumber(employeeNumber)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+        
         // Claims 및 역할 정보 설정
-        Claims claims = Jwts.claims().setSubject(userAuthId);
+        Claims claims = Jwts.claims().setSubject(employeeNumber);
         List<String> roles = authResult.getAuthorities().stream()
                 .map(role -> role.getAuthority())
                 .collect(Collectors.toList());
         claims.put("auth", roles);
+        claims.put("employeeId", loginEmployee.getEmployeeId());
+        claims.put("employeeNumber", employeeNumber);
 
         // 만료 시간 설정
         long accessExpiration = System.currentTimeMillis() + getExpirationTime(env.getProperty("token.access-expiration-time"));
@@ -158,7 +169,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 new Date(accessExpiration),
                 refreshToken,
                 new Date(refreshExpiration),
-                userAuthId
+                loginEmployee.getEmployeeId(),
+                employeeNumber
         );
 
         // 응답 객체를 JSON 형태로 반환

@@ -18,13 +18,13 @@ public class Contract {
     @Column(name = "contract_type", nullable = false)
     private String contractType;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "file_name")
     private String fileName;
 
-    @Column(name = "file_url", nullable = false, unique = true)
+    @Column(name = "file_url", unique = true)
     private String fileUrl;
 
     @Column(name = "contract_status", nullable = false)
@@ -35,8 +35,5 @@ public class Contract {
 
     @Column(name = "employee_id", nullable = false)
     private Long employeeId;
-
-    @Column(name = "reviewer_id", nullable = false)
-    private Long reviewerId;
 
 }
