@@ -43,6 +43,7 @@ public enum ErrorCode {
     EVALUATION_SCHEDULER_INIT_FAILURE(40037, HttpStatus.BAD_REQUEST, "평가 및 평가정책별 평가 테이블 초기화 중 오류가 발생했습니다"),
     INVALID_GRADE_RATIO(40038, HttpStatus.BAD_REQUEST, "기존 등급의 종료 비율과 새로운 등급의 시작 비율을 다시 확인해주세요."),
     INVALID_GRADE_SCORE(40039, HttpStatus.BAD_REQUEST, "새로운 등급의 절대평가 점수가 이전 등급의 점수보다 높습니다."),
+    TASK_EVAL_CREATE_FAILURE(40039, HttpStatus.BAD_REQUEST, "평가 기간에만 점수를 입력할 수 있습니다.."),
 
 
     // 401: 인증 실패 (Unauthorized)

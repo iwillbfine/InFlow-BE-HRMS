@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CreateTaskEvalRequestDTO {
 
-    @JsonProperty("task_eval_id")
-    private Long taskEvalId;
+//    @JsonProperty("task_eval_id")
+//    private Long taskEvalId;
 
     @JsonProperty("task_eval_name")
     private String taskEvalName;
@@ -26,23 +26,23 @@ public class CreateTaskEvalRequestDTO {
     @JsonProperty("set_ratio")
     private Double setRatio;
 
-    @JsonProperty("task_grade")
-    private String taskGrade;
+//    @JsonProperty("task_grade")
+//    private String taskGrade;
 
     @JsonProperty("performance_input")
     private String performanceInput;
 
-    @JsonProperty("created_at")
-    private LocalDateTime createdAt;
+//    @JsonProperty("created_at")
+//    private LocalDateTime createdAt;
 
-    @JsonProperty("rel_eval_status")
-    private Boolean relEvalStatus;
+//    @JsonProperty("rel_eval_status")
+//    private Boolean relEvalStatus;
 
     @JsonProperty("evaluation_id")
     private Long evaluationId;
 
-    @JsonProperty("modifiable_date")
-    private LocalDateTime modifiableDate;
+//    @JsonProperty("modifiable_date")
+//    private LocalDateTime modifiableDate;
 
     @JsonProperty("task_type_id")
     private Long taskTypeId;

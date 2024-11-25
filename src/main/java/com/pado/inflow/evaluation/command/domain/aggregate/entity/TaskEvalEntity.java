@@ -1,5 +1,6 @@
 package com.pado.inflow.evaluation.command.domain.aggregate.entity;
 
+import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.TaskEvalResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,4 +57,23 @@ public class TaskEvalEntity {
 
     @Column(name = "task_item_id", nullable = false)
     private Long taskItemId;
+
+    // TaskEvalEntity를 TaskEvalResponseDTO로 변환하는 메소드
+    public TaskEvalResponseDTO toResponseDTO() {
+        return TaskEvalResponseDTO.builder()
+                .taskEvalId(this.taskEvalId)
+                .taskEvalName(this.taskEvalName)
+                .taskEvalContent(this.taskEvalContent)
+                .score(this.score)
+                .setRatio(this.setRatio)
+                .taskGrade(this.taskGrade)
+                .performanceInput(this.performanceInput)
+                .createdAt(this.createdAt)
+                .relEvalStatus(this.relEvalStatus)
+                .evaluationId(this.evaluationId)
+                .modifiableDate(this.modifiableDate)
+                .taskTypeId(this.taskTypeId)
+                .taskItemId(this.taskItemId)
+                .build();
+    }
 }
