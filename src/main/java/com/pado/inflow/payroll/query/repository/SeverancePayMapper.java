@@ -1,24 +1,37 @@
 package com.pado.inflow.payroll.query.repository;
 
-import com.pado.inflow.payroll.query.dto.EmployeeInfoDTO;
-import com.pado.inflow.payroll.query.dto.PeriodicPayDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Mapper
 public interface SeverancePayMapper {
-    // 직원 정보 조회
-    EmployeeInfoDTO getEmployeeInfo(@Param("employeeId") Long employeeId);
-
-    // 최근 3개월 급여 조회
-    List<PeriodicPayDTO> getLastThreeMonthsPay(@Param("employeeId") Long employeeId, @Param("endDate") LocalDate endDate);
 
     // 입사일 조회
     LocalDate getJoinDateByEmployeeId(@Param("employeeId") Long employeeId);
 
-    // 미사용 연차 조회
-    Integer getUnusedLeaveDays(@Param("employeeId") Long employeeId);
+    // 총 급여 조회
+    Integer getTotalSalary(@Param("employeeId") Long employeeId,
+                           @Param("startDate") LocalDate startDate,
+                           @Param("endDate") LocalDate endDate);
+
+    // 총 비과세 급여 조회
+    Integer getTotalNonTaxableSalary(@Param("employeeId") Long employeeId,
+                                     @Param("startDate") LocalDate startDate,
+                                     @Param("endDate") LocalDate endDate);
+
+    // 연간 상여금 계산
+    Integer getAnnualBonus(@Param("employeeId") Long employeeId,
+                           @Param("oneYearAgo") LocalDate oneYearAgo,
+                           @Param("endDate") LocalDate severanceDate);
+
+    // 연차수당 계산
+    Integer getLeaveAllowanceAddition(@Param("employeeId") Long employeeId);
+
+    // 총 재직일 계산
+    Long getTotalWorkingDays(@Param("employeeId") Long employeeId);
+
+    // 통상임금 계산용 월급여 조회
+    Integer getMonthlySalary(@Param("employeeId") Long employeeId);
 }

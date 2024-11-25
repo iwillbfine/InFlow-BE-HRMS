@@ -1,63 +1,61 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.payroll.query.repository.SeverancePayMapper">
-
-    <!-- 직원 기본 정보 조회 -->
-    <select id="getEmployeeInfo" resultType="com.pado.inflow.payroll.query.dto.EmployeeInfoDTO">
-        SELECT
-            e.employee_id,
-            e.name,
-            e.monthly_salary AS monthlySalary,
-            e.salary AS annualSalary
-        FROM employee e
-        WHERE e.employee_id = #{employeeId}
-    </select>
-
-    <select id="getLastThreeMonthsPay" resultType="com.pado.inflow.payroll.query.dto.PeriodicPayDTO">
-        SELECT
-            -- 급여 시작일: 3개월 전 시작일 혹은 해당 월 첫날 중 더 늦은 날짜
-            GREATEST(
-                    DATE_FORMAT(p.paid_at, '%Y-%m-01'),
-                    DATE_SUB(#{endDate}, INTERVAL 3 MONTH)
-            ) AS startDate,
-
-            -- 급여 종료일: 퇴사일 전날 혹은 해당 월 마지막 날 중 더 빠른 날짜
-            LEAST(
-                    LAST_DAY(p.paid_at),
-                    #{endDate}
-            ) AS endDate,
-
-            -- 지급 일수
-            DATEDIFF(
-                    LEAST(LAST_DAY(p.paid_at), #{endDate}),
-                    GREATEST(DATE_FORMAT(p.paid_at, '%Y-%m-01'), DATE_SUB(#{endDate}, INTERVAL 3 MONTH))
-            ) + 1 AS daysInPeriod,
-
-            -- 기본급 및 수당
-            p.monthly_salary AS basicSalary,
-            p.non_taxable_amount AS allowance
-        FROM payment p
-        WHERE p.employee_id = #{employeeId}
-          AND p.paid_at BETWEEN DATE_SUB(#{endDate}, INTERVAL 3 MONTH) AND #{endDate}
-        ORDER BY p.paid_at DESC
-    </select>
 
     <!-- 입사일 조회 -->
     <select id="getJoinDateByEmployeeId" resultType="java.time.LocalDate">
-        SELECT e.join_date
-        FROM employee e
-        WHERE e.employee_id = #{employeeId}
+        SELECT join_date
+        FROM employee
+        WHERE employee_id = #{employeeId}
     </select>
 
-    <!-- 미사용 연차 일수 조회 -->
-    <select id="getUnusedLeaveDays" resultType="java.lang.Integer">
-        SELECT v.vacation_left
-        FROM vacation v
-        WHERE v.employee_id = #{employeeId}
-          AND v.expiration_status = 'N' -- 유효한 연차만 고려
+    <!-- 총 급여 조회 -->
+    <select id="getTotalSalary" resultType="java.lang.Integer">
+        SELECT SUM(monthly_salary)
+        FROM payment
+        WHERE employee_id = #{employeeId}
+        AND paid_at BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <!-- 총 비과세 급여 조회 -->
+    <select id="getTotalNonTaxableSalary" resultType="java.lang.Integer">
+        SELECT SUM(non_taxable_amount)
+        FROM payment
+        WHERE employee_id = #{employeeId}
+        AND paid_at BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <!-- 연간 상여금 계산 -->
+    <select id="getAnnualBonus" resultType="java.lang.Integer">
+        SELECT SUM(bonus)
+        FROM payment
+        WHERE employee_id = #{employeeId}
+        AND paid_at BETWEEN #{oneYearAgo} AND #{endDate}
+    </select>
+
+    <!-- 연차수당 계산 -->
+    <select id="getLeaveAllowanceAddition" resultType="java.lang.Integer">
+        SELECT annual_vacation_allowance
+        FROM payment
+        WHERE employee_id = #{employeeId}
+        AND MONTH(paid_at) = 1
+        LIMIT 1
+    </select>
+
+    <!-- 총 재직일 계산 -->
+    <select id="getTotalWorkingDays" resultType="long">
+        SELECT DATEDIFF(NOW(), join_date)
+        FROM employee
+        WHERE employee_id = #{employeeId}
+    </select>
+
+    <!-- 통상임금 계산용 월급여 조회 -->
+    <select id="getMonthlySalary" resultType="int">
+        SELECT monthly_salary
+        FROM payment
+        WHERE employee_id = #{employeeId}
+        LIMIT 1
     </select>
 
 </mapper>
