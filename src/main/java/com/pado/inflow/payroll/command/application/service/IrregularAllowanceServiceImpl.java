@@ -1,5 +1,7 @@
 package com.pado.inflow.payroll.command.application.service;
 
+import com.pado.inflow.common.exception.CommonException;
+import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.payroll.command.application.dto.RequestIrregularAllowanceDTO;
 import com.pado.inflow.payroll.command.application.dto.ResponseIrregularAllowanceDTO;
 import com.pado.inflow.payroll.command.domain.aggregate.entity.IrregularAllowance;
@@ -32,6 +34,30 @@ public class IrregularAllowanceServiceImpl implements IrregularAllowanceService 
                 .irregularAllowanceId(savedAllowance.getIrregularAllowanceId())
                 .irregularAllowanceName(savedAllowance.getIrregularAllowanceName())
                 .amount(savedAllowance.getAmount())
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public ResponseIrregularAllowanceDTO updateIrregularAllowance(Long irregularAllowanceId, RequestIrregularAllowanceDTO reqAllowanceDTO) {
+
+        IrregularAllowance existingAllowance = irregularAllowanceRepository.findById(irregularAllowanceId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_IRREGULAR_ALLOWANCE));
+
+        if (reqAllowanceDTO.getIrregularAllowanceName() != null) {
+            existingAllowance.setIrregularAllowanceName(reqAllowanceDTO.getIrregularAllowanceName());
+        }
+
+        if (reqAllowanceDTO.getAmount() != null) {
+            existingAllowance.setAmount(reqAllowanceDTO.getAmount());
+        }
+
+        IrregularAllowance updatedAllowance = irregularAllowanceRepository.save(existingAllowance);
+
+        return ResponseIrregularAllowanceDTO.builder()
+                .irregularAllowanceId(updatedAllowance.getIrregularAllowanceId())
+                .irregularAllowanceName(updatedAllowance.getIrregularAllowanceName())
+                .amount(updatedAllowance.getAmount())
                 .build();
     }
 }

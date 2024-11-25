@@ -5,4 +5,6 @@ import com.pado.inflow.payroll.command.application.dto.ResponseIrregularAllowanc
 
 public interface IrregularAllowanceService {
     ResponseIrregularAllowanceDTO createIrregularAllowance(RequestIrregularAllowanceDTO reqAllowanceDTO);
+
+    ResponseIrregularAllowanceDTO updateIrregularAllowance(Long irregularAllowanceId, RequestIrregularAllowanceDTO reqAllowanceDTO);
 }
