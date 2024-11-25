@@ -18,7 +18,7 @@ public class TaskEvalController {
         this.taskEvalService = taskEvalService;
     }
 
-    // 평가항목별 평가 생성
+    // 평가항목별 평가 생성 - rel_eval_status 로직 수정 필요.
     @PostMapping("/taskEvalCreation")
     public ResponseDTO<TaskEvalResponseDTO> createTaskEval(
             @RequestBody CreateTaskEvalRequestDTO createTaskEvalRequestDTO

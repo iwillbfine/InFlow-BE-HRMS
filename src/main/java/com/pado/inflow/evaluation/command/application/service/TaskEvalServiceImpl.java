@@ -71,7 +71,7 @@ public class TaskEvalServiceImpl implements TaskEvalService {
                 .score(createTaskEvalRequestDTO.getScore())
                 .setRatio(createTaskEvalRequestDTO.getSetRatio())
                 .performanceInput(createTaskEvalRequestDTO.getPerformanceInput())
-                .relEvalStatus(false)   // 기본값 false로 지정.
+                .relEvalStatus(false)   // 기본값 false로 지정. 나중에 수정 필요
                 .evaluationId(evaluationDTO.getEvaluationId())
                 .modifiableDate(selectedPolicy.get(0).getModifiableDate()) // 수정 가능 날
                 .taskTypeId(createTaskEvalRequestDTO.getTaskTypeId())
