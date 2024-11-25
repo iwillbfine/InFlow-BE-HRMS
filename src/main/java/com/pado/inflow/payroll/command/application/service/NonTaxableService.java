@@ -6,4 +6,5 @@ import com.pado.inflow.payroll.command.application.dto.ResponseNonTaxableDTO;
 public interface NonTaxableService {
 
     ResponseNonTaxableDTO createNonTaxable(RequestNonTaxableDTO reqNonTaxableDTO);
+    ResponseNonTaxableDTO updateNonTaxable(Long nonTaxableId, RequestNonTaxableDTO reqNonTaxableDTO);
 }

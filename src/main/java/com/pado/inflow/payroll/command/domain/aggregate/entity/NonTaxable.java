@@ -20,5 +20,5 @@ public class NonTaxable {
     private String nonTaxableName;
 
     @Column(name="amount", nullable = false)
-    private int amount;
+    private Integer amount;
 }

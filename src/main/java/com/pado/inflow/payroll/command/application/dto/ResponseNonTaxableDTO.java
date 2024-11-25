@@ -19,7 +19,7 @@ public class ResponseNonTaxableDTO {
     private String nonTaxableName;
 
     @JsonProperty("amount")
-    private int amount;
+    private Integer amount;
 
 
 }
