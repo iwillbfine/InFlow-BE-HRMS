@@ -1,7 +1,7 @@
 package com.pado.inflow.payroll.query.controller;
 
 import com.pado.inflow.common.ResponseDTO;
-import com.pado.inflow.payroll.query.dto.SeverancePayDTO;
+import com.pado.inflow.payroll.query.dto.SeverancePayDetailsDTO;
 import com.pado.inflow.payroll.query.dto.TotalWorkingDaysDTO;
 import com.pado.inflow.payroll.query.service.SeverancePayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,8 @@ public class SeverancePayController {
     // 퇴직금 계산
     @GetMapping("/calculate/{employeeId}")
     public ResponseDTO<?> calculateSeverancePay(@PathVariable Long employeeId) {
-        SeverancePayDTO severancePayDTO = severancePayService.calculateSeverancePay(employeeId);
-        return ResponseDTO.ok(severancePayDTO);
+        SeverancePayDetailsDTO severancePayDetailsDTO = severancePayService.calculateSeverancePayDetails(employeeId);
+        return ResponseDTO.ok(severancePayDetailsDTO);
     }
 
 }

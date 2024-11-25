@@ -18,12 +18,14 @@ public class IrregularAllowanceController {
         this.irregularAllowanceService = irregularAllowanceService;
     }
 
+    // 급여 비정기 수당 항목 등록
     @PostMapping
     public ResponseDTO<?> createIrregularAllowance(@RequestBody RequestIrregularAllowanceDTO reqAllowanceDTO) {
         ResponseIrregularAllowanceDTO resAllowanceDTO = irregularAllowanceService.createIrregularAllowance(reqAllowanceDTO);
         return ResponseDTO.ok(resAllowanceDTO);
     }
 
+    // 급여 비정기 수당 항목 수정
     @PutMapping("/{id}")
     public ResponseDTO<?> updateIrregularAllowance(@PathVariable("id") Long irregularAllowanceId,
                                                    @RequestBody RequestIrregularAllowanceDTO reqAllowanceDTO) {
