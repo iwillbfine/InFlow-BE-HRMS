@@ -4,6 +4,7 @@ import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.employee.info.command.domain.aggregate.entity.Employee;
 import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
+import com.pado.inflow.employee.info.command.domain.repository.EmployeeRepository;
 import com.pado.inflow.employee.security.dto.AuthTokens;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -31,18 +32,21 @@ public class JwtUtil {
     private final long accessExpirationTime;
     private final long refreshExpirationTime;
     private final EmployeeCommandService employeeService;
+    private final EmployeeRepository employeeRepository;
 
     public JwtUtil(
             @Value("${token.secret}") String secretKey,
             @Value("${token.access-expiration-time}") long accessExpirationTime,
             @Value("${token.refresh-expiration-time}") long refreshExpirationTime,
-            EmployeeCommandService employeeService
+            EmployeeCommandService employeeService,
+            EmployeeRepository employeeRepository
     ) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
         this.accessExpirationTime = accessExpirationTime;
         this.refreshExpirationTime = refreshExpirationTime;
         this.employeeService = employeeService;
+        this.employeeRepository=employeeRepository;
     }
 
     // 설명. 리프레시 토큰으로 액세스 토큰 재발급하는 로직 처리
@@ -52,11 +56,9 @@ public class JwtUtil {
         }
 
         String employeeNumber = getEmployeeNumber(refreshToken);
-        Employee employee = employeeService.findByEmployeeNumber(employeeNumber);
 
-        if (employee == null) {
-            throw new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE);
-        }
+        Employee employee = employeeRepository.findByEmployeeNumber(employeeNumber)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
         String role = employee.getEmployeeRole().name();
         String newAccessToken = generateToken(employee, Collections.singletonList(role));
@@ -67,6 +69,7 @@ public class JwtUtil {
                 "Bearer",
                 getAccessTokenExpiration(),
                 getRefreshTokenExpiration(),
+                employee.getEmployeeId(),
                 employeeNumber
         );
     }
@@ -129,6 +132,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(employee.getEmployeeNumber()) // 사번(employeeNumber)로 식별
                 .claim("auth", roles)
+                .claim( "employeeId",employee.getEmployeeId())
                 .claim("employeeNumber", employee.getEmployeeNumber())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessExpirationTime))

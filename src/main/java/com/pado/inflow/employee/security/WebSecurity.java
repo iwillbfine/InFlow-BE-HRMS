@@ -1,6 +1,7 @@
 package com.pado.inflow.employee.security;
 
 import com.pado.inflow.employee.info.command.application.service.EmployeeCommandService;
+import com.pado.inflow.employee.info.command.domain.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,14 +28,18 @@ public class WebSecurity {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private EmployeeCommandService employeeService;
+
+    private EmployeeRepository employeeRepository;
     private Environment env;
     private JwtUtil jwtUtil;
 
     @Autowired
     public WebSecurity(BCryptPasswordEncoder bCryptPasswordEncoder,  EmployeeCommandService employeeService
-            , Environment env, JwtUtil jwtUtil) {
+            , Environment env, JwtUtil jwtUtil
+    ,EmployeeRepository employeeRepository) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.employeeService = employeeService;
+        this.employeeRepository=employeeRepository;
         this.env = env;
         this.jwtUtil = jwtUtil;
     }
@@ -186,7 +191,8 @@ public class WebSecurity {
 
     // 커스텀 인증 필터 설정 (로그인 URL 변경)
     private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager) {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager, employeeService, env, bCryptPasswordEncoder);
+        AuthenticationFilter authenticationFilter
+                = new AuthenticationFilter(authenticationManager,employeeRepository, env, bCryptPasswordEncoder);
         authenticationFilter.setFilterProcessesUrl("/api/login"); // 로그인 처리 URL 변경
         authenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
         return authenticationFilter;
