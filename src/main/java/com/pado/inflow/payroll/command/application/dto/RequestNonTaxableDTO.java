@@ -14,5 +14,5 @@ public class RequestNonTaxableDTO {
     private String nonTaxableName;
 
     @JsonProperty("amount")
-    private int amount;
+    private Integer amount;
 }
