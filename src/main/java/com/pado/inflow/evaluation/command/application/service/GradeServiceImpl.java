@@ -79,4 +79,77 @@ public class GradeServiceImpl implements GradeService {
 
         return createdGrades;
     }
+
+    @Override
+    public GradeResponseDTO updateGrade(Long gradeId) {
+        // 수정할 등급 조회
+        GradeEntity targetGrade = gradeRepository.findById(gradeId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_GRADE));
+
+        // 해당 평가정책의 모든 등급 조회
+        List<GradeDTO> grades = gradeService.findByEvaluationPolicyId(targetGrade.getEvaluationPolicyId());
+
+        // 현재 등급의 위치 찾기
+        int currentIndex = -1;
+        for (int i = 0; i < grades.size(); i++) {
+            if (grades.get(i).getGradeId().equals(gradeId)) {
+                currentIndex = i;
+                break;
+            }
+        }
+
+        if (currentIndex == -1) {
+            throw new CommonException(ErrorCode.NOT_FOUND_GRADE);
+        }
+
+        int totalGrades = grades.size();
+
+        // 첫 번째 등급인 경우 (예: S등급)
+        if (currentIndex == 0) {
+            if (totalGrades > 1) {
+                GradeDTO nextGrade = grades.get(1);
+                if (targetGrade.getEndRatio() >= nextGrade.getStartRatio()) {
+                    throw new CommonException(ErrorCode.INVALID_GRADE_RATIO);
+                }
+                if (targetGrade.getAbsoluteGradeRatio() <= nextGrade.getAbsoluteGradeRatio()) {
+                    throw new CommonException(ErrorCode.INVALID_GRADE_SCORE);
+                }
+            }
+        }
+        // 마지막 등급인 경우
+        else if (currentIndex == totalGrades - 1) {
+            if (targetGrade.getEndRatio() > 1.0) {
+                throw new CommonException(ErrorCode.INVALID_GRADE_RATIO);
+            }
+            GradeDTO prevGrade = grades.get(currentIndex - 1);
+            if (targetGrade.getStartRatio() <= prevGrade.getEndRatio()) {
+                throw new CommonException(ErrorCode.INVALID_GRADE_RATIO);
+            }
+            if (targetGrade.getAbsoluteGradeRatio() >= prevGrade.getAbsoluteGradeRatio()) {
+                throw new CommonException(ErrorCode.INVALID_GRADE_SCORE);
+            }
+        }
+        // 중간 등급인 경우
+        else {
+            GradeDTO prevGrade = grades.get(currentIndex - 1);
+            GradeDTO nextGrade = grades.get(currentIndex + 1);
+
+            // 비율 검증
+            if (targetGrade.getStartRatio() <= prevGrade.getEndRatio()) {
+                throw new CommonException(ErrorCode.INVALID_GRADE_RATIO);
+            }
+            if (targetGrade.getEndRatio() >= nextGrade.getStartRatio()) {
+                throw new CommonException(ErrorCode.INVALID_GRADE_RATIO);
+            }
+
+            // 절대평가 점수 검증
+            if (targetGrade.getAbsoluteGradeRatio() >= prevGrade.getAbsoluteGradeRatio() ||
+                    targetGrade.getAbsoluteGradeRatio() <= nextGrade.getAbsoluteGradeRatio()) {
+                throw new CommonException(ErrorCode.INVALID_GRADE_SCORE);
+            }
+        }
+
+        return gradeRepository.save(targetGrade).toResponseDTO();
+    }
+
 }

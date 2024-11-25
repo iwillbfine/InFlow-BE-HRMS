@@ -28,6 +28,15 @@ public class GradeController {
         List<GradeResponseDTO> createdGrades =
                 gradeService.createGrade(createGradeRequestDTO, year, half);
         return ResponseDTO.ok(createdGrades);
-
     }
+
+    // 등급 수정
+    @PatchMapping("/{gradeId}")
+    public ResponseDTO<GradeResponseDTO> GradeUpdate(
+            @PathVariable(value = "gradeId") Long gradeId
+    ) {
+        GradeResponseDTO updatedGrade = gradeService.updateGrade(gradeId);
+        return ResponseDTO.ok(updatedGrade);
+    }
+
 }
