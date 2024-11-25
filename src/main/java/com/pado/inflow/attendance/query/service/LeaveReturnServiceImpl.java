@@ -45,4 +45,10 @@ public class LeaveReturnServiceImpl implements LeaveReturnService {
         return new PageDTO<>(leaveReturns, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
     }
 
+    // 당일기준 휴직 여부 검사
+    @Override
+    public Boolean isLeaveNow(Long employeeId) {
+        return leaveReturnMapper.findTodayLeaveByEmployeeId(employeeId) != null;
+    }
+
 }

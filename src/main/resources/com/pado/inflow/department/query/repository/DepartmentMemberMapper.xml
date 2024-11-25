@@ -1,0 +1,39 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.department.query.repository.DepartmentMemberMapper">
+
+    <resultMap id="departmentMemberMap" type="com.pado.inflow.department.query.dto.DepartmentMemberDTO">
+        <id property="departmentMemberId" column="department_member_id"/>
+        <result property="employeeNumber" column="employee_number"/>
+        <result property="name" column="name"/>
+        <result property="roleName" column="role_name"/>
+        <result property="email" column="email"/>
+        <result property="profileImgUrl" column="profile_img_url"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="attendanceStatusTypeName" column="attendance_status_type_name"/>
+        <result property="managerStatus" column="manager_status"/>
+        <result property="departmentCode" column="department_code"/>
+        <result property="employeeId" column="employee_id"/>
+    </resultMap>
+
+    <!-- 부서 구성원 단건 조회 -->
+    <select id="findDepartmentMemberByEmployeeId" resultMap="departmentMemberMap">
+        SELECT
+        dm.department_member_id,
+        dm.employee_number,
+        dm.name,
+        dm.role_name,
+        dm.email,
+        dm.profile_img_url,
+        dm.phone_number,
+        dm.attendance_status_type_name,
+        dm.manager_status,
+        dm.department_code,
+        dm.employee_id
+        FROM
+        department_member dm
+        WHERE
+        dm.employee_id = #{employeeId}
+    </select>
+</mapper>

@@ -28,4 +28,14 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         return TaskTypeList;
     }
 
+    @Override
+    public TaskTypeDTO findTaskType(Long taskTypeId) {
+        TaskTypeDTO selectedTaskType = taskTypeMapper.findTaskTypeByTaskTypeId(taskTypeId);
+
+        if (selectedTaskType == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK_TYPE);
+        }
+        return selectedTaskType;
+    }
+
 }

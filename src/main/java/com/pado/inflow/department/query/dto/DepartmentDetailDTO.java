@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class GetDepartmentDetailDTO {
+public class DepartmentDetailDTO {
 
     // 부서 상세 조회 -> 부서 정보
 

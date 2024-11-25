@@ -41,4 +41,7 @@ public class FeedbackController {
         UpdateFeedbackResponseDTO updateFeedbackResponseDTO = feedBackService.updateFeedback(feedbackId, updateFeedbackRequestDTO);
         return ResponseDTO.ok(updateFeedbackResponseDTO);
     }
+
+    // 피드백 삭제 ( ITO )
+
 }

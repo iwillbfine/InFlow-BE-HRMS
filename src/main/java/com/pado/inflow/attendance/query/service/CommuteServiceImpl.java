@@ -45,4 +45,16 @@ public class CommuteServiceImpl implements CommuteService {
         return new PageDTO<>(commutes, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
     }
 
+    // 당일 재택 출퇴근 내역 조회
+    @Override
+    public CommuteDTO findTodayRemoteByEmployeeId(Long employeeId) {
+        return commuteMapper.findTodayRemoteByEmployeeId(employeeId);
+    }
+
+    // 당일 출퇴근 내역 조회
+    @Override
+    public CommuteDTO findTodayCommuteByEmployeeId(Long employeeId) {
+        return commuteMapper.findTodayCommuteByEmployeeId(employeeId);
+    }
+
 }
