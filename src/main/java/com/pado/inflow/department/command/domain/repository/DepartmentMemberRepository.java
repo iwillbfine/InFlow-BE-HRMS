@@ -1,7 +1,13 @@
 package com.pado.inflow.department.command.domain.repository;
 
 import com.pado.inflow.department.command.domain.aggregate.entity.DepartmentMember;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 public interface DepartmentMemberRepository extends JpaRepository<DepartmentMember, Long> {
 
@@ -17,4 +23,11 @@ public interface DepartmentMemberRepository extends JpaRepository<DepartmentMemb
      * @return 해당 사원 번호가 존재하면 true, 없으면 false
      */
     boolean existsByEmployeeNumber(String employeeNumber);
+
+    // 이름을 기준으로 특정 부서원을 찾는 메서드
+    Optional<DepartmentMember> findByName(String name);
+
+    @Modifying
+    @Query("UPDATE DepartmentMember dm SET dm.roleName = :roleName WHERE dm.departmentCode = :departmentCode AND dm.roleName = '부서장'")
+    void updateRoleAndDepartmentCodeByDepartmentCode(@Param("departmentCode") String departmentCode, @Param("roleName") String roleName);
 }
