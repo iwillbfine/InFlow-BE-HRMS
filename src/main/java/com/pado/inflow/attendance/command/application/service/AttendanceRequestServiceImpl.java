@@ -11,13 +11,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Map;
 
 @Service("appAttendanceService")
 public class AttendanceRequestServiceImpl implements AttendanceRequestService {
@@ -30,6 +30,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
     private final CommuteRepository commuteRepository;
     private final LeaveReturnRepository leaveReturnRepository;
     private final EmployeeRepository employeeRepository;
+    private final AttendanceS3Service attendanceS3Service;
 
     @Autowired
     public AttendanceRequestServiceImpl(ModelMapper modelMapper,
@@ -39,7 +40,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                                         BusinessTripRepository businessTripRepository,
                                         CommuteRepository commuteRepository,
                                         LeaveReturnRepository leaveReturnRepository,
-                                        EmployeeRepository employeeRepository) {
+                                        EmployeeRepository employeeRepository,
+                                        AttendanceS3Service attendanceS3Service) {
         this.modelMapper = modelMapper;
         this.attendanceRequestRepository = attendanceRequestRepository;
         this.attendanceRequestTypeRepository = attendanceRequestTypeRepository;
@@ -48,6 +50,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         this.commuteRepository = commuteRepository;
         this.leaveReturnRepository = leaveReturnRepository;
         this.employeeRepository = employeeRepository;
+        this.attendanceS3Service = attendanceS3Service;
     }
 
     // 재택근무 신청
@@ -458,39 +461,36 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
 
 
         // 휴직 신청 내역 등록
-        AttendanceRequest attendanceRequest =
+        AttendanceRequest leaveRequest =
                 attendanceRequestRepository.save(modelMapper.map(resLeaveReturnRequestDTO, AttendanceRequest.class));
 
-        System.out.println("1");
-
         // 첨부 파일 DB 저장
-        for (Map<String, String> file : reqLeaveRequestDTO.getAttachments()) {
+        for (MultipartFile file : reqLeaveRequestDTO.getAttachments()) {
+
+            String fileUrl = attendanceS3Service.uploadFile(file, leaveRequest.getEmployeeId());
+
             ResponseAttendanceRequestFileDTO resAttendanceRequestFileDTO = ResponseAttendanceRequestFileDTO
                     .builder()
-                    .fileName(file.get("file_name"))
-                    .fileUrl(file.get("file_url"))
-                    .attendanceRequestId(attendanceRequest.getAttendanceRequestId())
+                    .fileName(file.getOriginalFilename())
+                    .fileUrl(fileUrl)
+                    .attendanceRequestId(leaveRequest.getAttendanceRequestId())
                     .build();
 
             attendanceRequestFileRepository.save(modelMapper.map(resAttendanceRequestFileDTO, AttendanceRequestFile.class));
         }
-
-        System.out.println("2");
 
         // 휴직 내역 등록
         ResponseLeaveReturnDTO leaveReturnDTO = ResponseLeaveReturnDTO
                 .builder()
                 .startDate(startDate)
                 .endDate(endDate)
-                .employeeId(attendanceRequest.getEmployeeId())
-                .attendanceRequestId(attendanceRequest.getAttendanceRequestId())
+                .employeeId(leaveRequest.getEmployeeId())
+                .attendanceRequestId(leaveRequest.getAttendanceRequestId())
                 .build();
 
         leaveReturnRepository.save(modelMapper.map(leaveReturnDTO, LeaveReturn.class));
 
-        System.out.println("3");
-
-        return modelMapper.map(attendanceRequest, ResponseLeaveReturnRequestDTO.class);
+        return modelMapper.map(leaveRequest, ResponseLeaveReturnRequestDTO.class);
     }
 
     // 복직 신청
@@ -540,6 +540,11 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
 
+        // 휴직 종료일이 변경 이전 종료일보다 이후일 경우
+        if (endDate.toLocalDate().isAfter(leaveRequest.getEndDate().toLocalDate())) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
         ResponseLeaveReturnRequestDTO resLeaveReturnDTO = ResponseLeaveReturnRequestDTO
                 .builder()
                 .requestReason(reqReturnRequestDTO.getRequestReason())
@@ -560,11 +565,14 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                 attendanceRequestRepository.save(modelMapper.map(resLeaveReturnDTO, AttendanceRequest.class));
 
         // 첨부 파일 DB 저장
-        for (Map<String, String> file : reqReturnRequestDTO.getAttachments()) {
+        for (MultipartFile file : reqReturnRequestDTO.getAttachments()) {
+
+            String fileUrl = attendanceS3Service.uploadFile(file, returnRequest.getEmployeeId());
+
             ResponseAttendanceRequestFileDTO resAttendanceRequestFileDTO = ResponseAttendanceRequestFileDTO
                     .builder()
-                    .fileName(file.get("file_name"))
-                    .fileUrl(file.get("file_url"))
+                    .fileName(file.getOriginalFilename())
+                    .fileUrl(fileUrl)
                     .attendanceRequestId(returnRequest.getAttendanceRequestId())
                     .build();
 

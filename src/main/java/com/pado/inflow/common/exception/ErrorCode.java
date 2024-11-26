@@ -97,9 +97,9 @@ public enum ErrorCode {
     NOT_FOUND_PUBLIC_HOLIDAY(40424, HttpStatus.NOT_FOUND, "공휴일 정보가 존재하지 않습니다."),
     NOT_FOUND_IRREGULAR_ALLOWANCE(40425, HttpStatus.NOT_FOUND, "비정기 수당 항목이 존재하지 않습니다."),
     NOT_FOUND_PAYMENT(40426, HttpStatus.NOT_FOUND, "급여 지급 내역이 존재하지 않습니다."),
-    NOT_FOUND_ATTENDANCE_REQUEST_TYPE(40427, HttpStatus.NOT_FOUND, "출석 요청 유형이 존재하지 않습니다."),
-    NOT_FOUND_ATTENDANCE_REQUEST(40428, HttpStatus.NOT_FOUND, "출석 요청이 존재하지 않습니다."),
-    NOT_FOUND_ATTENDANCE_REQUEST_FILE(40429, HttpStatus.NOT_FOUND, "출석 요청 파일이 존재하지 않습니다."),
+    NOT_FOUND_ATTENDANCE_REQUEST_TYPE(40427, HttpStatus.NOT_FOUND, "근태 신청 유형이 존재하지 않습니다."),
+    NOT_FOUND_ATTENDANCE_REQUEST(40428, HttpStatus.NOT_FOUND, "근태 신청 내역이 존재하지 않습니다."),
+    NOT_FOUND_ATTENDANCE_REQUEST_FILE(40429, HttpStatus.NOT_FOUND, "근태 신청 파일이 존재하지 않습니다."),
     NOT_FOUND_COMMUTE(40430, HttpStatus.NOT_FOUND, "통근 정보가 존재하지 않습니다."),
     NOT_FOUND_LEAVE_RETURN(40431, HttpStatus.NOT_FOUND, "휴직 및 복직 정보가 존재하지 않습니다."),
     NOT_FOUND_BUSINESS_TRIP(40432, HttpStatus.NOT_FOUND, "출장 정보가 존재하지 않습니다."),
@@ -120,6 +120,7 @@ public enum ErrorCode {
     NOT_FOUND_COMPANY(40447, HttpStatus.NOT_FOUND, "회사 정보가 존재하지 않습니다."),
     NOT_FOUND_TASK_NAME(40448, HttpStatus.NOT_FOUND,"과제명을 입력해주세요."),
     NOT_FOUND_TASK_ITEM_CONTENT(40448, HttpStatus.NOT_FOUND,"과제 내용을 입력해주세요."),
+    NOT_FOUND_TASK_TYPE_EVAL(40448, HttpStatus.NOT_FOUND,"평가 정책별 평가 항목이 없습니다."),
 
 
     // 409: 중복 데이터 (Conflict)
