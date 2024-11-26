@@ -20,6 +20,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,18 +37,21 @@ public class VacationRequestServiceImpl implements VacationRequestService {
     private final VacationRequestFileRepository vacationRequestFileRepository;
     private final VacationRepository vacationRepository;
     private final EmployeeRepository employeeRepository;
+    private final VacationS3Service vacationS3Service;
 
     @Autowired
     public VacationRequestServiceImpl(ModelMapper modelMapper,
                                       VacationRequestRepository vacationRequestRepository,
                                       VacationRequestFileRepository vacationRequestFileRepository,
                                       VacationRepository vacationRepository,
-                                      EmployeeRepository employeeRepository) {
+                                      EmployeeRepository employeeRepository,
+                                      VacationS3Service vacationS3Service) {
         this.modelMapper = modelMapper;
         this.vacationRequestRepository = vacationRequestRepository;
         this.vacationRequestFileRepository = vacationRequestFileRepository;
         this.vacationRepository = vacationRepository;
         this.employeeRepository = employeeRepository;
+        this.vacationS3Service = vacationS3Service;
     }
 
     // 휴가 신청 등록
@@ -102,7 +106,6 @@ public class VacationRequestServiceImpl implements VacationRequestService {
                 .endDate(endDate)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .requestReason(reqVacationRequestDTO.getRequestReason())
-//                .requestStatus(RequestStatus.WAIT.name())
                 .requestStatus(RequestStatus.ACCEPT.name())
                 .canceledAt(null)
                 .cancelReason(null)
@@ -115,11 +118,14 @@ public class VacationRequestServiceImpl implements VacationRequestService {
                 vacationRequestRepository.save(modelMapper.map(resVacationRequestDTO, VacationRequest.class));
 
         // 첨부 파일 DB 저장
-        for (Map<String, String> file : reqVacationRequestDTO.getAttachments()) {
+        for (MultipartFile file : reqVacationRequestDTO.getAttachments()) {
+
+            String fileUrl = vacationS3Service.uploadFile(file, vacationRequest.getEmployeeId());
+
             ResponseVacationRequestFileDTO resVacationRequestFileDTO = ResponseVacationRequestFileDTO
                     .builder()
-                    .fileName(file.get("file_name"))
-                    .fileUrl(file.get("file_url"))
+                    .fileName(file.getOriginalFilename())
+                    .fileUrl(fileUrl)
                     .vacationRequestId(vacationRequest.getVacationRequestId())
                     .build();
 

@@ -28,14 +28,6 @@ class VacationRequestServiceTests {
     @Test
     void testRegistVacationRequest() {
         // Given
-        List<Map<String, String>> attachments = new ArrayList<>();
-
-        Map<String, String> file = new HashMap<>();
-        file.put("file_name", "테스트용 첨부파일");
-        file.put("file_url", "https://aws.com/inflow/file.pdf");
-
-        attachments.add(file);
-
         RequestVacationRequestDTO reqVacationRequestDTO = RequestVacationRequestDTO
                 .builder()
                 .startDate("2024-11-13")
@@ -43,11 +35,10 @@ class VacationRequestServiceTests {
                 .requestReason("가족 여행")
                 .employeeId(1L)
                 .vacationId(1L)
-                .attachments(attachments)
                 .build();
 
         // When
-        ResponseVacationRequestDTO resVacationRequestDTO = vacationRequestService.registVacationRequest(reqVacationRequestDTO);
+        ResponseVacationRequestDTO resVacationRequestDTO = vacationRequestService.registVacationRequest(reqVacationRequestDTO, null);
         if (resVacationRequestDTO != null) {
             log.info(resVacationRequestDTO.toString());
         }
