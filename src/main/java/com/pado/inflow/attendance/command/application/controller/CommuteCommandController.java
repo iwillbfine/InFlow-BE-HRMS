@@ -1,6 +1,5 @@
 package com.pado.inflow.attendance.command.application.controller;
 
-import com.pado.inflow.attendance.command.application.dto.ResponseCommuteDTO;
 import com.pado.inflow.attendance.command.application.service.CommuteCommandService;
 import com.pado.inflow.common.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
