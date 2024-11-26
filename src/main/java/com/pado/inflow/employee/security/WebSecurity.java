@@ -65,6 +65,7 @@ public class WebSecurity {
         http.authorizeHttpRequests(authz -> authz
                         // 설명. 1. 로그인은 어떤 사용자도 이용 가능
                         .requestMatchers(new AntPathRequestMatcher("/api/login", "POST")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/auth/**", "POST")).permitAll()
 
                         // 설명. 2. employee(사원) 도메인
                         // 설명. 2.1. 사원 테이블 관련 API
