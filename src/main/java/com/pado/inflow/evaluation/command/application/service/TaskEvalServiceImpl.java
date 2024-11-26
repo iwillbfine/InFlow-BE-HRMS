@@ -55,10 +55,13 @@ public class TaskEvalServiceImpl implements TaskEvalService {
         List<EvaluationPolicyDTO> selectedPolicy =
                 evaluationPolicyMapper.findPolicyByYearAndHalf(year, half);
 
-        if (selectedPolicy.get(0).getStartDate().isAfter(LocalDateTime.now())
-                || selectedPolicy.get(0).getEndDate().isBefore(LocalDateTime.now())) {
+        if (selectedPolicy.isEmpty() ||
+                selectedPolicy.get(0).getStartDate().isAfter(LocalDateTime.now()) ||
+                selectedPolicy.get(0).getEndDate().isBefore(LocalDateTime.now())) {
             throw new CommonException(ErrorCode.TASK_EVAL_CREATE_FAILURE);
         }
+
+        EvaluationPolicyDTO evaluationPolicyDTO = selectedPolicy.get(0);
 
         // 평가 조회 후 Request 날린 employeeId와 평가 테이블에서 평가 대상자의 employeeId가 같으면 자기평가 아니면 리더평가
         List<EvaluationDTO> selectedEvaluations =
@@ -70,35 +73,39 @@ public class TaskEvalServiceImpl implements TaskEvalService {
                 .findFirst()
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EVALUATION));
 
-        // 과제 항목 조회 (TaskItemRepository 사용)
+        // 과제 항목 조회
         Long taskItemId = createTaskEvalRequestDTO.getTaskItemId();
         TaskItemEntity taskItemEntity = taskItemRepository.findById(taskItemId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_TASK));
 
-        // TaskEvalDTO 생성 후 엔티티로 변환하여 저장
+        // 점수 계산 (Score * Task_ratio * Set_ratio)
+        double calculatedScore = createTaskEvalRequestDTO.getScore()
+                * evaluationPolicyDTO.getTaskRatio()
+                * createTaskEvalRequestDTO.getSetRatio();
+
+        // 저장
         TaskEvalDTO taskEvalDTO = TaskEvalDTO.builder()
                 .taskEvalName(createTaskEvalRequestDTO.getTaskEvalName())
                 .taskEvalContent(createTaskEvalRequestDTO.getTaskEvalContent())
-                .score(createTaskEvalRequestDTO.getScore())
+                .score(calculatedScore)  // 계산된 점수 저장
                 .setRatio(createTaskEvalRequestDTO.getSetRatio())
                 .performanceInput(createTaskEvalRequestDTO.getPerformanceInput())
                 .relEvalStatus(false)   // 기본값 false로 지정. 나중에 수정 필요
                 .evaluationId(evaluationDTO.getEvaluationId())
-                .modifiableDate(selectedPolicy.get(0).getModifiableDate()) // 수정 가능 날
+                .modifiableDate(evaluationPolicyDTO.getModifiableDate()) // 수정 가능 일
                 .taskTypeId(createTaskEvalRequestDTO.getTaskTypeId())
                 .taskItemId(taskItemEntity.getTaskItemId())
                 .build();
 
-        // DTO를 엔티티로 변환
         TaskEvalEntity taskEvalEntity = taskEvalDTO.toEntity();
-
         TaskEvalEntity savedEntity = taskEvalRepository.save(taskEvalEntity);
 
-        // ResponseDTO 생성 및 반환
+        // 반환
         TaskEvalResponseDTO responseDTO = savedEntity.toResponseDTO();
 
         return responseDTO;
     }
+
 
     @Override
     public TaskEvalResponseDTO updateTaskEval(Long taskEvalId, UpdateTaskEvalRequestDTO requestDTO) {
@@ -120,20 +127,25 @@ public class TaskEvalServiceImpl implements TaskEvalService {
             throw new CommonException(ErrorCode.INVALID_MODIFIABLE_DATE);
         }
 
-        // 수정 가능한 경우 데이터 업데이트
+        // 5. 수정 가능한 경우 데이터 업데이트
         existingTaskEval.setTaskEvalName(requestDTO.getTaskEvalName());
         existingTaskEval.setTaskEvalContent(requestDTO.getTaskEvalContent());
-        existingTaskEval.setScore(requestDTO.getScore());
         existingTaskEval.setSetRatio(requestDTO.getSetRatio());
         existingTaskEval.setPerformanceInput(requestDTO.getPerformanceInput());
         existingTaskEval.setTaskTypeId(requestDTO.getTaskTypeId());
         existingTaskEval.setTaskItemId(requestDTO.getTaskItemId());
 
+        // 6. 점수 계산 (Score * Task_ratio * Set_ratio)
+        double calculatedScore = requestDTO.getScore() * evaluationPolicyDTO.getTaskRatio() * requestDTO.getSetRatio();
+        existingTaskEval.setScore(calculatedScore);
+
+        // 7. 변경된 엔티티 저장
         TaskEvalEntity updatedEntity = taskEvalRepository.save(existingTaskEval.toEntity());
 
-        // ResponseDTO 반환
+        // 8. ResponseDTO 반환
         return updatedEntity.toResponseDTO();
     }
+
 
 }
 
