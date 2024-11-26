@@ -13,5 +13,6 @@
                VACATION_TYPE_ID
              , VACATION_TYPE_NAME
           FROM VACATION_TYPE
+         ORDER BY VACATION_TYPE_ID
     </select>
 </mapper>
