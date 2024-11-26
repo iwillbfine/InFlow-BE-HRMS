@@ -20,16 +20,9 @@ public class CareerService {
         this.careerMapper = careerMapper;
     }
 
-    // 전 사원의 경력 조회
-    public List<CareerDTO> getCareerAll() {
-        return Optional.ofNullable(careerMapper.getAllCareers())
-                .filter(career -> !career.isEmpty())
-                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_CAREER));
-    }
-
-    // 사원 한 명의 경력 조회
-    public List<CareerDTO> getCareerOne(Long employeeId) {
-        return Optional.ofNullable(careerMapper.getOneCareer(employeeId))
+    // 사원의 경력 조회
+    public List<CareerDTO> getCareerAll(String employeeId) {
+        return Optional.ofNullable(careerMapper.getAllCareers(employeeId))
                 .filter(career -> !career.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_CAREER));
     }

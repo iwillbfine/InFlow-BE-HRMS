@@ -33,21 +33,33 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 
     // 사원의 어학 정보 등록
     @Override
-    public List<LanguageTest> addLangTests(List<LanguageTestDTO> langTests) {
-        return Optional.ofNullable(languageTestRepository.saveAll(langTests.stream()
-                .map(lang -> modelMapper.map(lang, LanguageTest.class))
-                .collect(Collectors.toList())))
-                .filter(langs -> !langs.isEmpty())
+    public List<LanguageTestDTO> addLangTests(List<LanguageTestDTO> langTests) {
+        return Optional.ofNullable(
+                        languageTestRepository.saveAll(
+                                        langTests.stream()
+                                                .map(dto -> modelMapper.map(dto, LanguageTest.class))
+                                                .collect(Collectors.toList())
+                                ).stream()
+                                .map(entity -> modelMapper.map(entity, LanguageTestDTO.class))
+                                .collect(Collectors.toList())
+                )
+                .filter(list -> !list.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     // 사원의 어학 정보 수정
     @Override
-    public List<LanguageTest> modifyLangTests(List<LanguageTestDTO> langTests) {
-        return Optional.ofNullable(languageTestRepository.saveAllAndFlush(langTests.stream()
-                        .map(lang -> modelMapper.map(lang, LanguageTest.class))
-                        .collect(Collectors.toList())))
-                .filter(langs -> !langs.isEmpty())
+    public List<LanguageTestDTO> modifyLangTests(List<LanguageTestDTO> langTests) {
+        return Optional.ofNullable(
+                        languageTestRepository.saveAllAndFlush(
+                                        langTests.stream()
+                                                .map(dto -> modelMapper.map(dto, LanguageTest.class)) // DTO → 엔티티 변환
+                                                .collect(Collectors.toList())
+                                ).stream()
+                                .map(entity -> modelMapper.map(entity, LanguageTestDTO.class)) // 엔티티 → DTO 변환
+                                .collect(Collectors.toList())
+                )
+                .filter(list -> !list.isEmpty()) // 리스트가 비어있는지 검증
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 

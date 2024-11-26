@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("CQueryController")
-@RequestMapping("/api/careers")
+@RequestMapping("/api/employees/careers")
 public class CareerController {
 
     private final CareerService careerService;
@@ -28,16 +28,16 @@ public class CareerController {
     }
 
     // 전 사원의 경력 조회
-    @GetMapping("/")
+    @GetMapping
     public ResponseDTO<List<CareerDTO>> getCareerAll() {
-        List<CareerDTO> result = careerService.getCareerAll();
+        List<CareerDTO> result = careerService.getCareerAll(null);
         return ResponseDTO.ok(result);
     }
 
     // 사원 한 명의 경력 조회
     @GetMapping("/{employeeId}")
-    public ResponseDTO<List<CareerDTO>> getCareerOne(@PathVariable("employeeId") Long employeeId) {
-        List<CareerDTO> result = careerService.getCareerOne(employeeId);
+    public ResponseDTO<List<CareerDTO>> getCareerOne(@PathVariable("employeeId") String employeeId) {
+        List<CareerDTO> result = careerService.getCareerAll(employeeId);
         return ResponseDTO.ok(result);
     }
 }

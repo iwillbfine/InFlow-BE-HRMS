@@ -20,16 +20,9 @@ public class FamilyMemberService {
         this.familyMemberMapper = familyMemberMapper;
     }
 
-    // 전 사원의 가구원 조회
-    public List<FamilyMemberDTO> getFamilyMemberAll() {
-        return Optional.of(familyMemberMapper.getAllFamilyMemberList())
-                .filter(fam -> !fam.isEmpty())
-                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_FAMILY_MEMBER));
-    }
-
-    // 사원 한 명의 가구원 조회
-    public List<FamilyMemberDTO> getFamilyMemberOne(Long employeeId) {
-        return Optional.of(familyMemberMapper.getOneFamilyMemberList(employeeId))
+    // 사원의 가구원 조회
+    public List<FamilyMemberDTO> getFamilyMemberAll(String employeeId) {
+        return Optional.of(familyMemberMapper.getAllFamilyMemberList(employeeId))
                 .filter(fam -> !fam.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_FAMILY_MEMBER));
     }

@@ -16,7 +16,7 @@ import java.util.List;
 import static java.lang.Long.parseLong;
 
 @RestController("FMQueryController")
-@RequestMapping("/api/family-members")
+@RequestMapping("/api/employees/family-members")
 public class FamilyMemberController {
 
     static FamilyMemberService familyMemberService;
@@ -32,16 +32,16 @@ public class FamilyMemberController {
     }
 
     // 전 사원의 가구원 조회
-    @GetMapping("/")
+    @GetMapping
     public ResponseDTO<List<FamilyMemberDTO>> getAllFamilyMemberList() {
-        List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberAll();
+        List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberAll(null);
         return ResponseDTO.ok(result);
     }
 
     // 사원 한 명의 가구원 조회(/사원ID)
     @GetMapping("/{employeeId}")
     public ResponseEntity<List<FamilyMemberDTO>> getOneFamilyMemberList(@PathVariable("employeeId") String employeeId) {
-        List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberOne(parseLong(employeeId));
+        List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberAll(employeeId);
         return ResponseEntity.ok(result);
     }
 }

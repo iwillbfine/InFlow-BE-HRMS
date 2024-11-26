@@ -26,14 +26,14 @@ public class EmployeeNumController {
 
     // 연도별 사원수 통계 조회
     @GetMapping
-    public ResponseDTO getYearlyEmployeeNum() {
+    public ResponseDTO<List<EmployeeNumDTO>> getYearlyEmployeeNum() {
         List<EmployeeNumDTO> result = employeeNumService.getYearlyEmpNums(null);
         return ResponseDTO.ok(result);
     }
 
     // 특정 년도의 사원수 통계 조회
     @GetMapping("/{year}")
-    public ResponseDTO getMonthlyEmployeeNum(@PathVariable("year") String year) {
+    public ResponseDTO<List<EmployeeNumDTO>> getMonthlyEmployeeNum(@PathVariable("year") String year) {
         List<EmployeeNumDTO> result = employeeNumService.getYearlyEmpNums(year);
         return ResponseDTO.ok(result);
     }
