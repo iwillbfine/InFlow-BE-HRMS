@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Builder
-public class LeaveReturnDTO {
+public class ResponseLeaveReturnDTO {
     private Long leaveReturnId;
     private LocalDateTime startDate;
     private LocalDateTime endDate;

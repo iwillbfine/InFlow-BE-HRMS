@@ -153,14 +153,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String accessToken = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(new Date(accessExpiration))
-                .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
+                .signWith(SignatureAlgorithm.HS512, env.getProperty("token.access-secret"))
                 .compact();
 
         // 리프레시 토큰 생성
         String refreshToken = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(new Date(refreshExpiration))
-                .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
+                .signWith(SignatureAlgorithm.HS512, env.getProperty("token.refresh-secret"))
                 .compact();
 
         // 로그인 응답 객체 생성

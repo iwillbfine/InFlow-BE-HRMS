@@ -30,21 +30,33 @@ public class QualificationServiceImpl implements QualificationService {
 
     // 사원의 자격증 정보 등록
     @Override
-    public List<Qualification> addQualifications(List<QualificationDTO> quals) {
-        return Optional.ofNullable(qualificationRepository.saveAll(quals.stream()
-                .map(mem -> modelMapper.map(mem, Qualification.class))
-                .collect(Collectors.toList())))
-                .filter(ql -> !ql.isEmpty())
+    public List<QualificationDTO> addQualifications(List<QualificationDTO> quals) {
+        return Optional.ofNullable(
+                        qualificationRepository.saveAll(
+                                        quals.stream()
+                                                .map(dto -> modelMapper.map(dto, Qualification.class))
+                                                .collect(Collectors.toList())
+                                ).stream()
+                                .map(entity -> modelMapper.map(entity, QualificationDTO.class))
+                                .collect(Collectors.toList())
+                )
+                .filter(list -> !list.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     // 사원의 자격증 정보 수정
     @Override
-    public List<Qualification> modifyQualifications(List<QualificationDTO> quals) {
-        return Optional.ofNullable(qualificationRepository.saveAllAndFlush(quals.stream()
-                .map(mem -> modelMapper.map(mem, Qualification.class))
-                .collect(Collectors.toList())))
-                .filter(ql -> !ql.isEmpty())
+    public List<QualificationDTO> modifyQualifications(List<QualificationDTO> quals) {
+        return Optional.ofNullable(
+                        qualificationRepository.saveAllAndFlush(
+                                        quals.stream()
+                                                .map(dto -> modelMapper.map(dto, Qualification.class))
+                                                .collect(Collectors.toList())
+                                ).stream()
+                                .map(entity -> modelMapper.map(entity, QualificationDTO.class))
+                                .collect(Collectors.toList())
+                )
+                .filter(list -> !list.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 

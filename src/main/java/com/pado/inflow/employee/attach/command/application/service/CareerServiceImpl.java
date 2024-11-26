@@ -30,21 +30,33 @@ public class CareerServiceImpl implements CareerService {
 
     // 사원의 경력정보 등록
     @Override
-    public List<Career> addCareers(List<CareerDTO> careers) {
-        return Optional.ofNullable(careerRepository.saveAll(careers.stream()
-                .map(mem -> modelMapper.map(mem, Career.class))
-                .collect(Collectors.toList())))
-                .filter(career -> !career.isEmpty())
+    public List<CareerDTO> addCareers(List<CareerDTO> careers) {
+        return Optional.ofNullable(
+                        careerRepository.saveAll(
+                                        careers.stream()
+                                                .map(dto -> modelMapper.map(dto, Career.class))
+                                                .collect(Collectors.toList())
+                                ).stream()
+                                .map(entity -> modelMapper.map(entity, CareerDTO.class))
+                                .collect(Collectors.toList())
+                )
+                .filter(careerList -> !careerList.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     // 사원의 경력정보 수정
     @Override
-    public List<Career> modifyCareers(List<CareerDTO> careers) {
-        return Optional.ofNullable(careerRepository.saveAllAndFlush(careers.stream()
-                .map(mem -> modelMapper.map(mem, Career.class))
-                .collect(Collectors.toList())))
-                .filter(career -> !career.isEmpty())
+    public List<CareerDTO> modifyCareers(List<CareerDTO> careers) {
+        return Optional.ofNullable(
+                        careerRepository.saveAllAndFlush(
+                                        careers.stream()
+                                                .map(dto -> modelMapper.map(dto, Career.class))
+                                                .collect(Collectors.toList())
+                                ).stream()
+                                .map(entity -> modelMapper.map(entity, CareerDTO.class))
+                                .collect(Collectors.toList())
+                )
+                .filter(careerList -> !careerList.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 

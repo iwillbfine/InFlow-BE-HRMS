@@ -20,16 +20,9 @@ public class EducationService {
         this.educationMapper = educationMapper;
     }
 
-    // 전 사원의 학력 조회
-    public List<EducationDTO> getEduAll() {
-        return Optional.of(educationMapper.getAllEducation())
-                .filter(edu -> !edu.isEmpty())
-                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EDUCATION));
-    }
-
-    // 사원 한 명의 학력 조회
-    public List<EducationDTO> getEduOne(Long employeeId) {
-        return Optional.of(educationMapper.getOneEducation(employeeId))
+    // 사원의 학력 조회
+    public List<EducationDTO> getEduAll(String employeeId) {
+        return Optional.of(educationMapper.getAllEducation(employeeId))
                 .filter(edu -> !edu.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EDUCATION));
     }

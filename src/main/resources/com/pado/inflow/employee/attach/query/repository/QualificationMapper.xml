@@ -22,18 +22,10 @@
              , GRADE_SCORE
              , EMPLOYEE_ID
           FROM QUALIFICATION
-    </select>
-
-    <select id="getOneQualification" resultMap="ResultMap" parameterType="_long">
-        SELECT
-               QUALIFICATION_ID
-             , QUALIFICATION_NAME
-             , QUALIFICATION_NUMBER
-             , DATE(QUALIFIED_AT) AS QUALIFIED_AT
-             , ISSUER
-             , GRADE_SCORE
-             , EMPLOYEE_ID
-          FROM QUALIFICATION
-         WHERE EMPLOYEE_ID = #{employeeId}
+         <where>
+             <if test="employeeId != null">
+                 EMPLOYEE_ID = #{employeeId}
+             </if>
+         </where>
     </select>
 </mapper>

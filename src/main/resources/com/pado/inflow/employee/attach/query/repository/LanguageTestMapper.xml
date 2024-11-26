@@ -13,7 +13,7 @@
         <result property="languageName" column="LANGUAGE_NAME"/>
     </resultMap>
 
-    <select id="getAllLanguageTests" resultMap="ResultMap">
+    <select id="getAllLanguageTests" resultMap="ResultMap" parameterType="string">
         SELECT
                A.LANGUAGE_TEST_ID
              , A.LANGUAGE_TEST_NAME
@@ -25,20 +25,10 @@
              , B.LANGUAGE_NAME
          FROM LANGUAGE_TEST A INNER JOIN LANGUAGE B
            ON A.LANGUAGE_CODE = B.LANGUAGE_CODE
-    </select>
-
-    <select id="getOneLanguageTest" resultMap="ResultMap" parameterType="_long">
-        SELECT
-               A.LANGUAGE_TEST_ID
-             , A.LANGUAGE_TEST_NAME
-             , A.QUALIFICATION_NUMBER
-             , A.ISSUER
-             , DATE(A.QUALIFIED_AT) AS QUALIFIED_AT
-             , A.GRADE_SCORE
-             , A.EMPLOYEE_ID
-             , B.LANGUAGE_NAME
-          FROM LANGUAGE_TEST A INNER JOIN LANGUAGE B
-            ON A.LANGUAGE_CODE = B.LANGUAGE_CODE
-         WHERE A.EMPLOYEE_ID = #{employeeId}
+         <where>
+             <if test="employeeId != null">
+                 A.EMPLOYEE_ID = #{employeeId}
+             </if>
+         </where>
     </select>
 </mapper>

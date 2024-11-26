@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("EQueryController")
-@RequestMapping("/api/educations")
+@RequestMapping("/api/employees/educations")
 public class EducationController {
 
     private final EducationService educationService;
@@ -28,16 +28,16 @@ public class EducationController {
     }
 
     // 전 사원의 학력 조회
-    @GetMapping("/")
+    @GetMapping
     public ResponseDTO<List<EducationDTO>> getEducationAll() {
-        List<EducationDTO> result = educationService.getEduAll();
+        List<EducationDTO> result = educationService.getEduAll(null);
         return ResponseDTO.ok(result);
     }
 
     // 사원 한 명의 학력 조회
     @GetMapping("/{employeeId}")
-    public ResponseDTO<List<EducationDTO>> getEducationOne(@PathVariable("employeeId") Long employeeId) {
-        List<EducationDTO> result = educationService.getEduOne(employeeId);
+    public ResponseDTO<List<EducationDTO>> getEducationOne(@PathVariable("employeeId") String employeeId) {
+        List<EducationDTO> result = educationService.getEduAll(employeeId);
         return ResponseDTO.ok(result);
     }
 }

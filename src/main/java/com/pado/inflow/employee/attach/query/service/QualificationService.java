@@ -20,17 +20,10 @@ public class QualificationService {
         this.qualificationMapper = qualificationMapper;
     }
 
-    // 전 사원의 자격증 조회
-    public List<QualificationDTO> getQualificationAll() {
-        return Optional.ofNullable(qualificationMapper.getAllQualifications())
+    // 사원의 자격증 조회
+    public List<QualificationDTO> getQualificationAll(String employeeId) {
+        return Optional.ofNullable(qualificationMapper.getAllQualifications(employeeId))
                 .filter(qual -> !qual.isEmpty())
-                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_QUALIFICATION));
-    }
-
-    // 사원 한 명의 자격증 조회
-    public List<QualificationDTO> getQualificationOne(Long employeeId) {
-        return Optional.ofNullable(qualificationMapper.getOneQualification(employeeId))
-                .filter(qul -> !qul.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_QUALIFICATION));
     }
 }

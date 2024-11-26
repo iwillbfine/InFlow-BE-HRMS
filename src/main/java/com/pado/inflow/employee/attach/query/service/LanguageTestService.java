@@ -20,16 +20,9 @@ public class LanguageTestService {
         this.languageTestMapper = languageTestMapper;
     }
 
-    // 전 사원의 어학 정보 조회
-    public List<LanguageTestDTO> getLanguageTestsAll() {
-        return Optional.ofNullable(languageTestMapper.getAllLanguageTests())
-                .filter(lang -> !lang.isEmpty())
-                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_LANGUAGE_TEST));
-    }
-
-    // 사원 한 명의 어학 정보 조회
-    public List<LanguageTestDTO> getLanguageTestsOne(Long employeeId) {
-        return Optional.ofNullable(languageTestMapper.getOneLanguageTest(employeeId))
+    // 사원의 어학 정보 조회
+    public List<LanguageTestDTO> getLanguageTestsAll(String employeeId) {
+        return Optional.ofNullable(languageTestMapper.getAllLanguageTests(employeeId))
                 .filter(lang -> !lang.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_LANGUAGE_TEST));
     }

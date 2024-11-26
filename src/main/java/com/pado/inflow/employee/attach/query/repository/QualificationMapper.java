@@ -8,9 +8,6 @@ import java.util.List;
 @Mapper
 public interface QualificationMapper {
 
-    // 전 사원의 경력 조회
-    List<QualificationDTO> getAllQualifications();
-
-    // 사원 한 명의 경력 조회
-    List<QualificationDTO> getOneQualification(Long employeeId);
+    // 사원의 경력 조회
+    List<QualificationDTO> getAllQualifications(String employeeId);
 }
