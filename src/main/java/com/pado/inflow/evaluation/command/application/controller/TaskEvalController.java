@@ -5,9 +5,7 @@ import com.pado.inflow.evaluation.command.application.service.TaskEvalService;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.CreateTaskEvalRequestDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.UpdateTaskEvalRequestDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.TaskEvalResponseDTO;
-import com.pado.inflow.evaluation.command.domain.aggregate.entity.TaskEvalEntity;
 import org.springframework.web.bind.annotation.*;
-import retrofit2.http.PATCH;
 
 @RestController("CommandTaskEvalController")
 @RequestMapping("/api/evaluations/taskEval")

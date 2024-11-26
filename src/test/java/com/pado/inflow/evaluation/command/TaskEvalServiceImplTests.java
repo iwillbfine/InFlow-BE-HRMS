@@ -13,6 +13,7 @@ import com.pado.inflow.evaluation.command.domain.repository.TaskEvalRepository;
 import com.pado.inflow.evaluation.command.domain.repository.TaskItemRepository;
 import com.pado.inflow.evaluation.query.dto.EvaluationDTO;
 import com.pado.inflow.evaluation.query.dto.EvaluationPolicyDTO;
+import com.pado.inflow.evaluation.query.dto.TaskEvalDTO;
 import com.pado.inflow.evaluation.query.repository.EvaluationMapper;
 import com.pado.inflow.evaluation.query.repository.EvaluationPolicyMapper;
 import com.pado.inflow.evaluation.query.repository.TaskEvalMapper;
@@ -183,7 +184,7 @@ class TaskEvalServiceImplTests {
                 .evaluationId(evaluationId)
                 .build();
 
-        TaskEvalEntity existingTaskEvalEntity = TaskEvalEntity.builder()
+        TaskEvalDTO existingTaskEvalDTO = TaskEvalDTO.builder()
                 .taskEvalId(taskEvalId)
                 .taskEvalName("Old Evaluation")
                 .taskEvalContent("Old Content")
@@ -201,7 +202,8 @@ class TaskEvalServiceImplTests {
                 .endDate(LocalDateTime.now().plusDays(1))
                 .build();
 
-//        when(taskEvalMapper.findTaskEvalByTaskEvalId(taskEvalId)).thenReturn(existingTaskEvalEntity.toResponseDTO());
+        // 기존 TaskEvalDTO를 반환하도록 설정
+        when(taskEvalMapper.findTaskEvalByTaskEvalId(taskEvalId)).thenReturn(existingTaskEvalDTO);
         when(evaluationRepository.findById(evaluationId)).thenReturn(Optional.of(evaluationEntity));
         when(evaluationPolicyService.findPolicyByYearAndHalfAndTaskTypeId(evaluationEntity.getYear(), evaluationEntity.getHalf(), requestDTO.getTaskTypeId()))
                 .thenReturn(evaluationPolicyDTO);
@@ -229,7 +231,7 @@ class TaskEvalServiceImplTests {
                 .evaluationId(evaluationId)
                 .build();
 
-        TaskEvalEntity existingTaskEvalEntity = TaskEvalEntity.builder()
+        TaskEvalDTO existingTaskEvalDTO = TaskEvalDTO.builder()
                 .taskEvalId(taskEvalId)
                 .evaluationId(evaluationId)
                 .build();
@@ -245,7 +247,8 @@ class TaskEvalServiceImplTests {
                 .endDate(LocalDateTime.now().plusDays(2))
                 .build();
 
-//        when(taskEvalMapper.findTaskEvalByTaskEvalId(taskEvalId)).thenReturn(existingTaskEvalEntity.toDTO());
+        // 기존 TaskEvalDTO를 반환하도록 설정
+        when(taskEvalMapper.findTaskEvalByTaskEvalId(taskEvalId)).thenReturn(existingTaskEvalDTO);
         when(evaluationRepository.findById(evaluationId)).thenReturn(Optional.of(evaluationEntity));
         when(evaluationPolicyService.findPolicyByYearAndHalfAndTaskTypeId(evaluationEntity.getYear(), evaluationEntity.getHalf(), requestDTO.getTaskTypeId()))
                 .thenReturn(evaluationPolicyDTO);
