@@ -33,7 +33,7 @@ public class TaskEvalController {
         return ResponseDTO.ok(createdTaskEval);
     }
 
-    @PatchMapping("/{taskEvalId}}")
+    @PatchMapping("/{taskEvalId}")
     public ResponseDTO<TaskEvalResponseDTO> updateTaskEval(
             @PathVariable(value = "taskEvalId") Long taskEvalId
            ,@RequestBody UpdateTaskEvalRequestDTO updateTaskEvalRequestDTO

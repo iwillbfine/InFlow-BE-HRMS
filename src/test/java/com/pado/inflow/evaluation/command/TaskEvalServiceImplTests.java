@@ -245,7 +245,7 @@ class TaskEvalServiceImplTests {
                 .endDate(LocalDateTime.now().plusDays(2))
                 .build();
 
-        when(taskEvalMapper.findTaskEvalByTaskEvalId(taskEvalId)).thenReturn(existingTaskEvalEntity.toDTO());
+//        when(taskEvalMapper.findTaskEvalByTaskEvalId(taskEvalId)).thenReturn(existingTaskEvalEntity.toDTO());
         when(evaluationRepository.findById(evaluationId)).thenReturn(Optional.of(evaluationEntity));
         when(evaluationPolicyService.findPolicyByYearAndHalfAndTaskTypeId(evaluationEntity.getYear(), evaluationEntity.getHalf(), requestDTO.getTaskTypeId()))
                 .thenReturn(evaluationPolicyDTO);
