@@ -83,4 +83,20 @@
         FROM evaluation e
         WHERE e.evaluation_id = #{evaluationId}
     </select>
+
+    <select id="getAllEvaluationsByYearAndHalf" resultMap="EvaluationResultMap">
+        SELECT
+        e.evaluation_id,
+        e.evaluation_type,
+        e.fin_grade,
+        e.fin_score,
+        e.year,
+        e.half,
+        e.created_at,
+        e.evaluator_id,
+        e.employee_id
+        FROM evaluation e
+        WHERE e.year = #{year}
+        AND e.half = #{half}
+    </select>
 </mapper>

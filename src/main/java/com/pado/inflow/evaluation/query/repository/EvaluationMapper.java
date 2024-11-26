@@ -14,4 +14,6 @@ public interface EvaluationMapper {
     EvaluationDTO getEvaluationByYearAndHalfAndEmpId(Long empId, Integer year, String half);
 
     List<EvaluationDTO> getEvaluationsByEmpIdAndYearAndHalf(Long empId, Integer year, String half);
+
+    List<EvaluationDTO> getAllEvaluationsByYearAndHalf(Integer year, String half);
 }

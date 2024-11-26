@@ -67,6 +67,16 @@ public class EvaluationController {
 
     }
 
+    // 평가 등급 산정에 사용할 년도 및 반기별 전 사원에 대한 평가 테이블 조회
+    @GetMapping("/AllEvaluations")
+    public ResponseDTO<?> findAllEvaluations(
+            @RequestParam( value = "year") Integer year
+           ,@RequestParam( value = "half") String half
+    ) {
+        List<EvaluationDTO> selectedAllevaluations = evaluationService.findAllEvaluations(year, half);
+        return ResponseDTO.ok(selectedAllevaluations);
+    }
+
 
 
 }
