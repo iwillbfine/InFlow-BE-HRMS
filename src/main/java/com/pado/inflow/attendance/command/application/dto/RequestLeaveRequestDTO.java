@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @NoArgsConstructor
@@ -21,5 +21,5 @@ public class RequestLeaveRequestDTO {
     private String endDate;
     private Long employeeId;
     private Long attendanceRequestTypeId;
-    private List<Map<String, String>> attachments;
+    private List<MultipartFile> attachments;
 }
