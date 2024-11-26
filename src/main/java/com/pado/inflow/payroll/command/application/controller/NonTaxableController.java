@@ -18,14 +18,14 @@ public class NonTaxableController {
         this.nonTaxableService = nonTaxableService;
     }
 
-    // 비정기 수당 항목 입력
+    // 비과세 수당 항목 입력
     @PostMapping
     public ResponseDTO<?> createNonTaxable(@RequestBody RequestNonTaxableDTO reqNonTaxableDTO) {
         ResponseNonTaxableDTO resNonTaxableDTO = nonTaxableService.createNonTaxable(reqNonTaxableDTO);
         return ResponseDTO.ok(resNonTaxableDTO);
     }
 
-    // 비정기 수당 항목 수정
+    // 비과세 수당 항목 수정
     @PutMapping("/{id}")
     public ResponseDTO<?> updateNonTaxable(@PathVariable("id") Long nonTaxableId, @RequestBody RequestNonTaxableDTO reqNonTaxableDTO) {
         ResponseNonTaxableDTO resNonTaxableDTO = nonTaxableService.updateNonTaxable(nonTaxableId, reqNonTaxableDTO);

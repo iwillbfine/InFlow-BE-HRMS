@@ -17,14 +17,55 @@
 
     <select id="getFinalEvaluationGrade" resultMap="EvaluationResultMap">
         SELECT
-               e.evaluation_id,
-               e.evaluation_type,
-               e.fin_grade
-          FROM evaluation e
-         WHERE e.employee_id = #{empId}
-           AND e.year = #{year}
-           AND e.half = #{half}
-           AND e.evaluator_id != #{empId}
+        e.evaluation_id,
+        e.evaluation_type,
+        e.fin_grade,
+        e.fin_score,
+        e.year,
+        e.half,
+        e.created_at,
+        e.evaluator_id,
+        e.employee_id
+        FROM evaluation e
+        WHERE e.employee_id = #{empId}
+        AND e.year = #{year}
+        AND e.half = #{half}
+        AND e.evaluator_id != #{empId}
+    </select>
+
+    <select id="getEvaluationByYearAndHalfAndEmpId" resultMap="EvaluationResultMap">
+        SELECT
+        e.evaluation_id,
+        e.evaluation_type,
+        e.fin_grade,
+        e.fin_score,
+        e.year,
+        e.half,
+        e.created_at,
+        e.evaluator_id,
+        e.employee_id
+        FROM evaluation e
+        WHERE e.employee_id = #{empId}
+        AND e.year = #{year}
+        AND e.half = #{half}
+        AND e.evaluator_id = #{empId}
+    </select>
+
+    <select id="getEvaluationsByEmpIdAndYearAndHalf" resultMap="EvaluationResultMap">
+        SELECT
+        e.evaluation_id,
+        e.evaluation_type,
+        e.fin_grade,
+        e.fin_score,
+        e.year,
+        e.half,
+        e.created_at,
+        e.evaluator_id,
+        e.employee_id
+        FROM evaluation e
+        WHERE e.employee_id = #{empId}
+        AND e.year = #{year}
+        AND e.half = #{half}
     </select>
 
     <!-- 평가Id로 평가 단건 조회 -->
