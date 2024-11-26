@@ -116,19 +116,21 @@ public class VacationRequestServiceImpl implements VacationRequestService {
         VacationRequest vacationRequest =
                 vacationRequestRepository.save(modelMapper.map(resVacationRequestDTO, VacationRequest.class));
 
-        // 첨부 파일 DB 저장
-        for (MultipartFile file : reqVacationRequestDTO.getAttachments()) {
+        if (reqVacationRequestDTO.getAttachments() != null && !reqVacationRequestDTO.getAttachments().isEmpty()) {
+            // 첨부 파일 DB 저장
+            for (MultipartFile file : reqVacationRequestDTO.getAttachments()) {
 
-            String fileUrl = vacationS3Service.uploadFile(file, vacationRequest.getEmployeeId());
+                String fileUrl = vacationS3Service.uploadFile(file, vacationRequest.getEmployeeId());
 
-            ResponseVacationRequestFileDTO resVacationRequestFileDTO = ResponseVacationRequestFileDTO
-                    .builder()
-                    .fileName(file.getOriginalFilename())
-                    .fileUrl(fileUrl)
-                    .vacationRequestId(vacationRequest.getVacationRequestId())
-                    .build();
+                ResponseVacationRequestFileDTO resVacationRequestFileDTO = ResponseVacationRequestFileDTO
+                        .builder()
+                        .fileName(file.getOriginalFilename())
+                        .fileUrl(fileUrl)
+                        .vacationRequestId(vacationRequest.getVacationRequestId())
+                        .build();
 
-            vacationRequestFileRepository.save(modelMapper.map(resVacationRequestFileDTO, VacationRequestFile.class));
+                vacationRequestFileRepository.save(modelMapper.map(resVacationRequestFileDTO, VacationRequestFile.class));
+            }
         }
 
         // 휴가 사용 처리하는 로직
