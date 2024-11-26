@@ -30,21 +30,33 @@ public class EducationServiceImpl implements EducationService {
 
     // 사원의 학력정보 등록
     @Override
-    public List<Education> addEdus(List<EducationDTO> educations) {
-        return Optional.ofNullable(educationRepository.saveAll(educations.stream()
-                .map(mem -> modelMapper.map(mem, Education.class))
-                .collect(Collectors.toList())))
-                .filter(edu -> !edu.isEmpty())
+    public List<EducationDTO> addEdus(List<EducationDTO> educations) {
+        return Optional.ofNullable(
+                        educationRepository.saveAll(
+                                        educations.stream()
+                                                .map(dto -> modelMapper.map(dto, Education.class)) // DTO → 엔티티 변환
+                                                .collect(Collectors.toList())
+                                ).stream()
+                                .map(entity -> modelMapper.map(entity, EducationDTO.class)) // 엔티티 → DTO 변환
+                                .collect(Collectors.toList())
+                )
+                .filter(list -> !list.isEmpty()) // 리스트가 비어있는지 검증
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     // 사원의 학력정보 수정
     @Override
-    public List<Education> modifyEdus(List<EducationDTO> educations) {
-        return Optional.ofNullable(educationRepository.saveAllAndFlush(educations.stream()
-                .map(mem -> modelMapper.map(mem, Education.class))
-                .collect(Collectors.toList())))
-                .filter(edu -> !edu.isEmpty())
+    public List<EducationDTO> modifyEdus(List<EducationDTO> educations) {
+        return Optional.ofNullable(
+                        educationRepository.saveAllAndFlush(
+                                        educations.stream()
+                                                .map(dto -> modelMapper.map(dto, Education.class))
+                                                .collect(Collectors.toList())
+                                ).stream()
+                                .map(entity -> modelMapper.map(entity, EducationDTO.class))
+                                .collect(Collectors.toList())
+                )
+                .filter(list -> !list.isEmpty())
                 .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 

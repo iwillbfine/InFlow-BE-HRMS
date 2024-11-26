@@ -11,7 +11,7 @@
         <result property="employeeId" column="EMPLOYEE_ID"/>
     </resultMap>
 
-    <select id="getAllCareers" resultMap="ResultMap">
+    <select id="getAllCareers" resultMap="ResultMap" parameterType="string">
         SELECT
                CAREER_ID
              , COMPANY_NAME
@@ -20,17 +20,10 @@
              , DATE(RESIGNATION_DATE) AS RESIGNATION_DATE
              , EMPLOYEE_ID
           FROM CAREER
-    </select>
-
-    <select id="getOneCareer" resultMap="ResultMap" parameterType="_long">
-        SELECT
-               CAREER_ID
-             , COMPANY_NAME
-             , ROLE_NAME
-             , DATE(JOIN_DATE) AS JOIN_DATE
-             , DATE(RESIGNATION_DATE) AS RESIGNATION_DATE
-             , EMPLOYEE_ID
-          FROM CAREER
-         WHERE EMPLOYEE_ID = #{employeeId}
+         <where>
+             <if test="employeeId != null">
+                 EMPLOYEE_ID = #{employeeId}
+             </if>
+         </where>
     </select>
 </mapper>

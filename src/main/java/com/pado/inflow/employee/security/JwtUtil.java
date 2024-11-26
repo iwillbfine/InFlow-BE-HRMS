@@ -28,21 +28,27 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtil {
 
-    private final Key secretKey;
+    private final Key accessSecretKey;
+    private final Key refreshSecretKey;
     private final long accessExpirationTime;
     private final long refreshExpirationTime;
     private final EmployeeCommandService employeeService;
     private final EmployeeRepository employeeRepository;
 
     public JwtUtil(
-            @Value("${token.secret}") String secretKey,
+            @Value("${token.access-secret}") String accessSecretKey,
+            @Value("${token.refresh-secret}") String refreshSecretKey,
             @Value("${token.access-expiration-time}") long accessExpirationTime,
             @Value("${token.refresh-expiration-time}") long refreshExpirationTime,
             EmployeeCommandService employeeService,
             EmployeeRepository employeeRepository
     ) {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+        byte[] accessKeyBytes = Decoders.BASE64.decode(accessSecretKey);
+        this.accessSecretKey = Keys.hmacShaKeyFor(accessKeyBytes);
+
+        byte[] refreshKeyBytes = Decoders.BASE64.decode(refreshSecretKey);
+        this.refreshSecretKey = Keys.hmacShaKeyFor(refreshKeyBytes);
+
         this.accessExpirationTime = accessExpirationTime;
         this.refreshExpirationTime = refreshExpirationTime;
         this.employeeService = employeeService;
@@ -50,18 +56,18 @@ public class JwtUtil {
     }
 
     // 설명. 리프레시 토큰으로 액세스 토큰 재발급하는 로직 처리
+    // 설명. 리프레시 토큰으로 액세스 토큰 재발급
     public AuthTokens refreshAccessToken(String refreshToken) {
-        if (!validateToken(refreshToken)) {
+        if (!validateRefreshToken(refreshToken)) {
             throw new CommonException(ErrorCode.EXPIRED_TOKEN_ERROR);
         }
 
-        String employeeNumber = getEmployeeNumber(refreshToken);
+        String employeeNumber = getEmployeeNumberFromRefresh(refreshToken);
 
         Employee employee = employeeRepository.findByEmployeeNumber(employeeNumber)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
-        String role = employee.getEmployeeRole().name();
-        String newAccessToken = generateToken(employee, Collections.singletonList(role));
+        String newAccessToken = generateAccessToken(employee);
 
         return new AuthTokens(
                 newAccessToken,
@@ -74,29 +80,57 @@ public class JwtUtil {
         );
     }
 
-    // 설명. Token 검증 메소드
-    public boolean validateToken(String token) {
+    // 설명. 액세스 토큰 생성
+    public String generateAccessToken(Employee employee) {
+        return Jwts.builder()
+                .setSubject(employee.getEmployeeNumber())
+                .claim("auth", List.of("ROLE_" + employee.getEmployeeRole().name()))
+                .claim("employeeId", employee.getEmployeeId())
+                .claim("employeeNumber", employee.getEmployeeNumber())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + accessExpirationTime))
+                .signWith(accessSecretKey, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    // 설명. 리프레시 토큰 생성
+    public String generateRefreshToken(Employee employee) {
+        return Jwts.builder()
+                .setSubject(employee.getEmployeeNumber())
+                .claim("employeeId", employee.getEmployeeId())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationTime))
+                .signWith(refreshSecretKey, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+
+
+    // 설명. 액세스 토큰 검증
+    public boolean validateAccessToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(accessSecretKey).build().parseClaimsJws(token);
             return true;
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token {}", e.getMessage());
+        } catch (JwtException e) {
+            log.info("Invalid Access Token: {}", e.getMessage());
             throw new CommonException(ErrorCode.INVALID_TOKEN_ERROR);
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token {}", e.getMessage());
-            throw new CommonException(ErrorCode.EXPIRED_TOKEN_ERROR);
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token {}", e.getMessage());
-            throw new CommonException(ErrorCode.TOKEN_UNSUPPORTED_ERROR);
-        } catch (IllegalArgumentException e) {
-            log.info("JWT Token claims empty {}", e.getMessage());
-            throw new CommonException(ErrorCode.TOKEN_MALFORMED_ERROR);
+        }
+    }
+
+    // 설명. 리프레시 토큰 검증
+    public boolean validateRefreshToken(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder().setSigningKey(refreshSecretKey).build().parseClaimsJws(token).getBody();
+            return true;
+        } catch (JwtException e) {
+            log.info("Invalid Refresh Token: {}", e.getMessage());
+            throw new CommonException(ErrorCode.INVALID_TOKEN_ERROR);
         }
     }
 
     // 설명. Token에서 인증 객체 추출
     public Authentication getAuthentication(String token) {
-        String employeeNumber = this.getEmployeeNumber(token);
+        String employeeNumber = this.getEmployeeNumberFromAccess(token);
         UserDetails userDetails  = employeeService.loadUserByUsername(employeeNumber);
 
         Claims claims = parseClaims(token);
@@ -117,27 +151,19 @@ public class JwtUtil {
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
-    // 설명. Token에서 Claims 추출
+    // 설명. accessToken에서 Claims 추출
     public Claims parseClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(accessSecretKey).build().parseClaimsJws(token).getBody();
     }
 
-    // 설명. Token에서 employeeNumber 추출
-    public String getEmployeeNumber(String token) {
-        return parseClaims(token).getSubject();
+    // 설명. 토큰에서 employeeNumber 추출 (액세스 토큰)
+    public String getEmployeeNumberFromAccess(String token) {
+        return Jwts.parserBuilder().setSigningKey(accessSecretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
-    // 설명. 액세스 토큰 생성 메소드
-    public String generateToken(Employee employee, List<String> roles) {
-        return Jwts.builder()
-                .setSubject(employee.getEmployeeNumber()) // 사번(employeeNumber)로 식별
-                .claim("auth", roles)
-                .claim( "employeeId",employee.getEmployeeId())
-                .claim("employeeNumber", employee.getEmployeeNumber())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + accessExpirationTime))
-                .signWith(secretKey, SignatureAlgorithm.HS512)
-                .compact();
+    // 설명. 토큰에서 employeeNumber 추출 (리프레시 토큰)
+    public String getEmployeeNumberFromRefresh(String token) {
+        return Jwts.parserBuilder().setSigningKey(refreshSecretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
     // 설명. 액세스 토큰 만료 시간 가져오기

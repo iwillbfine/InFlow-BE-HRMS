@@ -8,9 +8,6 @@ import java.util.List;
 @Mapper
 public interface EducationMapper {
 
-    // 전 사원의 학력 조회
-    List<EducationDTO> getAllEducation();
-
-    // 사원 한 명의 학력 조회
-    List<EducationDTO> getOneEducation(Long employeeId);
+    // 사원의 학력 조회
+    List<EducationDTO> getAllEducation(String employeeId);
 }

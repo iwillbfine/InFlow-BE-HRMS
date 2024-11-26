@@ -6,6 +6,9 @@ import com.pado.inflow.attendance.command.application.service.AttendanceRequestS
 import com.pado.inflow.common.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController("commandAttendanceRequestController")
 @RequestMapping("/api/attendance-requests")
@@ -52,7 +55,25 @@ public class AttendanceRequestController {
 
     // 휴직 신청
     @PostMapping("/leave")
-    public ResponseDTO<?> createLeavenRequest(@RequestBody RequestLeaveRequestDTO reqLeaveRequestDTO) {
+    public ResponseDTO<?> createLeavenRequest(
+            @RequestParam("request_reason") String requestReason,
+            @RequestParam("start_date") String startDate,
+            @RequestParam("end_date") String endDate,
+            @RequestParam("employee_id") Long employeeId,
+            @RequestParam("attendance_request_type_id") Long attendanceRequestTypeId,
+            @RequestParam(value = "attachments", required = false) List<MultipartFile> attachments) {
+
+        // DTO 객체 생성
+        RequestLeaveRequestDTO reqLeaveRequestDTO = RequestLeaveRequestDTO.builder()
+                .requestReason(requestReason)
+                .startDate(startDate)
+                .endDate(endDate)
+                .employeeId(employeeId)
+                .attendanceRequestTypeId(attendanceRequestTypeId)
+                .attachments(attachments)
+                .build();
+
+        // 서비스 호출
         ResponseLeaveReturnRequestDTO resLeaveReturnRequestDTO =
                 attendanceRequestService.registLeaveRequest(reqLeaveRequestDTO);
         return ResponseDTO.ok(resLeaveReturnRequestDTO);
@@ -60,10 +81,28 @@ public class AttendanceRequestController {
 
     // 복직 신청
     @PostMapping("/return")
-    public ResponseDTO<?> createReturnRequest(@RequestBody RequestReturnRequestDTO reqReturnRequestDTO) {
-        ResponseLeaveReturnRequestDTO resLeaveReturnRequestDTO =
+    public ResponseDTO<?> createReturnRequest(
+            @RequestParam("attendance_request_id") Long attendanceRequestId,
+            @RequestParam("request_reason") String requestReason,
+            @RequestParam("end_date") String endDate,
+            @RequestParam("employee_id") Long employeeId,
+            @RequestParam("attendance_request_type_id") Long attendanceRequestTypeId,
+            @RequestParam(value = "attachments", required = false) List<MultipartFile> attachments) {
+
+        // DTO 객체 생성
+        RequestReturnRequestDTO reqReturnRequestDTO = RequestReturnRequestDTO.builder()
+                .attendanceRequestId(attendanceRequestId)
+                .requestReason(requestReason)
+                .endDate(endDate)
+                .employeeId(employeeId)
+                .attendanceRequestTypeId(attendanceRequestTypeId)
+                .attachments(attachments)
+                .build();
+
+        // 서비스 호출
+        ResponseLeaveReturnRequestDTO resReturnRequestDTO =
                 attendanceRequestService.registReturnRequest(reqReturnRequestDTO);
-        return ResponseDTO.ok(resLeaveReturnRequestDTO);
+        return ResponseDTO.ok(resReturnRequestDTO);
     }
 
     // 근태신청 취소

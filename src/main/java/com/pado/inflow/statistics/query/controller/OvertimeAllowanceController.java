@@ -31,21 +31,21 @@ public class OvertimeAllowanceController {
 
     // 초과근무수당 통계 조회
     @GetMapping
-    public ResponseDTO getOvertimeAllowance() {
+    public ResponseDTO<List<OvertimeAllowanceDTO>> getOvertimeAllowance() {
         List<OvertimeAllowanceDTO> result = overtimeAllowanceService.getAllOAStats(null);
         return ResponseDTO.ok(result);
     }
 
     // 연도 초과근무수당 통계 조회
     @GetMapping("/year/{year}")
-    public ResponseDTO getYearlyOvertimeAllowance(@PathVariable("year") String year) {
+    public ResponseDTO<List<OvertimeAllowanceDTO>> getYearlyOvertimeAllowance(@PathVariable("year") String year) {
         List<OvertimeAllowanceDTO> result = overtimeAllowanceService.getAllOAStats(year);
         return ResponseDTO.ok(result);
     }
 
     // 부서 초과근무수당 통계 조회
     @GetMapping("/department/{deptCode}")
-    public ResponseDTO getDeptOvertimeAllowance(@PathVariable("deptCode") String deptCode) {
+    public ResponseDTO<List<DeptOvertimeAllowanceDTO>> getDeptOvertimeAllowance(@PathVariable("deptCode") String deptCode) {
         List<DeptOvertimeAllowanceDTO> result = overtimeAllowanceService.getDeptOAStats(deptCode);
         return ResponseDTO.ok(result);
     }

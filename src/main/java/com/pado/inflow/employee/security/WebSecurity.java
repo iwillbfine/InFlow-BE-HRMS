@@ -65,6 +65,7 @@ public class WebSecurity {
         http.authorizeHttpRequests(authz -> authz
                         // 설명. 1. 로그인은 어떤 사용자도 이용 가능
                         .requestMatchers(new AntPathRequestMatcher("/api/login", "POST")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/auth/**", "POST")).permitAll()
 
                         // 설명. 2. employee(사원) 도메인
                         // 설명. 2.1. 사원 테이블 관련 API
@@ -80,9 +81,12 @@ public class WebSecurity {
                         .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
                         // 설명. 2.3. 회사 테이블 관련 API
                         .requestMatchers(new AntPathRequestMatcher("/api/companies/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
+                        // 설명. 2.4. 엑셀 양식 관련 API
+                        .requestMatchers(new AntPathRequestMatcher("/api/forms/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
                         // 그외.. 테이블 관련 api
 
@@ -151,6 +155,9 @@ public class WebSecurity {
 
                         // 평가 ( Evaluation )
                         .requestMatchers(new AntPathRequestMatcher("/api/evaluations/evaluation/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
+                        // 평가정책별 평가 ( TaskTypeEval )
+                        .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskTypeEval/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         /* -------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
                         // 설명. 7. payroll(급여) 도메인

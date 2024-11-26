@@ -12,7 +12,7 @@
         <result property="employeeId" column="EMPLOYEE_ID"/>
     </resultMap>
 
-    <select id="getAllEducation" resultMap="ResultMap">
+    <select id="getAllEducation" resultMap="ResultMap" parameterType="string">
         SELECT
                EDUCATION_ID
              , SCHOOL_NAME
@@ -22,18 +22,10 @@
              , MAJOR
              , EMPLOYEE_ID
           FROM EDUCATION
-    </select>
-
-    <select id="getOneEducation" resultMap="ResultMap" parameterType="_long">
-        SELECT
-               EDUCATION_ID
-             , SCHOOL_NAME
-             , DATE(ADMISSION_DATE) AS ADMISSION_DATE
-             , DATE(GRADUATION_DATE) AS GRADUATION_DATE
-             , DEGREE
-             , MAJOR
-             , EMPLOYEE_ID
-          FROM EDUCATION
-         WHERE EMPLOYEE_ID = #{employeeId}
+         <where>
+             <if test="employeeId != null">
+                 WHERE EMPLOYEE_ID = #{employeeId}
+             </if>
+         </where>
     </select>
 </mapper>

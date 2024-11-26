@@ -10,7 +10,7 @@
         <result property="familyRelationshipName" column="FAMILY_RELATIONSHIP_NAME"/>
     </resultMap>
 
-    <select id="getAllFamilyMemberList" resultMap="ResultMap">
+    <select id="getAllFamilyMemberList" resultMap="ResultMap" parameterType="string">
         SELECT
                A.FAMILY_MEMBER_ID
              , A.NAME
@@ -19,17 +19,10 @@
              , B.FAMILY_RELATIONSHIP_NAME
           FROM FAMILY_MEMBER A INNER JOIN FAMILY_RELATIONSHIP B
             ON A.FAMILY_RELATIONSHIP_CODE = B.FAMILY_RELATIONSHIP_CODE
-    </select>
-
-    <select id="getOneFamilyMemberList" resultMap="ResultMap" parameterType="_long">
-        SELECT
-               A.FAMILY_MEMBER_ID
-             , A.NAME
-             , A.BIRTH_DATE
-             , A.EMPLOYEE_ID
-             , B.FAMILY_RELATIONSHIP_NAME
-          FROM FAMILY_MEMBER A INNER JOIN FAMILY_RELATIONSHIP B
-            ON A.FAMILY_RELATIONSHIP_CODE = B.FAMILY_RELATIONSHIP_CODE
-         WHERE A.EMPLOYEE_ID = #{employeeId}
+         <where>
+             <if test="employeeId != null">
+                 A.EMPLOYEE_ID = #{employeeId}
+             </if>
+         </where>
     </select>
 </mapper>

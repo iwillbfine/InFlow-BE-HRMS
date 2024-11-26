@@ -10,6 +10,9 @@ import com.pado.inflow.employee.info.command.domain.aggregate.dto.request.Reques
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseEmployeeDTO;
 import com.pado.inflow.employee.info.query.service.EmployeeQueryService;
+import com.pado.inflow.employee.security.JwtUtil;
+import com.pado.inflow.employee.security.dto.AuthTokens;
+import com.pado.inflow.employee.security.dto.TokenRefreshRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +29,7 @@ public class EmployeeController {
 
     private final Environment env;
     private final EmployeeCommandService employeeCommandService;
-
+    private final JwtUtil jwtUtil;
 
     @Value("${coolsms.api.key}")
     private String apiKey;
@@ -38,9 +41,10 @@ public class EmployeeController {
     private String fromPhoneNumber;
 
     @Autowired
-    public EmployeeController(Environment env,EmployeeCommandService employeeCommandService) {
+    public EmployeeController(Environment env,EmployeeCommandService employeeCommandService,JwtUtil jwtUtil) {
         this.env = env;
         this.employeeCommandService=employeeCommandService;
+        this.jwtUtil=jwtUtil;
     }
 
     // 설명. 0. 헬스 체크
@@ -78,18 +82,6 @@ public class EmployeeController {
                 employeeId, email, phoneNumber, streetAddress, detailedAddress, profileImg);
         return ResponseDTO.ok(updatedEmployee);
     }
-
-
-//    /* 설명. 2.2 사원 정보 수정 (사번 기준) */
-//    @PatchMapping("/employee-number/{employeeNumber}")
-//    public ResponseDTO<ResponseEmployeeDTO> updateEmployeeByEmployeeNumber(
-//            @PathVariable(value="employeeNumber") String employeeNumber,
-//            @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
-//
-//        ResponseEmployeeDTO updatedEmployee = employeeCommandService.updateEmployeeByEmployeeNumber(employeeNumber, updateEmployeeDTO);
-//        return ResponseDTO.ok(updatedEmployee);
-//    }
-
 
     // 설명. 3. 비밀번호 재설정
     @PatchMapping("/re-password")

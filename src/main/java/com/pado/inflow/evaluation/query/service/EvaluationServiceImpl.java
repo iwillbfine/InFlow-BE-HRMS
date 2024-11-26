@@ -8,6 +8,8 @@ import org.apache.ibatis.ognl.Evaluation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EvaluationServiceImpl implements EvaluationService {
 
@@ -36,5 +38,37 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION);
         }
         return selectedEvaluation;
+    }
+
+    @Override
+    public EvaluationDTO findEvaluation(Long empId, Integer year, String half) {
+        EvaluationDTO selectedEvaluation = evaluationMapper.getEvaluationByYearAndHalfAndEmpId(empId, year, half);
+
+        if ( selectedEvaluation == null ) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION);
+        }
+        return selectedEvaluation;
+    }
+
+    @Override
+    public List<EvaluationDTO> findEvaluations(Long empId, Integer year, String half) {
+        List<EvaluationDTO> selectedEvaluations = evaluationMapper.getEvaluationsByEmpIdAndYearAndHalf(empId, year, half);
+
+        if (selectedEvaluations == null || selectedEvaluations.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION);
+        }
+
+        return selectedEvaluations;
+    }
+
+    @Override
+    public List<EvaluationDTO> findAllEvaluations(Integer year, String half) {
+        List<EvaluationDTO> selectedEvaluations = evaluationMapper.getAllEvaluationsByYearAndHalf(year, half);
+
+        if (selectedEvaluations == null || selectedEvaluations.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION);
+        }
+
+        return selectedEvaluations;
     }
 }

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("ENCommandService")
 public class EmployeeNumServiceImpl implements EmployeeNumService {
@@ -38,8 +39,14 @@ public class EmployeeNumServiceImpl implements EmployeeNumService {
 
     // 사원 수 통계 초기화
     @Override
-    public List<EmployeeNum> initEmployeeNum() {
-        return employeeNumStatistics();
+    public List<EmployeeNumDTO> initEmployeeNum() {
+        return Optional.of(employeeNumStatistics()
+                        .stream()
+                .map(entity -> modelMapper.map(entity, EmployeeNumDTO.class))
+                .collect(Collectors.toList())
+                )
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     // 매달 사원 수 통계 업데이트

@@ -43,7 +43,8 @@ public enum ErrorCode {
     EVALUATION_SCHEDULER_INIT_FAILURE(40037, HttpStatus.BAD_REQUEST, "평가 및 평가정책별 평가 테이블 초기화 중 오류가 발생했습니다"),
     INVALID_GRADE_RATIO(40038, HttpStatus.BAD_REQUEST, "기존 등급의 종료 비율과 새로운 등급의 시작 비율을 다시 확인해주세요."),
     INVALID_GRADE_SCORE(40039, HttpStatus.BAD_REQUEST, "새로운 등급의 절대평가 점수가 이전 등급의 점수보다 높습니다."),
-
+    TASK_EVAL_CREATE_FAILURE(40040, HttpStatus.BAD_REQUEST, "평가 기간에만 점수를 입력할 수 있습니다.."),
+    FILE_DOWNLOAD_ERROR(40041, HttpStatus.BAD_REQUEST, "파일 다운로드에 실패했습니다."),
 
     // 401: 인증 실패 (Unauthorized)
     INVALID_HEADER_VALUE(40100, HttpStatus.UNAUTHORIZED, "올바르지 않은 헤더값입니다."), // 헤더 값이 잘못되었거나 누락된 경우
@@ -96,9 +97,9 @@ public enum ErrorCode {
     NOT_FOUND_PUBLIC_HOLIDAY(40424, HttpStatus.NOT_FOUND, "공휴일 정보가 존재하지 않습니다."),
     NOT_FOUND_IRREGULAR_ALLOWANCE(40425, HttpStatus.NOT_FOUND, "비정기 수당 항목이 존재하지 않습니다."),
     NOT_FOUND_PAYMENT(40426, HttpStatus.NOT_FOUND, "급여 지급 내역이 존재하지 않습니다."),
-    NOT_FOUND_ATTENDANCE_REQUEST_TYPE(40427, HttpStatus.NOT_FOUND, "출석 요청 유형이 존재하지 않습니다."),
-    NOT_FOUND_ATTENDANCE_REQUEST(40428, HttpStatus.NOT_FOUND, "출석 요청이 존재하지 않습니다."),
-    NOT_FOUND_ATTENDANCE_REQUEST_FILE(40429, HttpStatus.NOT_FOUND, "출석 요청 파일이 존재하지 않습니다."),
+    NOT_FOUND_ATTENDANCE_REQUEST_TYPE(40427, HttpStatus.NOT_FOUND, "근태 신청 유형이 존재하지 않습니다."),
+    NOT_FOUND_ATTENDANCE_REQUEST(40428, HttpStatus.NOT_FOUND, "근태 신청 내역이 존재하지 않습니다."),
+    NOT_FOUND_ATTENDANCE_REQUEST_FILE(40429, HttpStatus.NOT_FOUND, "근태 신청 파일이 존재하지 않습니다."),
     NOT_FOUND_COMMUTE(40430, HttpStatus.NOT_FOUND, "통근 정보가 존재하지 않습니다."),
     NOT_FOUND_LEAVE_RETURN(40431, HttpStatus.NOT_FOUND, "휴직 및 복직 정보가 존재하지 않습니다."),
     NOT_FOUND_BUSINESS_TRIP(40432, HttpStatus.NOT_FOUND, "출장 정보가 존재하지 않습니다."),
@@ -119,6 +120,7 @@ public enum ErrorCode {
     NOT_FOUND_COMPANY(40447, HttpStatus.NOT_FOUND, "회사 정보가 존재하지 않습니다."),
     NOT_FOUND_TASK_NAME(40448, HttpStatus.NOT_FOUND,"과제명을 입력해주세요."),
     NOT_FOUND_TASK_ITEM_CONTENT(40448, HttpStatus.NOT_FOUND,"과제 내용을 입력해주세요."),
+    NOT_FOUND_TASK_TYPE_EVAL(40448, HttpStatus.NOT_FOUND,"평가 정책별 평가 항목이 없습니다."),
 
 
     // 409: 중복 데이터 (Conflict)

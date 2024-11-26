@@ -6,6 +6,8 @@ import com.pado.inflow.evaluation.query.service.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController("queryEvaluationController")
 @RequestMapping("/api/evaluations/evaluation")
 public class EvaluationController {
@@ -18,7 +20,7 @@ public class EvaluationController {
     }
 
     // 최종 평가 등급 조회
-    @GetMapping("/")
+    @GetMapping("/leader")
     public ResponseDTO<?> findFinGradeByEmpIdAndYearAndHalf(
             @RequestParam(value = "empId") Long empId
            ,@RequestParam(value = "year") Integer year
@@ -28,6 +30,31 @@ public class EvaluationController {
                 evaluationService.findEvaluationGrade(empId, year, half);
         return ResponseDTO.ok(selectedEvaluation);
     }
+
+    // 자기 평가 조회
+    @GetMapping("/mine")
+    public ResponseDTO<?> findEvaluationByEmpIdAndYearAndHalf(
+            @RequestParam(value = "empId") Long empId
+           ,@RequestParam(value = "year") Integer year
+           ,@RequestParam(value = "half") String half
+    ) {
+
+        EvaluationDTO selectedEvaluation =
+                evaluationService.findEvaluation(empId, year, half);
+        return ResponseDTO.ok(selectedEvaluation);
+    }
+
+    // 평가 리스트 조회
+    @GetMapping("/list")
+    public ResponseDTO<?> findEvaluations(
+            @RequestParam(value = "empId") Long empId
+           ,@RequestParam(value = "year") Integer year
+           ,@RequestParam(value = "half") String half
+    ) {
+        List<EvaluationDTO> selectedEvaluations = evaluationService.findEvaluations(empId, year, half);
+        return ResponseDTO.ok(selectedEvaluations);
+    }
+
 
     // 평가 ID로 평가 단건 조회
     @GetMapping("/{evaluationId}")
@@ -39,5 +66,17 @@ public class EvaluationController {
         return ResponseDTO.ok(selectedEvaluation);
 
     }
+
+    // 평가 등급 산정에 사용할 년도 및 반기별 전 사원에 대한 평가 테이블 조회
+    @GetMapping("/AllEvaluations")
+    public ResponseDTO<?> findAllEvaluations(
+            @RequestParam( value = "year") Integer year
+           ,@RequestParam( value = "half") String half
+    ) {
+        List<EvaluationDTO> selectedAllevaluations = evaluationService.findAllEvaluations(year, half);
+        return ResponseDTO.ok(selectedAllevaluations);
+    }
+
+
 
 }

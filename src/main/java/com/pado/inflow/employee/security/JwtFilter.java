@@ -40,8 +40,8 @@ public class JwtFilter extends OncePerRequestFilter {
         log.info("Request URI: {}", requestURI);
 
         // 로그인 요청은 필터를 통과시킴
-        if ("/api/login".equals(requestURI) || "/api/register".equals(requestURI)) {
-            log.info("로그인/회원가입 요청은 필터를 통과합니다.");
+        if ("/api/login".equals(requestURI) || "/api/auth/refresh-token".equals(requestURI)) {
+            log.info("로그인/리프레시 재발급 요청은 필터를 통과합니다.");
             filterChain.doFilter(request, response);
             return;
         }
@@ -73,10 +73,10 @@ public class JwtFilter extends OncePerRequestFilter {
             log.info("토큰 값: " + token);
 
             try {
-                if (jwtUtil.validateToken(token)) {
+                if (jwtUtil.validateAccessToken(token)) {
                     Authentication authentication = jwtUtil.getAuthentication(token);
-                    log.info("JwtFilter를 통과한 유효한 토큰을 통해 security가 관리할 principal 객체: {}", authentication);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    log.info("JwtFilter를 통과한 유효한 토큰을 통해 security가 관리할 principal 객체: {}", authentication);
                 }
             } catch (CommonException ex) {
                 // 예외를 잡고 ResponseDTO 형식으로 응답

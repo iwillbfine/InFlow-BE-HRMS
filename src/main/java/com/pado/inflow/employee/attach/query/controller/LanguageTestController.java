@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("LTQueryController")
-@RequestMapping("/api/language-tests")
+@RequestMapping("/api/employees/language-tests")
 public class LanguageTestController {
 
     private final LanguageTestService languageTestService;
@@ -28,16 +28,16 @@ public class LanguageTestController {
     }
 
     // 전 사원의 어학 정보 조회
-    @GetMapping("/")
+    @GetMapping
     public ResponseDTO<List<LanguageTestDTO>> getLanguageTestAll() {
-        List<LanguageTestDTO> result = languageTestService.getLanguageTestsAll();
+        List<LanguageTestDTO> result = languageTestService.getLanguageTestsAll(null);
         return ResponseDTO.ok(result);
     }
 
     // 사원 한 명의 어학 정보 조회
     @GetMapping("/{employeeId}")
-    public ResponseDTO<List<LanguageTestDTO>> getLanguageTestOne(@PathVariable("employeeId") Long employeeId) {
-        List<LanguageTestDTO> result = languageTestService.getLanguageTestsOne(employeeId);
+    public ResponseDTO<List<LanguageTestDTO>> getLanguageTestOne(@PathVariable("employeeId") String employeeId) {
+        List<LanguageTestDTO> result = languageTestService.getLanguageTestsAll(employeeId);
         return ResponseDTO.ok(result);
     }
 }

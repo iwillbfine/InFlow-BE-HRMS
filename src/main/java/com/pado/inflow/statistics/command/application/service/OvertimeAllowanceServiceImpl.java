@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("OACommandService")
 public class OvertimeAllowanceServiceImpl implements OvertimeAllowanceService {
@@ -35,8 +36,14 @@ public class OvertimeAllowanceServiceImpl implements OvertimeAllowanceService {
     }
     // 초과근무수당 통계 초기화
     @Override
-    public List<OvertimeAllowance> initOvertimeAllowance() {
-        return overtimeAllowanceStatistics();
+    public List<OvertimeAllowanceDTO> initOvertimeAllowance() {
+        return Optional.of(overtimeAllowanceStatistics()
+                        .stream()
+                        .map(entity -> modelMapper.map(entity, OvertimeAllowanceDTO.class))
+                        .collect(Collectors.toList())
+                )
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     // 매달 초과근무수당 통계 업데이트
