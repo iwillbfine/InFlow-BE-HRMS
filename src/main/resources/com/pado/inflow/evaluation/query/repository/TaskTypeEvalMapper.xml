@@ -1,0 +1,27 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pado.inflow.evaluation.query.repository.TaskTypeEvalMapper">
+
+    <resultMap id="taskTypeEvalResultMap" type="com.pado.inflow.evaluation.query.dto.TaskTypeEvalDTO">
+        <id property="taskTypeEvalId" column="task_type_eval_id"/>
+        <result property="taskTypeTotalScore" column="task_type_total_score"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="evaluationId" column="evaluation_id"/>
+        <result property="evaluationPolicyId" column="evaluation_policy_id"/>
+    </resultMap>
+
+    <select id="getTaskTypeEvalByEvaluationId" resultMap="taskTypeEvalResultMap">
+        SELECT
+        task_type_eval_id,
+        task_type_total_score,
+        created_at,
+        evaluation_id,
+        evaluation_policy_id
+        FROM
+        task_type_eval
+        WHERE
+        evaluation_id = #{evaluationId}
+    </select>
+
+</mapper>
