@@ -60,4 +60,15 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         return selectedEvaluations;
     }
+
+    @Override
+    public List<EvaluationDTO> findAllEvaluations(Integer year, String half) {
+        List<EvaluationDTO> selectedEvaluations = evaluationMapper.getAllEvaluationsByYearAndHalf(year, half);
+
+        if (selectedEvaluations == null || selectedEvaluations.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION);
+        }
+
+        return selectedEvaluations;
+    }
 }

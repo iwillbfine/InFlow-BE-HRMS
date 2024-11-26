@@ -13,4 +13,6 @@ public interface EvaluationService {
     EvaluationDTO findEvaluation(Long empId, Integer year, String half);
 
     List<EvaluationDTO> findEvaluations(Long empId, Integer year, String half);
+
+    List<EvaluationDTO> findAllEvaluations(Integer year, String half);
 }
