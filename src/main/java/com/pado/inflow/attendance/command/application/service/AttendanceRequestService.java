@@ -1,9 +1,6 @@
 package com.pado.inflow.attendance.command.application.service;
 
 import com.pado.inflow.attendance.command.application.dto.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 public interface AttendanceRequestService {
 

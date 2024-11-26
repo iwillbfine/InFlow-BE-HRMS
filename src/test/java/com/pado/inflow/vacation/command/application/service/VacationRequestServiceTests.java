@@ -11,11 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @Slf4j
 @SpringBootTest
 @Transactional
@@ -38,7 +33,7 @@ class VacationRequestServiceTests {
                 .build();
 
         // When
-        ResponseVacationRequestDTO resVacationRequestDTO = vacationRequestService.registVacationRequest(reqVacationRequestDTO, null);
+        ResponseVacationRequestDTO resVacationRequestDTO = vacationRequestService.registVacationRequest(reqVacationRequestDTO);
         if (resVacationRequestDTO != null) {
             log.info(resVacationRequestDTO.toString());
         }
