@@ -154,6 +154,9 @@ public class WebSecurity {
 
                         // 평가 ( Evaluation )
                         .requestMatchers(new AntPathRequestMatcher("/api/evaluations/evaluation/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
+                        // 평가정책별 평가 ( TaskTypeEval )
+                        .requestMatchers(new AntPathRequestMatcher("/api/evaluations/taskTypeEval/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         /* -------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
                         // 설명. 7. payroll(급여) 도메인
