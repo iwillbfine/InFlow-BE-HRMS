@@ -110,7 +110,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                 attendanceRequestRepository.save(modelMapper.map(responseCommuteRequestDTO, AttendanceRequest.class));
 
         // 재택근무 내역 등록
-        CommuteDTO commuteDTO = CommuteDTO
+        ResponseCommuteDTO commuteDTO = ResponseCommuteDTO
                 .builder()
                 .startTime(null)
                 .endTime(null)
@@ -206,7 +206,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                 attendanceRequestRepository.save(modelMapper.map(responseCommuteRequestDTO, AttendanceRequest.class));
 
         // 초과근무 내역 등록
-        CommuteDTO commuteDTO = CommuteDTO
+        ResponseCommuteDTO commuteDTO = ResponseCommuteDTO
                 .builder()
                 .startTime(startTime)
                 .endTime(endTime)
@@ -293,7 +293,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                 attendanceRequestRepository.save(modelMapper.map(resBusinessTripRequestDTO, AttendanceRequest.class));
 
         // 출장 내역 등록
-        BusinessTripDTO businessTripDTO = BusinessTripDTO
+        ResponseBusinessTripDTO businessTripDTO = ResponseBusinessTripDTO
                 .builder()
                 .startDate(startDate)
                 .endDate(endDate)
@@ -380,7 +380,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                 attendanceRequestRepository.save(modelMapper.map(resBusinessTripRequestDTO, AttendanceRequest.class));
 
         // 파견 내역 등록
-        BusinessTripDTO businessTripDTO = BusinessTripDTO
+        ResponseBusinessTripDTO businessTripDTO = ResponseBusinessTripDTO
                 .builder()
                 .startDate(startDate)
                 .endDate(endDate)
@@ -478,7 +478,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         System.out.println("2");
 
         // 휴직 내역 등록
-        LeaveReturnDTO leaveReturnDTO = LeaveReturnDTO
+        ResponseLeaveReturnDTO leaveReturnDTO = ResponseLeaveReturnDTO
                 .builder()
                 .startDate(startDate)
                 .endDate(endDate)

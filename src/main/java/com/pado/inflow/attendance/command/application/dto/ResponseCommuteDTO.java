@@ -2,7 +2,8 @@ package com.pado.inflow.attendance.command.application.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.pado.inflow.attendance.command.domain.aggregate.type.TripType;
+import com.pado.inflow.attendance.command.domain.aggregate.type.OvertimeStatus;
+import com.pado.inflow.attendance.command.domain.aggregate.type.RemoteStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +16,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Builder
-public class BusinessTripDTO {
-    private Long businessTripId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private TripType tripType;
-    private String destination;
+public class ResponseCommuteDTO {
+    private Long commuteId;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private RemoteStatus remoteStatus;
+    private OvertimeStatus overtimeStatus;
     private Long employeeId;
     private Long attendanceRequestId;
 }
