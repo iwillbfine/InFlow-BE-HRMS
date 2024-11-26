@@ -41,10 +41,9 @@ public enum ErrorCode {
     FEEDBACK_UPDATE_FAILURE(40035, HttpStatus.BAD_REQUEST, "평가 기간에만 피드백을 수정할 수 있습니다."),
     NOT_IN_MODIFICATION_PERIOD(40036, HttpStatus.BAD_REQUEST, "과제 수정기간이 아닙니다."),
     EVALUATION_SCHEDULER_INIT_FAILURE(40037, HttpStatus.BAD_REQUEST, "평가 및 평가정책별 평가 테이블 초기화 중 오류가 발생했습니다"),
-    INVALID_GRADE_RATIO(40038, HttpStatus.BAD_REQUEST, "기존 등급의 종료 비율과 새로운 등급의 시작 비율을 다시 확인해주세요."),
     INVALID_GRADE_SCORE(40039, HttpStatus.BAD_REQUEST, "새로운 등급의 절대평가 점수가 이전 등급의 점수보다 높습니다."),
-    TASK_EVAL_CREATE_FAILURE(40039, HttpStatus.BAD_REQUEST, "평가 기간에만 점수를 입력할 수 있습니다.."),
-
+    TASK_EVAL_CREATE_FAILURE(40040, HttpStatus.BAD_REQUEST, "평가 기간에만 점수를 입력할 수 있습니다.."),
+    FILE_DOWNLOAD_ERROR(40041, HttpStatus.BAD_REQUEST, "파일 다운로드에 실패했습니다."),
 
     // 401: 인증 실패 (Unauthorized)
     INVALID_HEADER_VALUE(40100, HttpStatus.UNAUTHORIZED, "올바르지 않은 헤더값입니다."), // 헤더 값이 잘못되었거나 누락된 경우
@@ -120,7 +119,6 @@ public enum ErrorCode {
     NOT_FOUND_COMPANY(40447, HttpStatus.NOT_FOUND, "회사 정보가 존재하지 않습니다."),
     NOT_FOUND_TASK_NAME(40448, HttpStatus.NOT_FOUND,"과제명을 입력해주세요."),
     NOT_FOUND_TASK_ITEM_CONTENT(40448, HttpStatus.NOT_FOUND,"과제 내용을 입력해주세요."),
-    NOT_FOUND_TASK_EVAL(40448, HttpStatus.NOT_FOUND,"과제 항목별 평가를 찾지 못하였습니다."),
 
 
     // 409: 중복 데이터 (Conflict)

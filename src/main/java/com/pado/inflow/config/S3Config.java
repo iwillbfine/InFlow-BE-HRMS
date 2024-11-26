@@ -28,6 +28,9 @@ public class S3Config {
     @Value("${cloud.aws.s3.buckets.inflow-vacation-attendance}")
     private String inflowVacationAttendanceBucket;
 
+    @Value("${cloud.aws.s3.buckets.inflow-excel-form}")
+    private String inflowExcelFormBucket;
+
     @Bean
     public AmazonS3Client s3Client() {
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, accessSecret);
@@ -52,4 +55,8 @@ public class S3Config {
     public String getInflowVacationAttendanceBucket() {
         return inflowVacationAttendanceBucket;
     }
+
+    //설명.4. 엑셀 양식 버킷
+    public String getInflowExcelFormBucket() {return inflowExcelFormBucket;}
+
 }

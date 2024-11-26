@@ -80,9 +80,12 @@ public class WebSecurity {
                         .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/appointments/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
                         // 설명. 2.3. 회사 테이블 관련 API
                         .requestMatchers(new AntPathRequestMatcher("/api/companies/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
+                        // 설명. 2.4. 엑셀 양식 관련 API
+                        .requestMatchers(new AntPathRequestMatcher("/api/forms/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
                         // 그외.. 테이블 관련 api
 
