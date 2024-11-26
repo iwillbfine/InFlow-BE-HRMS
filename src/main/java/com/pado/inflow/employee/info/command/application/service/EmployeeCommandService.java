@@ -273,28 +273,6 @@ public class EmployeeCommandService implements UserDetailsService {
         }
     }
 
-    //설명.2.2. 인사팀 프로필 사진 수정
-
-
-
-//    /**설명. 사원 정보 수정 사번-추후 삭제 에정
-
-//     * 설명. 2.2 사원 정보 수정 (사번 기준)
-//     */
-//    @Transactional
-//    public ResponseEmployeeDTO updateEmployeeByEmployeeNumber(String employeeNumber, RequestUpdateEmployeeDTO updateEmployeeDTO) {
-//        Employee employee = employeeRepository.findByEmployeeNumber(employeeNumber)
-//                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
-//
-//        updateEmployeeFields(employee, updateEmployeeDTO);
-//
-//        //설명. jpa를 통한 수정
-//        Employee updatedEmployee = employeeRepository.save(employee);
-//        return modelMapper.map(updatedEmployee, ResponseEmployeeDTO.class);
-//    }
-
-
-
     //설명. 3. 비밀번호 재설정
     public void resetPassword(Long employeeId, String newPassword) {
         // 사번으로 사원 조회

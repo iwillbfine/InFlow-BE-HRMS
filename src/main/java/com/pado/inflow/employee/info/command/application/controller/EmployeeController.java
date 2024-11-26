@@ -79,18 +79,6 @@ public class EmployeeController {
         return ResponseDTO.ok(updatedEmployee);
     }
 
-
-//    /* 설명. 2.2 사원 정보 수정 (사번 기준) */
-//    @PatchMapping("/employee-number/{employeeNumber}")
-//    public ResponseDTO<ResponseEmployeeDTO> updateEmployeeByEmployeeNumber(
-//            @PathVariable(value="employeeNumber") String employeeNumber,
-//            @RequestBody RequestUpdateEmployeeDTO updateEmployeeDTO) {
-//
-//        ResponseEmployeeDTO updatedEmployee = employeeCommandService.updateEmployeeByEmployeeNumber(employeeNumber, updateEmployeeDTO);
-//        return ResponseDTO.ok(updatedEmployee);
-//    }
-
-
     // 설명. 3. 비밀번호 재설정
     @PatchMapping("/re-password")
     public ResponseDTO<String> updatePassword(
