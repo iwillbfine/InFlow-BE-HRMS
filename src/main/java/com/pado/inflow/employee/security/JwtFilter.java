@@ -75,8 +75,8 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 if (jwtUtil.validateToken(token)) {
                     Authentication authentication = jwtUtil.getAuthentication(token);
-                    log.info("JwtFilter를 통과한 유효한 토큰을 통해 security가 관리할 principal 객체: {}", authentication);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    log.info("JwtFilter를 통과한 유효한 토큰을 통해 security가 관리할 principal 객체: {}", authentication);
                 }
             } catch (CommonException ex) {
                 // 예외를 잡고 ResponseDTO 형식으로 응답

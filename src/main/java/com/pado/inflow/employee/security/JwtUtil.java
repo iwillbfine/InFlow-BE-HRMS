@@ -62,6 +62,7 @@ public class JwtUtil {
 
         String role = employee.getEmployeeRole().name();
         String newAccessToken = generateToken(employee, Collections.singletonList(role));
+        log.info("employee: ", employee);
 
         return new AuthTokens(
                 newAccessToken,
