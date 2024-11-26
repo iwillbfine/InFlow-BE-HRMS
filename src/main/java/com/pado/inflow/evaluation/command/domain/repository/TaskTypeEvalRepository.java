@@ -4,6 +4,9 @@ import com.pado.inflow.evaluation.command.domain.aggregate.entity.TaskTypeEvalEn
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface TaskTypeEvalRepository extends JpaRepository<TaskTypeEvalEntity, Long> {
+    List<TaskTypeEvalEntity> findByEvaluationId(Long evaluationId);
 }

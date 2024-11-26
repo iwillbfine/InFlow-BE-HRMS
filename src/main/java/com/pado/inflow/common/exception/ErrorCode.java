@@ -120,6 +120,7 @@ public enum ErrorCode {
     NOT_FOUND_COMPANY(40447, HttpStatus.NOT_FOUND, "회사 정보가 존재하지 않습니다."),
     NOT_FOUND_TASK_NAME(40448, HttpStatus.NOT_FOUND,"과제명을 입력해주세요."),
     NOT_FOUND_TASK_ITEM_CONTENT(40448, HttpStatus.NOT_FOUND,"과제 내용을 입력해주세요."),
+    NOT_FOUND_TASK_TYPE_EVAL(40448, HttpStatus.NOT_FOUND,"평가 정책별 평가 항목이 없습니다."),
 
 
     // 409: 중복 데이터 (Conflict)
