@@ -13,14 +13,10 @@ public interface DepartmentRepository extends JpaRepository<Department, String> 
 
     // 드롭다운
     // 부서 코드와 부서명만 반환하도록 메서드 정의
-    @Query("SELECT new com.pado.inflow.department.command.domain.aggregate.dto.DepartmentDropdownDTO(d.departmentCode, d.departmentName) FROM Department d")
+    @Query("SELECT new com.pado.inflow.department.command.domain.aggregate.dto.DepartmentDropdownDTO(d.departmentCode, d.departmentName) " +
+            "FROM Department d " +
+            "WHERE d.disbandedAt IS NULL OR d.disbandedAt > CURRENT_TIMESTAMP")
     List<DepartmentDropdownDTO> findAllForDropdown();
-
-    // 부서 추가
-
-//
-//    // 부서 삭제
-//    void deleteDepartmentByDepartmentCode(Long departmentCode);
 
 
 }
