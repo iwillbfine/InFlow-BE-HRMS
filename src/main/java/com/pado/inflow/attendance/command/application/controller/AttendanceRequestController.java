@@ -61,7 +61,7 @@ public class AttendanceRequestController {
             @RequestParam("end_date") String endDate,
             @RequestParam("employee_id") Long employeeId,
             @RequestParam("attendance_request_type_id") Long attendanceRequestTypeId,
-            @RequestParam("attachments") List<MultipartFile> attachments) {
+            @RequestParam(value = "attachments", required = false) List<MultipartFile> attachments) {
 
         // DTO 객체 생성
         RequestLeaveRequestDTO reqLeaveRequestDTO = RequestLeaveRequestDTO.builder()
@@ -87,7 +87,7 @@ public class AttendanceRequestController {
             @RequestParam("end_date") String endDate,
             @RequestParam("employee_id") Long employeeId,
             @RequestParam("attendance_request_type_id") Long attendanceRequestTypeId,
-            @RequestParam("attachments") List<MultipartFile> attachments) {
+            @RequestParam(value = "attachments", required = false) List<MultipartFile> attachments) {
 
         // DTO 객체 생성
         RequestReturnRequestDTO reqReturnRequestDTO = RequestReturnRequestDTO.builder()

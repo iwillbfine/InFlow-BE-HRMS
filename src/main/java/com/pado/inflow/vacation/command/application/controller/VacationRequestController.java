@@ -29,7 +29,7 @@ public class VacationRequestController {
                                                 @RequestParam("request_reason") String requestReason,
                                                 @RequestParam("employee_id") Long employeeId,
                                                 @RequestParam("vacation_id") Long vacationId,
-                                                @RequestParam("attachments") List<MultipartFile> attachments) {
+                                                @RequestParam(value = "attachments", required = false) List<MultipartFile> attachments) {
 
         // DTO 객체 생성
         RequestVacationRequestDTO reqVacationRequestDTO = RequestVacationRequestDTO
