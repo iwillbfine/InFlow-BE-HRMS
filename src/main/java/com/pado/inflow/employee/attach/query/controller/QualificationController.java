@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("QQueryController")
-@RequestMapping("/api/qualifications")
+@RequestMapping("/api/employees/qualifications")
 public class QualificationController {
 
     private final QualificationService qualificationService;
@@ -28,16 +28,16 @@ public class QualificationController {
     }
 
     // 전 사원의 자격증 조회
-    @GetMapping("/")
+    @GetMapping
     public ResponseDTO<List<QualificationDTO>> getQualificationAll() {
-        List<QualificationDTO> result = qualificationService.getQualificationAll();
+        List<QualificationDTO> result = qualificationService.getQualificationAll(null);
         return ResponseDTO.ok(result);
     }
 
     // 사원 한 명의 자격증 조회
     @GetMapping("/{employeeId}")
-    public ResponseDTO<List<QualificationDTO>> getQualificationOne(@PathVariable("employeeId") Long employeeId) {
-        List<QualificationDTO> result = qualificationService.getQualificationOne(employeeId);
+    public ResponseDTO<List<QualificationDTO>> getQualificationOne(@PathVariable("employeeId") String employeeId) {
+        List<QualificationDTO> result = qualificationService.getQualificationAll(employeeId);
         return ResponseDTO.ok(result);
     }
 }

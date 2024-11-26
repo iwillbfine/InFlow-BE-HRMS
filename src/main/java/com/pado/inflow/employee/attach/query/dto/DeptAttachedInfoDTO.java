@@ -1,4 +1,4 @@
-package com.pado.inflow.statistics.query.dto;
+package com.pado.inflow.employee.attach.query.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -12,7 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TaskEvaluationDTO {
-    private int year;
-    private List<HalfTaskEvaluation> half;
+public class DeptAttachedInfoDTO {
+    private String departmentCode;
+    private String departmentName;
+    private List<AllAttachedInfoDTO> employeesInfo;
 }
