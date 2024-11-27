@@ -1,6 +1,5 @@
 package com.pado.inflow.attendance.query.controller;
 
-import com.pado.inflow.attendance.query.dto.CommuteDTO;
 import com.pado.inflow.attendance.query.dto.PageDTO;
 import com.pado.inflow.attendance.query.dto.ResponseCommuteDTO;
 import com.pado.inflow.attendance.query.service.CommuteQueryService;
