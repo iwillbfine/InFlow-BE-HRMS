@@ -45,5 +45,7 @@ public interface EmployeeMapper {
     // 설명.9. 계약서 단건 조회
     ResponseContractDTO findContractByContractId(@Param("contractId") Long contractId);
 
+    // 설명.10. 여러 사번으로 사원들 조회
+    List<EmployeeDTO> findEmployeesByEmployeeNumbers(List<String> employeeNumbers);
 
 }

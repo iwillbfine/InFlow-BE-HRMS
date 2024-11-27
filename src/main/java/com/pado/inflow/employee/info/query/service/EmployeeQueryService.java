@@ -64,6 +64,18 @@ public class EmployeeQueryService {
         return employee;
     }
 
+    //설명.1.5 여러 사번으로 사원들 조회
+    public List<EmployeeDTO> getEmployeesByEmployeeNumbers(List<String> employeeNumbers) {
+        List<EmployeeDTO> employees = employeeMapper.findEmployeesByEmployeeNumbers(employeeNumbers);
+
+        // 조회 결과가 비어 있는 경우 예외 처리
+        if (employees == null || employees.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE);
+        }
+
+        return employees;
+    }
+
     // 설명.2. 재직증명서 내용 반환
     public EmploymentCertificateResponse getEmploymentCertificateInfo(Long employeeId) {
         EmploymentCertificateResponse certificate = employeeMapper.getEmploymentCertificateInfo(employeeId);
