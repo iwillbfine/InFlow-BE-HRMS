@@ -34,7 +34,7 @@ public class TaskEvalEntity {
     @Column(name = "set_ratio", nullable = false)
     private Double setRatio;
 
-    @Column(name = "task_grade", nullable = false)
+    @Column(name = "task_grade")
     private String taskGrade;
 
     @Column(name = "performance_input", nullable = false)
