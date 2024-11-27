@@ -1,7 +1,6 @@
 package com.pado.inflow.attendance.query.service;
 
 import com.pado.inflow.attendance.query.dto.CommuteDTO;
-import com.pado.inflow.attendance.query.dto.PageDTO;
 import com.pado.inflow.attendance.query.dto.ResponseCommuteDTO;
 import com.pado.inflow.attendance.query.repository.CommuteMapper;
 import com.pado.inflow.common.exception.CommonException;
