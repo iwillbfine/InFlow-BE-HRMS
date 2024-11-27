@@ -28,6 +28,7 @@ public class TaskTypeController {
         return ResponseDTO.ok(taskTypes);
     }
 
+    // 과제 유형 단건 조회
     @GetMapping("{taskTypeId}")
     public ResponseDTO<?> findTaskType(
             @PathVariable( value = "taskTypeId") Long taskTypeId

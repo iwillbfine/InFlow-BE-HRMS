@@ -7,9 +7,10 @@ import com.pado.inflow.evaluation.query.dto.FeedbackDTO;
 import com.pado.inflow.evaluation.query.repository.FeedbackMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class FeedbackServiceImpl implements FeedbackService{
+public class FeedbackServiceImpl implements FeedbackService {
 
     @Autowired
     private final FeedbackMapper feedbackMapper;
@@ -36,5 +37,13 @@ public class FeedbackServiceImpl implements FeedbackService{
             throw new CommonException(ErrorCode.NOT_FOUND_FEEDBACK);
         }
         return selectedFeedback;
+    }
+
+    @Override
+    @Transactional
+    public boolean existsFeedbackByempIdAndYearAndHalf(Long empId, Integer year, String half) {
+        FeedbackDTO feedback = feedbackMapper.findEmpFeedback(empId, year, half);
+        return feedback != null;
+
     }
 }

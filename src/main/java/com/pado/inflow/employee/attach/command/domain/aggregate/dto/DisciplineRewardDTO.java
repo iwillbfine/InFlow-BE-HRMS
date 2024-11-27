@@ -12,19 +12,17 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CareerDTO {
-    private Long careerId;
-    private String companyName;
-    private String roleName;
-    private LocalDate joinDate;
-    private LocalDate resignationDate;
+public class DisciplineRewardDTO {
+    private Long disciplineRewardId;
+    private String disciplineRewardName;
+    private String content;
+    private LocalDate createdAt;
     private Long employeeId;
 
-    public CareerDTO(String companyName, String roleName, LocalDate joinDate, LocalDate resignationDate, Long employeeId) {
-        this.companyName = companyName;
-        this.roleName = roleName;
-        this.joinDate = joinDate;
-        this.resignationDate = resignationDate;
+    public DisciplineRewardDTO(String disciplineRewardName, String content, LocalDate createdAt, Long employeeId) {
+        this.disciplineRewardName = disciplineRewardName;
+        this.content = content;
+        this.createdAt = createdAt;
         this.employeeId = employeeId;
     }
 }
