@@ -65,7 +65,7 @@ public class GradeServiceImpl implements GradeService {
 
             GradeDTO lastGrade = existingGrades.get(existingGrades.size() - 1);
 
-            if (lastGrade.getEndRatio() >= createGradeRequestDTO.getStartRatio()) {
+            if (lastGrade.getEndRatio() > createGradeRequestDTO.getStartRatio()) {
                 throw new CommonException(ErrorCode.INVALID_GRADE_RATIO);
             }
 
