@@ -43,10 +43,11 @@ class AttendanceRequestServiceTests {
         // Given
         Long employeeId = 5L;
         Integer pageNo = 1;
+        String date = "2024-11";
 
         // When
         PageDTO<AttendanceRequestDTO> attendanceRequests =
-                attendanceRequestService.findRemoteRequestsByEmployeeId(employeeId, pageNo);
+                attendanceRequestService.findRemoteRequestsByEmployeeId(employeeId, pageNo, date);
         if (attendanceRequests != null) {
             log.info(attendanceRequests.toString());
         }
@@ -78,10 +79,11 @@ class AttendanceRequestServiceTests {
         // Given
         Long employeeId = 3L;
         Integer pageNo = 1;
+        String date = "2024-11";
 
         // When
         PageDTO<AttendanceRequestDTO> attendanceRequests =
-                attendanceRequestService.findOvertimeRequestsByEmployeeId(employeeId, pageNo);
+                attendanceRequestService.findOvertimeRequestsByEmployeeId(employeeId, pageNo, date);
         if (attendanceRequests != null) {
             log.info(attendanceRequests.toString());
         }
@@ -113,10 +115,11 @@ class AttendanceRequestServiceTests {
         // Given
         Long employeeId = 1L;
         Integer pageNo = 1;
+        String date = "2024-11";
 
         // When
         PageDTO<AttendanceRequestDTO> attendanceRequests =
-                attendanceRequestService.findBusinessTripRequestsByEmployeeId(employeeId, pageNo);
+                attendanceRequestService.findBusinessTripRequestsByEmployeeId(employeeId, pageNo, date);
         if (attendanceRequests != null) {
             log.info(attendanceRequests.toString());
         }
@@ -148,10 +151,11 @@ class AttendanceRequestServiceTests {
         // Given
         Long employeeId = 4L;
         Integer pageNo = 1;
+        String date = "2024-11";
 
         // When
         PageDTO<AttendanceRequestDTO> attendanceRequests =
-                attendanceRequestService.findDispatchRequestsByEmployeeId(employeeId, pageNo);
+                attendanceRequestService.findDispatchRequestsByEmployeeId(employeeId, pageNo, date);
         if (attendanceRequests != null) {
             log.info(attendanceRequests.toString());
         }
@@ -183,10 +187,11 @@ class AttendanceRequestServiceTests {
         // Given
         Long employeeId = 1L;
         Integer pageNo = 1;
+        String date = "2024-11";
 
         // When
         PageDTO<AttendanceRequestDTO> attendanceRequests =
-                attendanceRequestService.findLeaveRequestsByEmployeeId(employeeId, pageNo);
+                attendanceRequestService.findLeaveRequestsByEmployeeId(employeeId, pageNo, date);
         if (attendanceRequests != null) {
             log.info(attendanceRequests.toString());
         }

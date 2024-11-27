@@ -43,10 +43,11 @@ class VacationRequestServiceTests {
         // Given
         Long employeeId = 1L;
         Integer pageNo = 1;
+        String date = "2024-11";
 
         // When
         PageDTO<VacationRequestDTO> vacationRequests =
-                vacationRequestService.findVacationRequestsByEmployeeId(employeeId, pageNo);
+                vacationRequestService.findVacationRequestsByEmployeeId(employeeId, pageNo, date);
         if (vacationRequests != null) {
             log.info(vacationRequests.toString());
         }
