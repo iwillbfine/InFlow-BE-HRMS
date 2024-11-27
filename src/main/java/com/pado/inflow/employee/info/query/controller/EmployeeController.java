@@ -4,6 +4,7 @@ import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
+import com.pado.inflow.employee.info.query.dto.request.EmployeeNumberRequest;
 import com.pado.inflow.employee.info.query.dto.request.EmploymentCertificateRequest;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse;
@@ -57,6 +58,14 @@ public class EmployeeController {
     public ResponseDTO<EmployeeDTO> getEmployeeById(@PathVariable(value = "employeeId") Long employeeId) {
         EmployeeDTO employee = employeeService.getEmployeeById(employeeId);
         return ResponseDTO.ok(employee);
+    }
+
+    // 1.5. 설명: 사번으로 여러 사원들 정보 조회
+    @PostMapping("/numbers")
+    public ResponseDTO<List<EmployeeDTO>> getEmployeesByEmployeeNumbers(@RequestBody EmployeeNumberRequest request) {
+        List<String> employeeNumbers = request.getEmployeeNumbers();
+        List<EmployeeDTO> employees = employeeService.getEmployeesByEmployeeNumbers(employeeNumbers);
+        return ResponseDTO.ok(employees);
     }
 
     // 설명. 2. 재직증명서 내용 반환
