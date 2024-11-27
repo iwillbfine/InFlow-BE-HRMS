@@ -2,18 +2,23 @@ package com.pado.inflow.attendance.query.service;
 
 import com.pado.inflow.attendance.query.dto.CommuteDTO;
 import com.pado.inflow.attendance.query.dto.PageDTO;
+import com.pado.inflow.attendance.query.dto.ResponseCommuteDTO;
 import com.pado.inflow.attendance.query.repository.CommuteMapper;
 import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class CommuteQueryServiceImpl implements CommuteQueryService {
 
@@ -29,7 +34,7 @@ public class CommuteQueryServiceImpl implements CommuteQueryService {
 
     // 사원별 출퇴근 내역 조회
     @Override
-    public PageDTO<CommuteDTO> findCommutesByEmployeeId(Long employeeId, Integer pageNo, String date) {
+    public PageDTO<ResponseCommuteDTO> findCommutesByEmployeeId(Long employeeId, Integer pageNo, String date) {
         // 페이지 번호 유효성 검사
         if(pageNo == null || pageNo < 1) {
             throw new CommonException(ErrorCode.INVALID_PARAMETER_FORMAT);
@@ -57,7 +62,53 @@ public class CommuteQueryServiceImpl implements CommuteQueryService {
             throw new CommonException(ErrorCode.NOT_FOUND_COMMUTE);
         }
 
-        return new PageDTO<>(commutes, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
+        List<ResponseCommuteDTO> parsedCommutes = new ArrayList<>();
+        CommuteDTO overtime = null;
+
+        for (CommuteDTO commute : commutes) {
+            // 초과근무인 경우 저장
+            if ("Y".equals(commute.getOvertimeStatus())) {
+                overtime = commute;
+                continue;
+            }
+
+            // 초과근무 내역이 있고, 출근 내역과 같은 일자라면 병합
+            if (overtime != null && overtime.getStartTime().toLocalDate().equals(commute.getStartTime().toLocalDate())) {
+                long overtimeMinutes = Duration.between(overtime.getStartTime(), overtime.getEndTime()).toMinutes();
+
+                ResponseCommuteDTO parsedCommute = ResponseCommuteDTO.builder()
+                        .commuteId(commute.getCommuteId())
+                        .startTime(commute.getStartTime())
+                        .endTime(commute.getEndTime())
+                        .remoteStatus(commute.getRemoteStatus())
+                        .overtime(overtimeMinutes) // 초과근무 시간 (분 단위)
+                        .employeeId(commute.getEmployeeId())
+                        .build();
+
+                parsedCommutes.add(parsedCommute);
+                overtime = null; // 사용한 초과근무 내역 초기화
+                continue;
+            }
+
+            // 초과근무가 없는 일반 출근 내역
+            ResponseCommuteDTO parsedCommute = ResponseCommuteDTO.builder()
+                    .commuteId(commute.getCommuteId())
+                    .startTime(commute.getStartTime())
+                    .endTime(commute.getEndTime())
+                    .remoteStatus(commute.getRemoteStatus())
+                    .overtime(null) // 초과근무 없음
+                    .employeeId(commute.getEmployeeId())
+                    .build();
+
+            parsedCommutes.add(parsedCommute);
+        }
+
+        // 초과근무 내역이 남아 있는 경우 비정상적인 데이터이므로 로그 남기기
+        if (overtime != null) {
+            log.error("사원ID: " + overtime.getEmployeeId()+", 비정상적인 출퇴근 데이터가 존재합니다.");
+        }
+
+        return new PageDTO<>(parsedCommutes, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
     }
 
     // 당일 재택 출퇴근 내역 조회

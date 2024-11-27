@@ -1,7 +1,7 @@
 package com.pado.inflow.attendance.query.service;
 
-import com.pado.inflow.attendance.query.dto.CommuteDTO;
 import com.pado.inflow.attendance.query.dto.PageDTO;
+import com.pado.inflow.attendance.query.dto.ResponseCommuteDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ class CommuteServiceTests {
         Integer pageNo = 1;
         String date = "2024-11";
         // When
-        PageDTO<CommuteDTO> commutes = commuteService.findCommutesByEmployeeId(employeeId, pageNo, date);
+        PageDTO<ResponseCommuteDTO> commutes = commuteService.findCommutesByEmployeeId(employeeId, pageNo, date);
         if (commutes != null) {
             log.info(commutes.toString());
         }

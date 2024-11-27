@@ -262,4 +262,51 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         return new PageDTO<>(attendanceRequests, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
     }
 
+    // 사원별 복직 신청 내역 미리보기 조회
+    @Override
+    public List<AttendanceRequestDTO> findReturnRequestPreviewsByEmployeeId(Long employeeId) {
+        List<AttendanceRequestDTO> attendanceRequests =
+                attendanceRequestMapper.findReturnRequestPreviewsByEmployeeId(employeeId);
+
+        if (attendanceRequests == null || attendanceRequests.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST);
+        }
+
+        return attendanceRequests;
+    }
+
+    // 사원별 복직 신청 내역 전체 조회
+    @Override
+    public PageDTO<AttendanceRequestDTO> findReturnRequestsByEmployeeId(Long employeeId, Integer pageNo, String date) {
+        // 페이지 번호 유효성 검사
+        if(pageNo == null || pageNo < 1) {
+            throw new CommonException(ErrorCode.INVALID_PARAMETER_FORMAT);
+        }
+
+        // 날짜 형식 유효성 검사 및 변환 (yyyy-MM)
+        YearMonth parsedDate;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+            parsedDate = YearMonth.parse(date, formatter);
+        } catch (DateTimeParseException e) {
+            throw new CommonException(ErrorCode.INVALID_PARAMETER_FORMAT);
+        }
+
+        LocalDate startOfMonth = parsedDate.atDay(1); // 해당 월의 첫 번째 날
+
+        Integer totalElements = attendanceRequestMapper.getTotalReturnRequestsByEmployeeId(employeeId, startOfMonth);
+        if(totalElements == null || totalElements < 1) {
+            throw new CommonException(ErrorCode.NOT_FOUND_COMMUTE);
+        }
+
+        Integer offset = (pageNo - 1) * ELEMENTS_PER_PAGE;
+        List<AttendanceRequestDTO> attendanceRequests =
+                attendanceRequestMapper.findReturnRequestsByEmployeeId(employeeId, ELEMENTS_PER_PAGE, offset, startOfMonth);
+        if (attendanceRequests == null || attendanceRequests.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_ATTENDANCE_REQUEST);
+        }
+
+        return new PageDTO<>(attendanceRequests, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
+    }
+
 }

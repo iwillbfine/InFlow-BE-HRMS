@@ -75,4 +75,17 @@ public interface AttendanceRequestMapper {
     Integer getTotalLeaveRequestsByEmployeeId(@Param("employeeId") Long employeeId,
                                               @Param("date") LocalDate date);
 
+    // 사원별 복직 신청 내역 미리보기 조회
+    List<AttendanceRequestDTO> findReturnRequestPreviewsByEmployeeId(Long employeeId);
+
+    // 사원별 복직 신청 내역 전체 조회
+    List<AttendanceRequestDTO> findReturnRequestsByEmployeeId(@Param("employeeId") Long employeeId,
+                                                              @Param("elementsPerPage") Integer elementsPerPage,
+                                                              @Param("offset") Integer offset,
+                                                              @Param("date") LocalDate date);
+
+    // 사원별 복직 신청 내역 전체 개수 조회
+    Integer getTotalReturnRequestsByEmployeeId(@Param("employeeId") Long employeeId,
+                                               @Param("date") LocalDate date);
+
 }

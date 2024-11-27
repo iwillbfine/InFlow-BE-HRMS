@@ -37,4 +37,10 @@ public interface AttendanceRequestService {
     // 사원별 휴직 신청 내역 전체 조회
     PageDTO<AttendanceRequestDTO> findLeaveRequestsByEmployeeId(Long employeeId, Integer pageNo, String date);
 
+    // 사원별 복직 신청 내역 미리보기 조회
+    List<AttendanceRequestDTO> findReturnRequestPreviewsByEmployeeId(Long employeeId);
+
+    // 사원별 복직 신청 내역 전체 조회
+    PageDTO<AttendanceRequestDTO> findReturnRequestsByEmployeeId(Long employeeId, Integer pageNo, String date);
+
 }

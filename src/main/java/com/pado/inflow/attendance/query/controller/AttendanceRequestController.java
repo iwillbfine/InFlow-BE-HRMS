@@ -113,4 +113,22 @@ public class AttendanceRequestController {
         return ResponseDTO.ok(attendanceRequests);
     }
 
+    // 사원별 복직 신청 내역 미리보기 조회
+    @GetMapping("/return/preview")
+    public ResponseDTO<?> getReturnRequestPreviewsByEmployeeId(@RequestParam("eid") Long employeeId) {
+        List<AttendanceRequestDTO> attendanceRequests =
+                attendanceRequestService.findReturnRequestPreviewsByEmployeeId(employeeId);
+        return ResponseDTO.ok(attendanceRequests);
+    }
+
+    // 사원별 복직 신청 내역 전체 조회
+    @GetMapping("/return")
+    public ResponseDTO<?> getReturnRequestsByEmployeeId(@RequestParam("eid") Long employeeId,
+                                                       @RequestParam("page") Integer pageNo,
+                                                       @RequestParam("date") String date) {
+        PageDTO<AttendanceRequestDTO> attendanceRequests =
+                attendanceRequestService.findReturnRequestsByEmployeeId(employeeId, pageNo, date);
+        return ResponseDTO.ok(attendanceRequests);
+    }
+
 }
