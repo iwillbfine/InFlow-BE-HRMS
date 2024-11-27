@@ -22,9 +22,6 @@ import java.util.List;
 @Service
 public class CommuteQueryServiceImpl implements CommuteQueryService {
 
-    private final Integer PAGE_SIZE = 10; // 페이지 간격
-    private final Integer ELEMENTS_PER_PAGE = 10; // 한 페이지 당 요소 개수
-
     private final CommuteMapper commuteMapper;
 
     @Autowired
@@ -34,12 +31,7 @@ public class CommuteQueryServiceImpl implements CommuteQueryService {
 
     // 사원별 출퇴근 내역 조회
     @Override
-    public PageDTO<ResponseCommuteDTO> findCommutesByEmployeeId(Long employeeId, Integer pageNo, String date) {
-        // 페이지 번호 유효성 검사
-        if(pageNo == null || pageNo < 1) {
-            throw new CommonException(ErrorCode.INVALID_PARAMETER_FORMAT);
-        }
-
+    public List<ResponseCommuteDTO> findCommutesByEmployeeId(Long employeeId, String date) {
         // 날짜 형식 유효성 검사 및 변환 (yyyy-MM)
         YearMonth parsedDate;
         try {
@@ -51,13 +43,7 @@ public class CommuteQueryServiceImpl implements CommuteQueryService {
 
         LocalDate startOfMonth = parsedDate.atDay(1); // 해당 월의 첫 번째 날
 
-        Integer totalElements = commuteMapper.getTotalCommutesByEmployeeId(employeeId, startOfMonth);
-        if(totalElements == null || totalElements < 1) {
-            throw new CommonException(ErrorCode.NOT_FOUND_COMMUTE);
-        }
-
-        Integer offset = (pageNo - 1) * ELEMENTS_PER_PAGE;
-        List<CommuteDTO> commutes = commuteMapper.findCommutesByEmployeeId(employeeId, ELEMENTS_PER_PAGE, offset, startOfMonth);
+        List<CommuteDTO> commutes = commuteMapper.findCommutesByEmployeeId(employeeId, startOfMonth);
         if (commutes == null || commutes.isEmpty()) {
             throw new CommonException(ErrorCode.NOT_FOUND_COMMUTE);
         }
@@ -108,7 +94,7 @@ public class CommuteQueryServiceImpl implements CommuteQueryService {
             log.error("사원ID: " + overtime.getEmployeeId()+", 비정상적인 출퇴근 데이터가 존재합니다.");
         }
 
-        return new PageDTO<>(parsedCommutes, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
+        return parsedCommutes;
     }
 
     // 당일 재택 출퇴근 내역 조회
