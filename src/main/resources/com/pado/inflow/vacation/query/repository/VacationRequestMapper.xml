@@ -76,15 +76,19 @@
           LEFT JOIN VACATION_REQUEST_FILE C
             ON A.VACATION_REQUEST_ID = C.VACATION_REQUEST_ID
          WHERE A.EMPLOYEE_ID = #{ employeeId }
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
          ORDER BY A.VACATION_REQUEST_ID DESC
          LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>
 
-    <select id="getTotalVacationRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+    <select id="getTotalVacationRequestsByEmployeeId" resultType="Integer" parameterType="map">
         SELECT
                COUNT(*) AS TOTAL
           FROM VACATION_REQUEST A
          WHERE A.EMPLOYEE_ID = #{ employeeId }
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
     </select>
 
     <select id="findTodayVacationByEmployeeId" resultMap="vacationRequestResultMap" parameterType="Long">
