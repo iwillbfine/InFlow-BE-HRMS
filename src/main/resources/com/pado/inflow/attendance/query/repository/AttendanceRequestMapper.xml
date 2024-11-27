@@ -214,6 +214,8 @@
           LEFT JOIN ATTENDANCE_REQUEST_FILE D
             ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
          WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 2
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
          ORDER BY A.ATTENDANCE_REQUEST_ID DESC
         LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>
@@ -246,6 +248,8 @@
           LEFT JOIN ATTENDANCE_REQUEST_FILE D
             ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
          WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 1
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
          ORDER BY A.ATTENDANCE_REQUEST_ID DESC
          LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>
@@ -278,6 +282,8 @@
           LEFT JOIN ATTENDANCE_REQUEST_FILE D
             ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
          WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 3
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
          ORDER BY A.ATTENDANCE_REQUEST_ID DESC
          LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>
@@ -310,6 +316,8 @@
           LEFT JOIN ATTENDANCE_REQUEST_FILE D
             ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
          WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 4
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
          ORDER BY A.ATTENDANCE_REQUEST_ID DESC
          LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>
@@ -342,43 +350,55 @@
           LEFT JOIN ATTENDANCE_REQUEST_FILE D
            ON A.ATTENDANCE_REQUEST_ID = D.ATTENDANCE_REQUEST_ID
          WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 5
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
          ORDER BY A.ATTENDANCE_REQUEST_ID DESC
          LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>
 
-    <select id="getTotalOvertimeRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+    <select id="getTotalOvertimeRequestsByEmployeeId" resultType="Integer" parameterType="map">
         SELECT
                COUNT(*) AS TOTAL
           FROM ATTENDANCE_REQUEST A
          WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 2
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
     </select>
 
-    <select id="getTotalRemoteRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+    <select id="getTotalRemoteRequestsByEmployeeId" resultType="Integer" parameterType="map">
         SELECT
                COUNT(*) AS TOTAL
           FROM ATTENDANCE_REQUEST A
          WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 1
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
     </select>
 
-    <select id="getTotalBusinessTripRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+    <select id="getTotalBusinessTripRequestsByEmployeeId" resultType="Integer" parameterType="map">
         SELECT
                COUNT(*) AS TOTAL
           FROM ATTENDANCE_REQUEST A
          WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 3
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
     </select>
 
-    <select id="getTotalDispatchRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+    <select id="getTotalDispatchRequestsByEmployeeId" resultType="Integer" parameterType="map">
         SELECT
                COUNT(*) AS TOTAL
           FROM ATTENDANCE_REQUEST A
          WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 4
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
     </select>
 
-    <select id="getTotalLeaveRequestsByEmployeeId" resultType="Integer" parameterType="Long">
+    <select id="getTotalLeaveRequestsByEmployeeId" resultType="Integer" parameterType="map">
         SELECT
                COUNT(*) AS TOTAL
           FROM ATTENDANCE_REQUEST A
          WHERE A.EMPLOYEE_ID = #{ employeeId } AND A.ATTENDANCE_REQUEST_TYPE_ID = 5
+           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
+           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
     </select>
 
 </mapper>

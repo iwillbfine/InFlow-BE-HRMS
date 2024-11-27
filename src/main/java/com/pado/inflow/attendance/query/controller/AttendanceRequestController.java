@@ -34,9 +34,10 @@ public class AttendanceRequestController {
     // 사원별 초과근무 신청 내역 전체 조회
     @GetMapping("/commute/overtime")
     public ResponseDTO<?> getOvertimeRequestsByEmployeeId(@RequestParam("eid") Long employeeId,
-                                                          @RequestParam("page") Integer pageNo) {
+                                                          @RequestParam("page") Integer pageNo,
+                                                          @RequestParam("date") String date) {
         PageDTO<AttendanceRequestDTO> attendanceRequests =
-                attendanceRequestService.findOvertimeRequestsByEmployeeId(employeeId, pageNo);
+                attendanceRequestService.findOvertimeRequestsByEmployeeId(employeeId, pageNo, date);
         return ResponseDTO.ok(attendanceRequests);
     }
 
@@ -51,9 +52,10 @@ public class AttendanceRequestController {
     // 사원별 재택근무 신청 내역 전체 조회
     @GetMapping("/commute/remote")
     public ResponseDTO<?> getRemoteRequestsByEmployeeId(@RequestParam("eid") Long employeeId,
-                                                        @RequestParam("page") Integer pageNo) {
+                                                        @RequestParam("page") Integer pageNo,
+                                                        @RequestParam("date") String date) {
         PageDTO<AttendanceRequestDTO> attendanceRequests =
-                attendanceRequestService.findRemoteRequestsByEmployeeId(employeeId, pageNo);
+                attendanceRequestService.findRemoteRequestsByEmployeeId(employeeId, pageNo, date);
         return ResponseDTO.ok(attendanceRequests);
     }
 
@@ -68,9 +70,10 @@ public class AttendanceRequestController {
     // 사원별 출장 신청 내역 전체 조회
     @GetMapping("/business-trip")
     public ResponseDTO<?> getBusinessTripRequestsByEmployeeId(@RequestParam("eid") Long employeeId,
-                                                              @RequestParam("page") Integer pageNo) {
+                                                              @RequestParam("page") Integer pageNo,
+                                                              @RequestParam("date") String date) {
         PageDTO<AttendanceRequestDTO> attendanceRequests =
-                attendanceRequestService.findBusinessTripRequestsByEmployeeId(employeeId, pageNo);
+                attendanceRequestService.findBusinessTripRequestsByEmployeeId(employeeId, pageNo, date);
         return ResponseDTO.ok(attendanceRequests);
     }
 
@@ -85,9 +88,10 @@ public class AttendanceRequestController {
     // 사원별 파견 신청 내역 전체 조회
     @GetMapping("/dispatch")
     public ResponseDTO<?> getDispatchRequestsByEmployeeId(@RequestParam("eid") Long employeeId,
-                                                          @RequestParam("page") Integer pageNo) {
+                                                          @RequestParam("page") Integer pageNo,
+                                                          @RequestParam("date") String date) {
         PageDTO<AttendanceRequestDTO> attendanceRequests =
-                attendanceRequestService.findDispatchRequestsByEmployeeId(employeeId, pageNo);
+                attendanceRequestService.findDispatchRequestsByEmployeeId(employeeId, pageNo, date);
         return ResponseDTO.ok(attendanceRequests);
     }
 
@@ -102,9 +106,10 @@ public class AttendanceRequestController {
     // 사원별 휴직 신청 내역 전체 조회
     @GetMapping("/leave")
     public ResponseDTO<?> getLeaveRequestsByEmployeeId(@RequestParam("eid") Long employeeId,
-                                                       @RequestParam("page") Integer pageNo) {
+                                                       @RequestParam("page") Integer pageNo,
+                                                       @RequestParam("date") String date) {
         PageDTO<AttendanceRequestDTO> attendanceRequests =
-                attendanceRequestService.findLeaveRequestsByEmployeeId(employeeId, pageNo);
+                attendanceRequestService.findLeaveRequestsByEmployeeId(employeeId, pageNo, date);
         return ResponseDTO.ok(attendanceRequests);
     }
 

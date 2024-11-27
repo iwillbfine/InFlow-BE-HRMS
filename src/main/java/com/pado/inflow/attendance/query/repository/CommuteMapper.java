@@ -17,7 +17,8 @@ public interface CommuteMapper {
                                               @Param("date") LocalDate date);
 
     // 사원별 출퇴근 내역 전체 개수 조회
-    Integer getTotalCommutesByEmployeeId(Long employeeId);
+    Integer getTotalCommutesByEmployeeId(@Param("employeeId") Long employeeId,
+                                         @Param("date") LocalDate date);
 
     // 당일 재택 출퇴근 내역 조회
     CommuteDTO findTodayRemoteByEmployeeId(Long employeeId);

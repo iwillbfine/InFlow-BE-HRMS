@@ -30,11 +30,13 @@
          LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>
 
-    <select id="getTotalCommutesByEmployeeId" resultType="Integer" parameterType="Long">
+    <select id="getTotalCommutesByEmployeeId" resultType="Integer" parameterType="map">
         SELECT
                COUNT(*) AS TOTAL
           FROM COMMUTE A
          WHERE A.EMPLOYEE_ID = #{ employeeId }
+           AND YEAR(A.START_TIME) = YEAR(#{ date })
+           AND MONTH(A.START_TIME) = MONTH(#{ date })
     </select>
 
     <select id="findTodayRemoteByEmployeeId" resultMap="commuteResultMap" parameterType="Long">

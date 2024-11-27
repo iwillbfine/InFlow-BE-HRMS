@@ -46,7 +46,7 @@ public class CommuteQueryServiceImpl implements CommuteQueryService {
 
         LocalDate startOfMonth = parsedDate.atDay(1); // 해당 월의 첫 번째 날
 
-        Integer totalElements = commuteMapper.getTotalCommutesByEmployeeId(employeeId);
+        Integer totalElements = commuteMapper.getTotalCommutesByEmployeeId(employeeId, startOfMonth);
         if(totalElements == null || totalElements < 1) {
             throw new CommonException(ErrorCode.NOT_FOUND_COMMUTE);
         }
