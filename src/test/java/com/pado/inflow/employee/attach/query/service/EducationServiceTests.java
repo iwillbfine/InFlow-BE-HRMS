@@ -22,13 +22,7 @@ class EducationServiceTests {
     @DisplayName("전 사원의 학력 조회")
     @Test
     public void getAllEduTests() {
-        assertTrue(educationService.getEduAll().size() > 0);
+        assertTrue(educationService.getEduAll("1").size() > 0);
     }
 
-    @DisplayName("사원 한 명의 학력 조회")
-    @ParameterizedTest
-    @ValueSource(longs = {1L, 2L})
-    public void getAllEduTests(Long id) {
-        assertTrue(educationService.getEduOne(id).size() > 0);
-    }
 }

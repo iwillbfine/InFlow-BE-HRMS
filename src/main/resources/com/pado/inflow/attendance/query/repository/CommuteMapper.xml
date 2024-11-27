@@ -24,6 +24,8 @@
              , A.ATTENDANCE_REQUEST_ID
           FROM COMMUTE A
          WHERE A.EMPLOYEE_ID = #{ employeeId }
+           AND YEAR(A.START_TIME) = YEAR(#{ date })
+           AND MONTH(A.START_TIME) = MONTH(#{ date })
          ORDER BY A.COMMUTE_ID DESC
          LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>

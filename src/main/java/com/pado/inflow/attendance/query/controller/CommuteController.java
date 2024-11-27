@@ -24,8 +24,9 @@ public class CommuteController {
     // 사원별 출퇴근 내역 조회
     @GetMapping
     public ResponseDTO<?> getCommutesByEmployeeId(@RequestParam("eid") Long employeeId,
-                                                  @RequestParam("page") Integer pageNo) {
-        PageDTO<CommuteDTO> commutes = commuteService.findCommutesByEmployeeId(employeeId, pageNo);
+                                                  @RequestParam("page") Integer pageNo,
+                                                  @RequestParam("range") String date) {
+        PageDTO<CommuteDTO> commutes = commuteService.findCommutesByEmployeeId(employeeId, pageNo, date);
         return ResponseDTO.ok(commutes);
     }
 

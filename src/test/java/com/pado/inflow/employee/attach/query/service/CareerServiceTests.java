@@ -22,13 +22,7 @@ class CareerServiceTests {
     @DisplayName("전 사원의 경력 조회")
     @Test
     public void getAllCareers() {
-        assertTrue(careerService.getCareerAll().size() > 0);
+        assertFalse(careerService.getCareerAll("1").isEmpty());
     }
 
-    @DisplayName("사원 한 명의 경력 조회")
-    @ParameterizedTest
-    @ValueSource(longs = {1L, 2L})
-    public void getOneCareer(Long employeeId) {
-        assertTrue(careerService.getCareerOne(employeeId).size() > 0);
-    }
 }

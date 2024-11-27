@@ -14,7 +14,7 @@ import java.util.List;
 @SpringBootTest
 class FamilyMemberServiceTests {
 
-    static FamilyMemberService familyMemberService;
+    private final FamilyMemberService familyMemberService;
 
     @Autowired
     public FamilyMemberServiceTests(FamilyMemberService familyMemberService) {
@@ -24,15 +24,8 @@ class FamilyMemberServiceTests {
     @DisplayName("전 사원 가족구성원 정보 조회")
     @Test
     public void getFamilyMembers() {
-        List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberAll();
+        List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberAll("1");
         Assertions.assertNotNull(result.get(0));
     }
 
-    @DisplayName("사원 한 명의 가족구성원 정보 조회")
-    @ParameterizedTest
-    @ValueSource(longs = {1, 2})
-    public void getOneFamilyMembers(Long id) {
-        List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberOne(id);
-        Assertions.assertNotNull(result.get(0));
-    }
 }

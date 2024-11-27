@@ -24,9 +24,9 @@ class CommuteServiceTests {
         // Given
         Long employeeId = 1L;
         Integer pageNo = 1;
-
+        String date = "2024-11";
         // When
-        PageDTO<CommuteDTO> commutes = commuteService.findCommutesByEmployeeId(employeeId, pageNo);
+        PageDTO<CommuteDTO> commutes = commuteService.findCommutesByEmployeeId(employeeId, pageNo, date);
         if (commutes != null) {
             log.info(commutes.toString());
         }

@@ -21,13 +21,7 @@ class QualificationServiceTests {
     @DisplayName("전 사원의 자격증 조회")
     @Test
     public void getAllQualifications() {
-        assertTrue(qualificationService.getQualificationAll().size() > 0);
+        assertTrue(qualificationService.getQualificationAll("1").size() > 0);
     }
 
-    @DisplayName("사원 한 명의 자격증 조회")
-    @ParameterizedTest
-    @ValueSource(longs = {1L, 2L})
-    public void getOneQualification(Long employeeId) {
-        assertTrue(qualificationService.getQualificationOne(employeeId).size() > 0);
-    }
 }

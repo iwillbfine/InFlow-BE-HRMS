@@ -22,13 +22,7 @@ class LanguageTestServiceTests {
     @DisplayName("전 사원의 어학시험 정보 조회")
     @Test
     public void getLanguageTests() {
-        assertTrue(languageTestService.getLanguageTestsAll().size() > 0);
+        assertTrue(languageTestService.getLanguageTestsAll("1").size() > 0);
     }
 
-    @DisplayName("사원 한 명의 어학시험 정보 조회")
-    @ParameterizedTest
-    @ValueSource(longs = {1L, 2L})
-    public void getLanguageTest(Long employeeId) {
-        assertTrue(languageTestService.getLanguageTestsOne(employeeId).size() > 0);
-    }
 }
