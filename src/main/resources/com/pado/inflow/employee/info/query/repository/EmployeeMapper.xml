@@ -33,6 +33,41 @@
         <result property="dutyCode" column="duty_code"/>
     </resultMap>
 
+    <select id="findEmployeesByEmployeeNumbers" parameterType="list" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
+        SELECT
+        employee_id AS employeeId,
+        employee_number AS employeeNumber,
+        employee_role AS employeeRole,
+        password,
+        gender,
+        name,
+        birth_date AS birthDate,
+        email,
+        phone_number AS phoneNumber,
+        profile_img_url AS profileImgUrl,
+        join_date AS joinDate,
+        join_type AS joinType,
+        resignation_date AS resignationDate,
+        resignation_status AS resignationStatus,
+        salary,
+        monthly_salary AS monthlySalary,
+        street_address AS streetAddress,
+        detailed_address AS detailedAddress,
+        postcode,
+        department_code AS departmentCode,
+        attendance_status_type_code AS attendanceStatusTypeCode,
+        position_code AS positionCode,
+        role_code AS roleCode,
+        duty_code AS dutyCode
+        FROM
+        employee
+        WHERE
+        employee_number IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <!-- ResultMap for Employment Certificate(재직 증명서)-->
     <resultMap id="EmploymentCertificateResultMap" type="com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse">
         <result property="employeeName" column="name"/>
