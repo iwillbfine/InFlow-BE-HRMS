@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
@@ -39,6 +41,17 @@ public class AppointmentService {
         this.positionRepository = positionRepository;
         this.dutyRepository = dutyRepository;
     }
+
+    /**
+     * 설명: 여러 사원의 인사발령 처리
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public List<ResponseAppointmentDTO> processAppointments(List<RequestAppointmentDTO> appointmentRequestDTOs) {
+        return appointmentRequestDTOs.stream()
+                .map(this::processAppointment)
+                .collect(Collectors.toList());
+    }
+
 
     /**
      * 설명: 인사 발령 처리를 담당하며 트랜잭션으로 관리.

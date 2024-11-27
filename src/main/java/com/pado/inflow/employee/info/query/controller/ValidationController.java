@@ -15,7 +15,10 @@ public class ValidationController {
     private final ValidationService validationService;
 
     @GetMapping("/")
-    public ValidationResponseDTO getValidationResponse() {
-        return validationService.getValidationResponse();
+    public ResponseDTO<ValidationResponseDTO> getValidationResponse() {
+
+        ValidationResponseDTO validationResponseDTO=validationService.getValidationResponse();
+
+        return ResponseDTO.ok(validationResponseDTO);
     }
 }
