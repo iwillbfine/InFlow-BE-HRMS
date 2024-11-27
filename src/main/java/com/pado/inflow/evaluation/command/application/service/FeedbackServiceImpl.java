@@ -52,9 +52,9 @@ public class FeedbackServiceImpl implements FeedBackService {
         }
 
         // 해당 평가에 연결된 피드백이 존재하는지 확인.
-        FeedbackDTO selectedFeedback =
-                feedbackService.findFeedbackByempIdAndYearAndHalf(selectedEvaluation.getEmployeeId(), selectedEvaluation.getYear(), selectedEvaluation.getHalf());
-        if (selectedFeedback != null) {
+        boolean selectedFeedback =
+                feedbackService.existsFeedbackByempIdAndYearAndHalf(selectedEvaluation.getEmployeeId(), selectedEvaluation.getYear(), selectedEvaluation.getHalf());
+        if (selectedFeedback) {
             throw new CommonException(ErrorCode.DUPLICATED_FEEDBACK_CREATION);
         }
 
@@ -66,8 +66,8 @@ public class FeedbackServiceImpl implements FeedBackService {
         if (selectedEvaluationPolicy == null || selectedEvaluationPolicy.isEmpty()) {
             throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION_POLICY);
         } else {
-            if (selectedEvaluationPolicy.get(0).getStartDate().isBefore(LocalDateTime.now())
-             || selectedEvaluationPolicy.get(0).getEndDate().isAfter(LocalDateTime.now())) {
+            if (selectedEvaluationPolicy.get(0).getStartDate().isAfter(LocalDateTime.now())
+             || selectedEvaluationPolicy.get(0).getEndDate().isBefore(LocalDateTime.now())) {
                 throw new CommonException(ErrorCode.FEEDBACK_CREATE_FAILURE);
             }
         }

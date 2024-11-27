@@ -35,4 +35,15 @@ public class FeedbackController {
         FeedbackDTO selectedFeedback = feedbackService.findFeedbackByFeedbackId(feedbackId);
         return ResponseDTO.ok(selectedFeedback);
     }
+
+    // 피드백 존재 여부 확인 (신규 추가)
+    @GetMapping("/exists")
+    public ResponseDTO<Boolean> existsFeedback(
+            @RequestParam(value = "empId") Long empId,
+            @RequestParam(value = "year") Integer year,
+            @RequestParam(value = "half") String half
+    ) {
+        boolean exists = feedbackService.existsFeedbackByempIdAndYearAndHalf(empId, year, half);
+        return ResponseDTO.ok(exists);
+    }
 }

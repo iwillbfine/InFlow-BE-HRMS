@@ -79,9 +79,11 @@ public class TaskEvalServiceImpl implements TaskEvalService {
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_TASK));
 
         // 점수 계산 (Score * Task_ratio * Set_ratio)
-        double calculatedScore = createTaskEvalRequestDTO.getScore()
+        double calculatedScore = Double.parseDouble(String.format("%.2f",
+                createTaskEvalRequestDTO.getScore()
                 * evaluationPolicyDTO.getTaskRatio()
-                * createTaskEvalRequestDTO.getSetRatio();
+                * createTaskEvalRequestDTO.getSetRatio()
+        ));
 
         // 저장
         TaskEvalDTO taskEvalDTO = TaskEvalDTO.builder()
@@ -135,8 +137,11 @@ public class TaskEvalServiceImpl implements TaskEvalService {
         existingTaskEval.setTaskTypeId(requestDTO.getTaskTypeId());
         existingTaskEval.setTaskItemId(requestDTO.getTaskItemId());
 
-        // 6. 점수 계산 (Score * Task_ratio * Set_ratio)
-        double calculatedScore = requestDTO.getScore() * evaluationPolicyDTO.getTaskRatio() * requestDTO.getSetRatio();
+        double calculatedScore = Double.parseDouble(String.format("%.2f",
+                requestDTO.getScore()
+                * evaluationPolicyDTO.getTaskRatio()
+                * requestDTO.getSetRatio()
+        ));
         existingTaskEval.setScore(calculatedScore);
 
         // 7. 변경된 엔티티 저장
