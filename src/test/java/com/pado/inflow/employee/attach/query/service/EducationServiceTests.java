@@ -2,8 +2,6 @@ package com.pado.inflow.employee.attach.query.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -22,7 +20,7 @@ class EducationServiceTests {
     @DisplayName("전 사원의 학력 조회")
     @Test
     public void getAllEduTests() {
-        assertTrue(educationService.getEduAll("1").size() > 0);
+        assertFalse(educationService.getEduAll("1").isEmpty());
     }
 
 }
