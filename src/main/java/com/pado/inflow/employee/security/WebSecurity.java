@@ -88,6 +88,11 @@ public class WebSecurity {
                         // 설명. 2.4. 엑셀 양식 관련 API
                         .requestMatchers(new AntPathRequestMatcher("/api/forms/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
+                        // 설명. 2.5. 유효성검사 관련 API
+                        .requestMatchers(new AntPathRequestMatcher("/api/validations/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
+
+
                         // 그외.. 테이블 관련 api
 
                         // 설명. 3. department(부서) 도메인

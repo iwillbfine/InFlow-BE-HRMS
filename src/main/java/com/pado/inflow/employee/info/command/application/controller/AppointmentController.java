@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController("appointmentsCommandController")
 @RequestMapping("/api/appointments")
 public class AppointmentController {
@@ -32,15 +34,19 @@ public class AppointmentController {
      *   5. 부서구성원 테이블에 추가
      *
      */
+    /**
+     * 설명: 여러 사원의 인사발령 처리
+     * - 리스트로 요청받고 리스트로 반환
+     */
     @PostMapping
-    public ResponseDTO<ResponseAppointmentDTO> appointEmployee(
-            @RequestBody RequestAppointmentDTO appointmentRequestDTO) {
+    public ResponseDTO<List<ResponseAppointmentDTO>> appointEmployees(
+            @RequestBody List<RequestAppointmentDTO> appointmentRequestDTOs) {
 
         // 서비스 호출 및 발령 처리
-        ResponseAppointmentDTO response = appointmentService.processAppointment(appointmentRequestDTO);
+        List<ResponseAppointmentDTO> responseList = appointmentService.processAppointments(appointmentRequestDTOs);
 
         // 처리 결과 응답 반환
-        return ResponseDTO.ok(response);
+        return ResponseDTO.ok(responseList);
     }
 
 }

@@ -45,6 +45,7 @@ public enum ErrorCode {
     INVALID_GRADE_SCORE(40039, HttpStatus.BAD_REQUEST, "새로운 등급의 절대평가 점수가 이전 등급의 점수보다 높습니다."),
     TASK_EVAL_CREATE_FAILURE(40040, HttpStatus.BAD_REQUEST, "평가 기간에만 점수를 입력할 수 있습니다.."),
     FILE_DOWNLOAD_ERROR(40041, HttpStatus.BAD_REQUEST, "파일 다운로드에 실패했습니다."),
+    FILE_NOT_FOUND(40042, HttpStatus.BAD_REQUEST, "파일 업로드를 해주세요"),
 
     // 401: 인증 실패 (Unauthorized)
     INVALID_HEADER_VALUE(40100, HttpStatus.UNAUTHORIZED, "올바르지 않은 헤더값입니다."), // 헤더 값이 잘못되었거나 누락된 경우

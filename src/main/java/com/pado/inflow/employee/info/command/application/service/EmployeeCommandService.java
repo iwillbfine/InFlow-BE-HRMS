@@ -114,11 +114,11 @@ public class EmployeeCommandService implements UserDetailsService {
                 })
                 .collect(Collectors.toList());
 
-        // 문자 전송 및 응답 생성 (문자 전송은 주석 처리된 상태)
-        // savedEmployees.forEach(employee -> {
-        //     String welcomeMessage = generateWelcomeMessage(employee);
-        //     smsService.sendSms(employee.getPhoneNumber(), welcomeMessage); // 문자 전송
-        // });
+         //문자 전송 및 응답 생성 (문자 전송은 주석 처리된 상태)
+        employees.forEach(employee -> {
+             String welcomeMessage = generateWelcomeMessage(employee);
+             smsService.sendSms(employee.getPhoneNumber(), welcomeMessage); // 문자 전송
+         });
 
         return employees.stream()
                 .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
@@ -196,6 +196,10 @@ public class EmployeeCommandService implements UserDetailsService {
                                                   String streetAddress, String detailedAddress, MultipartFile profileImg) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
+
+        if (profileImg == null) {
+            throw new CommonException(ErrorCode.FILE_NOT_FOUND);
+        }
 
         // 필드 업데이트
         if (email != null) {

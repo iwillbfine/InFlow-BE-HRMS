@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pado.inflow.employee.info.query.repository.ValidationMapper">
+
+    <select id="getAllPositions" resultType="com.pado.inflow.employee.info.query.dto.response.validate.PositionDTO">
+        SELECT position_code AS positionCode, position_name AS positionName
+        FROM position
+    </select>
+
+    <select id="getAllRoles" resultType="com.pado.inflow.employee.info.query.dto.response.validate.RoleDTO">
+        SELECT role_code AS roleCode, role_name AS roleName
+        FROM role
+    </select>
+
+    <select id="getAllDuties" resultType="com.pado.inflow.employee.info.query.dto.response.validate.DutyDTO">
+        SELECT duty_code AS dutyCode, duty_name AS dutyName
+        FROM duty
+    </select>
+
+    <select id="getAllDepartments" resultType="com.pado.inflow.employee.info.query.dto.response.validate.DepartmentDTO">
+        SELECT department_code AS departmentCode, department_name AS departmentName,
+               created_at AS createdAt, disbanded_at AS disbandedAt,
+               min_employee_num AS minEmployeeNum, upper_department_code AS upperDepartmentCode
+        FROM department
+    </select>
+
+    <select id="getAllAppointmentItems" resultType="com.pado.inflow.employee.info.query.dto.response.validate.AppointmentItemDTO">
+        SELECT appointment_item_code AS appointmentItemCode, appointment_item_name AS appointmentItemName
+        FROM appointment_item
+    </select>
+
+</mapper>
