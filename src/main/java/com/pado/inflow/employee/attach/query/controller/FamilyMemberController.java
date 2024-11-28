@@ -4,16 +4,14 @@ import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.employee.attach.query.dto.FamilyMemberDTO;
 import com.pado.inflow.employee.attach.query.service.FamilyMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
-
-import static java.lang.Long.parseLong;
 
 @RestController("FMQueryController")
 @RequestMapping("/api/employees/family-members")
@@ -43,5 +41,12 @@ public class FamilyMemberController {
     public ResponseEntity<List<FamilyMemberDTO>> getOneFamilyMemberList(@PathVariable("employeeId") String employeeId) {
         List<FamilyMemberDTO> result = familyMemberService.getFamilyMemberAll(employeeId);
         return ResponseEntity.ok(result);
+    }
+
+    // 가구원 관계 조회
+    @GetMapping("/relationships")
+    public ResponseDTO<List<HashMap<String, String>>> getRelationshipName() {
+        List<HashMap<String, String>> result = familyMemberService.getRelationshipNames();
+        return ResponseDTO.ok(result);
     }
 }
