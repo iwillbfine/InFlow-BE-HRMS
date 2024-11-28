@@ -25,4 +25,11 @@
              </if>
          </where>
     </select>
+
+    <select id="getRelationships" resultType="hashmap">
+        SELECT
+               family_relationship_code
+             , family_relationship_name
+          FROM FAMILY_RELATIONSHIP
+    </select>
 </mapper>

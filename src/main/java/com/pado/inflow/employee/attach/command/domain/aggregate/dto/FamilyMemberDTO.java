@@ -28,4 +28,6 @@ public class FamilyMemberDTO {
         this.employeeId = employeeId;
         this.familyRelationshipCode = familyRelationshipCode;
     }
+
+
 }
