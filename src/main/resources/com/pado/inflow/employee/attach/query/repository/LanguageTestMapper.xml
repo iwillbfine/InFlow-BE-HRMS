@@ -31,4 +31,11 @@
              </if>
          </where>
     </select>
+
+    <select id="getAllLanguageCodes" resultType="hashmap">
+        SELECT
+               language_code
+             , language_name
+          FROM language
+    </select>
 </mapper>

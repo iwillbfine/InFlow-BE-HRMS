@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController("LTQueryController")
@@ -38,6 +39,13 @@ public class LanguageTestController {
     @GetMapping("/{employeeId}")
     public ResponseDTO<List<LanguageTestDTO>> getLanguageTestOne(@PathVariable("employeeId") String employeeId) {
         List<LanguageTestDTO> result = languageTestService.getLanguageTestsAll(employeeId);
+        return ResponseDTO.ok(result);
+    }
+
+    // 언어 코드 정보 조회
+    @GetMapping("/languages")
+    public ResponseDTO<List<HashMap<String, String>>> getLanguageCode() {
+        List<HashMap<String, String>> result = languageTestService.getLanguageCode();
         return ResponseDTO.ok(result);
     }
 }
