@@ -23,7 +23,7 @@ public class TaskEvalServiceImpl implements TaskEvalService{
     public List<TaskEvalDTO> findTaskEval(Long empId, Integer year, String half) {
         List<TaskEvalDTO> selectedTaskEvalList = taskEvalMapper.findTaskEvalList(empId, year, half);
         if ( selectedTaskEvalList == null || selectedTaskEvalList.isEmpty() ) {
-            throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION);
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK_EVAL);
         }
         return selectedTaskEvalList;
     }
@@ -32,5 +32,14 @@ public class TaskEvalServiceImpl implements TaskEvalService{
     public TaskEvalDTO getTaskEvalItem(Long taskEvalId) {
         TaskEvalDTO selectedTaskEval = taskEvalMapper.findTaskEvalByTaskEvalId(taskEvalId);
         return selectedTaskEval;
+    }
+
+    @Override
+    public List<TaskEvalDTO> findTaskEvalsByEvaluationId(Long evaluationId) {
+        List<TaskEvalDTO> selectedTaskEvals = taskEvalMapper.findTaskEvalListByEvaluationId(evaluationId);
+        if (selectedTaskEvals == null || selectedTaskEvals.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK_EVAL);
+        }
+        return selectedTaskEvals;
     }
 }

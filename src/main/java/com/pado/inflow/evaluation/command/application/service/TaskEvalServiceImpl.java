@@ -14,9 +14,11 @@ import com.pado.inflow.evaluation.command.domain.repository.TaskItemRepository; 
 import com.pado.inflow.evaluation.query.dto.EvaluationDTO;
 import com.pado.inflow.evaluation.query.dto.EvaluationPolicyDTO;
 import com.pado.inflow.evaluation.query.dto.TaskEvalDTO;
+import com.pado.inflow.evaluation.query.dto.TaskTypeEvalDTO;
 import com.pado.inflow.evaluation.query.repository.EvaluationMapper;
 import com.pado.inflow.evaluation.query.repository.EvaluationPolicyMapper;
 import com.pado.inflow.evaluation.query.repository.TaskEvalMapper;
+import com.pado.inflow.evaluation.query.repository.TaskTypeEvalMapper;
 import com.pado.inflow.evaluation.query.service.EvaluationPolicyService;
 import com.pado.inflow.evaluation.query.service.EvaluationPolicyServiceImpl;
 import org.springframework.stereotype.Service;
@@ -37,8 +39,9 @@ public class TaskEvalServiceImpl implements TaskEvalService {
     private final EvaluationRepository evaluationRepository;
     private final EvaluationPolicyServiceImpl evaluationPolicyServiceImpl;
     private final EvaluationPolicyService evaluationPolicyService;
+    private final TaskTypeEvalMapper taskTypeEvalMapper;
 
-    public TaskEvalServiceImpl(TaskEvalRepository taskEvalRepository, TaskItemRepository taskItemRepository, EvaluationMapper evaluationMapper, EvaluationPolicyMapper evaluationPolicyMapper, TaskEvalMapper taskEvalMapper, EvaluationRepository evaluationRepository, EvaluationPolicyServiceImpl evaluationPolicyServiceImpl, EvaluationPolicyService evaluationPolicyService) {
+    public TaskEvalServiceImpl(TaskEvalRepository taskEvalRepository, TaskItemRepository taskItemRepository, EvaluationMapper evaluationMapper, EvaluationPolicyMapper evaluationPolicyMapper, TaskEvalMapper taskEvalMapper, EvaluationRepository evaluationRepository, EvaluationPolicyServiceImpl evaluationPolicyServiceImpl, EvaluationPolicyService evaluationPolicyService, TaskTypeEvalMapper taskTypeEvalMapper) {
         this.taskEvalRepository = taskEvalRepository;
         this.taskItemRepository = taskItemRepository;
         this.evaluationMapper = evaluationMapper;
@@ -47,6 +50,7 @@ public class TaskEvalServiceImpl implements TaskEvalService {
         this.evaluationRepository = evaluationRepository;
         this.evaluationPolicyServiceImpl = evaluationPolicyServiceImpl;
         this.evaluationPolicyService = evaluationPolicyService;
+        this.taskTypeEvalMapper = taskTypeEvalMapper;
     }
 
     @Override
@@ -61,17 +65,17 @@ public class TaskEvalServiceImpl implements TaskEvalService {
             throw new CommonException(ErrorCode.TASK_EVAL_CREATE_FAILURE);
         }
 
-        EvaluationPolicyDTO evaluationPolicyDTO = selectedPolicy.get(0);
+        // TaskTypeEval 조회
+        List<TaskTypeEvalDTO> selectedTaskTypeEval =
+                taskTypeEvalMapper.getTaskTypeEvalByEvaluationId(createTaskEvalRequestDTO.getEvaluationId());
 
-        // 평가 조회 후 Request 날린 employeeId와 평가 테이블에서 평가 대상자의 employeeId가 같으면 자기평가 아니면 리더평가
-        List<EvaluationDTO> selectedEvaluations =
-                evaluationMapper.getEvaluationsByEmpIdAndYearAndHalf(employeeId, year, half);
-
-        // 자기평가와 리더평가 구분
-        EvaluationDTO evaluationDTO = selectedEvaluations.stream()
-                .filter(evaluation -> evaluation.getEvaluatorId().equals(employeeId))
+        // TaskTypeEval의 evaluationPolicyId와 일치하는 EvaluationPolicy (TaskRatio에 사용)
+        EvaluationPolicyDTO evaluationPolicyDTO = selectedPolicy.stream()
+                .filter(policy -> selectedTaskTypeEval.stream()
+                        .anyMatch(typeEval -> typeEval.getEvaluationPolicyId().equals(policy.getEvaluationPolicyId())))
                 .findFirst()
-                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EVALUATION));
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EVALUATION_POLICY));
+
 
         // 과제 항목 조회
         Long taskItemId = createTaskEvalRequestDTO.getTaskItemId();
@@ -93,7 +97,7 @@ public class TaskEvalServiceImpl implements TaskEvalService {
                 .setRatio(createTaskEvalRequestDTO.getSetRatio())
                 .performanceInput(createTaskEvalRequestDTO.getPerformanceInput())
                 .relEvalStatus(false)   // 기본값 false로 지정. 나중에 수정 필요
-                .evaluationId(evaluationDTO.getEvaluationId())
+                .evaluationId(createTaskEvalRequestDTO.getEvaluationId())
                 .modifiableDate(evaluationPolicyDTO.getModifiableDate()) // 수정 가능 일
                 .taskTypeId(createTaskEvalRequestDTO.getTaskTypeId())
                 .taskItemId(taskItemEntity.getTaskItemId())

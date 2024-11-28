@@ -39,4 +39,12 @@ public class TaskEvalController {
         TaskEvalDTO taskEvalItem = taskEvalService.getTaskEvalItem(taskEvalId);
         return ResponseDTO.ok(taskEvalItem);
     }
+
+    @GetMapping("/{evaluationId}")
+    public ResponseDTO<?> findTaskEvalByEvaluationId(
+            @PathVariable(value = "evaluationId") Long evaluationId
+    ) {
+        List<TaskEvalDTO> selectedTaskEvalList = taskEvalService.findTaskEvalsByEvaluationId(evaluationId);
+        return ResponseDTO.ok(selectedTaskEvalList);
+    }
 }

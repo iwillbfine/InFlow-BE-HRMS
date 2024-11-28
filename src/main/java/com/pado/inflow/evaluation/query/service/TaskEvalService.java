@@ -9,4 +9,6 @@ public interface TaskEvalService {
 
 
     TaskEvalDTO getTaskEvalItem(Long taskEvalId);
+
+    List<TaskEvalDTO> findTaskEvalsByEvaluationId(Long evaluationId);
 }
