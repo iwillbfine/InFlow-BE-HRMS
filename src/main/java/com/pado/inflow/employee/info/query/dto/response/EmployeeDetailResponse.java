@@ -75,18 +75,4 @@ public class EmployeeDetailResponse {
     @JsonProperty("duty_name")
     private String dutyName;
 
-    @JsonProperty("department_code")
-    private String departmentCode;
-
-    @JsonProperty("attendance_status_type_code")
-    private String attendanceStatusTypeCode;
-
-    @JsonProperty("position_code")
-    private String positionCode;
-
-    @JsonProperty("role_code")
-    private String roleCode;
-
-    @JsonProperty("duty_code")
-    private String dutyCode;
 }
