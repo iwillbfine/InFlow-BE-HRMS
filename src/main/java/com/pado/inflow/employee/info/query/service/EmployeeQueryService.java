@@ -4,6 +4,7 @@ import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
+import com.pado.inflow.employee.info.query.dto.response.EmployeeDetailResponse;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse;
 import com.pado.inflow.employee.info.query.dto.response.ResponseSecurityAgreementResponse;
@@ -62,6 +63,11 @@ public class EmployeeQueryService {
             throw new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE);
         }
         return employee;
+    }
+
+    //설명.1.5. 사원 정보 id로 상세 조회
+    public EmployeeDetailResponse getEmployeeDetail(Long employeeId) {
+        return employeeMapper.findEmployeeDetailById(employeeId);
     }
 
     //설명.1.5 여러 사번으로 사원들 조회
