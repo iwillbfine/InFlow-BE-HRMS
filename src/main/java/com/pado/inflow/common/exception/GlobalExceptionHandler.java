@@ -50,7 +50,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     public ResponseDTO<?> handleServerException(Exception e) {
         log.info("occurred exception in handleServerError = {}", e.getMessage());
-        e.printStackTrace();
         return ResponseDTO.fail(new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
