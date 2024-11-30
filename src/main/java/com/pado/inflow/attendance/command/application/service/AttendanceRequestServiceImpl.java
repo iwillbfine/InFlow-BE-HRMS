@@ -154,13 +154,11 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         LocalDateTime startTime;
         LocalDateTime startDate;
         LocalDateTime endTime;
-        LocalDateTime endDate;
 
         try {
             startTime = LocalDateTime.parse(reqCommuteRequestDTO.getStartDate(), dateTimeformatter);
             startDate = startTime.toLocalDate().atStartOfDay();
             endTime = LocalDateTime.parse(reqCommuteRequestDTO.getEndDate(), dateTimeformatter);
-            endDate = endTime.toLocalDate().atStartOfDay();
         } catch (DateTimeParseException e) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
