@@ -63,7 +63,8 @@ public class GlobalExceptionHandler {
 
     // 파일 업로드 크기 제한 초과
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseDTO<?> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+    public ResponseDTO<?> handleMaxSizeException(MaxUploadSizeExceededException e) {
+        log.error("handleMaxSizeException() in GlobalExceptionHandler : {}",e.getMessage());
         return ResponseDTO.fail(new CommonException(ErrorCode.MAX_UPLOAD_SIZE_EXCEEDED));
     }
 
