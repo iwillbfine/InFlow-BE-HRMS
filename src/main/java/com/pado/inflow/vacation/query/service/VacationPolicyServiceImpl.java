@@ -27,4 +27,14 @@ public class VacationPolicyServiceImpl implements VacationPolicyService {
         return vacationPolicies;
     }
 
+    // 연도별 비정기 휴가 정책 조회
+    @Override
+    public List<VacationPolicyDTO> findIrregularVacationPoliciesByYear(Integer year) {
+        List<VacationPolicyDTO> vacationPolicies = vacationPolicyMapper.findIrregularVacationPoliciesByYear(year);
+        if (vacationPolicies == null || vacationPolicies.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_VACATION_POLICY);
+        }
+        return vacationPolicies;
+    }
+
 }
