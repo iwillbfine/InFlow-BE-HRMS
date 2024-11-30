@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @SpringBootTest
 @Transactional
@@ -45,6 +47,22 @@ class VacationServiceTests {
         // When
         PageDTO<VacationDTO> vacations = vacationService.findUsedVacationsByEmployeeId(employeeId, pageNo);
         if (vacations != null) {
+            log.info(vacations.toString());
+        }
+
+        // Then
+        Assertions.assertNotNull(vacations);
+    }
+
+    @DisplayName("사원별 잔여 휴가 전체 조회 테스트")
+    @Test
+    void testFindLeftAllVacationsByEmployeeId() {
+        // Given
+        Long employeeId = 4L;
+
+        // When
+        List<VacationDTO> vacations = vacationService.findLeftAllVacationsByEmployeeId(employeeId);
+        if (vacations != null && !vacations.isEmpty()) {
             log.info(vacations.toString());
         }
 

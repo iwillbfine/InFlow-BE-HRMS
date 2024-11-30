@@ -26,4 +26,11 @@ public class VacationPolicyController {
         return ResponseDTO.ok(vacationPolicies);
     }
 
+    // 연도별 비정기 휴가 정책 조회
+    @GetMapping("/irregular")
+    public ResponseDTO<?> getIrregularVacationPoliciesByYear(@RequestParam("year") Integer year) {
+        List<VacationPolicyDTO> vacationPolicies = vacationPolicyService.findIrregularVacationPoliciesByYear(year);
+        return ResponseDTO.ok(vacationPolicies);
+    }
+
 }
