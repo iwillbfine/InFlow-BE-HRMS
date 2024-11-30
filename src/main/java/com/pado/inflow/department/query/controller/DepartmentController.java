@@ -47,7 +47,7 @@ public class DepartmentController {
 
     // 설명. 추가: 사원 전체 목록 조회
     @GetMapping("/search/all-members")
-    public ResponseDTO<List<GetDepartmentMemberDTO>> getAllDepartmentMembers(){
+    public ResponseDTO<List<GetAllMemberDTO>> getAllDepartmentMembers(){
         return ResponseDTO.ok(departmentService.findAllDepartmentMembers());
     }
 

@@ -113,7 +113,7 @@
     </select>
 
     <!-- 설명. 추가: 전체 사원 조회 -->
-    <select id="findAllDepartmentMembers" resultType="com.pado.inflow.department.query.dto.GetDepartmentMemberDTO">
+    <select id="findAllDepartmentMembers" resultType="com.pado.inflow.department.query.dto.GetAllMemberDTO">
     WITH RECURSIVE department_hierarchy AS (
     SELECT
         department_code,
@@ -143,6 +143,7 @@
     SELECT
         d.department_name AS departmentName,
         h.full_path AS departmentPath,
+        dm.department_member_id AS departmentMemberId,
         dm.employee_number AS employeeCode,
         dm.name AS employeeName,
         dm.profile_img_url AS profileImageUrl,

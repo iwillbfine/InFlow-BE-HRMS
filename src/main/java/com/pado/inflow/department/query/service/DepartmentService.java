@@ -88,8 +88,8 @@ public class DepartmentService {
     }
 
     // 설명. 추가: 사원 전체 목록 조회
-    public List<GetDepartmentMemberDTO>findAllDepartmentMembers(){
-        List<GetDepartmentMemberDTO> departmentMembers = departmentMapper.findAllDepartmentMembers();
+    public List<GetAllMemberDTO>findAllDepartmentMembers(){
+        List<GetAllMemberDTO> departmentMembers = departmentMapper.findAllDepartmentMembers();
 
         if(departmentMembers == null || departmentMembers.isEmpty()){
             throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT_MEMBER);
