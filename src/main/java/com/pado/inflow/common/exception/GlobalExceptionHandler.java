@@ -8,6 +8,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @Slf4j
@@ -59,4 +60,11 @@ public class GlobalExceptionHandler {
         log.error("handleDataIntegrityViolationException() in GlobalExceptionHandler : {}", e.getMessage());
         return ResponseDTO.fail(new CommonException(ErrorCode.DATA_INTEGRITY_VIOLATION));
     }
+
+    // 파일 업로드 크기 제한 초과
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseDTO<?> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+        return ResponseDTO.fail(new CommonException(ErrorCode.MAX_UPLOAD_SIZE_EXCEEDED));
+    }
+
 }
