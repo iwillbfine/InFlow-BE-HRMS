@@ -33,4 +33,24 @@
          WHERE A.YEAR = #{ year }
          ORDER BY A.VACATION_POLICY_ID
     </select>
+
+    <select id="findIrregularVacationPoliciesByYear" resultMap="vacationPolicyResultMap" parameterType="Integer">
+        SELECT
+               A.VACATION_POLICY_ID
+             , A.VACATION_POLICY_NAME
+             , A.VACATION_POLICY_DESCRIPTION
+             , A.VACATION_POLICY_STATUS
+             , A.ALLOCATION_DAYS
+             , A.PAID_STATUS
+             , A.YEAR
+             , A.CREATED_AT
+             , A.AUTO_ALLOCATION_CYCLE
+             , B.VACATION_TYPE_NAME
+          FROM VACATION_POLICY A
+          JOIN VACATION_TYPE B
+            ON A.VACATION_TYPE_ID = B.VACATION_TYPE_ID
+         WHERE A.YEAR = #{ year }
+           AND A.AUTO_ALLOCATION_CYCLE IS NULL
+         ORDER BY A.VACATION_POLICY_ID
+    </select>
 </mapper>

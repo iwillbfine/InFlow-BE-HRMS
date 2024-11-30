@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController("queryVacationController")
 @RequestMapping("/api/vacations")
 public class VacationController {
@@ -26,6 +28,13 @@ public class VacationController {
     public ResponseDTO<?> getLeftVacationsByEmployeeId(@RequestParam("eid") Long employeeId,
                                                     @RequestParam("page") Integer pageNo) {
         PageDTO<VacationDTO> vacations = vacationService.findLeftVacationsByEmployeeId(employeeId, pageNo);
+        return ResponseDTO.ok(vacations);
+    }
+
+    // 사원별 잔여 휴가 전체 조회
+    @GetMapping("/left-all")
+    public ResponseDTO<?> getLeftAllVacationsByEmployeeId(@RequestParam("eid") Long employeeId) {
+        List<VacationDTO> vacations = vacationService.findLeftAllVacationsByEmployeeId(employeeId);
         return ResponseDTO.ok(vacations);
     }
 

@@ -49,7 +49,7 @@
     <!-- 키워드를 통해 (부서명 또는 특정 사원명을 입력하여) 해당 정보에 속하는 사원 조회 -->
     <!-- 사원 코드, 사원명, 부서 명으로 사원 목록 조회: 검색창에서 사원 목록 조회 API -->
     <!-- 현존하는 부서 목록만 조회되도록 조건 추가 -->
-    <!-- 설명. 추가: 사원 휴대전화로 사원 검색 가능 -->
+    <!-- 사원 휴대전화로 사원 검색 가능 -->
     <select id="findDepartmentMembersByKeyword" resultType="com.pado.inflow.department.query.dto.GetDepartmentMemberDTO">
     WITH RECURSIVE department_hierarchy AS (
         SELECT
@@ -80,6 +80,7 @@
         SELECT
             d.department_name AS departmentName,
             h.full_path AS departmentPath,
+        dm.department_member_id AS departmentMemberId,
             dm.employee_number AS employeeCode,   <!-- 사원코드 추가 -->
             dm.name AS employeeName,
             dm.profile_img_url AS profileImageUrl,
@@ -111,6 +112,55 @@
         OR REPLACE(dm.phone_number, '-', '') LIKE CONCAT('%', REPLACE(#{keyword}, '-', ''), '%');
 
     </select>
+
+    <!-- 설명. 추가: 전체 사원 조회 -->
+    <select id="findAllDepartmentMembers" resultType="com.pado.inflow.department.query.dto.GetAllMemberDTO">
+    WITH RECURSIVE department_hierarchy AS (
+    SELECT
+        department_code,
+        department_name,
+        upper_department_code,
+        department_name AS full_path
+      FROM
+        department
+    WHERE
+        upper_department_code IS NULL
+        AND (disbanded_at IS NULL OR disbanded_at > NOW())
+    UNION ALL
+    SELECT
+        d.department_code,
+        d.department_name,
+        d.upper_department_code,
+        CONCAT_WS('/', h.full_path, d.department_name) AS full_path
+      FROM
+        department d
+    INNER JOIN
+        department_hierarchy h
+    ON
+        d.upper_department_code = h.department_code
+    WHERE
+        (d.disbanded_at IS NULL OR d.disbanded_at > NOW())
+        )
+    SELECT
+        d.department_name AS departmentName,
+        h.full_path AS departmentPath,
+        dm.department_member_id AS departmentMemberId,
+        dm.employee_number AS employeeCode,
+        dm.name AS employeeName,
+        dm.profile_img_url AS profileImageUrl,
+        dm.role_name AS roleName
+      FROM
+        department_member dm
+    JOIN
+        department_hierarchy h
+    ON
+        dm.department_code = h.department_code
+    JOIN
+        department d
+    ON
+        dm.department_code = d.department_code;
+    </select>
+
 
 
     <!-- 조직도의 하위 폴더를 통해 사원 목록 조회 -->

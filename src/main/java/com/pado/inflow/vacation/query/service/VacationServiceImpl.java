@@ -67,4 +67,16 @@ public class VacationServiceImpl implements VacationService {
         return new PageDTO<>(vacations, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
     }
 
+    // 사원별 잔여 휴가 전체 조회
+    @Override
+    public List<VacationDTO> findLeftAllVacationsByEmployeeId(Long employeeId) {
+        List<VacationDTO> vacations = vacationMapper.findLeftAllVacationsByEmployeeId(employeeId);
+
+        if(vacations == null || vacations.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_VACATION);
+        }
+
+        return vacations;
+    }
+
 }
