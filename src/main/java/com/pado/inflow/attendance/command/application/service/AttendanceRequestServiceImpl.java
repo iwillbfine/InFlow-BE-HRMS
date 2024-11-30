@@ -582,13 +582,13 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         }
 
         // 휴직 종료일 변경
-        leaveRequest.setEndDate(endDate);
+        leaveRequest.setEndDate(endDate.minusDays(1));
 
         LeaveReturn leaveReturn =
                 leaveReturnRepository.findByAttendanceRequestId(leaveRequest.getAttendanceRequestId())
                                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_LEAVE_RETURN));
 
-        leaveReturn.setEndDate(endDate);
+        leaveReturn.setEndDate(endDate.minusDays(1));
 
         attendanceRequestRepository.save(leaveRequest);
         leaveReturnRepository.save(leaveReturn);
