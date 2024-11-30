@@ -76,7 +76,7 @@ public class EmployeeController {
             @RequestParam(value = "phone_number", required = false) String phoneNumber,
             @RequestParam(value = "street_address", required = false) String streetAddress,
             @RequestParam(value = "detailed_address", required = false) String detailedAddress,
-            @RequestParam(value = "profile_img", required = true) MultipartFile profileImg) {
+            @RequestParam(value = "profile_img", required = false) MultipartFile profileImg) {
 
         ResponseEmployeeDTO updatedEmployee = employeeCommandService.updateEmployeeById(
                 employeeId, email, phoneNumber, streetAddress, detailedAddress, profileImg);

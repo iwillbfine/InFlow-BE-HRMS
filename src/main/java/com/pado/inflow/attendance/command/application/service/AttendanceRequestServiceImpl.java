@@ -154,13 +154,11 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         LocalDateTime startTime;
         LocalDateTime startDate;
         LocalDateTime endTime;
-        LocalDateTime endDate;
 
         try {
             startTime = LocalDateTime.parse(reqCommuteRequestDTO.getStartDate(), dateTimeformatter);
             startDate = startTime.toLocalDate().atStartOfDay();
             endTime = LocalDateTime.parse(reqCommuteRequestDTO.getEndDate(), dateTimeformatter);
-            endDate = endTime.toLocalDate().atStartOfDay();
         } catch (DateTimeParseException e) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
@@ -192,8 +190,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         ResponseCommuteRequestDTO responseCommuteRequestDTO = ResponseCommuteRequestDTO
                 .builder()
                 .requestReason(reqCommuteRequestDTO.getRequestReason())
-                .startDate(startDate)
-                .endDate(endDate)
+                .startDate(startTime)
+                .endDate(endTime)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .rejectionReason(null)
                 .requestStatus(RequestStatus.ACCEPT.name())
@@ -584,13 +582,13 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         }
 
         // 휴직 종료일 변경
-        leaveRequest.setEndDate(endDate);
+        leaveRequest.setEndDate(endDate.minusDays(1));
 
         LeaveReturn leaveReturn =
                 leaveReturnRepository.findByAttendanceRequestId(leaveRequest.getAttendanceRequestId())
                                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_LEAVE_RETURN));
 
-        leaveReturn.setEndDate(endDate);
+        leaveReturn.setEndDate(endDate.minusDays(1));
 
         attendanceRequestRepository.save(leaveRequest);
         leaveReturnRepository.save(leaveReturn);
