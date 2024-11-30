@@ -192,8 +192,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         ResponseCommuteRequestDTO responseCommuteRequestDTO = ResponseCommuteRequestDTO
                 .builder()
                 .requestReason(reqCommuteRequestDTO.getRequestReason())
-                .startDate(startDate)
-                .endDate(endDate)
+                .startDate(startTime)
+                .endDate(endTime)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .rejectionReason(null)
                 .requestStatus(RequestStatus.ACCEPT.name())
