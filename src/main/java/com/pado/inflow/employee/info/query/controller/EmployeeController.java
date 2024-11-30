@@ -7,6 +7,7 @@ import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.Respo
 import com.pado.inflow.employee.info.query.dto.request.EmployeeNumberRequest;
 import com.pado.inflow.employee.info.query.dto.request.EmploymentCertificateRequest;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
+import com.pado.inflow.employee.info.query.dto.response.EmployeeDetailResponse;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse;
 import com.pado.inflow.employee.info.query.dto.response.ResponseSecurityAgreementResponse;
@@ -58,6 +59,14 @@ public class EmployeeController {
     public ResponseDTO<EmployeeDTO> getEmployeeById(@PathVariable(value = "employeeId") Long employeeId) {
         EmployeeDTO employee = employeeService.getEmployeeById(employeeId);
         return ResponseDTO.ok(employee);
+    }
+
+
+    // 1.4.1 설명: 사원 정보 id로 조회
+    @GetMapping("/detail/{employeeId}")
+    public  ResponseDTO<EmployeeDetailResponse> getEmployeeDetail(@PathVariable(value = "employeeId") Long employeeId) {
+        EmployeeDetailResponse response = employeeService.getEmployeeDetail(employeeId);
+        return ResponseDTO.ok(response);
     }
 
     // 1.5. 설명: 사번으로 여러 사원들 정보 조회
