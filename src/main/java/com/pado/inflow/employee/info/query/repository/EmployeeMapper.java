@@ -2,6 +2,7 @@ package com.pado.inflow.employee.info.query.repository;
 
 import com.pado.inflow.employee.info.command.domain.aggregate.dto.response.ResponseContractDTO;
 import com.pado.inflow.employee.info.query.dto.EmployeeDTO;
+import com.pado.inflow.employee.info.query.dto.response.EmployeeDetailResponse;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse;
 import com.pado.inflow.employee.info.query.dto.response.EmploymentContractResponse;
 import com.pado.inflow.employee.info.query.dto.response.ResponseSecurityAgreementResponse;
@@ -26,6 +27,9 @@ public interface EmployeeMapper {
     // 설명.4. ID로 사원 조회
     EmployeeDTO findEmployeeById(@Param("employeeId") Long employeeId);
 
+    //  // 설명.4. ID로 상세 정보 조회
+    EmployeeDetailResponse findEmployeeDetailById(@Param("employeeId") Long employeeId);
+
 
     //설명.5. 재직증명서 발급 데이터 조회
     EmploymentCertificateResponse getEmploymentCertificateInfo(Long employeeId);
@@ -45,5 +49,7 @@ public interface EmployeeMapper {
     // 설명.9. 계약서 단건 조회
     ResponseContractDTO findContractByContractId(@Param("contractId") Long contractId);
 
+    // 설명.10. 여러 사번으로 사원들 조회
+    List<EmployeeDTO> findEmployeesByEmployeeNumbers(List<String> employeeNumbers);
 
 }

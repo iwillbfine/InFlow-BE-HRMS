@@ -21,6 +21,9 @@ public class GetDepartmentMemberDTO {
     @JsonProperty("department_path")
     private String departmentPath;
 
+    @JsonProperty("employee_number")
+    private String employeeCode;
+
     @JsonProperty("employee_name")
     private String employeeName;
 

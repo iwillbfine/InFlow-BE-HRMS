@@ -45,6 +45,7 @@ public enum ErrorCode {
     INVALID_GRADE_SCORE(40039, HttpStatus.BAD_REQUEST, "새로운 등급의 절대평가 점수가 이전 등급의 점수보다 높습니다."),
     TASK_EVAL_CREATE_FAILURE(40040, HttpStatus.BAD_REQUEST, "평가 기간에만 점수를 입력할 수 있습니다.."),
     FILE_DOWNLOAD_ERROR(40041, HttpStatus.BAD_REQUEST, "파일 다운로드에 실패했습니다."),
+    FILE_NOT_FOUND(40042, HttpStatus.BAD_REQUEST, "파일 업로드를 해주세요"),
 
     // 401: 인증 실패 (Unauthorized)
     INVALID_HEADER_VALUE(40100, HttpStatus.UNAUTHORIZED, "올바르지 않은 헤더값입니다."), // 헤더 값이 잘못되었거나 누락된 경우
@@ -134,7 +135,8 @@ public enum ErrorCode {
     // 500: 서버 내부 오류 (Internal Server Error)
     INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다"),
     PASSWORD_ENCODING_FAILED(50001, HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 암호화 실패"),
-    SmsSendingException(50002, HttpStatus.INTERNAL_SERVER_ERROR, "SMS 전송 실패");
+    SmsSendingException(50002, HttpStatus.INTERNAL_SERVER_ERROR, "SMS 전송 실패"),
+    MAX_UPLOAD_SIZE_EXCEEDED(50003, HttpStatus.INTERNAL_SERVER_ERROR, "업로드 실패: 파일의 크기가 너무 큽니다.");
 
     private final Integer code;
     private final HttpStatus httpStatus;

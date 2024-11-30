@@ -154,13 +154,11 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         LocalDateTime startTime;
         LocalDateTime startDate;
         LocalDateTime endTime;
-        LocalDateTime endDate;
 
         try {
             startTime = LocalDateTime.parse(reqCommuteRequestDTO.getStartDate(), dateTimeformatter);
             startDate = startTime.toLocalDate().atStartOfDay();
             endTime = LocalDateTime.parse(reqCommuteRequestDTO.getEndDate(), dateTimeformatter);
-            endDate = endTime.toLocalDate().atStartOfDay();
         } catch (DateTimeParseException e) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
@@ -192,8 +190,8 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         ResponseCommuteRequestDTO responseCommuteRequestDTO = ResponseCommuteRequestDTO
                 .builder()
                 .requestReason(reqCommuteRequestDTO.getRequestReason())
-                .startDate(startDate)
-                .endDate(endDate)
+                .startDate(startTime)
+                .endDate(endTime)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .rejectionReason(null)
                 .requestStatus(RequestStatus.ACCEPT.name())
@@ -464,19 +462,21 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         AttendanceRequest leaveRequest =
                 attendanceRequestRepository.save(modelMapper.map(resLeaveReturnRequestDTO, AttendanceRequest.class));
 
-        // 첨부 파일 DB 저장
-        for (MultipartFile file : reqLeaveRequestDTO.getAttachments()) {
+        if (reqLeaveRequestDTO.getAttachments() != null && !reqLeaveRequestDTO.getAttachments().isEmpty()) {
+            // 첨부 파일 DB 저장
+            for (MultipartFile file : reqLeaveRequestDTO.getAttachments()) {
 
-            String fileUrl = attendanceS3Service.uploadFile(file, leaveRequest.getEmployeeId());
+                String fileUrl = attendanceS3Service.uploadFile(file, leaveRequest.getEmployeeId());
 
-            ResponseAttendanceRequestFileDTO resAttendanceRequestFileDTO = ResponseAttendanceRequestFileDTO
-                    .builder()
-                    .fileName(file.getOriginalFilename())
-                    .fileUrl(fileUrl)
-                    .attendanceRequestId(leaveRequest.getAttendanceRequestId())
-                    .build();
+                ResponseAttendanceRequestFileDTO resAttendanceRequestFileDTO = ResponseAttendanceRequestFileDTO
+                        .builder()
+                        .fileName(file.getOriginalFilename())
+                        .fileUrl(fileUrl)
+                        .attendanceRequestId(leaveRequest.getAttendanceRequestId())
+                        .build();
 
-            attendanceRequestFileRepository.save(modelMapper.map(resAttendanceRequestFileDTO, AttendanceRequestFile.class));
+                attendanceRequestFileRepository.save(modelMapper.map(resAttendanceRequestFileDTO, AttendanceRequestFile.class));
+            }
         }
 
         // 휴직 내역 등록
@@ -564,29 +564,31 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         AttendanceRequest returnRequest =
                 attendanceRequestRepository.save(modelMapper.map(resLeaveReturnDTO, AttendanceRequest.class));
 
-        // 첨부 파일 DB 저장
-        for (MultipartFile file : reqReturnRequestDTO.getAttachments()) {
+        if (reqReturnRequestDTO.getAttachments() != null && !reqReturnRequestDTO.getAttachments().isEmpty()) {
+            // 첨부 파일 DB 저장
+            for (MultipartFile file : reqReturnRequestDTO.getAttachments()) {
 
-            String fileUrl = attendanceS3Service.uploadFile(file, returnRequest.getEmployeeId());
+                String fileUrl = attendanceS3Service.uploadFile(file, returnRequest.getEmployeeId());
 
-            ResponseAttendanceRequestFileDTO resAttendanceRequestFileDTO = ResponseAttendanceRequestFileDTO
-                    .builder()
-                    .fileName(file.getOriginalFilename())
-                    .fileUrl(fileUrl)
-                    .attendanceRequestId(returnRequest.getAttendanceRequestId())
-                    .build();
+                ResponseAttendanceRequestFileDTO resAttendanceRequestFileDTO = ResponseAttendanceRequestFileDTO
+                        .builder()
+                        .fileName(file.getOriginalFilename())
+                        .fileUrl(fileUrl)
+                        .attendanceRequestId(returnRequest.getAttendanceRequestId())
+                        .build();
 
-            attendanceRequestFileRepository.save(modelMapper.map(resAttendanceRequestFileDTO, AttendanceRequestFile.class));
+                attendanceRequestFileRepository.save(modelMapper.map(resAttendanceRequestFileDTO, AttendanceRequestFile.class));
+            }
         }
 
         // 휴직 종료일 변경
-        leaveRequest.setEndDate(endDate);
+        leaveRequest.setEndDate(endDate.minusDays(1));
 
         LeaveReturn leaveReturn =
                 leaveReturnRepository.findByAttendanceRequestId(leaveRequest.getAttendanceRequestId())
                                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_LEAVE_RETURN));
 
-        leaveReturn.setEndDate(endDate);
+        leaveReturn.setEndDate(endDate.minusDays(1));
 
         attendanceRequestRepository.save(leaveRequest);
         leaveReturnRepository.save(leaveReturn);

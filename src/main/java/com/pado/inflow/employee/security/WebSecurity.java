@@ -88,17 +88,34 @@ public class WebSecurity {
                         // 설명. 2.4. 엑셀 양식 관련 API
                         .requestMatchers(new AntPathRequestMatcher("/api/forms/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
+                        // 설명. 2.5. 유효성검사 관련 API
+                        .requestMatchers(new AntPathRequestMatcher("/api/validations/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
+
+
                         // 그외.. 테이블 관련 api
 
                         // 설명. 3. department(부서) 도메인
+                        // 사원 찾기 - 부서 폴더구조 목록 조회
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/hierarchy/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        // 사원 찾기 - 검색 키워드(사원명, 사원코드, 부서명, 전화번호) 사원 목록 조회
                         .requestMatchers(new AntPathRequestMatcher("/api/departments/search/members/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        // 사원찾기 - 사원정보 상세조회
                         .requestMatchers(new AntPathRequestMatcher("/api/departments/search/members/detail/employee-code/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        // 인사관리 - 부서 상세 조회
                         .requestMatchers(new AntPathRequestMatcher("/api/departments/search/members/detail/department-code/**", "GET")).hasAnyRole("HR", "MANAGER", "ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "POST")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "DELETE")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/api/departmentMember/**", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+                        // 인사관리 - 검색 키워드(부서코드, 부서명, 부서장명) 부서 목록 조회
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/search/departments/**", "GET")).hasAnyRole("HR", "ADMIN")
+                        // 인사관리 - 부서 생성을 위한 드롭다운
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/dropdown/**", "GET")).hasAnyRole("HR", "ADMIN")
+                        // 팀장권한 - 내 부서 관리
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/my-department/*/members/**", "GET")).hasAnyRole("MANAGER")
+                        // 인사관리 - 부서 삭제
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "DELETE")).hasAnyRole( "HR", "ADMIN")
+                        // 인사관리 - 부서 추가
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/add-department/**", "POST")).hasAnyRole("HR", "ADMIN")
+                        // 인사관리 - 부서 수정
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "PATCH")).hasAnyRole( "HR", "ADMIN")
 
 
                         // 설명. 4. attendance(근태) 도메인

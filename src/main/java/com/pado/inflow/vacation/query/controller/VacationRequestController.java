@@ -33,8 +33,9 @@ public class VacationRequestController {
     // 사원별 휴가 신청 조회
     @GetMapping
     public ResponseDTO<?> getVacationRequestsByEmployeeId(@RequestParam("eid") Long employeeId,
-                                                          @RequestParam("page") Integer pageNo) {
-        PageDTO<VacationRequestDTO> vacationRequest = vacationRequestService.findVacationRequestsByEmployeeId(employeeId, pageNo);
+                                                          @RequestParam("page") Integer pageNo,
+                                                          @RequestParam("date") String date) {
+        PageDTO<VacationRequestDTO> vacationRequest = vacationRequestService.findVacationRequestsByEmployeeId(employeeId, pageNo, date);
         return ResponseDTO.ok(vacationRequest);
     }
 

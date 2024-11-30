@@ -1,7 +1,6 @@
 package com.pado.inflow.attendance.query.service;
 
-import com.pado.inflow.attendance.query.dto.CommuteDTO;
-import com.pado.inflow.attendance.query.dto.PageDTO;
+import com.pado.inflow.attendance.query.dto.ResponseCommuteDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -23,10 +24,9 @@ class CommuteServiceTests {
     void testFindCommutesByEmployeeId() {
         // Given
         Long employeeId = 1L;
-        Integer pageNo = 1;
-
+        String date = "2024-11";
         // When
-        PageDTO<CommuteDTO> commutes = commuteService.findCommutesByEmployeeId(employeeId, pageNo);
+        List<ResponseCommuteDTO> commutes = commuteService.findCommutesByEmployeeId(employeeId, date);
         if (commutes != null) {
             log.info(commutes.toString());
         }

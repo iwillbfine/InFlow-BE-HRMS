@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pado.inflow.employee.info.query.repository.AppointmentMapper">
+
+    <!-- Result Map 정의 -->
+    <resultMap id="AppointmentHistoryResultMap" type="com.pado.inflow.employee.info.query.dto.response.AppointmentHistoryDTO">
+        <result column="appointment_id" property="appointmentId"/>
+        <result column="appointed_at" property="appointedAt"/>
+        <result column="employee_name" property="employeeName"/>
+        <result column="authorizer_name" property="authorizerName"/>
+        <result column="department_name" property="departmentName"/>
+        <result column="duty_name" property="dutyName"/>
+        <result column="role_name" property="roleName"/>
+        <result column="position_name" property="positionName"/>
+        <result column="appointment_item_name" property="appointmentItemName"/>
+    </resultMap>
+
+    <!-- 쿼리 정의 -->
+    <select id="getAppointmentHistory" resultMap="AppointmentHistoryResultMap">
+        SELECT
+        a.appointment_id,
+        a.appointed_at,
+        e.name AS employee_name,
+        auth.name AS authorizer_name,
+        d.department_name,
+        du.duty_name,
+        r.role_name,
+        p.position_name,
+        ai.appointment_item_name
+        FROM appointment a
+        JOIN employee e ON e.employee_id = a.employee_id
+        JOIN employee auth ON auth.employee_id = a.authorizer_id
+        JOIN department d ON a.department_code = d.department_code
+        JOIN duty du ON a.duty_code = du.duty_code
+        JOIN role r ON a.role_code = r.role_code
+        JOIN position p ON a.position_code = p.position_code
+        JOIN appointment_item ai ON a.appointment_item_code = ai.appointment_item_code
+        WHERE YEAR(a.appointed_at) = #{year}
+        AND MONTH(a.appointed_at) = #{month}
+        <if test="appointmentItemCode != 'all'">
+            AND ai.appointment_item_code = #{appointmentItemCode}
+        </if>
+    </select>
+
+
+</mapper>
