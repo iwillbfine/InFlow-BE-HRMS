@@ -87,6 +87,16 @@ public class DepartmentService {
         return departmentMembers;
     }
 
+    // 설명. 추가: 사원 전체 목록 조회
+    public List<GetDepartmentMemberDTO>findAllDepartmentMembers(){
+        List<GetDepartmentMemberDTO> departmentMembers = departmentMapper.findAllDepartmentMembers();
+
+        if(departmentMembers == null || departmentMembers.isEmpty()){
+            throw new CommonException(ErrorCode.NOT_FOUND_DEPARTMENT_MEMBER);
+        }
+        return departmentMembers;
+    }
+
 
     // 2. 부서 코드를 통한 사원 리스트 조회
     public List<GetDepartmentMemberDTO> findEmployeesByDepartmentCode(String departmentCode) {

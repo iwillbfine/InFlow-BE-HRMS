@@ -45,6 +45,12 @@ public class DepartmentController {
         }
     }
 
+    // 설명. 추가: 사원 전체 목록 조회
+    @GetMapping("/search/all-members")
+    public ResponseDTO<List<GetDepartmentMemberDTO>> getAllDepartmentMembers(){
+        return ResponseDTO.ok(departmentService.findAllDepartmentMembers());
+    }
+
     // 사원찾기 - 2. 선택한 사원 상세 정보 조회
     // 공통 부서에 속한 사원들 목록 중 특정 사원 선택하면 해당 사원에 대한 상세 정보 조회가 가능하다
     @GetMapping("/search/members/detail/employee-code/{employeeNumber}")

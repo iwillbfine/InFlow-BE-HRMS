@@ -18,6 +18,9 @@ public interface DepartmentMapper {
     // keyword으로 검색하여 결과 조회
     List<GetDepartmentMemberDTO> findDepartmentMembersByKeyword(@Param("keyword") String keyword);
 
+    // 설명. 추가: 전체 사원 목록 조회
+    List<GetDepartmentMemberDTO> findAllDepartmentMembers();
+
     // 2. 부서코드로 부서 해당하는 사원 목록 조회
     List<GetDepartmentMemberDTO> findDepartmentMembersByDepartmentCode(@Param("departmentCode") String departmentCode);
 
