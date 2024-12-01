@@ -641,11 +641,9 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         // 시간 String -> LocalDateTime 변환
         DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime endTime;
-        LocalDateTime endDate;
 
         try {
             endTime = LocalDateTime.parse(reqOvertimeExtensionDTO.getEndTime(), dateTimeformatter);
-            endDate = endTime.toLocalDate().atStartOfDay();
         } catch (DateTimeParseException e) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
         }
@@ -665,7 +663,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
         }
 
         // 초과근무 종료시간 연장
-        attendanceRequest.setEndDate(endDate);
+        attendanceRequest.setEndDate(endTime);
         commute.setEndTime(endTime);
         commuteRepository.save(commute);
 

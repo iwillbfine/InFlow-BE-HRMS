@@ -14,6 +14,10 @@ public interface CommuteMapper {
     List<CommuteDTO> findCommutesByEmployeeId(@Param("employeeId") Long employeeId,
                                               @Param("date") LocalDate date);
 
+    // 사원별 초과근무 내역 조회
+    List<CommuteDTO> findOvertimesByEmployeeId(@Param("employeeId") Long employeeId,
+                                               @Param("date") LocalDate date);
+
     // 당일 재택 출퇴근 내역 조회
     CommuteDTO findTodayRemoteByEmployeeId(Long employeeId);
 

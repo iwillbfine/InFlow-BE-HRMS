@@ -1,5 +1,6 @@
 package com.pado.inflow.attendance.query.controller;
 
+import com.pado.inflow.attendance.query.dto.CommuteDTO;
 import com.pado.inflow.attendance.query.dto.ResponseCommuteDTO;
 import com.pado.inflow.attendance.query.service.CommuteQueryService;
 import com.pado.inflow.common.ResponseDTO;
@@ -28,6 +29,14 @@ public class CommuteController {
                                                   @RequestParam("date") String date) {
         List<ResponseCommuteDTO> commutes = commuteService.findCommutesByEmployeeId(employeeId, date);
         return ResponseDTO.ok(commutes);
+    }
+
+    // 사원별 초과근무 내역 조회
+    @GetMapping("/overtime")
+    public ResponseDTO<?> getOvertimesByEmployeeId(@RequestParam("eid") Long employeeId,
+                                                  @RequestParam("date") String date) {
+        List<CommuteDTO> overtimes = commuteService.findOvertimesByEmployeeId(employeeId, date);
+        return ResponseDTO.ok(overtimes);
     }
 
 }
