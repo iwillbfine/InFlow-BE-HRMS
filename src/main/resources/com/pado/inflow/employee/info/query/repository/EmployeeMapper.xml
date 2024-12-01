@@ -33,6 +33,41 @@
         <result property="dutyCode" column="duty_code"/>
     </resultMap>
 
+    <select id="findEmployeesByEmployeeNumbers" parameterType="list" resultType="com.pado.inflow.employee.info.query.dto.EmployeeDTO">
+        SELECT
+        employee_id AS employeeId,
+        employee_number AS employeeNumber,
+        employee_role AS employeeRole,
+        password,
+        gender,
+        name,
+        birth_date AS birthDate,
+        email,
+        phone_number AS phoneNumber,
+        profile_img_url AS profileImgUrl,
+        join_date AS joinDate,
+        join_type AS joinType,
+        resignation_date AS resignationDate,
+        resignation_status AS resignationStatus,
+        salary,
+        monthly_salary AS monthlySalary,
+        street_address AS streetAddress,
+        detailed_address AS detailedAddress,
+        postcode,
+        department_code AS departmentCode,
+        attendance_status_type_code AS attendanceStatusTypeCode,
+        position_code AS positionCode,
+        role_code AS roleCode,
+        duty_code AS dutyCode
+        FROM
+        employee
+        WHERE
+        employee_number IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <!-- ResultMap for Employment Certificate(재직 증명서)-->
     <resultMap id="EmploymentCertificateResultMap" type="com.pado.inflow.employee.info.query.dto.response.EmploymentCertificateResponse">
         <result property="employeeName" column="name"/>
@@ -40,6 +75,7 @@
         <result property="address" column="full_address"/>
         <result property="departmentName" column="department_name"/>
         <result property="positionName" column="position_name"/>
+        <result property="joinDate" column="join_date"/> <!-- 추가 -->
         <result property="companyName" column="company_name"/>
         <result property="companyAddress" column="company_address"/>
         <result property="ceoName" column="ceo"/>
@@ -113,7 +149,8 @@
             c.company_address,
             c.ceo,
             c.business_registration_number,
-            c.company_stamp_url
+            c.company_stamp_url,
+            e.join_date -- 입사일 추가
         FROM
             employee e
                 JOIN
@@ -213,4 +250,66 @@
         WHERE contract_id = #{contractId}
     </select>
 
+    <!-- ResultMap for Employee Detail -->
+    <resultMap id="EmployeeDetailMap" type="com.pado.inflow.employee.info.query.dto.response.EmployeeDetailResponse">
+        <result property="employeeId" column="employee_id"/>
+        <result property="employeeNumber" column="employee_number"/>
+        <result property="employeeRole" column="employee_role"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="birthDate" column="birth_date"/>
+        <result property="email" column="email"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="profileImgUrl" column="profile_img_url"/>
+        <result property="joinDate" column="join_date"/>
+        <result property="joinType" column="join_type"/>
+        <result property="resignationDate" column="resignation_date"/>
+        <result property="resignationStatus" column="resignation_status"/>
+        <result property="salary" column="salary"/>
+        <result property="monthlySalary" column="monthly_salary"/>
+        <result property="streetAddress" column="street_address"/>
+        <result property="detailedAddress" column="detailed_address"/>
+        <result property="postcode" column="postcode"/>
+        <result property="departmentName" column="department_name"/>
+        <result property="attendanceStatusTypeName" column="attendance_status_type_name"/>
+        <result property="positionName" column="position_name"/>
+        <result property="roleName" column="role_name"/>
+        <result property="dutyName" column="duty_name"/>
+    </resultMap>
+
+    <select id="findEmployeeDetailById" resultMap="EmployeeDetailMap">
+        SELECT
+            e.employee_id,
+            e.employee_number,
+            e.employee_role,
+            e.name,
+            e.gender,
+            e.birth_date,
+            e.email,
+            e.phone_number,
+            e.profile_img_url,
+            e.join_date,
+            e.join_type,
+            e.resignation_date,
+            e.resignation_status,
+            e.salary,
+            e.monthly_salary,
+            e.street_address,
+            e.detailed_address,
+            e.postcode,
+            d.department_name,
+            a.attendance_status_type_name,
+            p.position_name,
+            r.role_name,
+            du.duty_name
+        FROM
+            employee e
+                JOIN department d ON e.department_code = d.department_code
+                JOIN attendance_status_type a ON e.attendance_status_type_code = a.attendance_status_type_code
+                JOIN position p ON e.position_code = p.position_code
+                JOIN role r ON e.role_code = r.role_code
+                JOIN duty du ON e.duty_code = du.duty_code
+        WHERE
+            e.employee_id = #{employeeId}
+    </select>
 </mapper>

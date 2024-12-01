@@ -21,6 +21,8 @@ public class AllPaymentsDTO {
     private int actualSalary;
     @JsonProperty("non_taxable_salary")
     private int nonTaxableSalary;
+    @JsonProperty("bonus_and_allowance")
+    private int bonusAndAllowance;
     @JsonProperty("total_deductible")
     private int totalDeductible;
     @JsonProperty("employee_id")

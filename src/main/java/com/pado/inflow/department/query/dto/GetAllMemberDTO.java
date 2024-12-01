@@ -2,18 +2,17 @@ package com.pado.inflow.department.query.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-public class GetDepartmentMemberDTO {
-
-    // 사원찾기
-    // 사원명, 사원코드, 부서명 의 키워드 입력을 통한 사원 목록 조회 DTO
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class GetAllMemberDTO {
+    // 설명. 추가: 전체 사원 조회
 
     @JsonProperty("department_name")
     private String departmentName;

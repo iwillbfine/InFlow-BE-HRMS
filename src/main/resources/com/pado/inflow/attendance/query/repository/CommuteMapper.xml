@@ -27,16 +27,23 @@
            AND YEAR(A.START_TIME) = YEAR(#{ date })
            AND MONTH(A.START_TIME) = MONTH(#{ date })
          ORDER BY A.COMMUTE_ID DESC
-         LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>
 
-    <select id="getTotalCommutesByEmployeeId" resultType="Integer" parameterType="map">
+    <select id="findOvertimesByEmployeeId" resultMap="commuteResultMap" parameterType="map">
         SELECT
-               COUNT(*) AS TOTAL
+               A.COMMUTE_ID
+             , A.START_TIME
+             , A.END_TIME
+             , A.REMOTE_STATUS
+             , A.OVERTIME_STATUS
+             , A.EMPLOYEE_ID
+             , A.ATTENDANCE_REQUEST_ID
           FROM COMMUTE A
          WHERE A.EMPLOYEE_ID = #{ employeeId }
-           AND YEAR(A.START_TIME) = YEAR(#{ date })
-           AND MONTH(A.START_TIME) = MONTH(#{ date })
+           AND A.OVERTIME_STATUS = 'Y'
+           AND ((YEAR(A.START_TIME) = YEAR(#{ date }) AND MONTH(A.START_TIME) = MONTH(#{ date }))
+           OR (YEAR(A.END_TIME) = YEAR(#{ date }) AND MONTH(A.END_TIME) = MONTH(#{ date })))
+         ORDER BY A.COMMUTE_ID DESC
     </select>
 
     <select id="findTodayRemoteByEmployeeId" resultMap="commuteResultMap" parameterType="Long">

@@ -24,7 +24,7 @@
           FROM EDUCATION
          <where>
              <if test="employeeId != null">
-                 WHERE EMPLOYEE_ID = #{employeeId}
+                 EMPLOYEE_ID = #{employeeId}
              </if>
          </where>
     </select>

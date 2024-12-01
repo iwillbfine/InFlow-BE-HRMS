@@ -25,4 +25,7 @@ public interface VacationMapper {
     // 사원별 사용 휴가 내역 개수 조회
     Integer getTotalUsedVacationsByEmployeeId(Long employeeId);
 
+    // 사원별 잔여 휴가 전체 조회
+    List<VacationDTO> findLeftAllVacationsByEmployeeId(Long employeeId);
+
 }

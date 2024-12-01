@@ -197,10 +197,6 @@ public class EmployeeCommandService implements UserDetailsService {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_EMPLOYEE));
 
-        if (profileImg == null) {
-            throw new CommonException(ErrorCode.FILE_NOT_FOUND);
-        }
-
         // 필드 업데이트
         if (email != null) {
             employee.setEmail(email);
