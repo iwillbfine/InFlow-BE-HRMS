@@ -143,4 +143,24 @@
         FROM task_item ti
         WHERE ti.evaluation_policy_id = #{evaluationPolicyId}
     </select>
+
+    <!-- 직원의 특정 연도 및 반기의 모든 과제 조회 -->
+    <select id="findAllTaskItemsByEmpIdAndYearAndHalf" resultMap="taskItemResultMap">
+        SELECT DISTINCT
+        ti.task_item_id,
+        ti.task_name,
+        ti.task_content,
+        ti.assigned_employee_count,
+        ti.task_type_id,
+        ti.employee_id,
+        ti.department_code,
+        ti.evaluation_policy_id,
+        ti.is_manager_written
+        FROM task_item ti
+        INNER JOIN evaluation_policy ep ON ti.evaluation_policy_id = ep.evaluation_policy_id
+        INNER JOIN task_type tt ON tt.task_type_id = ti.task_type_id
+        WHERE ep.year = #{year}
+        AND ep.half = #{half}
+        AND ti.employee_id = #{empId};
+    </select>
 </mapper>

@@ -94,5 +94,17 @@ public class TaskItemController {
         List<TaskItemDTO> selectedTaskItems = taskItemService.findTaskItems(evaluationPolicyId);
         return ResponseDTO.ok(selectedTaskItems);
     }
+
+    // 모든 과제 유형에 대한 과제 리스트 조회
+    @GetMapping("/AllTaskItems")
+    public ResponseDTO<?> findAllTaskItemByEmpId(
+             @RequestParam( value = "year")  Integer year
+            ,@RequestParam( value = "half")  String half
+            ,@RequestParam( value = "empId") Long empId
+    ) {
+        List<TaskItemDTO> TaskItemList =
+                taskItemService.findAllTaskItemsByEmpId(year, half, empId);
+        return ResponseDTO.ok(TaskItemList);
+    }
 }
 
