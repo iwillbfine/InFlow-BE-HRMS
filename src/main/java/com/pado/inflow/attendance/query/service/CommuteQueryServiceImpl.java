@@ -96,6 +96,27 @@ public class CommuteQueryServiceImpl implements CommuteQueryService {
         return parsedCommutes;
     }
 
+    // 사원별 초과근무 내역 조회
+    @Override
+    public List<CommuteDTO> findOvertimesByEmployeeId(Long employeeId, String date) {
+        // 날짜 형식 유효성 검사 및 변환 (yyyy-MM)
+        YearMonth parsedDate;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+            parsedDate = YearMonth.parse(date, formatter);
+        } catch (DateTimeParseException e) {
+            throw new CommonException(ErrorCode.INVALID_PARAMETER_FORMAT);
+        }
+
+        LocalDate startOfMonth = parsedDate.atDay(1); // 해당 월의 첫 번째 날
+
+        List<CommuteDTO> overtimes = commuteMapper.findOvertimesByEmployeeId(employeeId, startOfMonth);
+        if (overtimes == null || overtimes.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_COMMUTE);
+        }
+        return overtimes;
+    }
+
     // 당일 재택 출퇴근 내역 조회
     @Override
     public CommuteDTO findTodayRemoteByEmployeeId(Long employeeId) {
