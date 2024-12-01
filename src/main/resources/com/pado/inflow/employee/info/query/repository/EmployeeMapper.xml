@@ -75,6 +75,7 @@
         <result property="address" column="full_address"/>
         <result property="departmentName" column="department_name"/>
         <result property="positionName" column="position_name"/>
+        <result property="joinDate" column="join_date"/> <!-- 추가 -->
         <result property="companyName" column="company_name"/>
         <result property="companyAddress" column="company_address"/>
         <result property="ceoName" column="ceo"/>
@@ -148,7 +149,8 @@
             c.company_address,
             c.ceo,
             c.business_registration_number,
-            c.company_stamp_url
+            c.company_stamp_url,
+            e.join_date -- 입사일 추가
         FROM
             employee e
                 JOIN
