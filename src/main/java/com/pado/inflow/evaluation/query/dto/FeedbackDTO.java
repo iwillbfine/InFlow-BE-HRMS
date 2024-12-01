@@ -31,6 +31,7 @@ public class FeedbackDTO {
                 .feedbackId(this.feedbackId)
                 .content(this.content)
                 .evaluationId(this.evaluationId)
+                .createdAt(this.createdAt)
                 .build();
     }
 }

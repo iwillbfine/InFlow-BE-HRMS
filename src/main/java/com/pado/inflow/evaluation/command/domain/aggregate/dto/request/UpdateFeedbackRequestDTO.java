@@ -13,21 +13,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateFeedbackRequestDTO {
 
-    @JsonProperty("feedback_id")
-    private Long feedbackId;
+//    @JsonProperty("feedback_id")
+//    private Long feedbackId;
 
     @JsonProperty("content")
     private String content;
 
-    @JsonProperty("evaluation_id")
-    private Long evaluationId;
+//    @JsonProperty("evaluation_id")
+//    private Long evaluationId;
 
     // Entity 변환 메서드
     public FeedbackEntity toEntity() {
         return FeedbackEntity.builder()
-                .feedbackId(this.feedbackId)
+//                .feedbackId(this.feedbackId)
                 .content(this.content)
-                .evaluationId(this.evaluationId)
+//                .evaluationId(this.evaluationId)
                 .build();
     }
 }
