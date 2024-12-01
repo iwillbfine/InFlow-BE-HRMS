@@ -80,7 +80,7 @@
         SELECT
             d.department_name AS departmentName,
             h.full_path AS departmentPath,
-        dm.department_member_id AS departmentMemberId,
+            dm.department_member_id AS departmentMemberId,
             dm.employee_number AS employeeCode,   <!-- 사원코드 추가 -->
             dm.name AS employeeName,
             dm.profile_img_url AS profileImageUrl,
@@ -197,11 +197,13 @@
                 (d.disbanded_at IS NULL OR d.disbanded_at > NOW()) <!-- 현존하는 부서 조건 추가 -->
             )
             SELECT
-                d.department_name AS departmentName,
-                h.full_path AS departmentPath,
-                dm.name AS employeeName,
-                dm.profile_img_url AS profileImageUrl,
-                dm.role_name AS roleName
+            d.department_name AS departmentName,
+            h.full_path AS departmentPath,
+            dm.department_member_id AS departmentMemberId,
+            dm.employee_number AS employeeCode,   <!-- 사원코드 추가 -->
+            dm.name AS employeeName,
+            dm.profile_img_url AS profileImageUrl,
+            dm.role_name AS roleName
             FROM
                 department_member dm
             JOIN
