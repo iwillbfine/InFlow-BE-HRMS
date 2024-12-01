@@ -24,6 +24,9 @@ public class EmploymentCertificateResponse {
     @JsonProperty("purpose")
     private String purpose;
 
+    @JsonProperty("join_date")
+    private String joinDate; // 입사일 추가
+
     //설명. 회사 정보
     @JsonProperty("company_name")
     private String companyName;
