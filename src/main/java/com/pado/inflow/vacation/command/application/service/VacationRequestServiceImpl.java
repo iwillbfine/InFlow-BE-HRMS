@@ -156,6 +156,7 @@ public class VacationRequestServiceImpl implements VacationRequestService {
         }
 
         vacationRequest.setCanceledAt(LocalDateTime.now().withNano(0));
+        vacationRequest.setRequestStatus(RequestStatus.ACCEPT);
         vacationRequest.setCancelReason(reqCancelVacationRequestDTO.getCancelReason());
         vacationRequest.setCancelStatus(CancelStatus.Y);
 
