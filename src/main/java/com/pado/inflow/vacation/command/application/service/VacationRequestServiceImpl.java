@@ -118,18 +118,22 @@ public class VacationRequestServiceImpl implements VacationRequestService {
 
         if (reqVacationRequestDTO.getAttachments() != null && !reqVacationRequestDTO.getAttachments().isEmpty()) {
             // 첨부 파일 DB 저장
-            for (MultipartFile file : reqVacationRequestDTO.getAttachments()) {
+            try {
+                for (MultipartFile file : reqVacationRequestDTO.getAttachments()) {
 
-                String fileUrl = vacationS3Service.uploadFile(file, vacationRequest.getEmployeeId());
+                    String fileUrl = vacationS3Service.uploadFile(file, vacationRequest.getEmployeeId());
 
-                ResponseVacationRequestFileDTO resVacationRequestFileDTO = ResponseVacationRequestFileDTO
-                        .builder()
-                        .fileName(file.getOriginalFilename())
-                        .fileUrl(fileUrl)
-                        .vacationRequestId(vacationRequest.getVacationRequestId())
-                        .build();
+                    ResponseVacationRequestFileDTO resVacationRequestFileDTO = ResponseVacationRequestFileDTO
+                            .builder()
+                            .fileName(file.getOriginalFilename())
+                            .fileUrl(fileUrl)
+                            .vacationRequestId(vacationRequest.getVacationRequestId())
+                            .build();
 
-                vacationRequestFileRepository.save(modelMapper.map(resVacationRequestFileDTO, VacationRequestFile.class));
+                    vacationRequestFileRepository.save(modelMapper.map(resVacationRequestFileDTO, VacationRequestFile.class));
+                }
+            } catch (Exception e) {
+                throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR);
             }
         }
 
