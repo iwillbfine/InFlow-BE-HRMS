@@ -137,7 +137,6 @@ public enum ErrorCode {
     PASSWORD_ENCODING_FAILED(50001, HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 암호화 실패"),
     SmsSendingException(50002, HttpStatus.INTERNAL_SERVER_ERROR, "SMS 전송 실패"),
     MAX_UPLOAD_SIZE_EXCEEDED(50003, HttpStatus.INTERNAL_SERVER_ERROR, "업로드 실패: 파일의 크기가 너무 큽니다."),
-    FILE_UPLOAD_FAILED(50004, HttpStatus.INTERNAL_SERVER_ERROR, "파일 저장 실패");
 
     private final Integer code;
     private final HttpStatus httpStatus;

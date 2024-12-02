@@ -133,7 +133,7 @@ public class VacationRequestServiceImpl implements VacationRequestService {
                     vacationRequestFileRepository.save(modelMapper.map(resVacationRequestFileDTO, VacationRequestFile.class));
                 }
             } catch (Exception e) {
-                throw new CommonException(ErrorCode.FILE_UPLOAD_FAILED);
+                throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR);
             }
         }
 
