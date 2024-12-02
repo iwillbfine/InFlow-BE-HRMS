@@ -36,4 +36,10 @@ public class GetDepartmentMemberDTO {
     @JsonProperty("role_name")
     private String roleName;
 
+    @JsonProperty("email")
+    private String email;
+
+    @JsonProperty("phone_number")
+    private String phoneNumber;
+
 }

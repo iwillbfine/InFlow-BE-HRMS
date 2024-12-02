@@ -84,7 +84,9 @@
             dm.employee_number AS employeeCode,   <!-- 사원코드 추가 -->
             dm.name AS employeeName,
             dm.profile_img_url AS profileImageUrl,
-            dm.role_name AS roleName
+            dm.role_name AS roleName,
+            dm.email AS email,
+            dm.phone_number AS phoneNumber
         FROM
             department_member dm
         JOIN
@@ -203,7 +205,9 @@
             dm.employee_number AS employeeCode,   <!-- 사원코드 추가 -->
             dm.name AS employeeName,
             dm.profile_img_url AS profileImageUrl,
-            dm.role_name AS roleName
+            dm.role_name AS roleName,
+            dm.email AS email,
+            dm.phone_number AS phoneNumber
             FROM
                 department_member dm
             JOIN
