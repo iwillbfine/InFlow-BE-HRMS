@@ -478,7 +478,7 @@ public class AttendanceRequestServiceImpl implements AttendanceRequestService {
                 }
             } catch (Exception e) {
                 // 파일 업로드 실패 시 트랜잭션 롤백
-                throw new CommonException(ErrorCode.FILE_UPLOAD_FAILED);
+                throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR);
             }
         }
 
