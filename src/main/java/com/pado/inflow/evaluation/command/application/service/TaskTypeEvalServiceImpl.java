@@ -4,17 +4,22 @@ import com.pado.inflow.common.exception.CommonException;
 import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.UpdateEvaluationRequestDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.entity.EvaluationEntity;
+import com.pado.inflow.evaluation.command.domain.aggregate.entity.TaskTypeEvalEntity;
 import com.pado.inflow.evaluation.command.domain.repository.EvaluationRepository;
 import com.pado.inflow.evaluation.command.domain.repository.GradeRepository;
 import com.pado.inflow.evaluation.command.domain.repository.TaskEvalRepository;
 import com.pado.inflow.evaluation.command.domain.repository.TaskTypeEvalRepository;
 import com.pado.inflow.evaluation.query.dto.EvaluationDTO;
 import com.pado.inflow.evaluation.query.dto.GradeDTO;
+import com.pado.inflow.evaluation.query.dto.TaskEvalDTO;
 import com.pado.inflow.evaluation.query.dto.TaskTypeEvalDTO;
 import com.pado.inflow.evaluation.query.service.EvaluationService;
 import com.pado.inflow.evaluation.query.service.GradeService;
+import com.pado.inflow.evaluation.query.service.TaskEvalService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -33,12 +38,13 @@ public class TaskTypeEvalServiceImpl implements TaskTypeEvalService {
     private final GradeRepository gradeRepository;
     private final com.pado.inflow.evaluation.query.service.TaskTypeEvalService taskTypeEvalService;
     private final GradeService gradeService;
+    private final TaskEvalService taskEvalService;
 
     public TaskTypeEvalServiceImpl(EvaluationService evaluationService
             , TaskEvalRepository taskEvalRepository
             , TaskTypeEvalRepository taskTypeEvalRepository
             , EvaluationRepository evaluationRepository
-            , GradeRepository gradeRepository, com.pado.inflow.evaluation.query.service.TaskTypeEvalService taskTypeEvalService, GradeService gradeService) {
+            , GradeRepository gradeRepository, com.pado.inflow.evaluation.query.service.TaskTypeEvalService taskTypeEvalService, GradeService gradeService, TaskEvalService taskEvalService) {
 
         this.evaluationService = evaluationService;
         this.taskEvalRepository = taskEvalRepository;
@@ -47,6 +53,7 @@ public class TaskTypeEvalServiceImpl implements TaskTypeEvalService {
         this.gradeRepository = gradeRepository;
         this.taskTypeEvalService = taskTypeEvalService;
         this.gradeService = gradeService;
+        this.taskEvalService = taskEvalService;
     }
 
     @Override
@@ -60,28 +67,47 @@ public class TaskTypeEvalServiceImpl implements TaskTypeEvalService {
 
         // 3. 각 평가 유형별 처리
         for (Map.Entry<String, List<EvaluationDTO>> entry : evaluationsByType.entrySet()) {
-            // 3-1. 점수 업데이트를 위한 DTO 리스트 생성
             List<UpdateEvaluationRequestDTO> updateScoreDTOs = new ArrayList<>();
 
-            // 3-2. 각 평가별 TaskTypeEval 점수 합산
+            // 각 평가별 처리
             for (EvaluationDTO evaluation : entry.getValue()) {
-                List<TaskTypeEvalDTO> taskTypeEvals = taskTypeEvalService
-                        .findByEvaluationId(evaluation.getEvaluationId());
+                // 3-1. 해당 평가의 TaskEval 점수를 과제유형별로 합산
+                List<TaskEvalDTO> taskEvals = taskEvalService.findTaskEvalsByEvaluationId(evaluation.getEvaluationId());
 
-                double totalScore = taskTypeEvals.stream()
-                        .mapToDouble(TaskTypeEvalDTO::getTaskTypeTotalScore)
-                        .sum();
+                // 과제유형별 점수 합산 (TaskEval score * set_ratio)
+                Map<Long, Double> taskTypeScores = taskEvals.stream()
+                        .collect(Collectors.groupingBy(
+                                TaskEvalDTO::getTaskTypeId,
+                                Collectors.summingDouble(task -> task.getScore() * task.getSetRatio())
+                        ));
 
+                double totalScore = 0.0;
+
+                // 3-2. 각 과제유형별로 TaskTypeEval 저장
+                for (Map.Entry<Long, Double> typeScore : taskTypeScores.entrySet()) {
+                    // TaskTypeEval 저장
+                    TaskTypeEvalEntity typeEvalEntity = TaskTypeEvalEntity.builder()
+                            .taskTypeTotalScore(Math.round(typeScore.getValue() * 100.0) / 100.0)
+                            .createdAt(LocalDateTime.now())
+                            .evaluationId(evaluation.getEvaluationId())
+                            .evaluationPolicyId(typeScore.getKey())
+                            .build();
+
+                    TaskTypeEvalEntity savedTypeEval = taskTypeEvalRepository.save(typeEvalEntity);
+                    totalScore += savedTypeEval.getTaskTypeTotalScore();
+                }
+
+                // 3-3. Evaluation DTO 생성
                 updateScoreDTOs.add(UpdateEvaluationRequestDTO.builder()
                         .evaluationId(evaluation.getEvaluationId())
-                        .finScore(totalScore)
+                        .finScore(Math.round(totalScore * 100.0) / 100.0)
                         .build());
             }
 
-            // 3-3. 점수 기준 내림차순 정렬
+            // 3-4. 점수 기준 내림차순 정렬
             updateScoreDTOs.sort(Comparator.comparing(UpdateEvaluationRequestDTO::getFinScore).reversed());
 
-            // 3-4. 등급 부여
+            // 3-5. 등급 부여
             List<GradeDTO> grades = gradeService.findGradeByYearAndHalf(year, half);
             int totalCount = updateScoreDTOs.size();
             int currentIndex = 0;
@@ -100,7 +126,7 @@ public class TaskTypeEvalServiceImpl implements TaskTypeEvalService {
                 }
             }
 
-            // 3-5. DB 업데이트
+            // 3-6. Evaluation DB 업데이트
             for (UpdateEvaluationRequestDTO updateDTO : updateScoreDTOs) {
                 EvaluationEntity evaluationEntity = evaluationRepository
                         .findById(updateDTO.getEvaluationId())
@@ -123,7 +149,6 @@ public class TaskTypeEvalServiceImpl implements TaskTypeEvalService {
         }
     }
 }
-
 
 /*
 TaskTypeEval에 존재하는 각 평가ID를 찾아 평가 ID를 통해 과제항목별 평가를 조회한 후

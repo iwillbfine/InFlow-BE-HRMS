@@ -81,7 +81,7 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public GradeResponseDTO updateGrade(Long gradeId) {
+    public GradeResponseDTO updateGrade(Long gradeId) {     // 추후 상위 등급의 종료 비율이 수정되면 그 다음 하위 등급의 시작 비율도 수정되도록 로직을 수정해야함 ( 지금은 상위 등급만 수정되는데, 이 때 빈 구간이 생기면 안되므로 수정이 되지 않는 버그가 존재함 )
         // 수정할 등급 조회
         GradeEntity targetGrade = gradeRepository.findById(gradeId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_GRADE));
