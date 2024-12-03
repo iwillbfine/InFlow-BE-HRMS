@@ -68,6 +68,16 @@
 
         SELECT
             '복직일' AS eventName,
+            lr.end_date + DAY(1) AS eventDate
+        FROM leave_return lr
+        WHERE lr.employee_id = #{employeeId}
+          AND YEAR(lr.end_date + DAY(1)) = YEAR(CURRENT_DATE)
+          AND MONTH(lr.end_date + DAY(1)) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '휴직일' AS eventName,
             lr.start_date AS eventDate
         FROM leave_return lr
         WHERE lr.employee_id = #{employeeId}
