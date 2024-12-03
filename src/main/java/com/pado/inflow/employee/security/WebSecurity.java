@@ -109,7 +109,7 @@ public class WebSecurity {
                         // 인사관리 - 부서 생성을 위한 드롭다운
                         .requestMatchers(new AntPathRequestMatcher("/api/departments/dropdown/**", "GET")).hasAnyRole("HR", "ADMIN")
                         // 팀장권한 - 내 부서 관리
-                        .requestMatchers(new AntPathRequestMatcher("/api/departments/my-department/*/members/**", "GET")).hasAnyRole("MANAGER")
+                        .requestMatchers(new AntPathRequestMatcher("/api/departments/my-department/*/members/**", "GET")).hasAnyRole("ADMIN","MANAGER", "EMPLOYEE")
                         // 인사관리 - 부서 삭제
                         .requestMatchers(new AntPathRequestMatcher("/api/departments/**", "DELETE")).hasAnyRole( "HR", "ADMIN")
                         // 인사관리 - 부서 추가

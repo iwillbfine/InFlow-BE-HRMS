@@ -115,10 +115,10 @@ public class EmployeeCommandService implements UserDetailsService {
                 .collect(Collectors.toList());
 
          //문자 전송 및 응답 생성 (문자 전송은 주석 처리된 상태)
-        employees.forEach(employee -> {
-             String welcomeMessage = generateWelcomeMessage(employee);
-             smsService.sendSms(employee.getPhoneNumber(), welcomeMessage); // 문자 전송
-         });
+//        employees.forEach(employee -> {
+//             String welcomeMessage = generateWelcomeMessage(employee);
+//             smsService.sendSms(employee.getPhoneNumber(), welcomeMessage); // 문자 전송
+//         });
 
         return employees.stream()
                 .map(employee -> modelMapper.map(employee, ResponseEmployeeDTO.class))
