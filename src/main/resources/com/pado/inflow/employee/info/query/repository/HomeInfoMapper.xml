@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pado.inflow.employee.info.query.repository.HomeInfoMapper">
+
+    <select id="getEvents" resultType="com.pado.inflow.employee.info.query.dto.HomeInfoDTO">
+        SELECT
+            '평가 시작일' AS eventName,
+            ep.start_date AS eventDate
+        FROM evaluation_policy ep
+        WHERE YEAR(ep.start_date) = YEAR(CURRENT_DATE)
+          AND MONTH(ep.start_date) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '평가 종료일' AS eventName,
+            ep.end_date AS eventDate
+        FROM evaluation_policy ep
+        WHERE YEAR(ep.end_date) = YEAR(CURRENT_DATE)
+          AND MONTH(ep.end_date) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '월급날' AS eventName,
+            p.paid_at AS eventDate
+        FROM payment p
+        WHERE p.employee_id = #{employeeId}
+          AND YEAR(p.paid_at) = YEAR(CURRENT_DATE)
+          AND MONTH(p.paid_at) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '출장' AS eventName,
+            bt.start_date AS eventDate
+        FROM business_trip bt
+        WHERE bt.employee_id = #{employeeId}
+          AND bt.trip_type = 'BUSINESS'
+          AND YEAR(bt.start_date) = YEAR(CURRENT_DATE)
+          AND MONTH(bt.start_date) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '파견' AS eventName,
+            bt.start_date AS eventDate
+        FROM business_trip bt
+        WHERE bt.employee_id = #{employeeId}
+          AND bt.trip_type = 'DISPATCH'
+          AND YEAR(bt.start_date) = YEAR(CURRENT_DATE)
+          AND MONTH(bt.start_date) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '휴가' AS eventName,
+            vr.start_date AS eventDate
+        FROM vacation_request vr
+        WHERE vr.employee_id = #{employeeId}
+          AND YEAR(vr.start_date) = YEAR(CURRENT_DATE)
+          AND MONTH(vr.start_date) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '복직일' AS eventName,
+            lr.start_date AS eventDate
+        FROM leave_return lr
+        WHERE lr.employee_id = #{employeeId}
+          AND YEAR(lr.start_date) = YEAR(CURRENT_DATE)
+          AND MONTH(lr.start_date) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '재택 근무' AS eventName,
+            cm.start_time AS eventDate
+        FROM commute cm
+        WHERE cm.employee_id = #{employeeId}
+          AND cm.remote_status = 'Y'
+          AND YEAR(cm.start_time) = YEAR(CURRENT_DATE)
+          AND MONTH(cm.start_time) = #{month}
+
+        ORDER BY eventDate ASC
+    </select>
+
+</mapper>
