@@ -62,4 +62,39 @@
         LIMIT #{elementsPerPage} OFFSET #{offset}
     </select>
 
+    <select id="findPaymentsByYear" resultType="com.pado.inflow.payroll.query.dto.AllPaymentsDTO">
+        SELECT
+            payment_id AS paymentId,
+            paid_at AS paidAt,
+            monthly_salary AS monthlySalary,
+            actual_salary AS actualSalary,
+            non_taxable_amount AS nonTaxableSalary,
+            annual_vacation_allowance + bonus + overtime_allowance AS bonusAndAllowance,
+            total_deductible AS totalDeductible,
+            employee_id AS employeeId
+        FROM
+            payment
+        WHERE
+            employee_id = #{employeeId}
+        AND YEAR(paid_at) = #{year}
+        ORDER BY
+            paid_at DESC
+    </select>
+
+    <select id="findPeriodicPayments" resultType="com.pado.inflow.payroll.query.dto.AllPaymentsDTO">
+        SELECT
+            payment_id AS paymentId,
+            paid_at AS paidAt,
+            monthly_salary AS monthlySalary,
+            actual_salary AS actualSalary,
+            non_taxable_amount AS nonTaxableSalary,
+            annual_vacation_allowance + bonus + overtime_allowance AS bonusAndAllowance,
+            total_deductible AS totalDeductible,
+            employee_id AS employeeId
+        FROM payment
+        WHERE employee_id = #{employeeId}
+        AND YEAR(paid_at) = YEAR(NOW())
+        AND MONTH(paid_at) BETWEEN #{startMonth} AND #{endMonth}
+    </select>
+
 </mapper>
