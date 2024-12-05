@@ -65,11 +65,15 @@ public class PayrollServiceImpl implements PayrollService {
     }
 
     @Override
-    public List<AllPaymentsDTO> findPeriodicPayments(Long employeeId, int startMonth, int endMonth) {
-        List<AllPaymentsDTO> payments = payrollMapper.findPeriodicPayments(employeeId, startMonth, endMonth);
-        if(payments == null || payments.isEmpty()) {
+    public List<AllPaymentsDTO> findPeriodicPayments(Long employeeId, String startDate, String endDate) {
+        if (startDate == null || endDate == null) {
+            throw new CommonException(ErrorCode.INVALID_DATE_RANGE);
+        }
+        List<AllPaymentsDTO> payments = payrollMapper.findPeriodicPayments(employeeId, startDate, endDate);
+        if (payments == null || payments.isEmpty()) {
             throw new CommonException(ErrorCode.NOT_FOUND_PAYMENT);
         }
         return payments;
     }
+
 }
