@@ -391,6 +391,7 @@
         )
         SELECT
             dm.name AS employeeName,
+            dm.department_member_id AS departmentMemberId,
             dm.employee_number AS employeeNumber,
             h.full_path AS departmentPath,
             dm.attendance_status_type_name AS attendanceStatusTypeName
