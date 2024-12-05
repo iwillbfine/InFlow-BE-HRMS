@@ -12,4 +12,6 @@ public interface TaskEvalMapper {
     TaskEvalDTO findTaskEvalByTaskEvalId(Long taskEvalId);
 
     List<TaskEvalDTO> findTaskEvalListByEvaluationId(Long evaluationId);
+
+    List<TaskEvalDTO> findIndividualTasksByEvaluationId(Long evaluationId);
 }

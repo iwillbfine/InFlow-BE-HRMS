@@ -11,4 +11,6 @@ public interface TaskEvalService {
     TaskEvalDTO getTaskEvalItem(Long taskEvalId);
 
     List<TaskEvalDTO> findTaskEvalsByEvaluationId(Long evaluationId);
+
+    List<TaskEvalDTO> findIndividualTasks(Integer year, String half, Long empId);
 }

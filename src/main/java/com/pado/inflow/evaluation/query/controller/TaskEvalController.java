@@ -19,12 +19,12 @@ public class TaskEvalController {
         this.taskEvalService = taskEvalService;
     }
 
-    // 과제별 평가 조회
+    // 과제별 평가 리스트 조회
     @GetMapping("/find")
     public ResponseDTO<?> findTaskEvalByEmpIdAndYearAndHalf(
             @RequestParam(value = "empId") Long empId
-           ,@RequestParam(value = "year") Integer year
-           ,@RequestParam(value = "half") String half
+            , @RequestParam(value = "year") Integer year
+            , @RequestParam(value = "half") String half
     ) {
         List<TaskEvalDTO> taskEvalList = taskEvalService.findTaskEval(empId, year, half);
 
@@ -34,17 +34,30 @@ public class TaskEvalController {
     // 사원별 과제 평가 내역 단건 조회
     @GetMapping("/{taskEvalId}")
     public ResponseDTO<?> findTaskEvalByEmpIdAndTaskItemId(
-           @PathVariable( value = "taskEvalId") Long taskEvalId
+            @PathVariable(value = "taskEvalId") Long taskEvalId
     ) {
         TaskEvalDTO taskEvalItem = taskEvalService.getTaskEvalItem(taskEvalId);
         return ResponseDTO.ok(taskEvalItem);
     }
 
-    @GetMapping("/{evaluationId}")
+    // 평가ID로 과제별 평가 List 조회
+    @GetMapping("/byEvaluationId/{evaluationId}")
     public ResponseDTO<?> findTaskEvalByEvaluationId(
             @PathVariable(value = "evaluationId") Long evaluationId
     ) {
         List<TaskEvalDTO> selectedTaskEvalList = taskEvalService.findTaskEvalsByEvaluationId(evaluationId);
         return ResponseDTO.ok(selectedTaskEvalList);
+    }
+
+    // 자기평가 과제 리스트 조회
+    @GetMapping("/individualTaskList")
+    public ResponseDTO<?> findIndividualTaskListByEvaluationId(
+            @RequestParam( value= "year") Integer year
+           ,@RequestParam( value = "half") String half
+           ,@RequestParam( value = "empId") Long empId
+    ) {
+        List<TaskEvalDTO> selectedIndividualTasks = taskEvalService.findIndividualTasks(year, half, empId);
+        return ResponseDTO.ok(selectedIndividualTasks);
+
     }
 }
