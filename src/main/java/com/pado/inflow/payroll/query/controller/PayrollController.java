@@ -8,6 +8,8 @@ import com.pado.inflow.payroll.query.service.PayrollService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController("queryPayrollController")
 @RequestMapping("/api/payrolls")
 public class PayrollController {
@@ -28,12 +30,29 @@ public class PayrollController {
         return ResponseDTO.ok(payment);
     }
 
-    // 사원의 전체 급여 내역 조회
+    // 사원의 기간별 급여 내역 조회
     @GetMapping("/all/{employeeId}")
     public ResponseDTO<?> getAllPayments(@PathVariable Long employeeId,
                                          @RequestParam(value = "page", defaultValue = "1") Integer pageNo) {
         PageDTO<AllPaymentsDTO> payments = payrollService.findPaymentsByEmployeeId(employeeId, pageNo);
         return ResponseDTO.ok(payments);
     }
+
+    // 사원의 연도별 급여 내역 조회
+    @GetMapping("/list")
+    public ResponseDTO<?> getPaymentsByYear(@RequestParam("employeeId") Long employeeId,
+                                            @RequestParam("year") int year) {
+        List<AllPaymentsDTO> payments = payrollService.findPaymentsByYear(employeeId, year);
+        return ResponseDTO.ok(payments);
+    }
+
+    @GetMapping("/period")
+    public ResponseDTO<?> getPeriodicPayments(@RequestParam("employeeId") Long employeeId,
+                                              @RequestParam("startDate") String startDate,
+                                              @RequestParam("endDate") String endDate) {
+        List<AllPaymentsDTO> payments = payrollService.findPeriodicPayments(employeeId, startDate, endDate);
+        return ResponseDTO.ok(payments);
+    }
+
 
 }

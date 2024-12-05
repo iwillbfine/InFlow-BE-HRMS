@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.pado.inflow.chatbot.dto.AIRequestDTO;
 import com.pado.inflow.chatbot.dto.AIResponseDTO;
+
+
 @Service
 public class AIService {
     private final RestTemplate restTemplate;

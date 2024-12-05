@@ -22,4 +22,10 @@ public interface PayrollMapper {
 
     // 사원별 총 급여 내역 개수 조회
     Integer getTotalPaymentsByEmployeeId(Long employeeId);
+
+    // 연도별 급여 내역 조회
+    List<AllPaymentsDTO> findPaymentsByYear(@Param("employeeId") Long employeeId,
+                                            @Param("year") int year);
+
+    List<AllPaymentsDTO> findPeriodicPayments(Long employeeId, String startDate, String endDate);
 }
