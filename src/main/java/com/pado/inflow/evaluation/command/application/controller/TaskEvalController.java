@@ -31,6 +31,7 @@ public class TaskEvalController {
         return ResponseDTO.ok(createdTaskEval);
     }
 
+    // 과제별 평가 수정
     @PatchMapping("/{taskEvalId}")
     public ResponseDTO<TaskEvalResponseDTO> updateTaskEval(
             @PathVariable(value = "taskEvalId") Long taskEvalId

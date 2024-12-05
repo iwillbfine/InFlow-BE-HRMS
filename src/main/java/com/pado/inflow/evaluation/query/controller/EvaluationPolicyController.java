@@ -39,6 +39,7 @@ public class EvaluationPolicyController {
         return ResponseDTO.ok(evaluationPolicy);
     }
 
+
     @GetMapping("/policySearch")
     public ResponseDTO<?> findEvaluationPolicyByYearAndHalfAndTaskTypeId(
             @RequestParam(value = "year") Integer year,
