@@ -27,5 +27,5 @@ public interface PayrollMapper {
     List<AllPaymentsDTO> findPaymentsByYear(@Param("employeeId") Long employeeId,
                                             @Param("year") int year);
 
-    List<AllPaymentsDTO> findPeriodicPayments(Long employeeId, int startMonth, int endMonth);
+    List<AllPaymentsDTO> findPeriodicPayments(Long employeeId, String startDate, String endDate);
 }

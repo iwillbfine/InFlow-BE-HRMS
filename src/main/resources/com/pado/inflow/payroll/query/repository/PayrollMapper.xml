@@ -93,8 +93,8 @@
             employee_id AS employeeId
         FROM payment
         WHERE employee_id = #{employeeId}
-        AND YEAR(paid_at) = YEAR(NOW())
-        AND MONTH(paid_at) BETWEEN #{startMonth} AND #{endMonth}
+        AND DATE_FORMAT(paid_at, '%Y-%m') BETWEEN #{startDate} AND #{endDate}
+        ORDER BY paid_at DESC
     </select>
 
 </mapper>

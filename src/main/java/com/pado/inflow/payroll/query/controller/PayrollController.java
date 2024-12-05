@@ -48,9 +48,9 @@ public class PayrollController {
 
     @GetMapping("/period")
     public ResponseDTO<?> getPeriodicPayments(@RequestParam("employeeId") Long employeeId,
-                                              @RequestParam("startMonth") int startMonth,
-                                              @RequestParam("endMonth") int endMonth) {
-        List<AllPaymentsDTO> payments = payrollService.findPeriodicPayments(employeeId, startMonth, endMonth);
+                                              @RequestParam("startDate") String startDate,
+                                              @RequestParam("endDate") String endDate) {
+        List<AllPaymentsDTO> payments = payrollService.findPeriodicPayments(employeeId, startDate, endDate);
         return ResponseDTO.ok(payments);
     }
 

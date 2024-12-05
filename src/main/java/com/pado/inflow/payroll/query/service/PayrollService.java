@@ -16,5 +16,5 @@ public interface PayrollService {
 
     List<AllPaymentsDTO> findPaymentsByYear(Long employeeId, int year);
 
-    List<AllPaymentsDTO> findPeriodicPayments(Long employeeId, int startMonth, int endMonth);
+    List<AllPaymentsDTO> findPeriodicPayments(Long employeeId, String startDate, String endDate);
 }
