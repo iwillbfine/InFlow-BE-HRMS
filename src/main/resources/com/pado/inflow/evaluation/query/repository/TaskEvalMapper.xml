@@ -63,4 +63,24 @@
         FROM task_eval te
         WHERE te.task_eval_id = #{taskEvalId}
     </select>
+
+    <!-- TaskEval 리스트 조회 -->
+    <select id="findTaskEvalListByEvaluationId" resultMap="TaskEvalResultMap">
+        SELECT
+        te.task_eval_id,
+        te.task_eval_name,
+        te.task_eval_content,
+        te.score,
+        te.set_ratio,
+        te.task_grade,
+        te.performance_input,
+        te.created_at,
+        te.rel_eval_status,
+        te.evaluation_id,
+        te.modifiable_date,
+        te.task_type_id,
+        te.task_item_id
+        FROM task_eval te
+        WHERE te.evaluation_id = #{evaluationId}
+    </select>
 </mapper>

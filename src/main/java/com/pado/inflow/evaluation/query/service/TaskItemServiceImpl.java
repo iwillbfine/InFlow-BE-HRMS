@@ -101,6 +101,17 @@ public class TaskItemServiceImpl implements TaskItemService{
         return selectedTaskItems;
     }
 
+    @Override
+    public List<TaskItemDTO> findAllTaskItemsByEmpId(Integer year, String half, Long empId) {
+
+        List<TaskItemDTO> selectedTakItems = taskItemMapper.findAllTaskItemsByEmpIdAndYearAndHalf(year, half, empId);
+
+        if (selectedTakItems == null || selectedTakItems.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK);
+        }
+        return selectedTakItems;
+    }
+
 
 }
 

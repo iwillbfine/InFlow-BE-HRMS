@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Service("appCommuteService")
 public class CommuteCommandServiceImpl implements CommuteCommandService {
@@ -43,6 +44,18 @@ public class CommuteCommandServiceImpl implements CommuteCommandService {
     @Override
     @Transactional
     public String checkAndUpdateCommute(Long employeeId) {
+
+        LocalTime now = LocalDateTime.now().toLocalTime();
+
+        // 기준 시간 설정
+        LocalTime evening = LocalTime.of(18, 0); // 오후 6시
+        LocalTime morning = LocalTime.of(9, 0); // 오전 9시
+
+        // 근무 시간 검사
+        if (now.isAfter(evening) || now.isBefore(morning)) {
+            return "근무 시간이 아닙니다.";
+        }
+
         // 오늘 휴가인가
         if(vacationRequestService.isVacationNow(employeeId)) {
             return "휴가중입니다.";

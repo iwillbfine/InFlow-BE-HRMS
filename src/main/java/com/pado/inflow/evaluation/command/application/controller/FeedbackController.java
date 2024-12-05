@@ -7,12 +7,14 @@ import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.UpdateFee
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.CreateEvaluationPolicyResponseDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.CreateFeedbackResponseDTO;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.response.UpdateFeedbackResponseDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController("CommandFeedbackController")
 @RequestMapping("/api/evaluations/feedback")
+@Slf4j
 public class FeedbackController {
 
     @Autowired
@@ -28,6 +30,7 @@ public class FeedbackController {
     public ResponseDTO<CreateFeedbackResponseDTO> feedbackCreation(
             @RequestBody CreateFeedbackRequestDTO createFeedbackRequestDTO
             ) {
+        log.info("createFeedbackRequestDTO: {}", createFeedbackRequestDTO);
         CreateFeedbackResponseDTO createFeedbackResponseDTO = feedBackService.createFeedback(createFeedbackRequestDTO);
         return ResponseDTO.ok(createFeedbackResponseDTO);
     }

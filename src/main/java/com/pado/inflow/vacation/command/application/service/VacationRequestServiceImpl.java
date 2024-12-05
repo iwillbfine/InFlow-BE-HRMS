@@ -88,6 +88,11 @@ public class VacationRequestServiceImpl implements VacationRequestService {
             throw new CommonException(ErrorCode.NOT_FOUND_VACATION);
         }
 
+        // 휴가 종료일자가 만료일보다 뒤에 있는 경우
+        if (endDate.isAfter(vacation.getExpiredAt())) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
         // 남은 휴가일수보다 사용하는 휴가일수가 많은 경우
         long requestedDays = ChronoUnit.DAYS.between(startDate.toLocalDate(), endDate.toLocalDate()) + 1;
         if (requestedDays > vacation.getVacationLeft()) {
@@ -118,18 +123,22 @@ public class VacationRequestServiceImpl implements VacationRequestService {
 
         if (reqVacationRequestDTO.getAttachments() != null && !reqVacationRequestDTO.getAttachments().isEmpty()) {
             // 첨부 파일 DB 저장
-            for (MultipartFile file : reqVacationRequestDTO.getAttachments()) {
+            try {
+                for (MultipartFile file : reqVacationRequestDTO.getAttachments()) {
 
-                String fileUrl = vacationS3Service.uploadFile(file, vacationRequest.getEmployeeId());
+                    String fileUrl = vacationS3Service.uploadFile(file, vacationRequest.getEmployeeId());
 
-                ResponseVacationRequestFileDTO resVacationRequestFileDTO = ResponseVacationRequestFileDTO
-                        .builder()
-                        .fileName(file.getOriginalFilename())
-                        .fileUrl(fileUrl)
-                        .vacationRequestId(vacationRequest.getVacationRequestId())
-                        .build();
+                    ResponseVacationRequestFileDTO resVacationRequestFileDTO = ResponseVacationRequestFileDTO
+                            .builder()
+                            .fileName(file.getOriginalFilename())
+                            .fileUrl(fileUrl)
+                            .vacationRequestId(vacationRequest.getVacationRequestId())
+                            .build();
 
-                vacationRequestFileRepository.save(modelMapper.map(resVacationRequestFileDTO, VacationRequestFile.class));
+                    vacationRequestFileRepository.save(modelMapper.map(resVacationRequestFileDTO, VacationRequestFile.class));
+                }
+            } catch (Exception e) {
+                throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR);
             }
         }
 

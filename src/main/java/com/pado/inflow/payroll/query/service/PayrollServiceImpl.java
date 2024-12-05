@@ -54,4 +54,22 @@ public class PayrollServiceImpl implements PayrollService {
         return new PageDTO<>(payments, pageNo, PAGE_SIZE, ELEMENTS_PER_PAGE, totalElements);
 
     }
+
+    @Override
+    public List<AllPaymentsDTO> findPaymentsByYear(Long employeeId, int year) {
+        List<AllPaymentsDTO> payments = payrollMapper.findPaymentsByYear(employeeId, year);
+        if(payments == null || payments.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_PAYMENT);
+        }
+        return payments;
+    }
+
+    @Override
+    public List<AllPaymentsDTO> findPeriodicPayments(Long employeeId, int startMonth, int endMonth) {
+        List<AllPaymentsDTO> payments = payrollMapper.findPeriodicPayments(employeeId, startMonth, endMonth);
+        if(payments == null || payments.isEmpty()) {
+            throw new CommonException(ErrorCode.NOT_FOUND_PAYMENT);
+        }
+        return payments;
+    }
 }

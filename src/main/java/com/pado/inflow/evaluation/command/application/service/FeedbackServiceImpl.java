@@ -103,6 +103,7 @@ public class FeedbackServiceImpl implements FeedBackService {
         }
 
         selectedFeedback.setContent(updateFeedbackRequestDTO.getContent());
+        
         FeedbackEntity savedEntity = feedbackRepository.save(selectedFeedback.toEntity());
 
         UpdateFeedbackResponseDTO responseDTO = FeedbackEntity.toUpdateDTO(savedEntity);
