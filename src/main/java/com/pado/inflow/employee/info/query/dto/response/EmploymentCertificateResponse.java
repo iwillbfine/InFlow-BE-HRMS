@@ -44,6 +44,7 @@ public class EmploymentCertificateResponse {
     @JsonProperty("issue_date")
     private String issueDate;
 
+    
     @JsonProperty("content")
     private String content;
 
