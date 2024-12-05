@@ -193,6 +193,12 @@ public class WebSecurity {
                         .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PUT")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/payrolls/**", "PATCH")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
 
+                        // 급여 기간별 조회
+                        .requestMatchers(new AntPathRequestMatcher("/api/payrolls/period", "GET")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
+                        // 급여 연도별 조회
+                        .requestMatchers(new AntPathRequestMatcher("/api/payrolls/list")).hasAnyRole("EMPLOYEE", "HR", "MANAGER", "ADMIN")
+
                         // 급여 비과세 항목 전체 조회
                         .requestMatchers(new AntPathRequestMatcher("/api/non-taxable-payrolls/**", "GET")).hasAnyRole("HR","ADMIN")
 
