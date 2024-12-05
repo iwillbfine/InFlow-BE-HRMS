@@ -5,12 +5,16 @@ import com.pado.inflow.common.exception.ErrorCode;
 import com.pado.inflow.evaluation.query.dto.EvaluationDTO;
 import com.pado.inflow.evaluation.query.dto.TaskEvalDTO;
 import com.pado.inflow.evaluation.query.repository.TaskEvalMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
+@Slf4j
 public class TaskEvalServiceImpl implements TaskEvalService{
 
     @Autowired
@@ -55,7 +59,7 @@ public class TaskEvalServiceImpl implements TaskEvalService{
         // 얻어온 평가id로 리스트 조회
         List<TaskEvalDTO> selectedTasks = taskEvalMapper.findIndividualTasksByEvaluationId(selectedEvaluation.getEvaluationId());
         if (selectedTasks == null || selectedTasks.isEmpty()) {
-            throw new CommonException(ErrorCode.NOT_FOUND_EVALUATION);
+            throw new CommonException(ErrorCode.NOT_FOUND_TASK_EVAL);
         }
 
         return selectedTasks;
