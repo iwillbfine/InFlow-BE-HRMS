@@ -88,6 +88,11 @@ public class VacationRequestServiceImpl implements VacationRequestService {
             throw new CommonException(ErrorCode.NOT_FOUND_VACATION);
         }
 
+        // 휴가 시작일자가 지급일보다 앞에 있는 경우
+        if (startDate.isBefore(vacation.getCreatedAt())) {
+            throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
         // 휴가 종료일자가 만료일보다 뒤에 있는 경우
         if (endDate.isAfter(vacation.getExpiredAt())) {
             throw new CommonException(ErrorCode.INVALID_REQUEST_BODY);
