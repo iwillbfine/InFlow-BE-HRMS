@@ -4,43 +4,43 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.attendance.query.repository.LeaveReturnMapper">
     <resultMap id="leaveReturnResultMap" type="com.pado.inflow.attendance.query.dto.LeaveReturnDTO">
-        <id property="leaveReturnId" column="LEAVE_RETURN_ID"/>
-        <result property="startDate" column="START_DATE"/>
-        <result property="endDate" column="END_DATE"/>
-        <result property="employeeId" column="EMPLOYEE_ID"/>
-        <result property="attendanceRequestId" column="ATTENDANCE_REQUEST_ID"/>
+        <id property="leaveReturnId" column="leave_return_id"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="attendanceRequestId" column="attendance_request_id"/>
     </resultMap>
 
     <select id="findLeaveReturnsByEmployeeId" resultMap="leaveReturnResultMap" parameterType="map">
         SELECT
-               A.LEAVE_RETURN_ID
-             , A.START_DATE
-             , A.END_DATE
-             , A.EMPLOYEE_ID
-             , A.ATTENDANCE_REQUEST_ID
-          FROM LEAVE_RETURN A
-         WHERE A.EMPLOYEE_ID = #{ employeeId }
-         ORDER BY A.LEAVE_RETURN_ID DESC
+               A.leave_return_id
+             , A.start_date
+             , A.end_date
+             , A.employee_id
+             , A.attendance_request_id
+          FROM leave_return A
+         WHERE A.employee_id = #{ employeeId }
+         ORDER BY A.leave_return_id DESC
          LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>
 
     <select id="getTotalLeaveReturnsByEmployeeId" resultType="Integer" parameterType="Long">
         SELECT
                COUNT(*) AS TOTAL
-          FROM LEAVE_RETURN A
-         WHERE A.EMPLOYEE_ID = #{ employeeId }
+          FROM leave_return A
+         WHERE A.employee_id = #{ employeeId }
     </select>
 
     <select id="findTodayLeaveByEmployeeId" resultMap="leaveReturnResultMap" parameterType="Long">
         SELECT
-               A.LEAVE_RETURN_ID
-             , A.START_DATE
-             , A.END_DATE
-             , A.EMPLOYEE_ID
-             , A.ATTENDANCE_REQUEST_ID
-          FROM LEAVE_RETURN A
-         WHERE A.EMPLOYEE_ID = #{ employeeId }
-           AND CURRENT_DATE BETWEEN DATE(A.START_DATE) AND DATE(A.END_DATE)
+               A.leave_return_id
+             , A.start_date
+             , A.end_date
+             , A.employee_id
+             , A.attendance_request_id
+          FROM leave_return A
+         WHERE A.employee_id = #{ employeeId }
+           AND CURRENT_DATE BETWEEN DATE(A.start_date) AND DATE(A.end_date)
     </select>
 
 </mapper>

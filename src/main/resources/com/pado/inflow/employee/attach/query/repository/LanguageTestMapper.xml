@@ -3,31 +3,31 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.employee.attach.query.repository.LanguageTestMapper">
     <resultMap id="ResultMap" type="com.pado.inflow.employee.attach.query.dto.LanguageTestDTO">
-        <id property="languageTestId" column="LANGUAGE_TEST_ID"/>
-        <result property="languageTestName" column="LANGUAGE_TEST_NAME"/>
-        <result property="qualificationNumber" column="QUALIFICATION_NUMBER"/>
-        <result property="issuer" column="ISSUER"/>
-        <result property="qualifiedAt" column="QUALIFIED_AT"/>
-        <result property="gradeScore" column="GRADE_SCORE"/>
-        <result property="employeeId" column="EMPLOYEE_ID"/>
-        <result property="languageName" column="LANGUAGE_NAME"/>
+        <id property="languageTestId" column="language_test_id"/>
+        <result property="languageTestName" column="language_test_name"/>
+        <result property="qualificationNumber" column="qualification_number"/>
+        <result property="issuer" column="issuer"/>
+        <result property="qualifiedAt" column="qualified_at"/>
+        <result property="gradeScore" column="grade_score"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="languageName" column="language_name"/>
     </resultMap>
 
     <select id="getAllLanguageTests" resultMap="ResultMap" parameterType="string">
         SELECT
-               A.LANGUAGE_TEST_ID
-             , A.LANGUAGE_TEST_NAME
-             , A.QUALIFICATION_NUMBER
-             , A.ISSUER
-             , DATE(A.QUALIFIED_AT) AS QUALIFIED_AT
-             , A.GRADE_SCORE
-             , A.EMPLOYEE_ID
-             , B.LANGUAGE_NAME
-         FROM LANGUAGE_TEST A INNER JOIN LANGUAGE B
-           ON A.LANGUAGE_CODE = B.LANGUAGE_CODE
+               A.language_test_id
+             , A.language_test_name
+             , A.qualification_number
+             , A.issuer
+             , DATE(A.qualified_at) AS qualified_at
+             , A.grade_score
+             , A.employee_id
+             , B.language_name
+         FROM language_test A INNER JOIN language B
+           ON A.language_code = B.language_code
          <where>
              <if test="employeeId != null">
-                 A.EMPLOYEE_ID = #{employeeId}
+                 A.employee_id = #{employeeId}
              </if>
          </where>
     </select>
