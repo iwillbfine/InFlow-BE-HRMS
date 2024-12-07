@@ -3,24 +3,24 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.evaluation.query.repository.TaskTypeMapper">
     <resultMap id="taskTypeResultMap" type="com.pado.inflow.evaluation.query.dto.TaskTypeDTO">
-        <id property="taskTypeId" column="TASK_TYPE_ID"/>
-        <result property="taskTypeName" column="TASK_TYPE_NAME"/>
+        <id property="taskTypeId" column="task_type_id"/>
+        <result property="taskTypeName" column="task_type_name"/>
     </resultMap>
 
     <select id="findAllTaskTypes" resultMap="taskTypeResultMap">
         SELECT
-                TASK_TYPE_ID
-              , TASK_TYPE_NAME
+        task_type_id
+              , task_type_name
           FROM
-                TASK_TYPE
+                task_type
     </select>
 
     <select id="findTaskTypeByTaskTypeId" resultMap="taskTypeResultMap">
         SELECT
-        TASK_TYPE_ID
-        , TASK_TYPE_NAME
+        task_type_id
+        , task_type_name
         FROM
-        TASK_TYPE
-         WHERE TASK_TYPE_ID = #{taskTypeId}
+        task_type
+         WHERE task_type_id = #{taskTypeId}
     </select>
 </mapper>

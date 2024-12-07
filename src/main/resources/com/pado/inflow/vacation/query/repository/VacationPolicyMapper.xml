@@ -3,54 +3,54 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.vacation.query.repository.VacationPolicyMapper">
     <resultMap id="vacationPolicyResultMap" type="com.pado.inflow.vacation.query.dto.VacationPolicyDTO">
-        <id property="vacationPolicyId" column="VACATION_POLICY_ID"/>
-        <result property="vacationPolicyName" column="VACATION_POLICY_NAME"/>
-        <result property="vacationPolicyDescription" column="VACATION_POLICY_DESCRIPTION"/>
-        <result property="vacationPolicyStatus" column="VACATION_POLICY_STATUS"/>
-        <result property="allocationDays" column="ALLOCATION_DAYS"/>
-        <result property="paidStatus" column="PAID_STATUS"/>
-        <result property="year" column="YEAR"/>
-        <result property="createdAt" column="CREATED_AT"/>
-        <result property="autoAllocationCycle" column="AUTO_ALLOCATION_CYCLE"/>
-        <result property="vacationTypeName" column="VACATION_TYPE_NAME"/>
+        <id property="vacationPolicyId" column="vacation_policy_id"/>
+        <result property="vacationPolicyName" column="vacation_policy_name"/>
+        <result property="vacationPolicyDescription" column="vacation_policy_description"/>
+        <result property="vacationPolicyStatus" column="vacation_policy_status"/>
+        <result property="allocationDays" column="allocation_days"/>
+        <result property="paidStatus" column="paid_status"/>
+        <result property="year" column="year"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="autoAllocationCycle" column="auto_allocation_cycle"/>
+        <result property="vacationTypeName" column="vacation_type_name"/>
     </resultMap>
 
     <select id="findVacationPoliciesByYear" resultMap="vacationPolicyResultMap" parameterType="Integer">
         SELECT
-               A.VACATION_POLICY_ID
-             , A.VACATION_POLICY_NAME
-             , A.VACATION_POLICY_DESCRIPTION
-             , A.VACATION_POLICY_STATUS
-             , A.ALLOCATION_DAYS
-             , A.PAID_STATUS
-             , A.YEAR
-             , A.CREATED_AT
-             , A.AUTO_ALLOCATION_CYCLE
-             , B.VACATION_TYPE_NAME
-          FROM VACATION_POLICY A
-          JOIN VACATION_TYPE B
-            ON A.VACATION_TYPE_ID = B.VACATION_TYPE_ID
-         WHERE A.YEAR = #{ year }
-         ORDER BY A.VACATION_POLICY_ID
+               A.vacation_policy_id
+             , A.vacation_policy_name
+             , A.vacation_policy_description
+             , A.vacation_policy_status
+             , A.allocation_days
+             , A.paid_status
+             , A.year
+             , A.created_at
+             , A.auto_allocation_cycle
+             , B.vacation_type_name
+          FROM vacation_policy A
+          JOIN vacation_type B
+            ON A.vacation_type_id = B.vacation_type_id
+         WHERE A.year = #{ year }
+         ORDER BY A.vacation_policy_id
     </select>
 
     <select id="findIrregularVacationPoliciesByYear" resultMap="vacationPolicyResultMap" parameterType="Integer">
         SELECT
-               A.VACATION_POLICY_ID
-             , A.VACATION_POLICY_NAME
-             , A.VACATION_POLICY_DESCRIPTION
-             , A.VACATION_POLICY_STATUS
-             , A.ALLOCATION_DAYS
-             , A.PAID_STATUS
-             , A.YEAR
-             , A.CREATED_AT
-             , A.AUTO_ALLOCATION_CYCLE
-             , B.VACATION_TYPE_NAME
-          FROM VACATION_POLICY A
-          JOIN VACATION_TYPE B
-            ON A.VACATION_TYPE_ID = B.VACATION_TYPE_ID
-         WHERE A.YEAR = #{ year }
-           AND A.AUTO_ALLOCATION_CYCLE IS NULL
-         ORDER BY A.VACATION_POLICY_ID
+               A.vacation_policy_id
+             , A.vacation_policy_name
+             , A.vacation_policy_description
+             , A.vacation_policy_status
+             , A.allocation_days
+             , A.paid_status
+             , A.year
+             , A.created_at
+             , A.auto_allocation_cycle
+             , B.vacation_type_name
+          FROM vacation_policy A
+          JOIN vacation_type B
+            ON A.vacation_type_id = B.vacation_type_id
+         WHERE A.year = #{ year }
+           AND A.auto_allocation_cycle IS NULL
+         ORDER BY A.vacation_policy_id
     </select>
 </mapper>

@@ -21,13 +21,13 @@
              , total_employee_num as totalEmployeeNum
              , joined_employee_num as joinedEmployeeNum
              , lefted_employee_num as leftedEmployeeNum
-          FROM MONTHLY_EMPLOYEE_NUM_STATISTICS
+          FROM monthly_employee_num_statistics
          <where>
              <if test="year != null">
                  year = #{year}
              </if>
          </where>
-         GROUP BY YEAR
-         ORDER BY YEAR DESC
+         GROUP BY year
+         ORDER BY year DESC
     </select>
 </mapper>

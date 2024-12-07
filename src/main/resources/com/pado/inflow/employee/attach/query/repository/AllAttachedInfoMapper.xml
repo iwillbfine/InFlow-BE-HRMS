@@ -4,139 +4,139 @@
 <mapper namespace="com.pado.inflow.employee.attach.query.repository.AllAttachedInfoMapper">
     <resultMap id="ResultMap1" type="com.pado.inflow.employee.attach.query.dto.AllAttachedInfoDTO">
         <!-- 기본 엔티티 매핑 -->
-        <result property="employeeId" column="EMPLOYEE_ID"/>
-        <result property="employeeNumber" column="EMPLOYEE_NUMBER"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="employeeNumber" column="employee_number"/>
 
         <!-- Career 컬렉션 매핑 -->
         <collection property="careers" ofType="com.pado.inflow.employee.attach.query.dto.CareerDTO">
-            <result property="careerId" column="CAREER_ID"/>
-            <result property="companyName" column="COMPANY_NAME"/>
-            <result property="roleName" column="ROLE_NAME"/>
-            <result property="joinDate" column="JOIN_DATE"/>
-            <result property="resignationDate" column="RESIGNATION_DATE"/>
-            <result property="employeeId" column="EMPLOYEE_ID"/>
+            <result property="careerId" column="career_id"/>
+            <result property="companyName" column="company_name"/>
+            <result property="roleName" column="role_name"/>
+            <result property="joinDate" column="join_date"/>
+            <result property="resignationDate" column="resignation_date"/>
+            <result property="employeeId" column="employee_id"/>
         </collection>
 
         <!-- Education 컬렉션 매핑 -->
         <collection property="educations" ofType="com.pado.inflow.employee.attach.query.dto.EducationDTO">
-            <result property="educationId" column="EDUCATION_ID"/>
-            <result property="schoolName" column="SCHOOL_NAME"/>
-            <result property="admissionDate" column="ADMISSION_DATE"/>
-            <result property="graduationDate" column="GRADUATION_DATE"/>
-            <result property="degree" column="DEGREE"/>
-            <result property="major" column="MAJOR"/>
-            <result property="employeeId" column="EMPLOYEE_ID"/>
+            <result property="educationId" column="education_id"/>
+            <result property="schoolName" column="school_name"/>
+            <result property="admissionDate" column="admission_date"/>
+            <result property="graduationDate" column="graduation_date"/>
+            <result property="degree" column="degree"/>
+            <result property="major" column="major"/>
+            <result property="employeeId" column="employee_id"/>
         </collection>
 
         <!-- FamilyMember 컬렉션 매핑 -->
         <collection property="familyMembers" ofType="com.pado.inflow.employee.attach.query.dto.FamilyMemberDTO">
-            <result property="familyMemberId" column="FAMILY_MEMBER_ID"/>
-            <result property="name" column="NAME"/>
-            <result property="birthDate" column="BIRTH_DATE"/>
-            <result property="employeeId" column="EMPLOYEE_ID"/>
-            <result property="familyRelationshipName" column="FAMILY_RELATIONSHIP_NAME"/>
+            <result property="familyMemberId" column="family_member_id"/>
+            <result property="name" column="name"/>
+            <result property="birthDate" column="birth_date"/>
+            <result property="employeeId" column="employee_id"/>
+            <result property="familyRelationshipName" column="family_relationship_name"/>
         </collection>
 
         <!-- LanguageTest 컬렉션 매핑 -->
         <collection property="languageTests" ofType="com.pado.inflow.employee.attach.query.dto.LanguageTestDTO">
-            <result property="languageTestId" column="LANGUAGE_TEST_ID"/>
-            <result property="languageTestName" column="LANGUAGE_TEST_NAME"/>
-            <result property="qualificationNumber" column="QUALIFICATION_NUMBER"/>
-            <result property="issuer" column="ISSUER"/>
-            <result property="qualifiedAt" column="QUALIFIED_AT"/>
-            <result property="gradeScore" column="GRADE_SCORE"/>
-            <result property="employeeId" column="EMPLOYEE_ID"/>
-            <result property="languageName" column="LANGUAGE_NAME"/>
-            <result property="testDate" column="TEST_DATE"/>
+            <result property="languageTestId" column="language_test_id"/>
+            <result property="languageTestName" column="language_test_name"/>
+            <result property="qualificationNumber" column="qualification_number"/>
+            <result property="issuer" column="issuer"/>
+            <result property="qualifiedAt" column="qualified_at"/>
+            <result property="gradeScore" column="grade_score"/>
+            <result property="employeeId" column="employee_id"/>
+            <result property="languageName" column="language_name"/>
+            <result property="testDate" column="test_date"/>
         </collection>
 
         <!-- Qualification 컬렉션 매핑 -->
         <collection property="qualifications" ofType="com.pado.inflow.employee.attach.query.dto.QualificationDTO">
-            <result property="qualificationId" column="QUALIFICATION_ID"/>
-            <result property="qualificationName" column="QUALIFICATION_NAME"/>
-            <result property="qualificationNumber" column="QUALIFICATION_NUMBER"/>
-            <result property="qualifiedAt" column="QUALIFIED_AT"/>
-            <result property="issuer" column="ISSUER"/>
-            <result property="gradeScore" column="GRADE_SCORE"/>
-            <result property="employeeId" column="EMPLOYEE_ID"/>
+            <result property="qualificationId" column="qualification_id"/>
+            <result property="qualificationName" column="qualification_name"/>
+            <result property="qualificationNumber" column="qualification_number"/>
+            <result property="qualifiedAt" column="qualified_at"/>
+            <result property="issuer" column="issuer"/>
+            <result property="gradeScore" column="grade_score"/>
+            <result property="employeeId" column="employee_id"/>
         </collection>
 
         <!-- DisciplineReward 컬렉션 매핑 -->
         <collection property="disciplineRewards" ofType="com.pado.inflow.employee.attach.query.dto.DisciplineRewardDTO">
-            <result property="disciplineRewardName" column="DISCIPLINE_REWARD_NAME"/>
-            <result property="content" column="CONTENT"/>
-            <result property="createdAt" column="CREATED_AT"/>
+            <result property="disciplineRewardName" column="discipline_reward_name"/>
+            <result property="content" column="content"/>
+            <result property="createdAt" column="created_at"/>
         </collection>
     </resultMap>
 
     <resultMap id="ResultMap2" type="com.pado.inflow.employee.attach.query.dto.DeptAttachedInfoDTO">
         <!-- 기본 엔티티 매핑 -->
-        <result property="departmentCode" column="DEPARTMENT_CODE"/>
-        <result property="departmentName" column="DEPARTMENT_NAME"/>
+        <result property="departmentCode" column="department_code"/>
+        <result property="departmentName" column="department_name"/>
 
         <collection property="employeesInfo" ofType="com.pado.inflow.employee.attach.query.dto.AllAttachedInfoDTO">
-            <result property="employeeId" column="EMPLOYEE_ID"/>
-            <result property="employeeNumber" column="EMPLOYEE_NUMBER"/>
+            <result property="employeeId" column="employee_id"/>
+            <result property="employeeNumber" column="employee_number"/>
 
             <!-- Career 컬렉션 매핑 -->
             <collection property="careers" ofType="com.pado.inflow.employee.attach.query.dto.CareerDTO">
-                <result property="careerId" column="CAREER_ID"/>
-                <result property="companyName" column="COMPANY_NAME"/>
-                <result property="roleName" column="ROLE_NAME"/>
-                <result property="joinDate" column="JOIN_DATE"/>
-                <result property="resignationDate" column="RESIGNATION_DATE"/>
-                <result property="employeeId" column="EMPLOYEE_ID"/>
+                <result property="careerId" column="career_id"/>
+                <result property="companyName" column="company_name"/>
+                <result property="roleName" column="role_name"/>
+                <result property="joinDate" column="join_date"/>
+                <result property="resignationDate" column="resignation_date"/>
+                <result property="employeeId" column="employee_id"/>
             </collection>
 
             <!-- Education 컬렉션 매핑 -->
             <collection property="educations" ofType="com.pado.inflow.employee.attach.query.dto.EducationDTO">
-                <result property="educationId" column="EDUCATION_ID"/>
-                <result property="schoolName" column="SCHOOL_NAME"/>
-                <result property="admissionDate" column="ADMISSION_DATE"/>
-                <result property="graduationDate" column="GRADUATION_DATE"/>
-                <result property="degree" column="DEGREE"/>
-                <result property="major" column="MAJOR"/>
-                <result property="employeeId" column="EMPLOYEE_ID"/>
+                <result property="educationId" column="education_id"/>
+                <result property="schoolName" column="school_name"/>
+                <result property="admissionDate" column="admission_date"/>
+                <result property="graduationDate" column="graduation_date"/>
+                <result property="degree" column="degree"/>
+                <result property="major" column="major"/>
+                <result property="employeeId" column="employee_id"/>
             </collection>
 
             <!-- FamilyMember 컬렉션 매핑 -->
             <collection property="familyMembers" ofType="com.pado.inflow.employee.attach.query.dto.FamilyMemberDTO">
-                <result property="familyMemberId" column="FAMILY_MEMBER_ID"/>
-                <result property="name" column="NAME"/>
-                <result property="birthDate" column="BIRTH_DATE"/>
-                <result property="employeeId" column="EMPLOYEE_ID"/>
-                <result property="familyRelationshipName" column="FAMILY_RELATIONSHIP_NAME"/>
+                <result property="familyMemberId" column="family_member_id"/>
+                <result property="name" column="name"/>
+                <result property="birthDate" column="birth_date"/>
+                <result property="employeeId" column="employee_id"/>
+                <result property="familyRelationshipName" column="family_relationship_name"/>
             </collection>
 
             <!-- LanguageTest 컬렉션 매핑 -->
             <collection property="languageTests" ofType="com.pado.inflow.employee.attach.query.dto.LanguageTestDTO">
-                <result property="languageTestId" column="LANGUAGE_TEST_ID"/>
-                <result property="languageTestName" column="LANGUAGE_TEST_NAME"/>
-                <result property="qualificationNumber" column="QUALIFICATION_NUMBER"/>
-                <result property="issuer" column="ISSUER"/>
-                <result property="qualifiedAt" column="QUALIFIED_AT"/>
-                <result property="gradeScore" column="GRADE_SCORE"/>
-                <result property="employeeId" column="EMPLOYEE_ID"/>
-                <result property="languageName" column="LANGUAGE_NAME"/>
-                <result property="testDate" column="TEST_DATE"/>
+                <result property="languageTestId" column="language_test_id"/>
+                <result property="languageTestName" column="language_test_name"/>
+                <result property="qualificationNumber" column="qualification_number"/>
+                <result property="issuer" column="issuer"/>
+                <result property="qualifiedAt" column="qualified_at"/>
+                <result property="gradeScore" column="grade_score"/>
+                <result property="employeeId" column="employee_id"/>
+                <result property="languageName" column="language_name"/>
+                <result property="testDate" column="test_date"/>
             </collection>
 
             <!-- Qualification 컬렉션 매핑 -->
             <collection property="qualifications" ofType="com.pado.inflow.employee.attach.query.dto.QualificationDTO">
-                <result property="qualificationId" column="QUALIFICATION_ID"/>
-                <result property="qualificationName" column="QUALIFICATION_NAME"/>
-                <result property="qualificationNumber" column="QUALIFICATION_NUMBER"/>
-                <result property="qualifiedAt" column="QUALIFIED_AT"/>
-                <result property="issuer" column="ISSUER"/>
-                <result property="gradeScore" column="GRADE_SCORE"/>
-                <result property="employeeId" column="EMPLOYEE_ID"/>
+                <result property="qualificationId" column="qualification_id"/>
+                <result property="qualificationName" column="qualification_name"/>
+                <result property="qualificationNumber" column="qualification_number"/>
+                <result property="qualifiedAt" column="qualified_at"/>
+                <result property="issuer" column="issuer"/>
+                <result property="gradeScore" column="grade_score"/>
+                <result property="employeeId" column="employee_id"/>
             </collection>
 
             <!-- DisciplineReward 컬렉션 매핑 -->
             <collection property="disciplineRewards" ofType="com.pado.inflow.employee.attach.query.dto.DisciplineRewardDTO">
-                <result property="disciplineRewardName" column="DISCIPLINE_REWARD_NAME"/>
-                <result property="content" column="CONTENT"/>
-                <result property="createdAt" column="CREATED_AT"/>
+                <result property="disciplineRewardName" column="discipline_reward_name"/>
+                <result property="content" column="content"/>
+                <result property="createdAt" column="created_at"/>
             </collection>
         </collection>
     </resultMap>
@@ -144,57 +144,57 @@
 
     <select id="getAIList" resultMap="ResultMap1" parameterType="string">
         SELECT
-               E.EMPLOYEE_ID AS EMPLOYEE_ID
-             , E.EMPLOYEE_NUMBER AS EMPLOYEE_NUMBER
+               E.employee_id AS employee_id
+             , E.employee_number AS employee_number
 
-             , CR.CAREER_ID AS CAREER_ID
-             , CR.COMPANY_NAME AS COMPANY_NAME
-             , CR.ROLE_NAME AS ROLE_NAME
-             , DATE(CR.JOIN_DATE) AS JOIN_DATE
-             , DATE(CR.RESIGNATION_DATE) AS RESIGNATION_DATE
+             , CR.career_id AS career_id
+             , CR.company_name AS company_name
+             , CR.role_name AS role_name
+             , DATE(CR.join_date) AS join_date
+             , DATE(CR.resignation_date) AS resignation_date
 
-             , EDU.EDUCATION_ID AS EDUCATION_ID
-             , EDU.SCHOOL_NAME AS SCHOOL_NAME
-             , EDU.ADMISSION_DATE AS ADMISSION_DATE
-             , DATE(EDU.GRADUATION_DATE) AS GRADUATION_DATE
-             , EDU.DEGREE AS DEGREE
-             , EDU.MAJOR AS MAJOR
+             , EDU.education_id AS education_id
+             , EDU.school_name AS school_name
+             , EDU.admission_date AS admission_date
+             , DATE(EDU.graduation_date) AS graduation_date
+             , EDU.degree AS degree
+             , EDU.major AS major
 
-             , FM.FAMILY_MEMBER_ID AS FAMILY_MEMBER_ID
-             , FM.NAME AS NAME
-             , DATE(FM.BIRTH_DATE) AS BIRTH_DATE
-             , FR.FAMILY_RELATIONSHIP_NAME AS FAMILY_RELATIONSHIP_NAME
+             , FM.family_member_id AS family_member_id
+             , FM.name AS name
+             , DATE(FM.birth_date) AS birth_date
+             , FR.family_relationship_name AS family_relationship_name
 
-             , LT.LANGUAGE_TEST_ID AS LANGUAGE_TEST_ID
-             , LT.LANGUAGE_TEST_NAME AS LANGUAGE_TEST_NAME
-             , LT.QUALIFICATION_NUMBER AS QUALIFICATION_NUMBER
-             , LT.ISSUER AS ISSUER
-             , DATE(LT.QUALIFIED_AT) AS QUALIFIED_AT
-             , LT.GRADE_SCORE AS GRADE_SCORE
-             , L.LANGUAGE_NAME AS LANGUAGE_NAME
+             , LT.language_test_id AS language_test_id
+             , LT.language_test_name AS language_test_name
+             , LT.qualification_number AS qualification_number
+             , LT.issuer AS issuer
+             , DATE(LT.qualified_at) AS qualified_at
+             , LT.grade_score AS grade_score
+             , L.language_name AS language_name
 
-             , Q.QUALIFICATION_ID AS QUALIFICATION_ID
-             , Q.QUALIFICATION_NAME AS QUALIFICATION_NAME
-             , Q.QUALIFICATION_NUMBER AS QUALIFICATION_NUMBER
-             , DATE(Q.QUALIFIED_AT) AS QUALIFIED_AT
-             , Q.ISSUER AS ISSUER
-             , Q.GRADE_SCORE AS GRADE_SCORE
+             , Q.qualification_id AS qualification_id
+             , Q.qualification_name AS qualification_name
+             , Q.qualification_number AS qualification_number
+             , DATE(Q.qualified_at) AS qualified_at
+             , Q.issuer AS issuer
+             , Q.grade_score AS grade_score
 
-             , DR.DISCIPLINE_REWARD_NAME AS DISCIPLINE_REWARD_NAME
-             , DR.CONTENT AS CONTENT
-             , DATE(DR.CREATED_AT) AS CREATED_AT
-          FROM EMPLOYEE E
-         INNER JOIN CAREER CR ON CR.EMPLOYEE_ID = E.EMPLOYEE_ID
-         INNER JOIN EDUCATION EDU ON EDU.EMPLOYEE_ID = CR.EMPLOYEE_ID
-         INNER JOIN FAMILY_MEMBER FM ON FM.EMPLOYEE_ID = EDU.EMPLOYEE_ID
-         INNER JOIN FAMILY_RELATIONSHIP FR ON FR.FAMILY_RELATIONSHIP_CODE = FM.FAMILY_RELATIONSHIP_CODE
-         INNER JOIN LANGUAGE_TEST LT ON LT.EMPLOYEE_ID = FM.EMPLOYEE_ID
-         INNER JOIN LANGUAGE L ON L.LANGUAGE_CODE = LT.LANGUAGE_CODE
-         INNER JOIN QUALIFICATION Q ON Q.EMPLOYEE_ID = LT.EMPLOYEE_ID
-         INNER JOIN DISCIPLINE_REWARD DR ON DR.EMPLOYEE_ID = Q.EMPLOYEE_ID
+             , DR.discipline_reward_name AS discipline_reward_name
+             , DR.content AS content
+             , DATE(DR.created_at) AS created_at
+          FROM employee E
+         INNER JOIN career CR ON CR.employee_id = E.employee_id
+         INNER JOIN education EDU ON EDU.employee_id = CR.employee_id
+         INNER JOIN family_member FM ON FM.employee_id = EDU.employee_id
+         INNER JOIN family_relationship FR ON FR.family_relationship_code = FM.family_relationship_code
+         INNER JOIN language_test LT ON LT.employee_id = FM.employee_id
+         INNER JOIN language L ON L.language_code = LT.language_code
+         INNER JOIN qualification Q ON Q.employee_id = LT.employee_id
+         INNER JOIN discipline_reward DR ON DR.employee_id = Q.employee_id
          <where>
             <if test="empId != null">
-                E.EMPLOYEE_ID = #{empId}
+                E.employee_id = #{empId}
             </if>
          </where>
     </select>
@@ -202,58 +202,58 @@
 
     <select id="getAIListDept" resultMap="ResultMap2" parameterType="string">
         SELECT
-               DP.DEPARTMENT_CODE AS DEPARTMENT_CODE
-             , DP.DEPARTMENT_NAME AS DEPARTMENT_NAME
+               DP.department_code AS department_code
+             , DP.department_name AS department_name
 
-             , E.EMPLOYEE_ID AS EMPLOYEE_ID
-             , E.EMPLOYEE_NUMBER AS EMPLOYEE_NUMBER
+             , E.employee_id AS employee_id
+             , E.employee_number AS employee_number
 
-             , CR.CAREER_ID AS CAREER_ID
-             , CR.COMPANY_NAME AS COMPANY_NAME
-             , CR.ROLE_NAME AS ROLE_NAME
-             , DATE(CR.JOIN_DATE) AS JOIN_DATE
-             , DATE(CR.RESIGNATION_DATE) AS RESIGNATION_DATE
+             , CR.career_id AS career_id
+             , CR.company_name AS company_name
+             , CR.role_name AS role_name
+             , DATE(CR.join_date) AS join_date
+             , DATE(CR.resignation_date) AS resignation_date
 
-             , EDU.EDUCATION_ID AS EDUCATION_ID
-             , EDU.SCHOOL_NAME AS SCHOOL_NAME
-             , EDU.ADMISSION_DATE AS ADMISSION_DATE
-             , DATE(EDU.GRADUATION_DATE) AS GRADUATION_DATE
-             , EDU.DEGREE AS DEGREE
-             , EDU.MAJOR AS MAJOR
+             , EDU.education_id AS education_id
+             , EDU.school_name AS school_name
+             , EDU.admission_date AS admission_date
+             , DATE(EDU.graduation_date) AS graduation_date
+             , EDU.degree AS degree
+             , EDU.major AS major
 
-             , FM.FAMILY_MEMBER_ID AS FAMILY_MEMBER_ID
-             , FM.NAME AS NAME
-             , DATE(FM.BIRTH_DATE) AS BIRTH_DATE
-             , FR.FAMILY_RELATIONSHIP_NAME AS FAMILY_RELATIONSHIP_NAME
+             , FM.family_member_id AS family_member_id
+             , FM.name AS name
+             , DATE(FM.birth_date) AS birth_date
+             , FR.family_relationship_name AS family_relationship_name
 
-             , LT.LANGUAGE_TEST_ID AS LANGUAGE_TEST_ID
-             , LT.LANGUAGE_TEST_NAME AS LANGUAGE_TEST_NAME
-             , LT.QUALIFICATION_NUMBER AS QUALIFICATION_NUMBER
-             , LT.ISSUER AS ISSUER
-             , DATE(LT.QUALIFIED_AT) AS QUALIFIED_AT
-             , LT.GRADE_SCORE AS GRADE_SCORE
-             , L.LANGUAGE_NAME AS LANGUAGE_NAME
+             , LT.language_test_id AS language_test_id
+             , LT.language_test_name AS language_test_name
+             , LT.qualification_number AS qualification_number
+             , LT.issuer AS issuer
+             , DATE(LT.qualified_at) AS qualified_at
+             , LT.grade_score AS grade_score
+             , L.language_name AS language_name
 
-             , Q.QUALIFICATION_ID AS QUALIFICATION_ID
-             , Q.QUALIFICATION_NAME AS QUALIFICATION_NAME
-             , Q.QUALIFICATION_NUMBER AS QUALIFICATION_NUMBER
-             , DATE(Q.QUALIFIED_AT) AS QUALIFIED_AT
-             , Q.ISSUER AS ISSUER
-             , Q.GRADE_SCORE AS GRADE_SCORE
+             , Q.qualification_id AS qualification_id
+             , Q.qualification_name AS qualification_name
+             , Q.qualification_number AS qualification_number
+             , DATE(Q.qualified_at) AS qualified_at
+             , Q.issuer AS issuer
+             , Q.grade_score AS grade_score
 
-             , DR.DISCIPLINE_REWARD_NAME AS DISCIPLINE_REWARD_NAME
-             , DR.CONTENT AS CONTENT
-             , DATE(DR.CREATED_AT) AS CREATED_AT
-          FROM EMPLOYEE E
-         INNER JOIN CAREER CR ON CR.EMPLOYEE_ID = E.EMPLOYEE_ID
-         INNER JOIN EDUCATION EDU ON EDU.EMPLOYEE_ID = CR.EMPLOYEE_ID
-         INNER JOIN FAMILY_MEMBER FM ON FM.EMPLOYEE_ID = EDU.EMPLOYEE_ID
-         INNER JOIN FAMILY_RELATIONSHIP FR ON FR.FAMILY_RELATIONSHIP_CODE = FM.FAMILY_RELATIONSHIP_CODE
-         INNER JOIN LANGUAGE_TEST LT ON LT.EMPLOYEE_ID = FM.EMPLOYEE_ID
-         INNER JOIN LANGUAGE L ON L.LANGUAGE_CODE = LT.LANGUAGE_CODE
-         INNER JOIN QUALIFICATION Q ON Q.EMPLOYEE_ID = LT.EMPLOYEE_ID
-         INNER JOIN DISCIPLINE_REWARD DR ON DR.EMPLOYEE_ID = Q.EMPLOYEE_ID
-         INNER JOIN DEPARTMENT DP ON E.DEPARTMENT_CODE = DP.DEPARTMENT_CODE
-         WHERE DP.DEPARTMENT_CODE = #{deptCode}
+             , DR.discipline_reward_name AS discipline_reward_name
+             , DR.content AS content
+             , DATE(DR.created_at) AS created_at
+          FROM employee E
+         INNER JOIN career CR ON CR.employee_id = E.employee_id
+         INNER JOIN education EDU ON EDU.employee_id = CR.employee_id
+         INNER JOIN family_member FM ON FM.employee_id = EDU.employee_id
+         INNER JOIN family_relationship FR ON FR.family_relationship_code = FM.family_relationship_code
+         INNER JOIN language_test LT ON LT.employee_id = FM.employee_id
+         INNER JOIN language L ON L.language_code = LT.language_code
+         INNER JOIN qualification Q ON Q.employee_id = LT.employee_id
+         INNER JOIN discipline_reward DR ON DR.employee_id = Q.employee_id
+         INNER JOIN department DP ON E.department_code = DP.department_code
+         WHERE DP.department_code = #{deptCode}
     </select>
 </mapper>

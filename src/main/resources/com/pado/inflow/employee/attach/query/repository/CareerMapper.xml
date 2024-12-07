@@ -3,26 +3,26 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.employee.attach.query.repository.CareerMapper">
     <resultMap id="ResultMap" type="com.pado.inflow.employee.attach.query.dto.CareerDTO">
-        <id property="careerId" column="CAREER_ID"/>
-        <result property="companyName" column="COMPANY_NAME"/>
-        <result property="roleName" column="ROLE_NAME"/>
-        <result property="joinDate" column="JOIN_DATE"/>
-        <result property="resignationDate" column="RESIGNATION_DATE"/>
-        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <id property="careerId" column="career_id"/>
+        <result property="companyName" column="company_name"/>
+        <result property="roleName" column="role_name"/>
+        <result property="joinDate" column="join_date"/>
+        <result property="resignationDate" column="resignation_date"/>
+        <result property="employeeId" column="employee_id"/>
     </resultMap>
 
     <select id="getAllCareers" resultMap="ResultMap" parameterType="string">
         SELECT
-               CAREER_ID
-             , COMPANY_NAME
-             , ROLE_NAME
-             , DATE(JOIN_DATE) AS JOIN_DATE
-             , DATE(RESIGNATION_DATE) AS RESIGNATION_DATE
-             , EMPLOYEE_ID
-          FROM CAREER
+               career_id
+             , company_name
+             , role_name
+             , DATE(join_date) AS join_date
+             , DATE(resignation_date) AS resignation_date
+             , employee_id
+          FROM career
          <where>
              <if test="employeeId != null">
-                 EMPLOYEE_ID = #{employeeId}
+                 employee_id = #{employeeId}
              </if>
          </where>
     </select>
