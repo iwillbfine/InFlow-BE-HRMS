@@ -26,12 +26,12 @@ import java.util.List;
 @EnableWebSecurity
 public class WebSecurity {
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private EmployeeCommandService employeeService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final EmployeeCommandService employeeService;
 
-    private EmployeeRepository employeeRepository;
-    private Environment env;
-    private JwtUtil jwtUtil;
+    private final EmployeeRepository employeeRepository;
+    private final Environment env;
+    private final JwtUtil jwtUtil;
 
     @Autowired
     public WebSecurity(BCryptPasswordEncoder bCryptPasswordEncoder,  EmployeeCommandService employeeService
