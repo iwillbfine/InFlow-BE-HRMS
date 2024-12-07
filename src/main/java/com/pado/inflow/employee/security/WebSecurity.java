@@ -63,7 +63,7 @@ public class WebSecurity {
 
         // 설명. 권한 설정
         http.authorizeHttpRequests(authz -> authz
-                        .requestMatchers(new AntPathRequestMatcher("/actuator/health", "GET")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/", "GET")).permitAll()
 
                         // 설명. 1. 로그인은 어떤 사용자도 이용 가능
                         .requestMatchers(new AntPathRequestMatcher("/api/login", "POST")).permitAll()
