@@ -41,6 +41,11 @@ jobs:
             port: 5000
           
           spring:
+            servlet:
+              multipart:
+                max-file-size: 100MB
+                max-request-size: 100MB
+            
             datasource:
               driver-class-name: org.mariadb.jdbc.Driver
               url: jdbc:mariadb://\${RDS_HOSTNAME}:\${RDS_PORT}/\${RDS_DB_NAME}
@@ -54,6 +59,43 @@ jobs:
               properties:
                 hibernate:
                   '[format_sql]': true
+
+            logging:
+              level:
+                com:
+                  pado:
+                    inflow: info # debug or info
+          
+          token:
+            access-expiration-time: 2880000000
+            refresh-expiration-time: 86400000
+            access-secret: \${JWT_ACCESS_SECRET}
+            refresh-secret: \${JWT_REFRESH_SECRET}
+                  
+          cloud:
+            aws:
+              credentials:
+                access-key: \${AWS_ACCESS_KEY_ID}
+                secret-key: \${AWS_SECRET_ACCESS_KEY}
+              region:
+                static: \${AWS_REGION}
+              stack:
+                auto: false
+              s3:
+                buckets:
+                  inflow-emp-profile: "inflow-emp-profile"
+                  inflow-contract: "inflow-contract"
+                  inflow-vacation-attendance: "inflow-vacation-attendance"
+                  inflow-excel-form: "inflow-excel-form"
+
+          admin:
+            password: \${ADMIN_PASSWORD}
+
+          coolsms:
+            api:
+              key: \${SMS_KEY}
+              secret: \${SMS_SECRET}
+              number: \${SMS_NUMBER}
           EOL
 
       - name: Set Yaml
@@ -67,6 +109,15 @@ jobs:
           RDS_DB_NAME: ${{ secrets.RDS_DB_NAME }}
           RDS_USERNAME: ${{ secrets.RDS_USERNAME }}
           RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }}
+          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
+          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          SMS_KEY: ${{ secrets.SMS_KEY }}
+          SMS_SECRET: ${{ secrets.SMS_SECRET }}
+          SMS_NUMBER: ${{ secrets.SMS_NUMBER }}
 
       - name: Check for Tests
         run: |
