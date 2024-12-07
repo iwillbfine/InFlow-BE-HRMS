@@ -96,6 +96,15 @@ jobs:
               key: \${SMS_KEY}
               secret: \${SMS_SECRET}
               number: \${SMS_NUMBER}
+          
+          management:
+            endpoints:
+              web:
+                exposure:
+                  include: health
+          endpoint:
+            health:
+              show-details: always
           EOL
 
       - name: Set Yaml
