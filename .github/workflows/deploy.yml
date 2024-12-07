@@ -97,6 +97,15 @@ jobs:
               secret: \${SMS_SECRET}
               number: \${SMS_NUMBER}
           
+          management:
+            endpoints:
+              web:
+                exposure:
+                  include: health  # health 엔드포인트를 노출
+          endpoint:
+            health:
+              show-details: always  # health 상태에 대한 자세한 정보 표시
+          
           EOL
 
       - name: Set Yaml
