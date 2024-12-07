@@ -63,6 +63,7 @@ public class WebSecurity {
 
         // 설명. 권한 설정
         http.authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/health").permitAll()
 
                         // 설명. 1. 로그인은 어떤 사용자도 이용 가능
