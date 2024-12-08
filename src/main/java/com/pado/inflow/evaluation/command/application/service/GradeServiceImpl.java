@@ -152,15 +152,32 @@ public class GradeServiceImpl implements GradeService {
         return gradeRepository.save(targetGrade).toResponseDTO();
     }
 
-    // 등급 삭제
     @Override
-    public void deleteGrade(Long gradeId) {
+    public void deleteGrade(Long gradeId, Integer year, String half) {
+        // 삭제할 등급 정보 조회
+        GradeDTO targetGrade = gradeService.findGradeByGradeId(gradeId);
+        if (targetGrade == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_GRADE);
+        }
 
-        // 해당 등급 조회
-        GradeDTO selectedGrade = gradeService.findGradeByGradeId(gradeId);
+        // 평가 정책 조회
+        List<EvaluationPolicyDTO> selectedPolicies = evaluationPolicyService.findPolicyWithYearAndHalf(year, half);
 
-        // 삭제
-        gradeRepository.deleteById(gradeId);
+        // 선택된 정책들에서 같은 등급명을 가진 모든 등급 조회
+        List<GradeDTO> gradesToDelete = new ArrayList<>();
+        for (EvaluationPolicyDTO policy : selectedPolicies) {
+            List<GradeDTO> gradesInPolicy = gradeService.findByEvaluationPolicyId(policy.getEvaluationPolicyId());
+
+            // 동일한 등급명을 가진 등급들 필터링
+            gradesInPolicy.stream()
+                    .filter(grade -> grade.getGradeName().equals(targetGrade.getGradeName()))
+                    .forEach(gradesToDelete::add);
+        }
+
+        // 조회된 등급들 삭제
+        for (GradeDTO grade : gradesToDelete) {
+            gradeRepository.deleteById(grade.getGradeId());
+        }
     }
 
 }

@@ -10,5 +10,5 @@ public interface GradeService {
 
     GradeResponseDTO updateGrade(Long gradeId);
 
-    void deleteGrade(Long gradeId);
+    void deleteGrade(Long gradeId, Integer year, String half);
 }

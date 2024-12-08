@@ -1,5 +1,6 @@
 package com.pado.inflow.evaluation.command.application.controller;
 
+import com.amazonaws.Request;
 import com.pado.inflow.common.ResponseDTO;
 import com.pado.inflow.evaluation.command.application.service.GradeService;
 import com.pado.inflow.evaluation.command.domain.aggregate.dto.request.CreateGradeRequestDTO;
@@ -44,8 +45,10 @@ public class GradeController {
     @DeleteMapping("/delete/{gradeId}")
     public ResponseDTO<String> GradeDelete(
             @PathVariable( value = "gradeId") Long gradeId
+           ,@RequestParam( value = "year") Integer year
+           ,@RequestParam( value = "half") String half
     ) {
-        gradeService.deleteGrade(gradeId);
+        gradeService.deleteGrade(gradeId, year, half);
         return ResponseDTO.ok("해당 평가 등급이 삭제되었습니다");
     }
 
