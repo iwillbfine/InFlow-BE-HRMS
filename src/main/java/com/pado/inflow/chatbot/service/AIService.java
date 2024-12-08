@@ -1,5 +1,6 @@
 package com.pado.inflow.chatbot.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,6 +14,10 @@ import com.pado.inflow.chatbot.dto.AIResponseDTO;
 @Service
 public class AIService {
     private final RestTemplate restTemplate;
+
+    // 설명. application.yml에서 설정된 값을 주입
+    @Value("${ai.server-url}")
+    private String aiServerUrl;
 
     private static final String AI_SERVER_URL = "http://localhost:8000/query"; // AI 서버 주소
 
@@ -31,7 +36,7 @@ public class AIService {
 
             // AI 서버 호출
             ResponseEntity<AIResponseDTO> response = restTemplate.postForEntity(
-                    AI_SERVER_URL,
+                    aiServerUrl,  // yml에서 읽은 URL 사용
                     request,
                     AIResponseDTO.class
             );

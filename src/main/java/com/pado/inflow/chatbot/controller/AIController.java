@@ -3,6 +3,7 @@ package com.pado.inflow.chatbot.controller;
 import com.pado.inflow.chatbot.dto.AIRequestDTO;
 import com.pado.inflow.chatbot.dto.AIResponseDTO;
 import com.pado.inflow.chatbot.service.AIService;
+import com.pado.inflow.common.ResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +19,9 @@ public class AIController {
     }
 
     @PostMapping("/query")
-    public ResponseEntity<AIResponseDTO> queryChatbot(@RequestBody AIRequestDTO chatbotRequest) {
+    public ResponseDTO<AIResponseDTO> queryChatbot(@RequestBody AIRequestDTO chatbotRequest) {
         // AIService 호출 및 응답 처리
         AIResponseDTO response = aiService.communicateWithAI(chatbotRequest);
-        return ResponseEntity.ok(response);
+        return ResponseDTO.ok(response);
     }
 }

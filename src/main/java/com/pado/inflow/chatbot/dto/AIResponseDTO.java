@@ -7,4 +7,7 @@ import lombok.Data;
 public class AIResponseDTO {
     @JsonProperty("answer")
     private String answer;
+
+    @JsonProperty("selected_keyword")
+    private String selectedKeyword;
 }
