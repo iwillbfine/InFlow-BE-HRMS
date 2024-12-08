@@ -39,6 +39,8 @@ jobs:
           cat > src/main/resources/application.yml.template <<EOL
           server:
             port: 5000
+            tomcat:
+              max-http-post-size: 100MB
           
           spring:
             servlet:
