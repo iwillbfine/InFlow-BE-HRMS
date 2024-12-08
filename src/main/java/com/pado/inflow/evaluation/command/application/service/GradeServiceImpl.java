@@ -152,4 +152,15 @@ public class GradeServiceImpl implements GradeService {
         return gradeRepository.save(targetGrade).toResponseDTO();
     }
 
+    // 등급 삭제
+    @Override
+    public void deleteGrade(Long gradeId) {
+
+        // 해당 등급 조회
+        GradeDTO selectedGrade = gradeService.findGradeByGradeId(gradeId);
+
+        // 삭제
+        gradeRepository.deleteById(gradeId);
+    }
+
 }
