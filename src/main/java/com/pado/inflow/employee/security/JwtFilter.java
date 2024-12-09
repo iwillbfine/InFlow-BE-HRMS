@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
         log.info("Request URI: {}", requestURI);
 
         // 로그인 요청은 필터를 통과시킴
-        if ("/api/login".equals(requestURI) || "/api/auth/refresh-token".equals(requestURI)) {
+        if ("/actuator/health".equals(requestURI) || "/api/login".equals(requestURI) || "/api/auth/refresh-token".equals(requestURI)) {
             log.info("로그인/리프레시 재발급 요청은 필터를 통과합니다.");
             filterChain.doFilter(request, response);
             return;
