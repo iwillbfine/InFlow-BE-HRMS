@@ -37,7 +37,7 @@ out/
 .vscode/
 
 # Ignore YAML and properties files
-*.yml
+application-test.yml
 *.properties
 
 # PasswordGenerator.java 파일을 Git에서 무시
