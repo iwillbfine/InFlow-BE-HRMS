@@ -99,14 +99,8 @@ jobs:
               secret: \${SMS_SECRET}
               number: \${SMS_NUMBER}
           
-          management:
-            endpoints:
-              web:
-                exposure:
-                  include: health  # health 엔드포인트를 노출
-          endpoint:
-            health:
-              show-details: always  # health 상태에 대한 자세한 정보 표시
+          ai:
+            server-url: http://localhost:8000/query
           
           EOL
 
@@ -190,8 +184,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: inflow1
-          environment_name: Inflow1-env
+          application_name: inflow-back
+          environment_name: Inflow-back-env
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2
           deployment_package: deploy/deploy.zip
