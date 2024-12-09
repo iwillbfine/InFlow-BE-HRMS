@@ -9,4 +9,6 @@ public interface GradeService {
     List<GradeResponseDTO> createGrade(CreateGradeRequestDTO createGradeRequestDTO, Integer year, String half);
 
     GradeResponseDTO updateGrade(Long gradeId);
+
+    void deleteGrade(Long gradeId, Integer year, String half);
 }
