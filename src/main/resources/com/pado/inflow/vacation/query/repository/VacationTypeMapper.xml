@@ -4,15 +4,15 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.vacation.query.repository.VacationTypeMapper">
     <resultMap id="vacationTypeResultMap" type="com.pado.inflow.vacation.query.dto.VacationTypeDTO">
-        <id property="vacationTypeId" column="VACATION_TYPE_ID"/>
-        <result property="vacationTypeName" column="VACATION_TYPE_NAME"/>
+        <id property="vacationTypeId" column="vacation_type_id"/>
+        <result property="vacationTypeName" column="vacation_type_name"/>
     </resultMap>
 
     <select id="findVacationTypes" resultMap="vacationTypeResultMap">
         SELECT
-               VACATION_TYPE_ID
-             , VACATION_TYPE_NAME
-          FROM VACATION_TYPE
-         ORDER BY VACATION_TYPE_ID
+               vacation_type_id
+             , vacation_type_name
+          FROM vacation_type
+         ORDER BY vacation_type_id
     </select>
 </mapper>

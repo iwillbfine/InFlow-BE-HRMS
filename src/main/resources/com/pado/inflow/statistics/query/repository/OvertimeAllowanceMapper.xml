@@ -35,33 +35,33 @@
     </resultMap>
 
     <select id="getAllOA" resultMap="ResultMap" parameterType="string">
-        WITH YEARLY_DATA AS
-		  (SELECT YEAR(PAID_AT) AS YEAR,
-				  COUNT(DISTINCT EMPLOYEE_ID) AS yearlyEmployeeCount,
-				  SUM(OVERTIME_ALLOWANCE) AS yearlyTotalAmount
-		     FROM PAYMENT
-		    GROUP BY YEAR(PAID_AT)),
-			 MONTHLY_DATA AS
-		  (SELECT YEAR(PAID_AT) AS YEAR,
-				  MONTH(PAID_AT) AS MONTH,
-				  COUNT(DISTINCT EMPLOYEE_ID) AS monthlyEmployeeCount,
-				  SUM(OVERTIME_ALLOWANCE) AS monthlyTotalAmount
-		     FROM PAYMENT
-		    GROUP BY YEAR(PAID_AT),
-					MONTH(PAID_AT)),
-			 DEPT_DATA AS
-		  (SELECT YEAR(P.PAID_AT) AS YEAR,
-				  MONTH(P.PAID_AT) AS MONTH,
-				  COUNT(DISTINCT P.EMPLOYEE_ID) AS employeeCount,
-				  SUM(P.OVERTIME_ALLOWANCE) AS totalAmount,
-				  PP.DEPARTMENT_CODE AS departmentCode,
-				  DD.DEPARTMENT_NAME AS departmentName
-		     FROM PAYMENT P
-		    INNER JOIN DEPARTMENT_MEMBER PP ON P.EMPLOYEE_ID = PP.EMPLOYEE_ID
-		    INNER JOIN DEPARTMENT DD ON PP.DEPARTMENT_CODE = DD.DEPARTMENT_CODE
-		    GROUP BY YEAR(P.PAID_AT),
-					MONTH(P.PAID_AT),
-					PP.DEPARTMENT_CODE)
+        WITH yearly_data AS
+		  (SELECT YEAR(paid_at) AS YEAR,
+				  COUNT(DISTINCT employee_id) AS yearlyEmployeeCount,
+				  SUM(overtime_allowance) AS yearlyTotalAmount
+		     FROM payment
+		    GROUP BY YEAR(paid_at)),
+			 monthly_data AS
+		  (SELECT YEAR(paid_At) AS YEAR,
+				  MONTH(paid_At) AS MONTH,
+				  COUNT(DISTINCT employee_id) AS monthlyEmployeeCount,
+				  SUM(overtime_allowance) AS monthlyTotalAmount
+		     FROM payment
+		    GROUP BY YEAR(paid_At),
+					MONTH(paid_At)),
+			 dept_data AS
+		  (SELECT YEAR(P.paid_At) AS YEAR,
+				  MONTH(P.paid_At) AS MONTH,
+				  COUNT(DISTINCT P.employee_id) AS employeeCount,
+				  SUM(P.overtime_allowance) AS totalAmount,
+				  PP.department_code AS departmentCode,
+				  DD.department_name AS departmentName
+		     FROM payment P
+		    INNER JOIN department_member PP ON P.employee_id = PP.employee_id
+		    INNER JOIN department DD ON PP.department_code = DD.department_code
+		    GROUP BY YEAR(P.paid_At),
+					MONTH(P.paid_At),
+					PP.department_code)
 		SELECT Y.year AS YEAR,
 			   Y.yearlyEmployeeCount AS yearlyEmployeeCount,
 			   Y.yearlyTotalAmount AS yearlyTotalAmount,
@@ -72,46 +72,46 @@
 			   D.departmentName AS departmentName,
 			   D.employeeCount AS employeeCount,
 			   D.totalAmount AS totalAmount
-		  FROM YEARLY_DATA Y
-		  LEFT JOIN MONTHLY_DATA M ON Y.year = M.year
-		  LEFT JOIN DEPT_DATA D ON M.year = D.year
+		  FROM yearly_data Y
+		  LEFT JOIN monthly_data M ON Y.year = M.year
+		  LEFT JOIN dept_data D ON M.year = D.year
 		   AND M.month = D.month 
 	      <where>
 			<if test="year != null">
-				Y.YEAR = #{YEAR} 
+				Y.year = #{year}
 			</if>
 		  </where>
 		 ORDER BY Y.year DESC, M.month, D.departmentCode;
     </select>
 	
 	<select id="getDeptOA" resultMap="ResultMap2" parameterType="string">
-		WITH YEARLY_DATA AS
-		  (SELECT YEAR(PAID_AT) AS YEAR,
-				  COUNT(DISTINCT EMPLOYEE_ID) AS yearlyEmployeeCount,
-				  SUM(OVERTIME_ALLOWANCE) AS yearlyTotalAmount
-		     FROM PAYMENT
-		    GROUP BY YEAR(PAID_AT)),
-			 MONTHLY_DATA AS
-		  (SELECT YEAR(PAID_AT) AS YEAR,
-				  MONTH(PAID_AT) AS MONTH,
-				  COUNT(DISTINCT EMPLOYEE_ID) AS monthlyEmployeeCount,
-				  SUM(OVERTIME_ALLOWANCE) AS monthlyTotalAmount
-		     FROM PAYMENT
-		    GROUP BY YEAR(PAID_AT),
-					MONTH(PAID_AT)),
-			 DEPT_DATA AS
-		  (SELECT YEAR(P.PAID_AT) AS YEAR,
-				  MONTH(P.PAID_AT) AS MONTH,
-				  COUNT(DISTINCT P.EMPLOYEE_ID) AS employeeCount,
-				  SUM(P.OVERTIME_ALLOWANCE) AS totalAmount,
-				  PP.DEPARTMENT_CODE AS departmentCode,
-				  DD.DEPARTMENT_NAME AS departmentName
-		     FROM PAYMENT P
-		    INNER JOIN DEPARTMENT_MEMBER PP ON P.EMPLOYEE_ID = PP.EMPLOYEE_ID
-		    INNER JOIN DEPARTMENT DD ON PP.DEPARTMENT_CODE = DD.DEPARTMENT_CODE
-		    GROUP BY YEAR(P.PAID_AT),
-					MONTH(P.PAID_AT),
-					PP.DEPARTMENT_CODE)
+		WITH yearly_data AS
+		  (SELECT YEAR(paid_at) AS YEAR,
+				  COUNT(DISTINCT employee_id) AS yearlyEmployeeCount,
+				  SUM(overtime_allowance) AS yearlyTotalAmount
+		     FROM payment
+		    GROUP BY YEAR(paid_at)),
+			 monthly_data AS
+		  (SELECT YEAR(paid_at) AS YEAR,
+				  MONTH(paid_at) AS MONTH,
+				  COUNT(DISTINCT employee_id) AS monthlyEmployeeCount,
+				  SUM(overtime_allowance) AS monthlyTotalAmount
+		     FROM payment
+		    GROUP BY YEAR(paid_at),
+					MONTH(paid_at)),
+			 dept_data AS
+		  (SELECT YEAR(P.paid_at) AS YEAR,
+				  MONTH(P.paid_at) AS MONTH,
+				  COUNT(DISTINCT P.employee_id) AS employeeCount,
+				  SUM(P.overtime_allowance) AS totalAmount,
+				  PP.department_code AS departmentCode,
+				  DD.department_name AS departmentName
+		     FROM payment P
+		    INNER JOIN department_member PP ON P.employee_id = PP.employee_id
+		    INNER JOIN department DD ON PP.department_code = DD.department_code
+		    GROUP BY YEAR(P.paid_at),
+					MONTH(P.paid_at),
+					PP.department_code)
 		SELECT D.departmentCode AS departmentCode,
 			   D.departmentName AS departmentName,
 			   Y.year AS YEAR,
@@ -120,9 +120,9 @@
 			   M.month AS MONTH,
 			   M.monthlyEmployeeCount AS monthlyEmployeeCount,
 			   M.monthlyTotalAmount AS monthlyTotalAmount
-		  FROM YEARLY_DATA Y
-		  LEFT JOIN MONTHLY_DATA M ON Y.year = M.year
-		  LEFT JOIN DEPT_DATA D ON M.year = D.year
+		  FROM yearly_data Y
+		  LEFT JOIN monthly_data M ON Y.year = M.year
+		  LEFT JOIN dept_data D ON M.year = D.year
 		   AND M.month = D.month
 	    <where>
 			<if test="deptCode != null">

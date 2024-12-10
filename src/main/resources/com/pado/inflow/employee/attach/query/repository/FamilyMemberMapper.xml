@@ -3,25 +3,25 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.employee.attach.query.repository.FamilyMemberMapper">
     <resultMap id="ResultMap" type="com.pado.inflow.employee.attach.query.dto.FamilyMemberDTO">
-        <id property="familyMemberId" column="FAMILY_MEMBER_ID"/>
-        <result property="name" column="NAME"/>
-        <result property="birthDate" column="BIRTH_DATE"/>
-        <result property="employeeId" column="EMPLOYEE_ID"/>
-        <result property="familyRelationshipName" column="FAMILY_RELATIONSHIP_NAME"/>
+        <id property="familyMemberId" column="family_member_id"/>
+        <result property="name" column="name"/>
+        <result property="birthDate" column="birth_date"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="familyRelationshipName" column="family_relationship_name"/>
     </resultMap>
 
     <select id="getAllFamilyMemberList" resultMap="ResultMap" parameterType="string">
         SELECT
-               A.FAMILY_MEMBER_ID
-             , A.NAME
-             , A.BIRTH_DATE
-             , A.EMPLOYEE_ID
-             , B.FAMILY_RELATIONSHIP_NAME
-          FROM FAMILY_MEMBER A INNER JOIN FAMILY_RELATIONSHIP B
-            ON A.FAMILY_RELATIONSHIP_CODE = B.FAMILY_RELATIONSHIP_CODE
+               A.family_member_id
+             , A.name
+             , A.birth_date
+             , A.employee_id
+             , B.family_relationship_name
+          FROM family_member A INNER JOIN family_relationship B
+            ON A.family_relationship_code = B.family_relationship_code
          <where>
              <if test="employeeId != null">
-                 A.EMPLOYEE_ID = #{employeeId}
+                 A.employee_id = #{employeeId}
              </if>
          </where>
     </select>
@@ -30,6 +30,6 @@
         SELECT
                family_relationship_code
              , family_relationship_name
-          FROM FAMILY_RELATIONSHIP
+          FROM family_relationship
     </select>
 </mapper>

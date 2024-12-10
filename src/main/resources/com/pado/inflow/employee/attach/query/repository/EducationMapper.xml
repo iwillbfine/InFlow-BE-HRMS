@@ -3,28 +3,28 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.employee.attach.query.repository.EducationMapper">
     <resultMap id="ResultMap" type="com.pado.inflow.employee.attach.query.dto.EducationDTO">
-        <id property="educationId" column="EDUCATION_ID"/>
-        <result property="schoolName" column="SCHOOL_NAME"/>
-        <result property="admissionDate" column="ADMISSION_DATE"/>
-        <result property="graduationDate" column="GRADUATION_DATE"/>
-        <result property="degree" column="DEGREE"/>
-        <result property="major" column="MAJOR"/>
-        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <id property="educationId" column="education_id"/>
+        <result property="schoolName" column="school_name"/>
+        <result property="admissionDate" column="admission_date"/>
+        <result property="graduationDate" column="graduation_date"/>
+        <result property="degree" column="degree"/>
+        <result property="major" column="major"/>
+        <result property="employeeId" column="employee_id"/>
     </resultMap>
 
     <select id="getAllEducation" resultMap="ResultMap" parameterType="string">
         SELECT
-               EDUCATION_ID
-             , SCHOOL_NAME
-             , DATE(ADMISSION_DATE) AS ADMISSION_DATE
-             , DATE(GRADUATION_DATE) AS GRADUATION_DATE
-             , DEGREE
-             , MAJOR
-             , EMPLOYEE_ID
-          FROM EDUCATION
+               education_id
+             , school_name
+             , DATE(admission_date) AS admission_date
+             , DATE(graduation_date) AS graduation_date
+             , degree
+             , major
+             , employee_id
+          FROM education
          <where>
              <if test="employeeId != null">
-                 EMPLOYEE_ID = #{employeeId}
+                 employee_id = #{employeeId}
              </if>
          </where>
     </select>

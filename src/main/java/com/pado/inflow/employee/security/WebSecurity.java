@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,12 +27,12 @@ import java.util.List;
 @EnableWebSecurity
 public class WebSecurity {
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private EmployeeCommandService employeeService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final EmployeeCommandService employeeService;
 
-    private EmployeeRepository employeeRepository;
-    private Environment env;
-    private JwtUtil jwtUtil;
+    private final EmployeeRepository employeeRepository;
+    private final Environment env;
+    private final JwtUtil jwtUtil;
 
     @Autowired
     public WebSecurity(BCryptPasswordEncoder bCryptPasswordEncoder,  EmployeeCommandService employeeService
@@ -49,7 +50,7 @@ public class WebSecurity {
 
         // 설명.CORS 처리 및 CSRF 비활성화
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable());
+                .csrf(AbstractHttpConfigurer::disable);
 
         // 설명. AuthenticationManager setup
         AuthenticationManagerBuilder authenticationManagerBuilder =
@@ -63,6 +64,7 @@ public class WebSecurity {
 
         // 설명. 권한 설정
         http.authorizeHttpRequests(authz -> authz
+                        .requestMatchers(new AntPathRequestMatcher("/actuator/health", "GET")).permitAll()
                         // 설명. 1. 로그인은 어떤 사용자도 이용 가능
                         .requestMatchers(new AntPathRequestMatcher("/api/login", "POST")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/auth/**", "POST")).permitAll()
@@ -308,7 +310,7 @@ public class WebSecurity {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Allow frontend
+        configuration.setAllowedOrigins(List.of("https://inflow.run")); // Allow frontend
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*")); // Allow all headers
 

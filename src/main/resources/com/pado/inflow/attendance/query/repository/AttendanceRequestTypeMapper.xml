@@ -4,17 +4,17 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.attendance.query.repository.AttendanceRequestTypeMapper">
     <resultMap id="attendanceRequestTypeResultMap" type="com.pado.inflow.attendance.query.dto.AttendanceRequestTypeDTO">
-        <id property="attendanceRequestTypeId" column="ATTENDANCE_REQUEST_TYPE_ID"/>
-        <result property="attendanceRequestTypeName" column="ATTENDANCE_REQUEST_TYPE_NAME"/>
-        <result property="attendanceRequestTypeDescription" column="ATTENDANCE_REQUEST_TYPE_DESCRIPTION"/>
+        <id property="attendanceRequestTypeId" column="attendance_request_type_id"/>
+        <result property="attendanceRequestTypeName" column="attendance_request_type_name"/>
+        <result property="attendanceRequestTypeDescription" column="attendance_request_type_description"/>
     </resultMap>
 
     <select id="findAttendanceRequestTypes" resultMap="attendanceRequestTypeResultMap">
         SELECT
-               A.ATTENDANCE_REQUEST_TYPE_ID
-             , A.ATTENDANCE_REQUEST_TYPE_NAME
-             , A.ATTENDANCE_REQUEST_TYPE_DESCRIPTION
-          FROM ATTENDANCE_REQUEST_TYPE A
+               A.attendance_request_type_id
+             , A.attendance_request_type_name
+             , A.attendance_request_type_description
+          FROM attendance_request_type A
     </select>
 
 </mapper>

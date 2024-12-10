@@ -4,82 +4,82 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.attendance.query.repository.CommuteMapper">
     <resultMap id="commuteResultMap" type="com.pado.inflow.attendance.query.dto.CommuteDTO">
-        <id property="commuteId" column="COMMUTE_ID"/>
-        <result property="startTime" column="START_TIME"/>
-        <result property="endTime" column="END_TIME"/>
-        <result property="remoteStatus" column="REMOTE_STATUS"/>
-        <result property="overtimeStatus" column="OVERTIME_STATUS"/>
-        <result property="employeeId" column="EMPLOYEE_ID"/>
-        <result property="attendanceRequestId" column="ATTENDANCE_REQUEST_ID"/>
+        <id property="commuteId" column="commute_id"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="remoteStatus" column="remote_status"/>
+        <result property="overtimeStatus" column="overtime_status"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="attendanceRequestId" column="attendance_request_id"/>
     </resultMap>
 
     <select id="findCommutesByEmployeeId" resultMap="commuteResultMap" parameterType="map">
         SELECT
-               A.COMMUTE_ID
-             , A.START_TIME
-             , A.END_TIME
-             , A.REMOTE_STATUS
-             , A.OVERTIME_STATUS
-             , A.EMPLOYEE_ID
-             , A.ATTENDANCE_REQUEST_ID
-          FROM COMMUTE A
-         WHERE A.EMPLOYEE_ID = #{ employeeId }
-           AND YEAR(A.START_TIME) = YEAR(#{ date })
-           AND MONTH(A.START_TIME) = MONTH(#{ date })
-         ORDER BY A.COMMUTE_ID DESC
+               A.commute_id
+             , A.start_time
+             , A.end_time
+             , A.remote_status
+             , A.overtime_status
+             , A.employee_id
+             , A.attendance_request_id
+          FROM commute A
+         WHERE A.employee_id = #{ employeeId }
+           AND YEAR(A.start_time) = YEAR(#{ date })
+           AND MONTH(A.start_time) = MONTH(#{ date })
+         ORDER BY A.commute_id DESC
     </select>
 
     <select id="findOvertimesByEmployeeId" resultMap="commuteResultMap" parameterType="map">
         SELECT
-               A.COMMUTE_ID
-             , A.START_TIME
-             , A.END_TIME
-             , A.REMOTE_STATUS
-             , A.OVERTIME_STATUS
-             , A.EMPLOYEE_ID
-             , A.ATTENDANCE_REQUEST_ID
-          FROM COMMUTE A
-         WHERE A.EMPLOYEE_ID = #{ employeeId }
-           AND A.OVERTIME_STATUS = 'Y'
-           AND ((YEAR(A.START_TIME) = YEAR(#{ date }) AND MONTH(A.START_TIME) = MONTH(#{ date }))
-           OR (YEAR(A.END_TIME) = YEAR(#{ date }) AND MONTH(A.END_TIME) = MONTH(#{ date })))
-         ORDER BY A.COMMUTE_ID DESC
+               A.commute_id
+             , A.start_time
+             , A.end_time
+             , A.remote_status
+             , A.overtime_status
+             , A.employee_id
+             , A.attendance_request_id
+          FROM commute A
+         WHERE A.employee_id = #{ employeeId }
+           AND A.overtime_status = 'Y'
+           AND ((YEAR(A.start_time) = YEAR(#{ date }) AND MONTH(A.start_time) = MONTH(#{ date }))
+           OR (YEAR(A.end_time) = YEAR(#{ date }) AND MONTH(A.end_time) = MONTH(#{ date })))
+         ORDER BY A.commute_id DESC
     </select>
 
     <select id="findTodayRemoteByEmployeeId" resultMap="commuteResultMap" parameterType="Long">
         SELECT
-               A.COMMUTE_ID
-             , A.START_TIME
-             , A.END_TIME
-             , A.REMOTE_STATUS
-             , A.OVERTIME_STATUS
-             , A.EMPLOYEE_ID
-             , A.ATTENDANCE_REQUEST_ID
-          FROM COMMUTE A
-         WHERE A.ATTENDANCE_REQUEST_ID = (
-            SELECT B.ATTENDANCE_REQUEST_ID
-              FROM ATTENDANCE_REQUEST B
-             WHERE B.ATTENDANCE_REQUEST_TYPE_ID = 1
-               AND B.REQUEST_STATUS = 'ACCEPT'
-               AND B.CANCEL_STATUS = 'N'
-               AND DATE(B.START_DATE) = CURRENT_DATE
-               AND B.EMPLOYEE_ID = #{ employeeId }
+               A.commute_id
+             , A.start_time
+             , A.end_time
+             , A.remote_status
+             , A.overtime_status
+             , A.employee_id
+             , A.attendance_request_id
+          FROM commute A
+         WHERE A.attendance_request_id = (
+            SELECT B.attendance_request_id
+              FROM attendance_request B
+             WHERE B.attendance_request_type_id = 1
+               AND B.request_status = 'ACCEPT'
+               AND B.cancel_status = 'N'
+               AND DATE(B.start_date) = CURRENT_DATE
+               AND B.employee_id = #{ employeeId }
          )
     </select>
 
     <select id="findTodayCommuteByEmployeeId" resultMap="commuteResultMap" parameterType="Long">
         SELECT
-               A.COMMUTE_ID
-             , A.START_TIME
-             , A.END_TIME
-             , A.REMOTE_STATUS
-             , A.OVERTIME_STATUS
-             , A.EMPLOYEE_ID
-             , A.ATTENDANCE_REQUEST_ID
-          FROM COMMUTE A
-         WHERE A.EMPLOYEE_ID = #{ employeeId }
-           AND DATE(A.START_TIME) = CURRENT_DATE
-           AND OVERTIME_STATUS = 'N'
+               A.commute_id
+             , A.start_time
+             , A.end_time
+             , A.remote_status
+             , A.overtime_status
+             , A.employee_id
+             , A.attendance_request_id
+          FROM commute A
+         WHERE A.employee_id = #{ employeeId }
+           AND DATE(A.start_time) = CURRENT_DATE
+           AND A.overtime_status = 'N'
     </select>
 
 </mapper>

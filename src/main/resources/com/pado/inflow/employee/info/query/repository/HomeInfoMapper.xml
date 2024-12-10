@@ -25,17 +25,7 @@
         UNION ALL
 
         SELECT
-            '월급날' AS eventName,
-            p.paid_at AS eventDate
-        FROM payment p
-        WHERE p.employee_id = #{employeeId}
-          AND YEAR(p.paid_at) = YEAR(CURRENT_DATE)
-          AND MONTH(p.paid_at) = #{month}
-
-        UNION ALL
-
-        SELECT
-            '출장' AS eventName,
+            '출장 시작일' AS eventName,
             bt.start_date AS eventDate
         FROM business_trip bt
         WHERE bt.employee_id = #{employeeId}
@@ -46,7 +36,18 @@
         UNION ALL
 
         SELECT
-            '파견' AS eventName,
+            '출장 종료일' AS eventName,
+            bt.end_date AS eventDate
+        FROM business_trip bt
+        WHERE bt.employee_id = #{employeeId}
+            AND bt.trip_type = 'BUSINESS'
+            AND YEAR(bt.end_date) = YEAR(CURRENT_DATE)
+          AND MONTH(bt.end_date) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '파견 시작일' AS eventName,
             bt.start_date AS eventDate
         FROM business_trip bt
         WHERE bt.employee_id = #{employeeId}
@@ -57,7 +58,18 @@
         UNION ALL
 
         SELECT
-            '휴가' AS eventName,
+            '파견 종료일' AS eventName,
+            bt.end_date AS eventDate
+        FROM business_trip bt
+        WHERE bt.employee_id = #{employeeId}
+            AND bt.trip_type = 'DISPATCH'
+            AND YEAR(bt.end_date) = YEAR(CURRENT_DATE)
+          AND MONTH(bt.end_date) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '휴가 시작일' AS eventName,
             vr.start_date AS eventDate
         FROM vacation_request vr
         WHERE vr.employee_id = #{employeeId}
@@ -67,12 +79,12 @@
         UNION ALL
 
         SELECT
-            '복직일' AS eventName,
-            lr.end_date + DAY(1) AS eventDate
-        FROM leave_return lr
-        WHERE lr.employee_id = #{employeeId}
-          AND YEAR(lr.end_date + DAY(1)) = YEAR(CURRENT_DATE)
-          AND MONTH(lr.end_date + DAY(1)) = #{month}
+            '휴가 종료일' AS eventName,
+            vr.end_date AS eventDate
+        FROM vacation_request vr
+        WHERE vr.employee_id = #{employeeId}
+            AND YEAR(vr.end_date) = YEAR(CURRENT_DATE)
+          AND MONTH(vr.end_date) = #{month}
 
         UNION ALL
 
@@ -81,8 +93,18 @@
             lr.start_date AS eventDate
         FROM leave_return lr
         WHERE lr.employee_id = #{employeeId}
-          AND YEAR(lr.start_date) = YEAR(CURRENT_DATE)
+            AND YEAR(lr.start_date) = YEAR(CURRENT_DATE)
           AND MONTH(lr.start_date) = #{month}
+
+        UNION ALL
+
+        SELECT
+            '복직일' AS eventName,
+            DATE_ADD(lr.end_date, INTERVAL 1 DAY) AS eventDate
+        FROM leave_return lr
+        WHERE lr.employee_id = #{employeeId}
+          AND YEAR(DATE_ADD(lr.end_date, INTERVAL 1 DAY)) = YEAR(CURRENT_DATE)
+          AND MONTH(DATE_ADD(lr.end_date, INTERVAL 1 DAY)) = #{month}
 
         UNION ALL
 

@@ -4,112 +4,112 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pado.inflow.vacation.query.repository.VacationRequestMapper">
     <resultMap id="vacationRequestResultMap" type="com.pado.inflow.vacation.query.dto.VacationRequestDTO">
-        <id property="vacationRequestId" column="VACATION_REQUEST_ID"/>
-        <result property="startDate" column="START_DATE"/>
-        <result property="endDate" column="END_DATE"/>
-        <result property="createdAt" column="CREATED_AT"/>
-        <result property="requestReason" column="REQUEST_REASON"/>
-        <result property="requestStatus" column="REQUEST_STATUS"/>
-        <result property="rejectionReason" column="REJECTION_REASON"/>
-        <result property="canceledAt" column="CANCELED_AT"/>
-        <result property="cancelReason" column="CANCEL_REASON"/>
-        <result property="cancelStatus" column="CANCEL_STATUS"/>
-        <result property="employeeId" column="EMPLOYEE_ID"/>
-        <result property="name" column="NAME"/>
-        <result property="vacationId" column="VACATION_ID"/>
+        <id property="vacationRequestId" column="vacation_request_id"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="requestReason" column="request_reason"/>
+        <result property="requestStatus" column="request_status"/>
+        <result property="rejectionReason" column="rejection_reason"/>
+        <result property="canceledAt" column="canceled_at"/>
+        <result property="cancelReason" column="cancel_reason"/>
+        <result property="cancelStatus" column="cancel_status"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="name" column="name"/>
+        <result property="vacationId" column="vacation_id"/>
         <collection property="attachments" ofType="com.pado.inflow.vacation.query.dto.VacationRequestFileDTO">
-            <result property="vacationRequestFileId" column="VACATION_REQUEST_FILE_ID"/>
-            <result property="fileName" column="FILE_NAME"/>
-            <result property="fileUrl" column="FILE_URL"/>
+            <result property="vacationRequestFileId" column="vacation_request_file_id"/>
+            <result property="fileName" column="file_name"/>
+            <result property="fileUrl" column="file_url"/>
         </collection>
     </resultMap>
 
     <select id="findVacationRequestPreviewsByEmployeeId" resultMap="vacationRequestResultMap" parameterType="Long">
         SELECT
-               A.VACATION_REQUEST_ID
-             , A.START_DATE
-             , A.END_DATE
-             , A.CREATED_AT
-             , A.REQUEST_REASON
-             , A.REQUEST_STATUS
-             , A.REJECTION_REASON
-             , A.CANCELED_AT
-             , A.CANCEL_REASON
-             , A.CANCEL_STATUS
-             , A.EMPLOYEE_ID
-             , B.NAME
-             , A.VACATION_ID
-             , C.VACATION_REQUEST_FILE_ID
-             , C.FILE_NAME
-             , C.FILE_URL
-          FROM VACATION_REQUEST A
-          JOIN EMPLOYEE B
-            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
-          LEFT JOIN VACATION_REQUEST_FILE C
-            ON A.VACATION_REQUEST_ID = C.VACATION_REQUEST_ID
-         WHERE A.EMPLOYEE_ID = #{ employeeId }
-         ORDER BY A.VACATION_REQUEST_ID DESC
+               A.vacation_request_id
+             , A.start_date
+             , A.end_date
+             , A.created_at
+             , A.request_reason
+             , A.request_status
+             , A.rejection_reason
+             , A.canceled_at
+             , A.cancel_reason
+             , A.cancel_status
+             , A.employee_id
+             , B.name
+             , A.vacation_id
+             , C.vacation_request_file_id
+             , C.file_name
+             , C.file_url
+          FROM vacation_request A
+          JOIN employee B
+            ON A.employee_id = B.employee_id
+          LEFT JOIN vacation_request_file C
+            ON A.vacation_request_id = C.vacation_request_id
+         WHERE A.employee_id = #{ employeeId }
+         ORDER BY A.vacation_request_id DESC
          LIMIT 5
     </select>
 
     <select id="findVacationRequestsByEmployeeId" resultMap="vacationRequestResultMap" parameterType="map">
         SELECT
-               A.VACATION_REQUEST_ID
-             , A.START_DATE
-             , A.END_DATE
-             , A.CREATED_AT
-             , A.REQUEST_REASON
-             , A.REQUEST_STATUS
-             , A.REJECTION_REASON
-             , A.CANCELED_AT
-             , A.CANCEL_REASON
-             , A.CANCEL_STATUS
-             , A.EMPLOYEE_ID
-             , B.NAME
-             , A.VACATION_ID
-             , C.VACATION_REQUEST_FILE_ID
-             , C.FILE_NAME
-             , C.FILE_URL
-          FROM VACATION_REQUEST A
-          JOIN EMPLOYEE B
-            ON A.EMPLOYEE_ID = B.EMPLOYEE_ID
-          LEFT JOIN VACATION_REQUEST_FILE C
-            ON A.VACATION_REQUEST_ID = C.VACATION_REQUEST_ID
-         WHERE A.EMPLOYEE_ID = #{ employeeId }
-           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
-           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
-         ORDER BY A.VACATION_REQUEST_ID DESC
+               A.vacation_request_id
+             , A.start_date
+             , A.end_date
+             , A.created_at
+             , A.request_reason
+             , A.request_status
+             , A.rejection_reason
+             , A.canceled_at
+             , A.cancel_reason
+             , A.cancel_status
+             , A.employee_id
+             , B.name
+             , A.vacation_id
+             , C.vacation_request_file_id
+             , C.file_name
+             , C.file_url
+          FROM vacation_request A
+          JOIN employee B
+            ON A.employee_id = B.employee_id
+          LEFT JOIN vacation_request_file C
+            ON A.vacation_request_id = C.vacation_request_id
+         WHERE A.employee_id = #{ employeeId }
+           AND YEAR(A.created_at) = YEAR(#{ date })
+           AND MONTH(A.created_at) = MONTH(#{ date })
+         ORDER BY A.vacation_request_id DESC
          LIMIT #{ elementsPerPage } OFFSET #{ offset }
     </select>
 
     <select id="getTotalVacationRequestsByEmployeeId" resultType="Integer" parameterType="map">
         SELECT
                COUNT(*) AS TOTAL
-          FROM VACATION_REQUEST A
-         WHERE A.EMPLOYEE_ID = #{ employeeId }
-           AND YEAR(A.CREATED_AT) = YEAR(#{ date })
-           AND MONTH(A.CREATED_AT) = MONTH(#{ date })
+          FROM vacation_request A
+         WHERE A.employee_id = #{ employeeId }
+           AND YEAR(A.created_at) = YEAR(#{ date })
+           AND MONTH(A.created_at) = MONTH(#{ date })
     </select>
 
     <select id="findTodayVacationByEmployeeId" resultMap="vacationRequestResultMap" parameterType="Long">
         SELECT
-               A.VACATION_REQUEST_ID
-             , A.START_DATE
-             , A.END_DATE
-             , A.CREATED_AT
-             , A.REQUEST_REASON
-             , A.REQUEST_STATUS
-             , A.REJECTION_REASON
-             , A.CANCELED_AT
-             , A.CANCEL_REASON
-             , A.CANCEL_STATUS
-             , A.EMPLOYEE_ID
-             , A.VACATION_ID
-         FROM VACATION_REQUEST A
-        WHERE A.EMPLOYEE_ID = #{ employeeId }
-          AND A.REQUEST_STATUS = 'ACCEPT'
-          AND A.CANCEL_STATUS = 'N'
-          AND CURRENT_DATE BETWEEN DATE(A.START_DATE) AND DATE(A.END_DATE)
+               A.vacation_request_id
+             , A.start_date
+             , A.end_date
+             , A.created_at
+             , A.request_reason
+             , A.request_status
+             , A.rejection_reason
+             , A.canceled_at
+             , A.cancel_reason
+             , A.cancel_status
+             , A.employee_id
+             , A.vacation_id
+         FROM vacation_request A
+        WHERE A.employee_id = #{ employeeId }
+          AND A.request_status = 'ACCEPT'
+          AND A.cancel_status = 'N'
+          AND CURRENT_DATE BETWEEN DATE(A.start_date) AND DATE(A.end_date)
     </select>
 
 </mapper>
