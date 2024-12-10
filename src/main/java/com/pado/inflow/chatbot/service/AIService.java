@@ -50,13 +50,37 @@ public class AIService {
             throw new RuntimeException("AI 서버와의 통신에 실패했습니다.");
         }
 
-        return response.getBody();
+        // 챗봇 응답 저장
+        AIResponseDTO chatbotResponse = response.getBody();
+
+        // 대화 이력 저장 (사용자 입력)
+        saveSessionHistory(chatbotRequest.getSessionId(), "HUMAN", chatbotRequest.getQuery());
+
+        // 대화 이력 저장 (챗봇 응답)
+        saveSessionHistory(chatbotRequest.getSessionId(), "CHATBOT", chatbotResponse.getAnswer());
+
+        return chatbotResponse;
+    }
+
+
+    // 대화 이력을 저장하는 헬퍼 메서드
+    private void saveSessionHistory(String sessionId, String type, String content) {
+        SessionHistory history = new SessionHistory();
+        history.setSessionHistoryId("history_" + System.currentTimeMillis());
+        history.setChatbotType(type);
+        history.setChatbotContent(content);
+        history.setChatbotSession(chatbotSessionRepository.findById(sessionId).orElseThrow(
+                () -> new RuntimeException("챗봇 세션을 찾을 수 없습니다.")
+        ));
+        sessionHistoryRepository.save(history);
     }
 
     // 설명: 챗봇 세션이 없으면 생성
-    public void createSessionIfNotExists(AIRequestDTO chatbotRequest) {
+    public void ensureSessionExists(AIRequestDTO chatbotRequest) {
         String sessionId = chatbotRequest.getSessionId();
+
         if (!chatbotSessionRepository.existsById(sessionId)) {
+            // 세션 생성
             ChatbotSession session = new ChatbotSession();
             session.setSessionId(sessionId);
             session.setEmployeeId(Long.parseLong(chatbotRequest.getEmployeeId()));
@@ -65,17 +89,8 @@ public class AIService {
             session.setFirstQuestion(firstQuestion.length() > 15 ? firstQuestion.substring(0, 15) : firstQuestion);
             chatbotSessionRepository.save(session);
         }
-
-        // 대화 이력 추가
-        SessionHistory history = new SessionHistory();
-        history.setSessionHistoryId("history_" + System.currentTimeMillis());
-        history.setChatbotType("HUMAN");
-        history.setChatbotContent(chatbotRequest.getQuery());
-        history.setChatbotSession(chatbotSessionRepository.findById(sessionId).orElseThrow(
-                () -> new RuntimeException("챗봇 세션을 찾을 수 없습니다.")
-        ));
-        sessionHistoryRepository.save(history);
     }
+
 
     // 설명: 사원의 챗봇 세션 리스트 조회
     public List<ChatbotSessionDTO> getChatbotSessions(Long employeeId) {

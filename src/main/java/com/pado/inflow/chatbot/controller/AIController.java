@@ -21,11 +21,15 @@ public class AIController {
         this.aiService = aiService;
     }
 
-    //설명.1. AI 서버와 통신 및 세션 생성
+    // 설명.1. AI 서버와 통신 및 세션 생성
     @PostMapping("/query")
     public ResponseDTO<AIResponseDTO> queryChatbot(@RequestBody AIRequestDTO chatbotRequest) {
+        // 세션이 없으면 생성
+        aiService.ensureSessionExists(chatbotRequest);
+
+        // AI 서버와 통신
         AIResponseDTO response = aiService.communicateWithAI(chatbotRequest);
-        aiService.createSessionIfNotExists(chatbotRequest);
+
         return ResponseDTO.ok(response);
     }
 
