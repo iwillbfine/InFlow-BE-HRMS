@@ -8,6 +8,7 @@ import com.pado.inflow.chatbot.entity.ChatbotSession;
 import com.pado.inflow.chatbot.entity.SessionHistory;
 import com.pado.inflow.chatbot.repository.ChatbotSessionRepository;
 import com.pado.inflow.chatbot.repository.SessionHistoryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class AIService {
 
@@ -42,6 +44,8 @@ public class AIService {
     public AIResponseDTO communicateWithAI(AIRequestDTO chatbotRequest) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+
+        log.info(chatbotRequest.toString());
 
         HttpEntity<AIRequestDTO> request = new HttpEntity<>(chatbotRequest, headers);
         ResponseEntity<AIResponseDTO> response = restTemplate.postForEntity(aiServerUrl, request, AIResponseDTO.class);
