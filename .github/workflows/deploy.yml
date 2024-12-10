@@ -100,7 +100,7 @@ jobs:
               number: \${SMS_NUMBER}
           
           ai:
-            server-url: http://localhost:8000/query
+            server-url: http://10.0.80.249:7000/query
           
           EOL
 
