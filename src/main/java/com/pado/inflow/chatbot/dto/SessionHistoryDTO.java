@@ -14,4 +14,7 @@ public class SessionHistoryDTO {
 
     @JsonProperty("chatbot_content")
     private String chatbotContent;
+
+    @JsonProperty("selected_keyword")
+    private String selectedKeyword;
 }

@@ -54,21 +54,22 @@ public class AIService {
         AIResponseDTO chatbotResponse = response.getBody();
 
         // 대화 이력 저장 (사용자 입력)
-        saveSessionHistory(chatbotRequest.getSessionId(), "HUMAN", chatbotRequest.getQuery());
+        saveSessionHistory(chatbotRequest.getSessionId(), "HUMAN", chatbotRequest.getQuery(),null);
 
         // 대화 이력 저장 (챗봇 응답)
-        saveSessionHistory(chatbotRequest.getSessionId(), "CHATBOT", chatbotResponse.getAnswer());
+        saveSessionHistory(chatbotRequest.getSessionId(), "CHATBOT", chatbotResponse.getAnswer(),chatbotResponse.getSelectedKeyword());
 
         return chatbotResponse;
     }
 
 
     // 대화 이력을 저장하는 헬퍼 메서드
-    private void saveSessionHistory(String sessionId, String type, String content) {
+    private void saveSessionHistory(String sessionId, String type, String content, String selectedKeyword) {
         SessionHistory history = new SessionHistory();
         history.setSessionHistoryId("history_" + System.currentTimeMillis());
         history.setChatbotType(type);
         history.setChatbotContent(content);
+        history.setSelectedKeyword(selectedKeyword);
         history.setChatbotSession(chatbotSessionRepository.findById(sessionId).orElseThrow(
                 () -> new RuntimeException("챗봇 세션을 찾을 수 없습니다.")
         ));
@@ -128,6 +129,7 @@ public class AIService {
         dto.setSessionHistoryId(history.getSessionHistoryId());
         dto.setChatbotType(history.getChatbotType());
         dto.setChatbotContent(history.getChatbotContent());
+        dto.setSelectedKeyword(history.getSelectedKeyword());
         return dto;
     }
 }
