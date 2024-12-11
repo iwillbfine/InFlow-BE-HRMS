@@ -81,7 +81,7 @@ public class DepartmentController {
     // 2. 사원명 키워드를 통한 사원 목록 조회
     @GetMapping("/my-department/{departmentCode}/members")
     public ResponseDTO<List<ManagerDepartmentMemberListDTO>> getMyDepartmentMemberListByDepartmentCode(
-            @PathVariable String departmentCode,
+            @PathVariable("departmentCode") String departmentCode,
             @RequestParam(required = false) String keyword){
         List<ManagerDepartmentMemberListDTO> memberList
                 = departmentService.findDepartmentMemberListByDepartmentCode(departmentCode, keyword);
