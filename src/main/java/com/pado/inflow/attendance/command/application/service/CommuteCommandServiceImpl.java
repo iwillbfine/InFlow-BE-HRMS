@@ -49,7 +49,7 @@ public class CommuteCommandServiceImpl implements CommuteCommandService {
 
         // 기준 시간 설정
         LocalTime evening = LocalTime.of(18, 0); // 오후 6시
-        LocalTime morning = LocalTime.of(9, 0); // 오전 9시
+        LocalTime morning = LocalTime.of(5, 0); // 오전 5시
 
         // 근무 시간 검사
         if (now.isAfter(evening) || now.isBefore(morning)) {
