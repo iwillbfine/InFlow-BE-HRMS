@@ -394,7 +394,8 @@
             dm.department_member_id AS departmentMemberId,
             dm.employee_number AS employeeNumber,
             h.full_path AS departmentPath,
-            dm.attendance_status_type_name AS attendanceStatusTypeName
+            dm.attendance_status_type_name AS attendanceStatusTypeName,
+            dm.profile_img_url AS profileImageUrl
         FROM
             department_member dm
         JOIN

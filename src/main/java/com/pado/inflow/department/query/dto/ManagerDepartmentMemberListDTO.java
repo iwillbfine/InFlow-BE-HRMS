@@ -27,6 +27,9 @@ public class ManagerDepartmentMemberListDTO {
     @JsonProperty("department_path")
     private String departmentPath;
 
+    @JsonProperty("profile_image_url")
+    private String profileImageUrl;
+
     @JsonProperty("attendance_status_type_name")
     private String attendanceStatusTypeName;
 
