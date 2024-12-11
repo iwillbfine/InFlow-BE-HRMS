@@ -43,6 +43,8 @@ jobs:
               max-http-post-size: 100MB
           
           spring:
+            time-zone: Asia/Seoul
+          
             servlet:
               multipart:
                 max-file-size: 100MB

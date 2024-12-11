@@ -20,6 +20,9 @@ public class SessionHistory {
     @Column(name = "chatbot_content", columnDefinition = "TEXT")
     private String chatbotContent;
 
+    @Column(name = "selected_keyword")
+    private String selectedKeyword;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id", nullable = false)
     private ChatbotSession chatbotSession;
