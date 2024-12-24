@@ -125,17 +125,25 @@
 ## 📑 프로젝트 기획
 
 ### 📌 프로젝트명
-<div style="margin-left: 20px;">InFlow</div>   
-  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InFlow    
+
+
+   
 ### 📌 프로젝트 주제
-<div style="margin-left: 20px;">효과적인 인사관리 시스템</div>   
-  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;효과적인 인사관리 시스템   
+
+
+   
 ### 📌 프로젝트 기간
-<div style="margin-left: 20px;">2024.10.22 ~ 2024.12.12</div>   
-  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024.10.22 ~ 2024.12.12  
+
+   
+
 ### 📌 프로젝트 소개
-<div style="margin-left: 20px;"> InFlow는 기업의 인사 관리 업무를 디지털화하여 업무 효율성을 극대화하는 인사 관리 시스템입니다. 기존 인사 관리 시스템의 비효율성과 반복적인 작업을 개선하기 위해 프로젝트를 진행했습니다.</div>   
-<div style="margin-left: 20px;"> InFlow는 인사 정보 관리, 전자 문서 계약, 근태 관리, 급여 계산, 평가 관리 등 인사 업무의 핵심 기능을 하나의 플랫폼에서 통합적으로 처리할 수 있도록 설계되었습니다. 또한, 인공지능 기반의 챗봇을 도입하여 인사 관련 문의에 빠르고 정확한 답변을 제공합니다.</div>   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InFlow는 기업의 인사 관리 업무를 디지털화하여 업무 효율성을 극대화하는 인사 관리 시스템입니다. 기존 인사 관리 시스템의 비효율성과 반복적인 작업을 개선하기 위해 프로젝트를 진행했습니다.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InFlow는 인사 정보 관리, 전자 문서 계약, 근태 관리, 급여 계산, 평가 관리 등 인사 업무의 핵심 기능을 하나의 플랫폼에서 통합적으로 처리할 수 있도록 설계되었습니다. 또한, 인공지능 기반의 챗봇을 도입하여 인사 관련 문의에 빠르고 정확한 답변을 제공합니다.  
+
+   
   
 ### 📌 개발 일정
 ![image](https://github.com/user-attachments/assets/299f33f1-5030-4cc6-b3e9-b4322b45689f)
