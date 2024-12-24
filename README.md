@@ -124,18 +124,40 @@
 
 ## 📑 프로젝트 기획
 
-### 📌 프로젝트 기획서
-[![프로젝트 기획서](https://github.com/Be09-Fin-Pado/.github/raw/main/profile/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%82%B0%EC%B6%9C%EB%AC%BC/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EA%B8%B0%ED%9A%8D/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EA%B8%B0%ED%9A%8D%EC%84%9C.png)](https://github.com/Be09-Fin-Pado/.github/raw/main/profile/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%82%B0%EC%B6%9C%EB%AC%BC/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EA%B8%B0%ED%9A%8D/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EA%B8%B0%ED%9A%8D%EC%84%9C.png)
+### 📌 프로젝트명
+<div style="margin-left: 20px;">InFlow</div>   
+  
+### 📌 프로젝트 주제
+<div style="margin-left: 20px;">효과적인 인사관리 시스템</div>   
+  
+### 📌 프로젝트 기간
+<div style="margin-left: 20px;">2024.10.22 ~ 2024.12.12</div>   
+  
+### 📌 프로젝트 소개
+<div style="margin-left: 20px;"> InFlow는 기업의 인사 관리 업무를 디지털화하여 업무 효율성을 극대화하는 인사 관리 시스템입니다. 기존 인사 관리 시스템의 비효율성과 반복적인 작업을 개선하기 위해 프로젝트를 진행했습니다.</div>   
+<div style="margin-left: 20px;"> InFlow는 인사 정보 관리, 전자 문서 계약, 근태 관리, 급여 계산, 평가 관리 등 인사 업무의 핵심 기능을 하나의 플랫폼에서 통합적으로 처리할 수 있도록 설계되었습니다. 또한, 인공지능 기반의 챗봇을 도입하여 인사 관련 문의에 빠르고 정확한 답변을 제공합니다.</div>   
+  
+### 📌 개발 일정
+![image](https://github.com/user-attachments/assets/299f33f1-5030-4cc6-b3e9-b4322b45689f)
+
+
 
 ### 📌 요구사항 정의서
-[![요구사항 정의서 보기](https://img.shields.io/badge/📄_요구사항_정의서-문서_열기-2E8B57?style=for-the-badge&logo=adobeacrobatreader&labelColor=darkgreen&labelWidth=20)](https://github.com/Be09-Fin-Pado/.github/blob/main/profile/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%82%B0%EC%B6%9C%EB%AC%BC/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EA%B8%B0%ED%9A%8D/%EC%9A%94%EA%B5%AC%EC%82%AC%EC%9E%A5%20%EC%A0%95%EC%9D%98%EC%84%9C.pdf)
+![image](https://github.com/user-attachments/assets/47be3e55-e2b2-49f1-bf6a-307a5d626e3a)
+![image](https://github.com/user-attachments/assets/85d473a1-82ff-450a-ae66-d8faa46d165d)
+![image](https://github.com/user-attachments/assets/18548e2c-f096-472c-b5b4-9fcb80c8b43d)
+
+
 
 ### 📌 시스템 아키텍처
 ![image](https://github.com/user-attachments/assets/e21397c2-aa73-4579-a67f-245f0bf778af)
 
 
+
 ### 📌 WBS (Work Breakdown Structure)
-[![Be09-Fin-WBS](https://github.com/Be09-Fin-Pado/.github/raw/main/profile/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%82%B0%EC%B6%9C%EB%AC%BC/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EA%B8%B0%ED%9A%8D/Be09-Fin-WBS.png)](https://github.com/Be09-Fin-Pado/.github/raw/main/profile/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%82%B0%EC%B6%9C%EB%AC%BC/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EA%B8%B0%ED%9A%8D/Be09-Fin-WBS.png)
+![image](https://github.com/user-attachments/assets/c5296bb1-06b8-4622-9517-8829f9720ee3)
+
+
 
 ### 📌 ERD(개념 모델링)
 ![image](https://github.com/user-attachments/assets/2be2d296-c653-4630-823c-2a251656b243)
